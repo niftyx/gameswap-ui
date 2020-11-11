@@ -48,6 +48,18 @@
     "prettier:check": "yarn prettier --check",
     "prettier:fix": "yarn prettier --write"
   },
+  "lint-staged": {
+    "src/**/*.{js,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged --allow-empty",
+      "pre-push": "yarn lint:check"
+    }
+  },
   "eslintConfig": {
     "extends": [
       "react-app",
