@@ -1,17 +1,28 @@
+import { makeStyles } from "@material-ui/core";
 import React from "react";
 
 import { Header } from "./components";
+
+const useStyles = makeStyles((theme) => ({
+  container: {
+    height: "100vh",
+    backgroundColor: theme.colors.background.secondary,
+    paddingTop: theme.custom.appHeaderHeight,
+    overflowY: "auto",
+  },
+}));
 
 interface IProps {
   children: React.ReactNode;
 }
 
 const MainLayout = (props: IProps) => {
+  const classes = useStyles();
   return (
-    <div>
+    <>
       <Header />
-      <main>{props.children}</main>
-    </div>
+      <main className={classes.container}>{props.children}</main>
+    </>
   );
 };
 

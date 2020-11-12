@@ -7,6 +7,7 @@ const colors = [
     colors: {
       border: {
         primary: transparentize(0.92, "#FFF"),
+        secondary: "#15161F",
       },
       icon: {
         active: "#FFF",
@@ -19,6 +20,7 @@ const colors = [
         primary: "#292D4B",
         secondary: "#030616",
         third: "#383E6C",
+        purple10: "#5F6BDD",
       },
       text: {
         default: "#FFF",
@@ -30,6 +32,7 @@ const colors = [
     colors: {
       border: {
         primary: transparentize(0.92, "#FFF"),
+        secondary: "#15161F",
       },
       icon: {
         active: "#FFF",
@@ -42,6 +45,7 @@ const colors = [
         primary: "#292D4B",
         secondary: "#030616",
         third: "#383E6C",
+        purple10: "#5F6BDD",
       },
       text: {
         default: "#FFF",

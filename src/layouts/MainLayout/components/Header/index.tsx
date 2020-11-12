@@ -15,11 +15,16 @@ import { Link as RouterLink } from "react-router-dom";
 
 import AccountInfoBar from "../AccountInfoBar";
 import BackNextGroup from "../BackNextGroup";
+import LaunchPad from "../LaunchPad";
+import Notifications from "../Notifications";
 import SearchBar from "../SearchBar";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.default,
+    borderBottomColor: theme.colors.border.secondary,
+    borderBottomWidth: 1,
+    borderBottomStyle: "solid",
   },
   toolbar: {
     height: theme.custom.appHeaderHeight,
@@ -39,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: theme.spacing(5),
   },
   searchBar: {
-    marginLeft: theme.spacing(6),
+    marginLeft: theme.spacing(5),
   },
   link: {
     color: theme.colors.link.default,
@@ -55,6 +60,16 @@ const useStyles = makeStyles((theme) => ({
     height: Number(theme.custom.appHeaderHeight) - 2,
     marginLeft: theme.spacing(2),
     marginRight: theme.spacing(2),
+  },
+  notifications: {
+    marginRight: theme.spacing(2),
+  },
+  launchPad: { marginRight: theme.spacing(2) },
+  menuItems: {
+    display: "flex",
+    justifyContent: "space-around",
+    alignItems: "center",
+    margin: `0 ${theme.spacing(2)}px`,
   },
 }));
 
@@ -74,12 +89,12 @@ const Header = ({ className, ...rest }: AppBarProps) => {
           <Hidden mdDown>
             <SearchBar className={classes.searchBar} />
           </Hidden>
-          <Box flexGrow={1}>
+          <Box className={classes.menuItems} flexGrow={1}>
             <Link
               className={classes.link}
               color="textSecondary"
               component={RouterLink}
-              to="/app"
+              to="/trade"
               underline="none"
               variant="body2"
             >
@@ -89,7 +104,7 @@ const Header = ({ className, ...rest }: AppBarProps) => {
               className={classes.link}
               color="textSecondary"
               component={RouterLink}
-              to="/docs"
+              to="/browse"
               underline="none"
               variant="body2"
             >
@@ -99,13 +114,18 @@ const Header = ({ className, ...rest }: AppBarProps) => {
               className={classes.link}
               color="textSecondary"
               component={RouterLink}
-              to="/docs"
+              to="/apps"
               underline="none"
               variant="body2"
             >
               LAUNCHPAD
             </Link>
           </Box>
+          <Hidden mdDown>
+            <Notifications className={classes.notifications} />
+            <LaunchPad className={classes.launchPad} />
+          </Hidden>
+
           <Divider className={classes.divider} />
           <AccountInfoBar />
         </div>

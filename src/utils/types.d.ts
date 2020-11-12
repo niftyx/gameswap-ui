@@ -1,5 +1,5 @@
 import {Theme} from '@material-ui/core/styles/createMuiTheme'
-
+import {BigNumber} from 'ethers'
 declare module '@material-ui/core/styles/createMuiTheme' {
   interface Theme {
     custom: {
@@ -16,6 +16,7 @@ declare module '@material-ui/core/styles/createMuiTheme' {
     colors: {
       border: {
         primary: string
+        secondary: string
       }
       icon: {
         active: string
@@ -28,6 +29,7 @@ declare module '@material-ui/core/styles/createMuiTheme' {
         primary: string
         secondary: string
         third: string
+        purple10: string
       }
       text: {
         default: string
@@ -50,6 +52,7 @@ declare module '@material-ui/core/styles/createMuiTheme' {
     colors: {
       border: {
         primary: string
+        secondary: string
       }
       icon: {
         active: string
@@ -62,6 +65,7 @@ declare module '@material-ui/core/styles/createMuiTheme' {
         primary: string
         secondary: string
         third: string
+        purple10: string
       }
       text: {
         default: string
@@ -78,4 +82,13 @@ export enum THEME {
 export interface ISettings {
   theme: THEME;
   responsiveFontSizes: boolean;
+}
+
+export interface IAssetItem {
+  id: string;
+  name: string;
+  image: string;
+  usdPrice: number;
+  gswapPrice: BigNumber;
+  priceChange: number;
 }
