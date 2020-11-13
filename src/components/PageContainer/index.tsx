@@ -4,7 +4,8 @@ import React from "react";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    padding: `${theme.spacing(2.125)}px ${theme.spacing(3)}px`,
+    padding: `${theme.spacing(2)}px ${theme.spacing(2)}px`,
+    height: "100%",
   },
 }));
 

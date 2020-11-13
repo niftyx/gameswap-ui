@@ -5,9 +5,11 @@ const colors = [
   {
     name: THEME.Black,
     colors: {
+      transparent: "#0000",
       border: {
         primary: transparentize(0.92, "#FFF"),
         secondary: "#15161F",
+        third: "#5F6171",
       },
       icon: {
         active: "#FFF",
@@ -20,19 +22,25 @@ const colors = [
         primary: "#292D4B",
         secondary: "#030616",
         third: "#383E6C",
-        purple10: "#5F6BDD",
+        fourth: "#5F6BDD",
+        fifth: "#14172F",
+        sixth: "#0D1022",
       },
       text: {
         default: "#FFF",
+        secondary: "#3D425A",
+        third: "#9C9EAC",
       },
     },
   },
   {
     name: THEME.White,
     colors: {
+      transparent: "#0000",
       border: {
         primary: transparentize(0.92, "#FFF"),
         secondary: "#15161F",
+        third: "#5F6171",
       },
       icon: {
         active: "#FFF",
@@ -45,10 +53,14 @@ const colors = [
         primary: "#292D4B",
         secondary: "#030616",
         third: "#383E6C",
-        purple10: "#5F6BDD",
+        fourth: "#5F6BDD",
+        fifth: "#14172F",
+        sixth: "#0D1022",
       },
       text: {
         default: "#FFF",
+        secondary: "#3D425A",
+        third: "#9C9EAC",
       },
     },
   },

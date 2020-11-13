@@ -1,13 +1,15 @@
 import { makeStyles } from "@material-ui/core";
+import clsx from "classnames";
 import React from "react";
+import useCommonStyles from "styles/common";
 
 import { Header } from "./components";
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    height: "100vh",
+    height: `calc(100vh - ${theme.custom.appHeaderHeight}px)`,
     backgroundColor: theme.colors.background.secondary,
-    paddingTop: theme.custom.appHeaderHeight,
+    marginTop: theme.custom.appHeaderHeight,
     overflowY: "auto",
   },
 }));
@@ -18,10 +20,14 @@ interface IProps {
 
 const MainLayout = (props: IProps) => {
   const classes = useStyles();
+  const commonClasses = useCommonStyles();
+
   return (
     <>
       <Header />
-      <main className={classes.container}>{props.children}</main>
+      <main className={clsx(classes.container, commonClasses.scroll)}>
+        {props.children}
+      </main>
     </>
   );
 };

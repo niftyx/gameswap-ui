@@ -5,6 +5,7 @@ declare module '@material-ui/core/styles/createMuiTheme' {
     custom: {
       appHeaderHeight: React.CSSProperties['height']
       appHeaderItemHeight: React.CSSProperties['height']
+      pageToolbarHeight: React.CSSProperties['height']
       header: {
         navItem: {
           fontSize: React.CSSProperties['fontSize']
@@ -14,9 +15,11 @@ declare module '@material-ui/core/styles/createMuiTheme' {
       }
     }
     colors: {
+      transparent: string
       border: {
         primary: string
         secondary: string
+        third: string
       }
       icon: {
         active: string
@@ -29,10 +32,14 @@ declare module '@material-ui/core/styles/createMuiTheme' {
         primary: string
         secondary: string
         third: string
-        purple10: string
+        fourth: string
+        fifth: string
+        sixth: string
       }
       text: {
         default: string
+        secondary: string
+        third: string
       }
     }
   }
@@ -41,6 +48,7 @@ declare module '@material-ui/core/styles/createMuiTheme' {
     custom: {
       appHeaderHeight: React.CSSProperties['height']
       appHeaderItemHeight: React.CSSProperties['height']
+      pageToolbarHeight: React.CSSProperties['height']
       header: {
         navItem: {
           fontSize: React.CSSProperties['fontSize']
@@ -50,9 +58,11 @@ declare module '@material-ui/core/styles/createMuiTheme' {
       }
     }
     colors: {
+      transparent: string
       border: {
         primary: string
         secondary: string
+        third: string
       }
       icon: {
         active: string
@@ -65,10 +75,14 @@ declare module '@material-ui/core/styles/createMuiTheme' {
         primary: string
         secondary: string
         third: string
-        purple10: string
+        fourth: string
+        fifth: string
+        sixth: string
       }
       text: {
         default: string
+        secondary: string
+        third: string
       }
     }
   }

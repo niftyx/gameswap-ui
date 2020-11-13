@@ -1,6 +1,7 @@
 const custom = {
   appHeaderHeight: 80,
   appHeaderItemHeight: 57,
+  pageToolbarHeight: 50,
   header: {
     navItem: {
       fontSize: "16px",

@@ -3,10 +3,12 @@ import clsx from "classnames";
 import React from "react";
 
 const useStyles = makeStyles((theme) => ({
-  root: {},
+  root: {
+    padding: `${theme.spacing(1)}px 0`,
+  },
   title: {
     borderRadius: theme.spacing(0.5),
-    backgroundColor: theme.colors.background.purple10,
+    backgroundColor: theme.colors.background.fourth,
     height: theme.spacing(5),
     fontSize: theme.spacing(2),
     color: theme.colors.text.default,

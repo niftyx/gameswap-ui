@@ -8,10 +8,10 @@ const useStyles = makeStyles((theme) => ({
 
 interface IProps {
   className?: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
-const AssetContainer = (props: IProps) => {
+const AssetsContainer = (props: IProps) => {
   const classes = useStyles();
   return (
     <Grid className={clsx(classes.root, props.className)} container spacing={1}>
@@ -20,4 +20,4 @@ const AssetContainer = (props: IProps) => {
   );
 };
 
-export default AssetContainer;
+export default AssetsContainer;
