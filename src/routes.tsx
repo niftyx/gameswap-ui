@@ -5,6 +5,11 @@ import { Route, Switch } from "react-router-dom";
 const routes = [
   {
     exact: true,
+    path: "/",
+    component: lazy(() => import("pages/HomePage")),
+  },
+  {
+    exact: true,
     path: "/trade",
     component: lazy(() => import("pages/TradePage")),
   },

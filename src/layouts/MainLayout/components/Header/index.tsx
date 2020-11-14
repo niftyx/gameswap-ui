@@ -86,7 +86,7 @@ const Header = ({ className, ...rest }: AppBarProps) => {
           <Hidden mdDown>
             <BackNextGroup />
           </Hidden>
-          <Hidden lgDown>
+          <Hidden mdDown>
             <SearchBar className={classes.searchBar} />
           </Hidden>
           <Box className={classes.menuItems} flexGrow={1}>
@@ -121,7 +121,7 @@ const Header = ({ className, ...rest }: AppBarProps) => {
               LAUNCHPAD
             </Link>
           </Box>
-          <Hidden lgDown>
+          <Hidden mdDown>
             <Notifications className={classes.notifications} />
             <LaunchPad className={classes.launchPad} />
           </Hidden>

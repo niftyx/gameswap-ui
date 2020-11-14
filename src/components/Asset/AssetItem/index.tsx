@@ -1,6 +1,7 @@
 import { Grid, Typography, makeStyles } from "@material-ui/core";
 import { ReactComponent as GswapIcon } from "assets/svgs/gameswap_token.svg";
 import clsx from "classnames";
+import { transparentize } from "polished";
 import React from "react";
 import { formatBigNumber, numberWithCommas } from "utils";
 import { IAssetItem } from "utils/types";
@@ -46,6 +47,21 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 15,
     lineHeight: "20px",
   },
+  percentWrapper: {
+    position: "absolute",
+    top: theme.spacing(1),
+    right: theme.spacing(1),
+    borderRadius: theme.spacing(0.5),
+    padding: "2px 6px",
+    "&.positive": {
+      backgroundColor: transparentize(0.73, theme.colors.text.percentPositive),
+      color: theme.colors.text.percentPositive,
+    },
+    "&.negative": {
+      backgroundColor: transparentize(0.73, theme.colors.text.percentNegative),
+      color: theme.colors.text.percentNegative,
+    },
+  },
 }));
 
 interface IProps {
@@ -82,6 +98,14 @@ const AssetItem = (props: IProps) => {
                 {formatBigNumber(data.gswapPrice, 2)}
               </Typography>
             </div>
+          </div>
+          <div
+            className={clsx(
+              classes.percentWrapper,
+              data.priceChange < 0 ? "positive" : "negative"
+            )}
+          >
+            {data.priceChange}
           </div>
         </div>
       </div>

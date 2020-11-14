@@ -6,6 +6,7 @@ declare module '@material-ui/core/styles/createMuiTheme' {
       appHeaderHeight: React.CSSProperties['height']
       appHeaderItemHeight: React.CSSProperties['height']
       pageToolbarHeight: React.CSSProperties['height']
+      appNavbarWidth: React.CSSProperties['width']
       header: {
         navItem: {
           fontSize: React.CSSProperties['fontSize']
@@ -40,6 +41,9 @@ declare module '@material-ui/core/styles/createMuiTheme' {
         default: string
         secondary: string
         third: string
+        fourth: string
+        percentPositive: string
+        percentNegative: string
       }
     }
   }
@@ -49,6 +53,7 @@ declare module '@material-ui/core/styles/createMuiTheme' {
       appHeaderHeight: React.CSSProperties['height']
       appHeaderItemHeight: React.CSSProperties['height']
       pageToolbarHeight: React.CSSProperties['height']
+      appNavbarWidth: React.CSSProperties['width']
       header: {
         navItem: {
           fontSize: React.CSSProperties['fontSize']
@@ -83,6 +88,9 @@ declare module '@material-ui/core/styles/createMuiTheme' {
         default: string
         secondary: string
         third: string
+        fourth: string
+        percentPositive: string
+        percentNegative: string
       }
     }
   }

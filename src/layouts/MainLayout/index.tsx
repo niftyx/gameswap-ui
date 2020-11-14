@@ -1,9 +1,10 @@
 import { makeStyles } from "@material-ui/core";
 import clsx from "classnames";
 import React from "react";
+import { matchPath, useHistory } from "react-router-dom";
 import useCommonStyles from "styles/common";
 
-import { Header } from "./components";
+import { Header, Navbar } from "./components";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -11,6 +12,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.colors.background.secondary,
     marginTop: theme.custom.appHeaderHeight,
     overflowY: "auto",
+  },
+  containerWithMenuLeft: {
+    paddingLeft: theme.custom.appNavbarWidth,
   },
 }));
 
@@ -21,11 +25,24 @@ interface IProps {
 const MainLayout = (props: IProps) => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
+  const history = useHistory();
+
+  const hideNavbar = matchPath(history.location.pathname, {
+    exact: true,
+    path: "/trade",
+  });
 
   return (
     <>
       <Header />
-      <main className={clsx(classes.container, commonClasses.scroll)}>
+      <main
+        className={clsx(
+          classes.container,
+          commonClasses.scroll,
+          hideNavbar ? "" : classes.containerWithMenuLeft
+        )}
+      >
+        {!hideNavbar && <Navbar />}
         {props.children}
       </main>
     </>
