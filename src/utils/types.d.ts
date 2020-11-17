@@ -114,3 +114,23 @@ export interface IAssetItem {
   gswapPrice: BigNumber;
   priceChange: number;
 }
+
+export interface ISideMenuGroupHeaderItem {
+  title: string;
+  className?: string;
+  moreItems?: IMoreItem[];
+}
+
+export interface ISideMenuItem {
+  title: string;
+  className?: string;
+  Icon: React.ElementType;
+  href?: string;
+  onClick?: () => void;
+}
+
+export interface IGameItem {
+  title: string;
+  backgroundIcon?: string;
+  onClick?: () => void;
+}

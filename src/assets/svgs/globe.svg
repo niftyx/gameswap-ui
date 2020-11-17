@@ -1,0 +1,6 @@
+<svg id="globe-outline" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g id="globe-outline-2" data-name="globe-outline">
+    <rect id="Rectangle" width="24" height="24" transform="translate(24 24) rotate(180)" opacity="0"/>
+    <path id="Shape" d="M0,10A10,10,0,1,1,10,20,10,10,0,0,1,0,10Z" transform="translate(2 2)" fill="currentColor" />
+  </g>
+</svg>

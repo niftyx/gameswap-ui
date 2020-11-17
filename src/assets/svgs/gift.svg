@@ -1,0 +1,6 @@
+<svg id="gift-outline" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g id="gift-outline-2" data-name="gift-outline">
+    <rect id="Rectangle" width="24" height="24" transform="translate(24 24) rotate(180)" opacity="0"/>
+    <path id="Shape" d="M1.511,16.371V12a2.08,2.08,0,0,1-1.5-2.2V6.2A2,2,0,0,1,1.811,4H2.2a2.991,2.991,0,0,1-.191-1,3.08,3.08,0,0,1,3.14-3,4.459,4.459,0,0,1,3.86,2.4A4.461,4.461,0,0,1,12.871,0a3.08,3.08,0,0,1,3.14,3,3.013,3.013,0,0,1-.19,1h.39a2,2,0,0,1,1.8,2.2V9.8a2.08,2.08,0,0,1-1.5,2.2v4.33A1.751,1.751,0,0,1,14.7,18H3.257A1.75,1.75,0,0,1,1.511,16.371Z" transform="translate(2.989 2.999)" fill="currentColor" />
+  </g>
+</svg>

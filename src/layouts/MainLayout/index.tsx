@@ -1,7 +1,12 @@
 import { makeStyles } from "@material-ui/core";
 import clsx from "classnames";
 import React from "react";
-import { matchPath, useHistory } from "react-router-dom";
+import {
+  RouteComponentProps,
+  matchPath,
+  useHistory,
+  withRouter,
+} from "react-router-dom";
 import useCommonStyles from "styles/common";
 
 import { Header, Navbar } from "./components";
@@ -14,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     overflowY: "auto",
   },
   containerWithMenuLeft: {
-    paddingLeft: theme.custom.appNavbarWidth,
+    paddingLeft: Number(theme.custom.appNavbarWidth) + theme.spacing(1.5),
   },
 }));
 
@@ -22,12 +27,12 @@ interface IProps {
   children: React.ReactNode;
 }
 
-const MainLayout = (props: IProps) => {
+const MainLayout = (props: IProps & RouteComponentProps) => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
   const history = useHistory();
 
-  const hideNavbar = matchPath(history.location.pathname, {
+  const hideNavbar = !!matchPath(history.location.pathname, {
     exact: true,
     path: "/trade",
   });
@@ -49,4 +54,4 @@ const MainLayout = (props: IProps) => {
   );
 };
 
-export default MainLayout;
+export default withRouter(MainLayout);

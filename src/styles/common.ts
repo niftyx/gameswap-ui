@@ -15,6 +15,14 @@ const useCommonStyles = makeStyles((theme) => ({
       backgroundColor: theme.colors.background.fourth,
     },
   },
+  transparentButton: {
+    backgroundColor: transparentize(0.9, theme.colors.text.default),
+    borderRadius: theme.spacing(0.75),
+    color: theme.colors.text.default,
+    "&:hover": {
+      backgroundColor: transparentize(0.5, theme.colors.text.default),
+    },
+  },
 }));
 
 export default useCommonStyles;

@@ -32,6 +32,22 @@ const baseOptions = {
 const themesOptions = [
   {
     name: THEME.Black,
+    overrides: {
+      MuiInputBase: {
+        input: {
+          "&::placeholder": {
+            opacity: 1,
+            color: colors.blueGrey[600],
+          },
+        },
+      },
+      MuiButton: {
+        root: {
+          padding: "16px 25px 14px 25px",
+          borderRadius: "6px",
+        },
+      },
+    },
     palette: {
       type: "dark",
       action: {
@@ -48,7 +64,7 @@ const themesOptions = [
         paper: "#282C34",
       },
       primary: {
-        main: "#8a85ff",
+        main: "#5F6BDD",
       },
       secondary: {
         main: "#8a85ff",
@@ -69,6 +85,12 @@ const themesOptions = [
             opacity: 1,
             color: colors.blueGrey[600],
           },
+        },
+      },
+      MuiButton: {
+        root: {
+          padding: "16px 25px 14px 25px",
+          borderRadius: "6px",
         },
       },
     },

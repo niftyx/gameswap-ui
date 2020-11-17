@@ -8,6 +8,7 @@ import { I18nextProvider } from "react-i18next";
 import { BrowserRouter } from "react-router-dom";
 import renderRoutes from "routes";
 import { createTheme } from "theme";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 import i18n from "./i18n";
 

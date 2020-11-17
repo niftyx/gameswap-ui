@@ -3,17 +3,23 @@ import clsx from "classnames";
 import { transparentize } from "polished";
 import React from "react";
 import { NavLink, matchPath, useHistory } from "react-router-dom";
+import { ISideMenuItem } from "utils/types";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    margin: `${theme.spacing(1)}px ${theme.spacing(0.5)}px`,
+    margin: `${theme.spacing(2)}px ${theme.spacing(0.5)}px`,
     padding: `${theme.spacing(0.125)}px ${theme.spacing(0.5)}px`,
     display: "flex",
     alignItems: "center",
+    textDecoration: "none",
     "& > * + *": {
-      marginLeft: theme.spacing(1.125),
+      marginLeft: theme.spacing(3),
     },
     color: transparentize(0.6, theme.colors.text.default),
+    transition: "all 0.25s",
+    "&:hover": {
+      color: transparentize(0.25, theme.colors.text.default),
+    },
     "&.active": {
       color: theme.colors.text.default,
     },
@@ -25,18 +31,13 @@ const useStyles = makeStyles((theme) => ({
   title: {
     fontSize: "14px",
     lineHeight: "19px",
+    whiteSpace: "nowrap",
+    textOverflow: "ellipsis",
+    overflow: "hidden",
   },
 }));
 
-interface IProps {
-  title: string;
-  className?: string;
-  Icon: React.ElementType;
-  href?: string;
-  onClick?: () => void;
-}
-
-export const SideMenuItem = (props: IProps) => {
+export const SideMenuItem = (props: ISideMenuItem) => {
   const { Icon, href, onClick, title } = props;
   const classes = useStyles();
   const history = useHistory();
