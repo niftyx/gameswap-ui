@@ -130,7 +130,16 @@ export interface ISideMenuItem {
 }
 
 export interface IGameItem {
+  id: string;
   title: string;
-  backgroundIcon?: string;
-  onClick?: () => void;
+  backgroundImage?: string;
+}
+
+export interface IFeaturedFarm {
+  id: string;
+  title: string;
+  description: string;
+  tokenDescription: string;
+  isFavorite: boolean;
+  backgroundImage?: string;
 }

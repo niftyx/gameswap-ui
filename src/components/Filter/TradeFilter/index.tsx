@@ -1,4 +1,4 @@
-import { Box, Typography, makeStyles } from "@material-ui/core";
+import { Typography, makeStyles } from "@material-ui/core";
 import clsx from "classnames";
 import React from "react";
 

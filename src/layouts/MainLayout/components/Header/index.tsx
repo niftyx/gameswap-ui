@@ -10,11 +10,11 @@ import {
 } from "@material-ui/core";
 import { ReactComponent as LogoSvg } from "assets/svgs/logo.svg";
 import clsx from "clsx";
+import { BackNextGroup } from "components";
 import React from "react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useHistory } from "react-router-dom";
 
 import AccountInfoBar from "../AccountInfoBar";
-import BackNextGroup from "../BackNextGroup";
 import LaunchPad from "../LaunchPad";
 import Notifications from "../Notifications";
 import SearchBar from "../SearchBar";
@@ -75,7 +75,13 @@ const useStyles = makeStyles((theme) => ({
 
 const Header = ({ className, ...rest }: AppBarProps) => {
   const classes = useStyles();
-
+  const history = useHistory();
+  const onNext = () => {
+    history.go(1);
+  };
+  const onBack = () => {
+    history.go(-1);
+  };
   return (
     <AppBar className={clsx(classes.root, className)} color="default" {...rest}>
       <Toolbar className={classes.toolbar}>
@@ -84,7 +90,7 @@ const Header = ({ className, ...rest }: AppBarProps) => {
         </RouterLink>
         <div className={classes.toolbarRight}>
           <Hidden mdDown>
-            <BackNextGroup />
+            <BackNextGroup onBack={onBack} onNext={onNext} />
           </Hidden>
           <Hidden mdDown>
             <SearchBar className={classes.searchBar} />
@@ -114,7 +120,7 @@ const Header = ({ className, ...rest }: AppBarProps) => {
               className={classes.link}
               color="textSecondary"
               component={RouterLink}
-              to="/apps"
+              to="/launch-pad"
               underline="none"
               variant="body2"
             >

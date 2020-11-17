@@ -9,24 +9,50 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     position: "relative",
     overflow: "hidden",
+    padding: theme.spacing(1.5),
   },
-  header: {},
+  title: {
+    color: theme.colors.text.default,
+    fontSize: theme.spacing(2),
+    marginTop: theme.spacing(1.125),
+  },
+  content: {
+    position: "relative",
+    paddingTop: "59%",
+  },
+  img: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    borderRadius: theme.spacing(1),
+    backgroundSize: "cover",
+  },
 }));
 
 interface IProps {
   className?: string;
+  onClick?: () => void;
 }
 
-export const TrendingGames = (props: IProps & IGameItem) => {
+export const GamePreview = (props: IProps & IGameItem) => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
 
-  const { backgroundIcon, onClick, title } = props;
+  const { backgroundImage, onClick, title } = props;
 
   return (
     <div className={clsx(classes.root, props.className)}>
-      <img alt="img" src={backgroundIcon} />
-      <Typography component="div">{title}</Typography>
+      <div className={classes.content}>
+        <div
+          className={classes.img}
+          style={{ backgroundImage: `url(${backgroundImage})` }}
+        />
+      </div>
+      <Typography className={classes.title} component="div">
+        {title}
+      </Typography>
     </div>
   );
 };

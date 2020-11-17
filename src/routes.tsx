@@ -13,6 +13,11 @@ const routes = [
     path: "/trade",
     component: lazy(() => import("pages/TradePage")),
   },
+  {
+    exact: true,
+    path: "/launch-pad",
+    component: lazy(() => import("pages/LaunchPadPage")),
+  },
 ];
 
 const renderRoutes = () => {

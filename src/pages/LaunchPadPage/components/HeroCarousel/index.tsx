@@ -1,5 +1,6 @@
 import { Button, Typography, makeStyles } from "@material-ui/core";
 import clsx from "classnames";
+import { transparentize } from "polished";
 import React from "react";
 import { Carousel } from "react-responsive-carousel";
 import { useHistory } from "react-router-dom";
@@ -39,8 +40,16 @@ const useStyles = makeStyles((theme) => ({
   },
   imgItem: {
     height: "50vh",
-    backgroundPositionY: "bottom",
+    backgroundPositionY: "center",
     backgroundSize: "cover",
+    opacity: "0.4",
+  },
+  title: {
+    position: "absolute",
+    left: theme.spacing(2),
+    top: theme.spacing(4),
+    color: theme.colors.text.default,
+    fontSize: 13,
   },
   comments: {
     position: "absolute",
@@ -49,7 +58,6 @@ const useStyles = makeStyles((theme) => ({
     bottom: 0,
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
     justifyContent: "center",
   },
   comment: {
@@ -57,6 +65,12 @@ const useStyles = makeStyles((theme) => ({
     lineHeight: "85px",
     color: theme.colors.text.default,
     fontWeight: "bold",
+  },
+  description: {
+    fontSize: 15,
+    lineHeight: "36px",
+    color: transparentize(0.4, theme.colors.text.default),
+    maxWidth: 500,
   },
   row: {
     display: "flex",
@@ -92,34 +106,39 @@ export const HeroCarousel = (props: IProps) => {
         <div
           className={classes.imgItem}
           style={{
-            backgroundImage: `url("/svgs/League-of-legends_Background.svg")`,
+            backgroundImage: `url("/svgs/backgrounds/launch-pad.svg")`,
           }}
         />
         <div
           className={classes.imgItem}
           style={{
-            backgroundImage: `url("/svgs/League-of-legends_Background.svg")`,
+            backgroundImage: `url("/svgs/backgrounds/launch-pad.svg")`,
           }}
         />
         <div
           className={classes.imgItem}
           style={{
-            backgroundImage: `url("/svgs/League-of-legends_Background.svg")`,
+            backgroundImage: `url("/svgs/backgrounds/launch-pad.svg")`,
           }}
         />
 
         <div
           className={classes.imgItem}
           style={{
-            backgroundImage: `url("/svgs/League-of-legends_Background.svg")`,
+            backgroundImage: `url("/svgs/backgrounds/launch-pad.svg")`,
           }}
         />
       </Carousel>
+      <Typography className={classes.title} component="div">
+        NOW IN THE LAUNCHPAD
+      </Typography>
       <div className={classes.comments}>
         <Typography className={classes.comment} component="div">
-          Trade, mint and cash out
-          <br />
-          your in-game asssets
+          Mystical Warriors 2
+        </Typography>
+        <Typography className={classes.description} component="div">
+          Mystical Warriors 2 is a fast-paced, competitive online game that
+          blends the speed and intensity of an RTS with RPG elements.
         </Typography>
         <div className={classes.row}>
           <Button
@@ -128,13 +147,13 @@ export const HeroCarousel = (props: IProps) => {
             onClick={onBrowse}
             variant="contained"
           >
-            BROWSE ITEMS
+            START FARMING
           </Button>
           <Button
             className={clsx(commonClasses.transparentButton, classes.button)}
             variant="contained"
           >
-            HOW IT WORKS
+            INFO FOR LP&apos;S
           </Button>
         </div>
       </div>

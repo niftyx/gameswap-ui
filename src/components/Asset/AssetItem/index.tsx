@@ -76,7 +76,7 @@ const AssetItem = (props: IProps) => {
   const { data, isFullWidth = false, onClick } = props;
 
   const respnsive = isFullWidth
-    ? { xl: 2, lg: 3, md: 3, xs: 6 }
+    ? { xl: 2, lg: 2, md: 4, xs: 6 }
     : { xl: 3, lg: 4, md: 4, xs: 6 };
 
   return (

@@ -1,4 +1,4 @@
-import { Hidden, Typography, makeStyles } from "@material-ui/core";
+import { Typography, makeStyles } from "@material-ui/core";
 import clsx from "classnames";
 import { transparentize } from "polished";
 import React from "react";

@@ -1,8 +1,7 @@
-import { Grid, Typography, makeStyles } from "@material-ui/core";
+import { Typography, makeStyles } from "@material-ui/core";
 import ErrorIcon from "@material-ui/icons/Error";
 import { ReactComponent as MetaMaskIcon } from "assets/svgs/metamask.svg";
 import clsx from "classnames";
-import { transparentize } from "polished";
 import React from "react";
 
 const useStyles = makeStyles((theme) => ({

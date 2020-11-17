@@ -1,5 +1,4 @@
 import {
-  Hidden,
   IconButton,
   ListItemIcon,
   ListItemText,
@@ -11,9 +10,7 @@ import {
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import SendIcon from "@material-ui/icons/Send";
 import clsx from "classnames";
-import { transparentize } from "polished";
 import React from "react";
-import { useHistory } from "react-router-dom";
 import { ISideMenuGroupHeaderItem } from "utils/types";
 
 const useStyles = makeStyles((theme) => ({
@@ -50,7 +47,6 @@ const useStyles = makeStyles((theme) => ({
 export const SideMenuGroupHeader = (props: ISideMenuGroupHeaderItem) => {
   const { moreItems = [], title } = props;
   const classes = useStyles();
-  const history = useHistory();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 

@@ -1,8 +1,8 @@
-import { Button, Hidden, Typography, makeStyles } from "@material-ui/core";
+import { Typography, makeStyles } from "@material-ui/core";
 import clsx from "classnames";
-import React from "react";
+import { BackNextGroup, GamePreview } from "components";
+import React, { useRef } from "react";
 import Slider from "react-slick";
-import useCommonStyles from "styles/common";
 import { IGameItem } from "utils/types";
 
 const useStyles = makeStyles((theme) => ({
@@ -11,7 +11,18 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
     overflow: "hidden",
   },
-  header: {},
+  header: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  title: {
+    color: theme.colors.text.default,
+    fontSize: 15,
+  },
+  slick: {
+    margin: `0 -${theme.spacing(1.5)}px`,
+  },
 }));
 
 interface IProps {
@@ -20,7 +31,7 @@ interface IProps {
 
 export const TrendingGames = (props: IProps) => {
   const classes = useStyles();
-  const commonClasses = useCommonStyles();
+  const sliderRef = useRef();
 
   const settings = {
     arrows: false,
@@ -32,48 +43,57 @@ export const TrendingGames = (props: IProps) => {
   };
 
   const trendingGames: IGameItem[] = [
-    { title: "SkyFall 3", backgroundIcon: "/svgs/backgrounds/skyfall.svg" },
     {
+      id: "rhwf",
+      title: "SkyFall 3",
+      backgroundImage: "/svgs/backgrounds/skyfall.svg",
+    },
+    {
+      id: "34535",
       title: "Cyberpunk Assault",
-      backgroundIcon: "/svgs/backgrounds/cyber-assault.svg",
+      backgroundImage: "/svgs/backgrounds/cyber-assault.svg",
     },
     {
+      id: "23424",
       title: "No Man's Sky",
-      backgroundIcon: "/svgs/backgrounds/no-mans-sky.svg",
+      backgroundImage: "/svgs/backgrounds/no-mans-sky.svg",
     },
     {
+      id: "i6i",
       title: "Horizon Zero Dawn",
-      backgroundIcon: "/svgs/backgrounds/horizon.svg",
+      backgroundImage: "/svgs/backgrounds/horizon.svg",
     },
-    { title: "Test", backgroundIcon: "/svgs/backgrounds/no-mans-sky.svg" },
+    {
+      id: "ne5",
+      title: "Test",
+      backgroundImage: "/svgs/backgrounds/no-mans-sky.svg",
+    },
   ];
+
+  const onBack = () => {
+    (sliderRef.current as any).slickPrev();
+  };
+
+  const onNext = () => {
+    (sliderRef.current as any).slickNext();
+  };
 
   return (
     <div className={clsx(classes.root, props.className)}>
       <div className={classes.header}>
-        <Typography component="div">Title</Typography>
+        <Typography className={classes.title} component="div">
+          TRENDING GAMES
+        </Typography>
+        <div>
+          <BackNextGroup onBack={onBack} onNext={onNext} />
+        </div>
       </div>
 
-      <div>
-        <Slider {...settings}>
-          <div>
-            <h3>1</h3>
-          </div>
-          <div>
-            <h3>2</h3>
-          </div>
-          <div>
-            <h3>3</h3>
-          </div>
-          <div>
-            <h3>4</h3>
-          </div>
-          <div>
-            <h3>5</h3>
-          </div>
-          <div>
-            <h3>6</h3>
-          </div>
+      <div className={classes.slick}>
+        <Slider {...settings} ref={sliderRef as any}>
+          {trendingGames.map((game: IGameItem) => (
+            <GamePreview key={game.id} {...game} />
+          ))}
         </Slider>
       </div>
     </div>

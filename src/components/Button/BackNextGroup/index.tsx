@@ -2,7 +2,6 @@ import { IconButton, makeStyles } from "@material-ui/core";
 import KeyboardArrowLeftIcon from "@material-ui/icons/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@material-ui/icons/KeyboardArrowRight";
 import React from "react";
-import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -29,19 +28,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const BackNextGroup = () => {
+interface IProps {
+  onNext?: () => void;
+  onBack?: () => void;
+  nextDisabled?: boolean;
+  backDisabled?: boolean;
+}
+
+const BackNextGroup = (props: IProps) => {
   const classes = useStyles();
-  const history = useHistory();
 
-  const backDisabled = false;
-  const nextDisabled = true;
-
-  const onNext = () => {
-    history.go(1);
-  };
-  const onBack = () => {
-    history.go(-1);
-  };
+  const { backDisabled = false, nextDisabled = false, onBack, onNext } = props;
 
   return (
     <div className={classes.container}>

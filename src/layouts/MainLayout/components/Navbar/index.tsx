@@ -1,4 +1,4 @@
-import { Hidden, makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 import { ReactComponent as ActivityIcon } from "assets/svgs/activity.svg";
 import { ReactComponent as EyeIcon } from "assets/svgs/eye.svg";
 import { ReactComponent as FlagIcon } from "assets/svgs/flag.svg";
