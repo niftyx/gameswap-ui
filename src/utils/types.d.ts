@@ -1,98 +1,105 @@
-import {Theme} from '@material-ui/core/styles/createMuiTheme'
-import {BigNumber} from 'ethers'
-declare module '@material-ui/core/styles/createMuiTheme' {
+import { Theme } from "@material-ui/core/styles/createMuiTheme";
+import { BigNumber } from "ethers";
+import { EFarmingTag, EPlatform } from "./enums";
+declare module "@material-ui/core/styles/createMuiTheme" {
   interface Theme {
     custom: {
-      appHeaderHeight: React.CSSProperties['height']
-      appHeaderItemHeight: React.CSSProperties['height']
-      pageToolbarHeight: React.CSSProperties['height']
-      appNavbarWidth: React.CSSProperties['width']
+      appHeaderHeight: React.CSSProperties["height"];
+      appHeaderItemHeight: React.CSSProperties["height"];
+      pageToolbarHeight: React.CSSProperties["height"];
+      appNavbarWidth: React.CSSProperties["width"];
       header: {
         navItem: {
-          fontSize: React.CSSProperties['fontSize']
-          lineHeight: React.CSSProperties['lineHeight']
-          fontWeight: React.CSSProperties['fontWeight']
-        }
-      }
-    }
+          fontSize: React.CSSProperties["fontSize"];
+          lineHeight: React.CSSProperties["lineHeight"];
+          fontWeight: React.CSSProperties["fontWeight"];
+        };
+      };
+    };
     colors: {
-      transparent: string
+      transparent: string;
       border: {
-        primary: string
-        secondary: string
-        third: string
-      }
+        primary: string;
+        secondary: string;
+        third: string;
+      };
       icon: {
-        active: string
-        disabled: string
-      }
+        active: string;
+        disabled: string;
+      };
       link: {
-        default: string
-      }
+        default: string;
+      };
       background: {
-        primary: string
-        secondary: string
-        third: string
-        fourth: string
-        fifth: string
-        sixth: string
-      }
+        primary: string;
+        secondary: string;
+        third: string;
+        fourth: string;
+        fifth: string;
+        sixth: string;
+      };
       text: {
-        default: string
-        secondary: string
-        third: string
-        fourth: string
-        percentPositive: string
-        percentNegative: string
-      }
-    }
+        default: string;
+        secondary: string;
+        third: string;
+        fourth: string;
+        sixth: string;
+        percentPositive: string;
+        percentNegative: string;
+        arrowUp: string;
+        arrowDown: string;
+      };
+    };
   }
   // allow configuration using `createMuiTheme`
   interface ThemeOptions {
     custom: {
-      appHeaderHeight: React.CSSProperties['height']
-      appHeaderItemHeight: React.CSSProperties['height']
-      pageToolbarHeight: React.CSSProperties['height']
-      appNavbarWidth: React.CSSProperties['width']
+      appHeaderHeight: React.CSSProperties["height"];
+      appHeaderItemHeight: React.CSSProperties["height"];
+      pageToolbarHeight: React.CSSProperties["height"];
+      appNavbarWidth: React.CSSProperties["width"];
       header: {
         navItem: {
-          fontSize: React.CSSProperties['fontSize']
-          lineHeight: React.CSSProperties['lineHeight']
-          fontWeight: React.CSSProperties['fontWeight']
-        }
-      }
-    }
+          fontSize: React.CSSProperties["fontSize"];
+          lineHeight: React.CSSProperties["lineHeight"];
+          fontWeight: React.CSSProperties["fontWeight"];
+        };
+      };
+    };
     colors: {
-      transparent: string
+      transparent: string;
       border: {
-        primary: string
-        secondary: string
-        third: string
-      }
+        primary: string;
+        secondary: string;
+        third: string;
+      };
       icon: {
-        active: string
-        disabled: string
-      }
+        active: string;
+        disabled: string;
+      };
       link: {
-        default: string
-      }
+        default: string;
+      };
       background: {
-        primary: string
-        secondary: string
-        third: string
-        fourth: string
-        fifth: string
-        sixth: string
-      }
+        primary: string;
+        secondary: string;
+        third: string;
+        fourth: string;
+        fifth: string;
+        sixth: string;
+      };
       text: {
-        default: string
-        secondary: string
-        third: string
-        fourth: string
-        percentPositive: string
-        percentNegative: string
-      }
-    }
+        default: string;
+        secondary: string;
+        third: string;
+        fourth: string;
+        sixth: string;
+        percentPositive: string;
+        percentNegative: string;
+        arrowUp: string;
+        arrowDown: string;
+      };
+    };
   }
 }
 
@@ -135,11 +142,21 @@ export interface IGameItem {
   backgroundImage?: string;
 }
 
-export interface IFeaturedFarm {
+export interface IFeaturedFarmItem {
   id: string;
   title: string;
   description: string;
   tokenDescription: string;
   isFavorite: boolean;
   backgroundImage?: string;
+}
+
+
+export interface IUpcomingFarmItem {
+  image?: string;
+  title: string;
+  id: string;
+  tags: EFarmingTag[];
+  platforms: EPlatform[];
+  tokenDescription: string;
 }

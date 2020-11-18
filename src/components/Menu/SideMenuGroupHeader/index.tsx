@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
     width: theme.spacing(3),
     "& svg": {
       height: theme.spacing(3),
-      width: theme.spacing(2),
+      width: theme.spacing(3),
       color: theme.colors.text.default,
     },
   },
@@ -75,7 +75,7 @@ export const SideMenuGroupHeader = (props: ISideMenuGroupHeaderItem) => {
             anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
             elevation={0}
             getContentAnchorEl={null}
-            id="more-menu"
+            id={`more-menu-side-menu-group-header-${title}`}
             keepMounted
             onClose={handleClose}
             open={Boolean(anchorEl)}

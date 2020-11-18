@@ -1,5 +1,8 @@
+import { ReactComponent as MacIcon } from "assets/svgs/mac.svg";
+import { ReactComponent as WindowsIcon } from "assets/svgs/windows.svg";
 import { BigNumber } from "ethers";
-import { IAssetItem } from "utils/types";
+import { EFarmingTag, EPlatform } from "utils/enums";
+import { IAssetItem, IFeaturedFarmItem, IUpcomingFarmItem } from "utils/types";
 
 export const STORAGE_KEY_SETTINGS = "settings";
 
@@ -93,3 +96,110 @@ export const MOCK_ASSET_ITEMS: IAssetItem[] = [
     priceChange: -0.127,
   },
 ];
+
+export const MockFeaturedFarms: IFeaturedFarmItem[] = [
+  {
+    id: "292934",
+    title: "Dead by Daylight",
+    description: "First asymmetrical multiplayer horror game.",
+    tokenDescription: "ERC-20 / ERC-721",
+    isFavorite: true,
+    backgroundImage: "/svgs/backgrounds/daylight.svg",
+  },
+  {
+    id: "292vvv",
+    title: "Resident Evil 2",
+    description: "Continuation of the hit previously released - Resident Evil",
+    tokenDescription: "ERC-721",
+    isFavorite: true,
+    backgroundImage: "/svgs/backgrounds/resident.svg",
+  },
+  {
+    id: "29wfe4",
+    title: "Battlefield V",
+    description: "Play the demo version!",
+    tokenDescription: "ERC-1555",
+    isFavorite: false,
+    backgroundImage: "/svgs/backgrounds/battlefield.svg",
+  },
+];
+
+export const MockUpcomingFarms: IUpcomingFarmItem[] = [
+  {
+    id: "289234",
+    title: "Just Cause 4",
+    tags: [EFarmingTag.Simulation],
+    platforms: [EPlatform.Windows, EPlatform.Mac],
+    tokenDescription: "ERC-20",
+    image: "/svgs/upcoming/1.svg",
+  },
+  {
+    id: "bwer24",
+    title: "BatMan: Arkham Collection",
+    tags: [EFarmingTag.Driving],
+    platforms: [EPlatform.Windows, EPlatform.Mac],
+    tokenDescription: "ERC-1155",
+    image: "/svgs/upcoming/2.svg",
+  },
+  {
+    id: "wf2424",
+    title: "DarkSiders III Blades & Whip Edition",
+    tags: [EFarmingTag.Soccer],
+    platforms: [EPlatform.Windows, EPlatform.Mac],
+    tokenDescription: "ERC-721",
+    image: "/svgs/upcoming/3.svg",
+  },
+  {
+    id: "hntn35",
+    title: "Just Cause 4",
+    tags: [EFarmingTag.Simulation],
+    platforms: [EPlatform.Windows, EPlatform.Mac],
+    tokenDescription: "ERC-20",
+    image: "/svgs/upcoming/1.svg",
+  },
+  {
+    id: "neg35",
+    title: "BatMan: Arkham Collection",
+    tags: [EFarmingTag.Driving],
+    platforms: [EPlatform.Windows, EPlatform.Mac],
+    tokenDescription: "ERC-1155",
+    image: "/svgs/upcoming/2.svg",
+  },
+  {
+    id: "3gt3t",
+    title: "DarkSiders III Blades & Whip Edition",
+    tags: [EFarmingTag.Soccer],
+    platforms: [EPlatform.Windows, EPlatform.Mac],
+    tokenDescription: "ERC-721",
+    image: "/svgs/upcoming/3.svg",
+  },
+  {
+    id: "vxvwfwf",
+    title: "Just Cause 4",
+    tags: [EFarmingTag.Simulation],
+    platforms: [EPlatform.Windows, EPlatform.Mac],
+    tokenDescription: "ERC-20",
+    image: "/svgs/upcoming/1.svg",
+  },
+  {
+    id: "hrhrhrh",
+    title: "BatMan: Arkham Collection",
+    tags: [EFarmingTag.Driving],
+    platforms: [EPlatform.Windows, EPlatform.Mac],
+    tokenDescription: "ERC-1155",
+    image: "/svgs/upcoming/2.svg",
+  },
+  {
+    id: "bnwfwf",
+    title: "DarkSiders III Blades & Whip Edition",
+    tags: [EFarmingTag.Soccer],
+    platforms: [EPlatform.Windows, EPlatform.Mac],
+    tokenDescription: "ERC-721",
+    image: "/svgs/upcoming/3.svg",
+  },
+];
+
+export const PLATFORM_ICONS: { [key: string]: React.ElementType } = {
+  WINDOWS: WindowsIcon,
+  MAC: MacIcon,
+};

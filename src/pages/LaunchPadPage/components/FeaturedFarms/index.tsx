@@ -7,10 +7,11 @@ import {
 } from "@material-ui/core";
 import clsx from "classnames";
 import { FeaturedFarmPreview } from "components";
+import { MockFeaturedFarms } from "config/constants";
 import React, { useState } from "react";
 import useCommonStyles from "styles/common";
 import { waitSeconds } from "utils";
-import { IFeaturedFarm } from "utils/types";
+import { IFeaturedFarmItem } from "utils/types";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -47,40 +48,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const MockFeaturedFarms: IFeaturedFarm[] = [
-  {
-    id: "292934",
-    title: "Dead by Daylight",
-    description: "First asymmetrical multiplayer horror game.",
-    tokenDescription: "ERC-20 / ERC-721",
-    isFavorite: true,
-    backgroundImage: "/svgs/backgrounds/daylight.svg",
-  },
-  {
-    id: "292vvv",
-    title: "Resident Evil 2",
-    description: "Continuation of the hit previously released - Resident Evil",
-    tokenDescription: "ERC-721",
-    isFavorite: true,
-    backgroundImage: "/svgs/backgrounds/resident.svg",
-  },
-  {
-    id: "29wfe4",
-    title: "Battlefield V",
-    description: "Play the demo version!",
-    tokenDescription: "ERC-1555",
-    isFavorite: false,
-    backgroundImage: "/svgs/backgrounds/battlefield.svg",
-  },
-];
-
 interface IProps {
   className?: string;
 }
 
 interface IState {
   loading: boolean;
-  featuredFarms: IFeaturedFarm[];
+  featuredFarms: IFeaturedFarmItem[];
 }
 
 export const FeaturedFarms = (props: IProps) => {
@@ -128,7 +102,7 @@ export const FeaturedFarms = (props: IProps) => {
       </div>
       <div className={classes.content}>
         <Grid container spacing={3}>
-          {state.featuredFarms.map((item: IFeaturedFarm) => (
+          {state.featuredFarms.map((item: IFeaturedFarmItem) => (
             <Grid item key={item.id} lg={4} md={6} sm={6} xl={3} xs={6}>
               <FeaturedFarmPreview {...item} />
             </Grid>

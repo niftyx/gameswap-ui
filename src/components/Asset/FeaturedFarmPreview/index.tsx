@@ -5,7 +5,7 @@ import clsx from "classnames";
 import { transparentize } from "polished";
 import React from "react";
 import useCommonStyles from "styles/common";
-import { IFeaturedFarm } from "utils/types";
+import { IFeaturedFarmItem } from "utils/types";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -54,6 +54,7 @@ const useStyles = makeStyles((theme) => ({
     bottom: 0,
     borderRadius: theme.spacing(1),
     backgroundSize: "cover",
+    opacity: "0.6",
   },
   buttonFarm: {
     height: theme.spacing(5.5),
@@ -71,7 +72,7 @@ interface IProps {
   onClick?: () => void;
 }
 
-export const FeaturedFarmPreview = (props: IProps & IFeaturedFarm) => {
+export const FeaturedFarmPreview = (props: IProps & IFeaturedFarmItem) => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
 

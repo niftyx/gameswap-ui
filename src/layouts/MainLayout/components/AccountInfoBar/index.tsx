@@ -12,6 +12,7 @@ import SendIcon from "@material-ui/icons/Send";
 import clsx from "classnames";
 import { transparentize } from "polished";
 import React from "react";
+import { useHistory } from "react-router-dom";
 import { shortenAddress } from "utils";
 
 const useStyles = makeStyles((theme) => ({
@@ -65,6 +66,12 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    cursor: "pointer",
+    userSelect: "none",
+    transition: "all 0.3s",
+    "&:hover": {
+      opacity: 0.6,
+    },
   },
   moreButton: {
     borderRadius: theme.spacing(1),
@@ -86,6 +93,7 @@ interface IProps {
 const AccountInfoBar = (props: IProps) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const history = useHistory();
 
   const handleClick = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -95,6 +103,10 @@ const AccountInfoBar = (props: IProps) => {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const toProfile = () => {
+    history.push("/profile");
   };
 
   return (
@@ -116,7 +128,7 @@ const AccountInfoBar = (props: IProps) => {
             52.3011
           </Typography>
         </div>
-        <div className={classes.ethAddress}>
+        <div className={classes.ethAddress} onClick={toProfile}>
           <Typography component="div">
             {shortenAddress("0x18B13ef88822292E59bfF80210D815F7FBFC9b32")}
           </Typography>

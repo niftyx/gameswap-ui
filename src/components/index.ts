@@ -9,3 +9,4 @@ export * from "./Divider";
 export * from "./Select";
 export * from "./Input";
 export * from "./Menu";
+export * from "./Tag";

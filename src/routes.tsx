@@ -18,6 +18,11 @@ const routes = [
     path: "/launch-pad",
     component: lazy(() => import("pages/LaunchPadPage")),
   },
+  {
+    exact: true,
+    path: "/profile",
+    component: lazy(() => import("pages/ProfilePage")),
+  },
 ];
 
 const renderRoutes = () => {
