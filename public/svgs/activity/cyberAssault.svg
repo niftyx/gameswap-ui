@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="423" height="312" viewBox="0 0 423 312">
+  <defs>
+    <filter id="CYBER_ASSAULT" x="0" y="0" width="423" height="312" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="49.5" result="blur"/>
+      <feFlood/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#CYBER_ASSAULT)">
+    <text id="CYBER_ASSAULT-2" data-name="CYBER ASSAULT" transform="translate(148.5 160.5)" fill="#fff" font-size="15" font-family="Helvetica-Bold, Helvetica" opacity="0.741" font-weight="700"><tspan x="0" y="0">CYBER ASSAULT</tspan></text>
+  </g>
+</svg>

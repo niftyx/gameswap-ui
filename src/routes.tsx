@@ -23,6 +23,16 @@ const routes = [
     path: "/profile",
     component: lazy(() => import("pages/ProfilePage")),
   },
+  {
+    exact: true,
+    path: "/browse",
+    component: lazy(() => import("pages/BrowsePage")),
+  },
+  {
+    exact: true,
+    path: "/browse/featured",
+    component: lazy(() => import("pages/BrowsePage")),
+  },
 ];
 
 const renderRoutes = () => {

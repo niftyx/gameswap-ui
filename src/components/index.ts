@@ -10,3 +10,5 @@ export * from "./Select";
 export * from "./Input";
 export * from "./Menu";
 export * from "./Tag";
+export * from "./Activity";
+export * from "./Marker";

@@ -1,7 +1,6 @@
-import { Divider, makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 import clsx from "classnames";
 import { PageContainer } from "components";
-import { transparentize } from "polished";
 import React from "react";
 import useCommonStyles from "styles/common";
 
@@ -24,24 +23,21 @@ const useStyles = makeStyles((theme) => ({
     marginTop: -theme.spacing(5),
     padding: theme.spacing(2),
   },
-  divider: {
-    backgroundColor: transparentize(0.94, theme.colors.text.default),
-  },
   latestActivitySection: {
     marginTop: theme.spacing(5),
-    marginBottom: theme.spacing(2),
+    marginBottom: theme.spacing(5),
   },
 }));
 
 const ProfilePage = () => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
+
   return (
     <PageContainer className={classes.root}>
       <div className={clsx(classes.content, commonClasses.scroll)}>
         <HeroSection className={classes.heroSection} />
         <NoticeSection className={classes.noticeSection} />
-        <Divider className={classes.divider} />
         <LatestActivitySection className={classes.latestActivitySection} />
       </div>
     </PageContainer>

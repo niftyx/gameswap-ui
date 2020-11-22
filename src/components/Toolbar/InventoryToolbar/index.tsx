@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
   },
   cart: {
     cursor: "pointer",
+    color: theme.colors.text.third,
   },
 }));
 

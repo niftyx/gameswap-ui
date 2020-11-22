@@ -1,7 +1,6 @@
-import { Button, Hidden, Typography, makeStyles } from "@material-ui/core";
+import { Typography, makeStyles } from "@material-ui/core";
 import clsx from "classnames";
 import React from "react";
-import useCommonStyles from "styles/common";
 import { IGameItem } from "utils/types";
 
 const useStyles = makeStyles((theme) => ({
@@ -28,6 +27,8 @@ const useStyles = makeStyles((theme) => ({
     bottom: 0,
     borderRadius: theme.spacing(1),
     backgroundSize: "cover",
+    backgroundRepeat: "no-repeat",
+    backgroundPositionX: "center",
   },
 }));
 
@@ -38,7 +39,6 @@ interface IProps {
 
 export const GamePreview = (props: IProps & IGameItem) => {
   const classes = useStyles();
-  const commonClasses = useCommonStyles();
 
   const { backgroundImage, onClick, title } = props;
 

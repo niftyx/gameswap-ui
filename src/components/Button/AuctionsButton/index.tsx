@@ -21,7 +21,7 @@ interface IProps {
   onClick?: () => void;
 }
 
-export const AutionsButton = (props: IProps) => {
+export const AuctionsButton = (props: IProps) => {
   const classes = useStyles();
   return (
     <div

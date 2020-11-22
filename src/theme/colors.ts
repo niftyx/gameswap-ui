@@ -25,6 +25,7 @@ const colors = [
         fourth: "#5F6BDD",
         fifth: "#14172F",
         sixth: "#0D1022",
+        seventh: "#02D290",
       },
       text: {
         default: "#FFF",
@@ -36,6 +37,18 @@ const colors = [
         percentNegative: "#f28230",
         arrowUp: "#09B783",
         arrowDown: "#B94733",
+      },
+      activity: {
+        bg: {
+          buy: "#44D7B6",
+          bid: "#5F6BDD",
+          sale: "#FF005E",
+        },
+        text: {
+          buy: "#000000",
+          bid: "#FFFFFF",
+          sale: "#FFFFFF",
+        },
       },
     },
   },
@@ -62,6 +75,7 @@ const colors = [
         fourth: "#5F6BDD",
         fifth: "#14172F",
         sixth: "#0D1022",
+        seventh: "#02D290",
       },
       text: {
         default: "#FFF",
@@ -73,6 +87,18 @@ const colors = [
         percentNegative: "#f28230",
         arrowUp: "#09B783",
         arrowDown: "#B94733",
+      },
+      activity: {
+        bg: {
+          buy: "#44D7B6",
+          bid: "#5F6BDD",
+          sale: "#FF005E",
+        },
+        text: {
+          buy: "#000000",
+          bid: "#FFFFFF",
+          sale: "#FFFFFF",
+        },
       },
     },
   },

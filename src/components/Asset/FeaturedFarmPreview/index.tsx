@@ -54,6 +54,8 @@ const useStyles = makeStyles((theme) => ({
     bottom: 0,
     borderRadius: theme.spacing(1),
     backgroundSize: "cover",
+    backgroundRepeat: "no-repeat",
+    backgroundPositionX: "center",
     opacity: "0.6",
   },
   buttonFarm: {

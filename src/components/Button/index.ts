@@ -1,3 +1,3 @@
 export * from "./SyncButton";
-export * from "./AutionsButton";
+export * from "./AuctionsButton";
 export { default as BackNextGroup } from "./BackNextGroup";

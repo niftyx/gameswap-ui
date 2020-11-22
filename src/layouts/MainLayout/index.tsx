@@ -32,10 +32,17 @@ const MainLayout = (props: IProps & RouteComponentProps) => {
   const commonClasses = useCommonStyles();
   const history = useHistory();
 
-  const hideNavbar = !!matchPath(history.location.pathname, {
-    exact: true,
-    path: "/trade",
-  });
+  const hideNavbarRoutes = ["/trade", "/browse", "/browse/featrued"];
+
+  const hideNavbar = hideNavbarRoutes
+    .map(
+      (path) =>
+        !!matchPath(history.location.pathname, {
+          exact: true,
+          path,
+        })
+    )
+    .reduce((current, element) => current || element);
 
   return (
     <>

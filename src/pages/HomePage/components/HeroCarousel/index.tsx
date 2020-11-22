@@ -41,6 +41,8 @@ const useStyles = makeStyles((theme) => ({
     height: "50vh",
     backgroundPositionY: "bottom",
     backgroundSize: "cover",
+    backgroundRepeat: "no-repeat",
+    backgroundPositionX: "center",
   },
   comments: {
     position: "absolute",

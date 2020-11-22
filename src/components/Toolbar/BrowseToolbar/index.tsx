@@ -1,10 +1,15 @@
 import { Box, Hidden, Typography, makeStyles } from "@material-ui/core";
-import { ReactComponent as CartIcon } from "assets/svgs/cart-arrow-up.svg";
+import { ReactComponent as CartIcon } from "assets/svgs/cart-arrow-down.svg";
 import clsx from "classnames";
-import { AuctionsButton, SyncButton } from "components/Button";
-import { VerticalDivider } from "components/Divider";
-import { SearchInput } from "components/Input";
-import { GamesSelect, PriceSelect, SortSelect } from "components/Select";
+import {
+  AuctionsButton,
+  GamesSelect,
+  PriceSelect,
+  SearchInput,
+  SortSelect,
+  SyncButton,
+  VerticalDivider,
+} from "components";
 import React from "react";
 import { numberWithCommas } from "utils";
 
@@ -19,11 +24,14 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   balance: {
-    flex: 1,
     color: theme.colors.text.third,
   },
   cart: {
     cursor: "pointer",
+    color: theme.colors.text.third,
+  },
+  search: {
+    flex: 3,
   },
 }));
 
@@ -31,19 +39,27 @@ interface IProps {
   className?: string;
 }
 
-const TrendingToolbar = (props: IProps) => {
+const BrowseToolbar = (props: IProps) => {
   const classes = useStyles();
   return (
     <div className={clsx(classes.root, props.className)}>
       <SyncButton />
       <VerticalDivider />
       <GamesSelect />
-      <Box flex="1" />
+      <Hidden mdDown>
+        <SearchInput className={classes.search} />
+      </Hidden>
+      <Box flex={1} />
       <AuctionsButton />
       <SortSelect />
       <PriceSelect />
+      <VerticalDivider />
+      <Typography align="right" className={classes.balance} component="div">
+        $ {numberWithCommas("2.00")}
+      </Typography>
+      <CartIcon className={classes.cart} />
     </div>
   );
 };
 
-export default TrendingToolbar;
+export default BrowseToolbar;

@@ -11,6 +11,22 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: theme.spacing(0.6125),
     padding: `${theme.spacing(1.5)}px ${theme.spacing(1.75)}px`,
     color: transparentize(0.76, theme.colors.text.default),
+    fontSize: theme.spacing(2),
+    height: theme.spacing(6),
+  },
+  input: {
+    "&::-webkit-input-placeholder": {
+      color: transparentize(0.76, theme.colors.text.default),
+    },
+    "&::-moz-placeholder": {
+      color: transparentize(0.76, theme.colors.text.default),
+    },
+    "&:-ms-input-placeholder": {
+      color: transparentize(0.76, theme.colors.text.default),
+    },
+    "&:-moz-placeholder": {
+      color: transparentize(0.76, theme.colors.text.default),
+    },
   },
 }));
 
@@ -32,9 +48,10 @@ export const SearchInput = (props: IProps) => {
   return (
     <Input
       className={clsx(classes.root, props.className)}
+      classes={{ input: classes.input }}
       disableUnderline
       onChange={onChangeWord}
-      placeholder="Search"
+      placeholder="Search..."
       startAdornment={
         <InputAdornment position="start">
           <SearchIcon />

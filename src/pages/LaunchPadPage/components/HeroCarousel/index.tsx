@@ -43,6 +43,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundPositionY: "center",
     backgroundSize: "cover",
     opacity: "0.4",
+    backgroundRepeat: "no-repeat",
+    backgroundPositionX: "center",
   },
   title: {
     position: "absolute",

@@ -1,7 +1,9 @@
 import { Typography, makeStyles } from "@material-ui/core";
 import clsx from "classnames";
-import { transparentize } from "polished";
+import { ActivityRow } from "components";
+import { MOCK_PROFILE_ACTIVITIES } from "config/constants";
 import React, { useState } from "react";
+import { IActivityItem } from "utils/types";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -22,12 +24,14 @@ interface IProps {
   className?: string;
 }
 interface IState {
-  items: any[];
+  items: IActivityItem[];
 }
 
 export const LatestActivitySection = (props: IProps) => {
   const classes = useStyles();
-  const [state, setState] = useState<IState>({ items: [] });
+  const [state, setState] = useState<IState>({
+    items: MOCK_PROFILE_ACTIVITIES,
+  });
 
   return (
     <div className={clsx(classes.root, props.className)}>
@@ -37,7 +41,11 @@ export const LatestActivitySection = (props: IProps) => {
         </Typography>
       </div>
 
-      <div className={classes.content}></div>
+      <div className={classes.content}>
+        {state.items.map((item: IActivityItem) => (
+          <ActivityRow {...item} key={item.id} />
+        ))}
+      </div>
     </div>
   );
 };

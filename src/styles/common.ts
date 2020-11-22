@@ -23,6 +23,9 @@ const useCommonStyles = makeStyles((theme) => ({
       backgroundColor: transparentize(0.5, theme.colors.text.default),
     },
   },
+  textAlignRight: {
+    textAlign: "right",
+  },
 }));
 
 export default useCommonStyles;

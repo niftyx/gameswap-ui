@@ -37,6 +37,7 @@ declare module "@material-ui/core/styles/createMuiTheme" {
         fourth: string;
         fifth: string;
         sixth: string;
+        seventh: string;
       };
       text: {
         default: string;
@@ -48,6 +49,18 @@ declare module "@material-ui/core/styles/createMuiTheme" {
         percentNegative: string;
         arrowUp: string;
         arrowDown: string;
+      };
+      activity: {
+        bg: {
+          buy: string;
+          bid: string;
+          sale: string;
+        };
+        text: {
+          buy: string;
+          bid: string;
+          sale: string;
+        };
       };
     };
   }
@@ -87,6 +100,7 @@ declare module "@material-ui/core/styles/createMuiTheme" {
         fourth: string;
         fifth: string;
         sixth: string;
+        seventh: string;
       };
       text: {
         default: string;
@@ -98,6 +112,18 @@ declare module "@material-ui/core/styles/createMuiTheme" {
         percentNegative: string;
         arrowUp: string;
         arrowDown: string;
+      };
+      activity: {
+        bg: {
+          buy: string;
+          bid: string;
+          sale: string;
+        };
+        text: {
+          buy: string;
+          bid: string;
+          sale: string;
+        };
       };
     };
   }
@@ -153,10 +179,20 @@ export interface IFeaturedFarmItem {
 
 
 export interface IUpcomingFarmItem {
+  id: string;
   image?: string;
   title: string;
-  id: string;
   tags: EFarmingTag[];
   platforms: EPlatform[];
   tokenDescription: string;
+}
+
+export interface IActivityItem {
+  id: string;
+  image?: string;
+  title: string;
+  type: EActivityTag;
+  address: string;
+  trustPoints: number;
+  txHash: string;
 }
