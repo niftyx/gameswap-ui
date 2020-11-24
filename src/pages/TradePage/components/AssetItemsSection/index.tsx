@@ -3,6 +3,7 @@ import clsx from "classnames";
 import { AssetItem, AssetsContainer, AssetsToolbar } from "components";
 import { MOCK_ASSET_ITEMS } from "config/constants";
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import { IAssetItem } from "utils/types";
 
 const useStyles = makeStyles((theme) => ({
@@ -22,6 +23,7 @@ interface IState {
 
 const AssetItemsSection = (props: IProps) => {
   const classes = useStyles();
+  const history = useHistory();
   const [state, setState] = useState<IState>({ assets: MOCK_ASSET_ITEMS });
 
   return (
@@ -30,7 +32,11 @@ const AssetItemsSection = (props: IProps) => {
       <div className={classes.assets}>
         <AssetsContainer>
           {state.assets.map((asset) => (
-            <AssetItem data={asset} key={asset.id} />
+            <AssetItem
+              data={asset}
+              key={asset.id}
+              onClick={() => history.push(`/trade/${asset.id}`)}
+            />
           ))}
         </AssetsContainer>
       </div>

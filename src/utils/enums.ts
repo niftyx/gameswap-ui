@@ -18,3 +18,7 @@ export enum EActivityType {
   Bid = "bid",
   Sale = "sale",
 }
+
+export enum EBrowseGameBidItemStatus {
+  FieldTested = "Field Tested",
+}

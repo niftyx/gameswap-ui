@@ -15,6 +15,11 @@ const routes = [
   },
   {
     exact: true,
+    path: "/trade/:id",
+    component: lazy(() => import("pages/TradeItemPage")),
+  },
+  {
+    exact: true,
     path: "/launch-pad",
     component: lazy(() => import("pages/LaunchPadPage")),
   },

@@ -1,10 +1,16 @@
 import { ReactComponent as MacIcon } from "assets/svgs/mac.svg";
 import { ReactComponent as WindowsIcon } from "assets/svgs/windows.svg";
 import { BigNumber } from "ethers";
-import { EActivityType, EFarmingTag, EPlatform } from "utils/enums";
+import {
+  EActivityType,
+  EBrowseGameBidItemStatus,
+  EFarmingTag,
+  EPlatform,
+} from "utils/enums";
 import {
   IActivityItem,
   IAssetItem,
+  IBrowseGameBidItem,
   IFeaturedFarmItem,
   IUpcomingFarmItem,
 } from "utils/types";
@@ -251,3 +257,60 @@ export const PLATFORM_ICONS: { [key: string]: React.ElementType } = {
   WINDOWS: WindowsIcon,
   MAC: MacIcon,
 };
+
+export const MOCK_AUCTIONS_ITEMS: IBrowseGameBidItem[] = [
+  {
+    id: "Test",
+    name: "JetPlane",
+    image: "/svgs/mock/1.svg",
+    status: EBrowseGameBidItemStatus.FieldTested,
+    offers: 23,
+    startFromAmount: BigNumber.from("42"),
+    startFromToken: "GSWAP",
+  },
+  {
+    id: "Test1",
+    name: "JetPlane",
+    image: "/svgs/mock/2.svg",
+    status: EBrowseGameBidItemStatus.FieldTested,
+    offers: 23,
+    startFromAmount: BigNumber.from("23"),
+    startFromToken: "GSWAP",
+  },
+  {
+    id: "Testfwe",
+    name: "JetPlane",
+    image: "/svgs/mock/3.svg",
+    status: EBrowseGameBidItemStatus.FieldTested,
+    offers: 23,
+    startFromAmount: BigNumber.from("23"),
+    startFromToken: "GSWAP",
+  },
+  {
+    id: "gwf",
+    name: "JetPlane",
+    image: "/svgs/mock/4.svg",
+    status: EBrowseGameBidItemStatus.FieldTested,
+    offers: 23,
+    startFromAmount: BigNumber.from("23"),
+    startFromToken: "GSWAP",
+  },
+  {
+    id: "zxv",
+    name: "JetPlane",
+    image: "/svgs/mock/5.svg",
+    status: EBrowseGameBidItemStatus.FieldTested,
+    offers: 23,
+    startFromAmount: BigNumber.from("23"),
+    startFromToken: "GSWAP",
+  },
+  {
+    id: "bwfhrhrh",
+    name: "JetPlane",
+    image: "/svgs/mock/6.svg",
+    status: EBrowseGameBidItemStatus.FieldTested,
+    offers: 23,
+    startFromAmount: BigNumber.from("23"),
+    startFromToken: "GSWAP",
+  },
+];

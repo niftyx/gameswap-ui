@@ -37,10 +37,13 @@ const useStyles = makeStyles((theme) => ({
 
 interface IProps {
   className?: string;
+  onAuction?: () => void;
+  isAuctionActive?: boolean;
 }
 
 const BrowseToolbar = (props: IProps) => {
   const classes = useStyles();
+  const { isAuctionActive, onAuction } = props;
   return (
     <div className={clsx(classes.root, props.className)}>
       <SyncButton />
@@ -50,7 +53,7 @@ const BrowseToolbar = (props: IProps) => {
         <SearchInput className={classes.search} />
       </Hidden>
       <Box flex={1} />
-      <AuctionsButton />
+      <AuctionsButton active={isAuctionActive} onClick={onAuction} />
       <SortSelect />
       <PriceSelect />
       <VerticalDivider />

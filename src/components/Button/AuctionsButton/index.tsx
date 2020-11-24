@@ -11,21 +11,31 @@ const useStyles = makeStyles((theme) => ({
     "& > * + *": {
       marginLeft: theme.spacing(0.5),
     },
+    "&.active": {
+      color: theme.colors.text.default,
+    },
   },
-  label: {},
+  label: {
+    userSelect: "none",
+  },
   icon: {},
 }));
 
 interface IProps {
   className?: string;
   onClick?: () => void;
+  active?: boolean;
 }
 
 export const AuctionsButton = (props: IProps) => {
   const classes = useStyles();
   return (
     <div
-      className={clsx(classes.root, props.className)}
+      className={clsx(
+        classes.root,
+        props.className,
+        props.active ? "active" : ""
+      )}
       onClick={props.onClick}
     >
       <Typography className={classes.label} component="div">

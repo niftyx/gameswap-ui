@@ -26,6 +26,7 @@ const colors = [
         fifth: "#14172F",
         sixth: "#0D1022",
         seventh: "#02D290",
+        eighth: "#4C5395",
       },
       text: {
         default: "#FFF",
@@ -76,6 +77,7 @@ const colors = [
         fifth: "#14172F",
         sixth: "#0D1022",
         seventh: "#02D290",
+        eighth: "#4C5395",
       },
       text: {
         default: "#FFF",

@@ -1,11 +1,11 @@
-import { Hidden, makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 import clsx from "classnames";
 import { BrowseFilter, PageContainer } from "components";
 import React from "react";
 import { matchPath, useHistory } from "react-router-dom";
 import useCommonStyles from "styles/common";
 
-import { AssetItemsSection } from "./components";
+import { AssetItemsSection, FeaturedItemsSection } from "./components";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -36,6 +36,9 @@ const useStyles = makeStyles((theme) => ({
     minWidth: theme.spacing(25),
     margin: `0 ${theme.spacing(2.5)}px`,
   },
+  featuredItems: {
+    marginBottom: theme.spacing(2),
+  },
 }));
 
 const BrowsePage = () => {
@@ -49,17 +52,17 @@ const BrowsePage = () => {
 
   return (
     <PageContainer>
-      <Hidden mdDown>
-        <div className={classes.content}>
-          {isFeatured && <div>Featured</div>}
-          <div className={classes.mainContent}>
-            <BrowseFilter className={classes.filter} />
-            <AssetItemsSection
-              className={clsx(classes.assets, commonClasses.scroll)}
-            />
-          </div>
+      <div className={classes.content}>
+        {isFeatured && (
+          <FeaturedItemsSection className={classes.featuredItems} />
+        )}
+        <div className={classes.mainContent}>
+          <BrowseFilter className={classes.filter} />
+          <AssetItemsSection
+            className={clsx(classes.assets, commonClasses.scroll)}
+          />
         </div>
-      </Hidden>
+      </div>
     </PageContainer>
   );
 };

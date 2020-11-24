@@ -1,6 +1,6 @@
 import { Theme } from "@material-ui/core/styles/createMuiTheme";
 import { BigNumber } from "ethers";
-import { EFarmingTag, EPlatform } from "./enums";
+import { EBrowseGameBidItemStatus, EFarmingTag, EPlatform } from "./enums";
 declare module "@material-ui/core/styles/createMuiTheme" {
   interface Theme {
     custom: {
@@ -38,6 +38,7 @@ declare module "@material-ui/core/styles/createMuiTheme" {
         fifth: string;
         sixth: string;
         seventh: string;
+        eighth: string;
       };
       text: {
         default: string;
@@ -101,6 +102,7 @@ declare module "@material-ui/core/styles/createMuiTheme" {
         fifth: string;
         sixth: string;
         seventh: string;
+        eighth: string;
       };
       text: {
         default: string;
@@ -177,7 +179,6 @@ export interface IFeaturedFarmItem {
   backgroundImage?: string;
 }
 
-
 export interface IUpcomingFarmItem {
   id: string;
   image?: string;
@@ -195,4 +196,14 @@ export interface IActivityItem {
   address: string;
   trustPoints: number;
   txHash: string;
+}
+
+export interface IBrowseGameBidItem {
+  id: string;
+  image?: string;
+  name: string;
+  offers: number;
+  startFromAmount: BigNumber;
+  startFromToken: string;
+  status: EBrowseGameBidItemStatus;
 }

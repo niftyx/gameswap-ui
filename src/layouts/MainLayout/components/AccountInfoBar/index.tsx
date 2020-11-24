@@ -1,4 +1,5 @@
 import {
+  Button,
   IconButton,
   ListItemIcon,
   ListItemText,
@@ -9,6 +10,7 @@ import {
 } from "@material-ui/core";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import SendIcon from "@material-ui/icons/Send";
+import { ReactComponent as MetaMaskIcon } from "assets/svgs/metamask.svg";
 import clsx from "classnames";
 import { transparentize } from "polished";
 import React from "react";
@@ -84,6 +86,18 @@ const useStyles = makeStyles((theme) => ({
       color: theme.colors.text.default,
     },
   },
+  connectButton: {
+    height: theme.spacing(6.5),
+    borderRadius: theme.spacing(0.5),
+    "& svg": {
+      height: theme.spacing(3.25),
+      width: theme.spacing(3.65),
+      marginRight: theme.spacing(2),
+    },
+    "& .button_connect__label": {
+      marginTop: 1,
+    },
+  },
 }));
 
 interface IProps {
@@ -109,52 +123,67 @@ const AccountInfoBar = (props: IProps) => {
     history.push("/profile");
   };
 
+  const isConnected = false;
+
   return (
     <div className={clsx(classes.root, props.className)}>
-      <div className={classes.gswap}>
-        <Typography className={classes.label} component="div">
-          GSWAP
-        </Typography>
-        <Typography className={classes.gswapValue} component="div">
-          240.60
-        </Typography>
-      </div>
-      <div className={classes.eth}>
-        <div className={classes.ethBalance}>
-          <Typography className={classes.label} component="div">
-            ETH
-          </Typography>
-          <Typography className={classes.ethValue} component="div">
-            52.3011
-          </Typography>
-        </div>
-        <div className={classes.ethAddress} onClick={toProfile}>
-          <Typography component="div">
-            {shortenAddress("0x18B13ef88822292E59bfF80210D815F7FBFC9b32")}
-          </Typography>
-        </div>
-      </div>
-      <IconButton className={classes.moreButton} onClick={handleClick}>
-        <MoreHorizIcon />
-      </IconButton>
-      <Menu
-        anchorEl={anchorEl}
-        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-        elevation={0}
-        getContentAnchorEl={null}
-        id="more-menu"
-        keepMounted
-        onClose={handleClose}
-        open={Boolean(anchorEl)}
-        transformOrigin={{ vertical: "top", horizontal: "center" }}
-      >
-        <MenuItem>
-          <ListItemIcon>
-            <SendIcon />
-          </ListItemIcon>
-          <ListItemText primary="Test" />
-        </MenuItem>
-      </Menu>
+      {isConnected ? (
+        <>
+          <div className={classes.gswap}>
+            <Typography className={classes.label} component="div">
+              GSWAP
+            </Typography>
+            <Typography className={classes.gswapValue} component="div">
+              240.60
+            </Typography>
+          </div>
+          <div className={classes.eth}>
+            <div className={classes.ethBalance}>
+              <Typography className={classes.label} component="div">
+                ETH
+              </Typography>
+              <Typography className={classes.ethValue} component="div">
+                52.3011
+              </Typography>
+            </div>
+            <div className={classes.ethAddress} onClick={toProfile}>
+              <Typography component="div">
+                {shortenAddress("0x18B13ef88822292E59bfF80210D815F7FBFC9b32")}
+              </Typography>
+            </div>
+          </div>
+          <IconButton className={classes.moreButton} onClick={handleClick}>
+            <MoreHorizIcon />
+          </IconButton>
+          <Menu
+            anchorEl={anchorEl}
+            anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+            elevation={0}
+            getContentAnchorEl={null}
+            id="more-menu"
+            keepMounted
+            onClose={handleClose}
+            open={Boolean(anchorEl)}
+            transformOrigin={{ vertical: "top", horizontal: "center" }}
+          >
+            <MenuItem>
+              <ListItemIcon>
+                <SendIcon />
+              </ListItemIcon>
+              <ListItemText primary="Test" />
+            </MenuItem>
+          </Menu>
+        </>
+      ) : (
+        <Button
+          className={classes.connectButton}
+          color="primary"
+          variant="contained"
+        >
+          <MetaMaskIcon />
+          <span className="button_connect__label">CONNECT WALLET</span>
+        </Button>
+      )}
     </div>
   );
 };

@@ -5,6 +5,8 @@ import { MOCK_ASSET_ITEMS } from "config/constants";
 import React, { useState } from "react";
 import { IAssetItem } from "utils/types";
 
+import AuctionItemsSection from "../AuctionItemsSection";
+
 const useStyles = makeStyles((theme) => ({
   root: {},
   assets: {
@@ -18,21 +20,39 @@ interface IProps {
 
 interface IState {
   assets: IAssetItem[];
+  isAuctionActive: boolean;
 }
 
 const AssetItemsSection = (props: IProps) => {
   const classes = useStyles();
-  const [state, setState] = useState<IState>({ assets: MOCK_ASSET_ITEMS });
+  const [state, setState] = useState<IState>({
+    assets: MOCK_ASSET_ITEMS,
+    isAuctionActive: false,
+  });
+
+  const onAuction = () => {
+    setState((prevState) => ({
+      ...prevState,
+      isAuctionActive: !prevState.isAuctionActive,
+    }));
+  };
 
   return (
     <div className={clsx(classes.root, props.className)}>
-      <BrowseToolbar />
+      <BrowseToolbar
+        isAuctionActive={state.isAuctionActive}
+        onAuction={onAuction}
+      />
       <div className={classes.assets}>
-        <AssetsContainer>
-          {state.assets.map((asset) => (
-            <AssetItem data={asset} isFullWidth key={asset.id} />
-          ))}
-        </AssetsContainer>
+        {state.isAuctionActive ? (
+          <AuctionItemsSection />
+        ) : (
+          <AssetsContainer>
+            {state.assets.map((asset) => (
+              <AssetItem data={asset} isFullWidth key={asset.id} />
+            ))}
+          </AssetsContainer>
+        )}
       </div>
     </div>
   );
