@@ -22,6 +22,8 @@ declare module "@material-ui/core/styles/createMuiTheme" {
         primary: string;
         secondary: string;
         third: string;
+        fourth: string;
+        fifth: string;
       };
       icon: {
         active: string;
@@ -39,6 +41,7 @@ declare module "@material-ui/core/styles/createMuiTheme" {
         sixth: string;
         seventh: string;
         eighth: string;
+        ninth: string;
       };
       text: {
         default: string;
@@ -46,8 +49,9 @@ declare module "@material-ui/core/styles/createMuiTheme" {
         third: string;
         fourth: string;
         sixth: string;
-        percentPositive: string;
-        percentNegative: string;
+        seventh: string;
+        positive: string;
+        negative: string;
         arrowUp: string;
         arrowDown: string;
       };
@@ -86,6 +90,8 @@ declare module "@material-ui/core/styles/createMuiTheme" {
         primary: string;
         secondary: string;
         third: string;
+        fourth: string;
+        fifth: string;
       };
       icon: {
         active: string;
@@ -103,6 +109,7 @@ declare module "@material-ui/core/styles/createMuiTheme" {
         sixth: string;
         seventh: string;
         eighth: string;
+        ninth: string;
       };
       text: {
         default: string;
@@ -110,8 +117,9 @@ declare module "@material-ui/core/styles/createMuiTheme" {
         third: string;
         fourth: string;
         sixth: string;
-        percentPositive: string;
-        percentNegative: string;
+        seventh: string;
+        positive: string;
+        negative: string;
         arrowUp: string;
         arrowDown: string;
       };
@@ -206,4 +214,24 @@ export interface IBrowseGameBidItem {
   startFromAmount: BigNumber;
   startFromToken: string;
   status: EBrowseGameBidItemStatus;
+}
+
+export interface IItemDetails {
+  id: string;
+  collection: string;
+  patternTemplate: string;
+  finishCatalog: string;
+  description: string;
+  tags: string[];
+}
+
+export interface INavToolbarItem {
+  title: string;
+  href?: string;
+  onClick?: () => void;
+}
+
+export interface IPriceFilterItem {
+  amount: number;
+  price: number;
 }

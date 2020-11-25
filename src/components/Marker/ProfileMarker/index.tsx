@@ -27,20 +27,23 @@ const useStyles = makeStyles((theme) => ({
 interface IProps {
   className?: string;
   marker: EProfileMarker;
+  showLabel?: boolean;
 }
 
 export const ProfileMarker = (props: IProps) => {
   const classes = useStyles();
-  const { className, marker } = props;
+  const { className, marker, showLabel = true } = props;
 
   return (
     <div className={clsx(classes.root, className)}>
       {marker === EProfileMarker.ProTrader && (
         <ProTraderIcon className={classes.icon} />
       )}
-      <Typography className={classes.text} component="div">
-        {marker}
-      </Typography>
+      {showLabel && (
+        <Typography className={classes.text} component="div">
+          {marker}
+        </Typography>
+      )}
     </div>
   );
 };

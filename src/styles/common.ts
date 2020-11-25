@@ -26,6 +26,10 @@ const useCommonStyles = makeStyles((theme) => ({
   textAlignRight: {
     textAlign: "right",
   },
+  row: {
+    display: "flex",
+    alignItems: "center",
+  },
 }));
 
 export default useCommonStyles;

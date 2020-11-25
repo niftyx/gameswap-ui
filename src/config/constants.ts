@@ -12,10 +12,13 @@ import {
   IAssetItem,
   IBrowseGameBidItem,
   IFeaturedFarmItem,
+  IPriceFilterItem,
   IUpcomingFarmItem,
 } from "utils/types";
 
 export const STORAGE_KEY_SETTINGS = "settings";
+
+export const PRICE_FILTER_COLUMN_COUNT = 20;
 
 export const MOCK_ASSET_ITEMS: IAssetItem[] = [
   {
@@ -312,5 +315,76 @@ export const MOCK_AUCTIONS_ITEMS: IBrowseGameBidItem[] = [
     offers: 23,
     startFromAmount: BigNumber.from("23"),
     startFromToken: "GSWAP",
+  },
+];
+
+export const MOCK_PRICE_FILTER_ITEMS: IPriceFilterItem[] = [
+  {
+    amount: 10,
+    price: 10,
+  },
+  {
+    amount: 4,
+    price: 15,
+  },
+  {
+    amount: 10,
+    price: 14,
+  },
+  {
+    amount: 10,
+    price: 67,
+  },
+  {
+    amount: 8,
+    price: 35,
+  },
+  {
+    amount: 5,
+    price: 46,
+  },
+  {
+    amount: 9,
+    price: 90,
+  },
+  {
+    amount: 4,
+    price: 45,
+  },
+  {
+    amount: 3,
+    price: 44,
+  },
+  {
+    amount: 8,
+    price: 55,
+  },
+  {
+    amount: 23,
+    price: 22,
+  },
+  {
+    amount: 10,
+    price: 33,
+  },
+  {
+    amount: 5,
+    price: 88,
+  },
+  {
+    amount: 10,
+    price: 45,
+  },
+  {
+    amount: 4,
+    price: 99,
+  },
+  {
+    amount: 3,
+    price: 90,
+  },
+  {
+    amount: 10,
+    price: 97,
   },
 ];
