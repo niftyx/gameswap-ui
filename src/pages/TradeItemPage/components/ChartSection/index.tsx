@@ -4,8 +4,7 @@ import chartMockData from "config/chartMockData.json";
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import Highstockcharts from "highcharts/highstock";
-import { transparentize } from "polished";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 const useStyles = makeStyles((theme) => ({
   root: {

@@ -8,10 +8,18 @@ import {
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import clsx from "classnames";
 import { ProfileMarker } from "components/Marker";
+import { GSWAP_PRICE_DECIMALS } from "config/constants";
+import { getToken } from "config/networks";
+import {
+  useConnectedWeb3Context,
+  useGSwapBalance,
+  useGSwapPrice,
+} from "contexts";
+import { BigNumber } from "ethers";
 import { transparentize } from "polished";
 import React from "react";
-import { useHistory } from "react-router-dom";
 import useCommonStyles from "styles/common";
+import { formatBigNumber, numberWithCommas } from "utils";
 import { EProfileMarker } from "utils/enums";
 
 const useStyles = makeStyles((theme) => ({
@@ -98,11 +106,19 @@ interface IProps {
 export const HeroSection = (props: IProps) => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
-  const history = useHistory();
+  const context = useConnectedWeb3Context();
+  const { account, networkId } = context;
+  const gSwapToken = getToken(networkId || 1, "gswap");
+  const { balance: gswapBalance } = useGSwapBalance(context);
+  const { price } = useGSwapPrice(context);
+  const formattedGswapBalance = numberWithCommas(
+    formatBigNumber(gswapBalance, gSwapToken.decimals)
+  );
 
-  const onBrowse = () => {
-    history.push("/browse");
-  };
+  const usdBalance = BigNumber.from(gswapBalance).mul(price);
+  const formattedUsdBalance = numberWithCommas(
+    formatBigNumber(usdBalance, gSwapToken.decimals + GSWAP_PRICE_DECIMALS)
+  );
 
   return (
     <div className={clsx(classes.root, props.className)}>
@@ -128,7 +144,7 @@ export const HeroSection = (props: IProps) => {
                   <ProfileMarker marker={EProfileMarker.ProTrader} />
                 </div>
                 <Typography className={classes.description} component="div">
-                  0xEd0439EACf4c4965AE4613D77a5C2Efe10e5f183
+                  {account || ""}
                 </Typography>
               </div>
             </div>
@@ -140,12 +156,12 @@ export const HeroSection = (props: IProps) => {
               </Typography>
               <div className={classes.row}>
                 <Typography className={classes.balanceUSD} component="div">
-                  $ 320.728,29
+                  $ {formattedUsdBalance}
                 </Typography>
                 <ArrowUpwardIcon className={classes.arrowUp} />
               </div>
               <Typography className={classes.balanceGSWAP} component="div">
-                240.6042 GSWAP
+                {formattedGswapBalance} {gSwapToken.symbol}
               </Typography>
               <Button
                 className={clsx(

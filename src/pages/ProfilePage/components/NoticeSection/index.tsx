@@ -2,7 +2,6 @@ import { Grid, Typography, makeStyles } from "@material-ui/core";
 import clsx from "classnames";
 import { transparentize } from "polished";
 import React, { useState } from "react";
-import useCommonStyles from "styles/common";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,7 +33,6 @@ interface IState {
 
 export const NoticeSection = (props: IProps) => {
   const classes = useStyles();
-  const commonClasses = useCommonStyles();
   const [state, setState] = useState<IState>({
     transactions: 178,
     itemsInMarket: 23,

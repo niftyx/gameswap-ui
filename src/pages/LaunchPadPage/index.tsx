@@ -8,7 +8,9 @@ import useCommonStyles from "styles/common";
 import { FeaturedFarms, HeroCarousel, UpcomingFarms } from "./components";
 
 const useStyles = makeStyles((theme) => ({
-  root: {},
+  root: {
+    height: "auto",
+  },
   content: {
     height: "100%",
   },

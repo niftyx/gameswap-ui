@@ -12,9 +12,12 @@ const useStyles = makeStyles((theme) => ({
     border: `1px solid ${transparentize(0.92, theme.colors.text.default)}`,
     padding: theme.spacing(2.5),
     minHeight: theme.spacing(12.5),
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
   img: {
-    width: "100%",
+    // width: "100%",
     height: "100%",
     maxHeight: theme.spacing(4.5),
   },

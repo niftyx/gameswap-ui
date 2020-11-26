@@ -1,12 +1,9 @@
-import { Box, Hidden, Typography, makeStyles } from "@material-ui/core";
-import { ReactComponent as CartIcon } from "assets/svgs/cart-arrow-up.svg";
+import { Box, makeStyles } from "@material-ui/core";
 import clsx from "classnames";
 import { AuctionsButton, SyncButton } from "components/Button";
 import { VerticalDivider } from "components/Divider";
-import { SearchInput } from "components/Input";
 import { GamesSelect, PriceSelect, SortSelect } from "components/Select";
 import React from "react";
-import { numberWithCommas } from "utils";
 
 const useStyles = makeStyles((theme) => ({
   root: {

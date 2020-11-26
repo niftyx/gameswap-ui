@@ -1,5 +1,5 @@
 import { STORAGE_KEY_CONNECTOR } from "config/constants";
-import ethers, { providers } from "ethers";
+import { providers } from "ethers";
 import React, { useEffect, useState } from "react";
 import connectors from "utils/connectors";
 import { Maybe } from "utils/types";
@@ -46,7 +46,7 @@ export const ConnectedWeb3: React.FC = (props) => {
       localStorage.removeItem(STORAGE_KEY_CONNECTOR);
       context.unsetConnector();
     } else if (connector && connector in connectors) {
-      context.setConnector(connector);
+      if (!active) context.setConnector(connector);
     } else {
       context.unsetConnector();
     }

@@ -7,6 +7,7 @@ import {
   NoWallet,
 } from "components";
 import { MOCK_ASSET_ITEMS } from "config/constants";
+import { useConnectedWeb3Context } from "contexts";
 import React, { useState } from "react";
 import { IAssetItem } from "utils/types";
 
@@ -34,11 +35,12 @@ interface IState {
 const InventorySection = (props: IProps) => {
   const classes = useStyles();
   const [state, setState] = useState<IState>({ assets: MOCK_ASSET_ITEMS });
-  const address = "";
+  const { account } = useConnectedWeb3Context();
+  const isConnected = !!account;
 
   return (
     <div className={clsx(classes.root, props.className)}>
-      {address ? (
+      {isConnected ? (
         <>
           <InventoryToolbar />
           <div className={classes.assets}>

@@ -1,15 +1,8 @@
-import {
-  Avatar,
-  Button,
-  Grid,
-  Typography,
-  makeStyles,
-} from "@material-ui/core";
+import { Avatar, Button, Typography, makeStyles } from "@material-ui/core";
 import clsx from "classnames";
 import { ProfileMarker } from "components/Marker";
 import { transparentize } from "polished";
 import React from "react";
-import { useHistory } from "react-router-dom";
 import useCommonStyles from "styles/common";
 import { EProfileMarker } from "utils/enums";
 import { IItemDetails } from "utils/types";
@@ -163,7 +156,6 @@ interface IProps {
 export const InfoSection = (props: IProps) => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
-  const history = useHistory();
 
   const onBuy = () => {};
 

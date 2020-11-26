@@ -24,6 +24,9 @@ const useStyles = makeStyles((theme) => ({
     padding: 1,
     borderRadius: theme.spacing(1),
     border: `1px solid ${transparentize(0.92, theme.colors.text.default)}`,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
   title: {
     color: theme.colors.text.default,
@@ -31,8 +34,9 @@ const useStyles = makeStyles((theme) => ({
     textTransform: "uppercase",
   },
   img: {
-    width: "100%",
+    display: "block",
     height: "100%",
+    maxHeight: theme.spacing(6),
     borderTopLeftRadius: theme.spacing(1),
     borderBottomLeftRadius: theme.spacing(1),
   },

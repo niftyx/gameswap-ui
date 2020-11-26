@@ -13,11 +13,16 @@ import SendIcon from "@material-ui/icons/Send";
 import { ReactComponent as MetaMaskIcon } from "assets/svgs/metamask.svg";
 import clsx from "classnames";
 import { STORAGE_KEY_CONNECTOR } from "config/constants";
-import { useConnectedWeb3Context } from "contexts";
+import { TokenEthereum, getToken } from "config/networks";
+import {
+  useConnectedWeb3Context,
+  useEthBalance,
+  useGSwapBalance,
+} from "contexts";
 import { transparentize } from "polished";
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { shortenAddress } from "utils";
+import { formatBigNumber, formatToShortNumber, shortenAddress } from "utils";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -110,7 +115,18 @@ const AccountInfoBar = (props: IProps) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const history = useHistory();
-  const { account, rawWeb3Context } = useConnectedWeb3Context();
+  const context = useConnectedWeb3Context();
+  const { account, library: provider, networkId, rawWeb3Context } = context;
+  const { balance: ethBalance } = useEthBalance(provider, account || "");
+  const formattedEthBalance = formatBigNumber(
+    ethBalance,
+    TokenEthereum.decimals
+  );
+  const gSwapToken = getToken(networkId || 1, "gswap");
+  const { balance: gswapBalance } = useGSwapBalance(context);
+  const formattedGswapBalance = formatToShortNumber(
+    formatBigNumber(gswapBalance, gSwapToken.decimals)
+  );
 
   const handleClick = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -135,7 +151,9 @@ const AccountInfoBar = (props: IProps) => {
     }
   };
   const onDisconnect = () => {
+    handleClose();
     rawWeb3Context.unsetConnector();
+    localStorage.removeItem(STORAGE_KEY_CONNECTOR);
   };
 
   return (
@@ -144,24 +162,24 @@ const AccountInfoBar = (props: IProps) => {
         <>
           <div className={classes.gswap}>
             <Typography className={classes.label} component="div">
-              GSWAP
+              {gSwapToken.symbol}
             </Typography>
             <Typography className={classes.gswapValue} component="div">
-              240.60
+              {formattedGswapBalance}
             </Typography>
           </div>
           <div className={classes.eth}>
             <div className={classes.ethBalance}>
               <Typography className={classes.label} component="div">
-                ETH
+                {TokenEthereum.symbol}
               </Typography>
               <Typography className={classes.ethValue} component="div">
-                52.3011
+                {formattedEthBalance}
               </Typography>
             </div>
             <div className={classes.ethAddress} onClick={toProfile}>
               <Typography component="div">
-                {shortenAddress("0x18B13ef88822292E59bfF80210D815F7FBFC9b32")}
+                {shortenAddress(account || "")}
               </Typography>
             </div>
           </div>
@@ -179,11 +197,11 @@ const AccountInfoBar = (props: IProps) => {
             open={Boolean(anchorEl)}
             transformOrigin={{ vertical: "top", horizontal: "center" }}
           >
-            <MenuItem>
+            <MenuItem onClick={onDisconnect}>
               <ListItemIcon>
                 <SendIcon />
               </ListItemIcon>
-              <ListItemText primary="Test" />
+              <ListItemText primary="Disconnect" />
             </MenuItem>
           </Menu>
         </>

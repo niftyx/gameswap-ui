@@ -18,8 +18,10 @@ import {
 
 export const STORAGE_KEY_SETTINGS = "settings";
 export const STORAGE_KEY_CONNECTOR = "CONNECTOR";
+export const LOGGER_ID = "gameswap";
 
 export const PRICE_FILTER_COLUMN_COUNT = 20;
+export const GSWAP_PRICE_DECIMALS = 10;
 
 export const MOCK_ASSET_ITEMS: IAssetItem[] = [
   {

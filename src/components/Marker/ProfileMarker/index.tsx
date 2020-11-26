@@ -1,10 +1,4 @@
-import {
-  Avatar,
-  Button,
-  Grid,
-  Typography,
-  makeStyles,
-} from "@material-ui/core";
+import { Typography, makeStyles } from "@material-ui/core";
 import { ReactComponent as ProTraderIcon } from "assets/svgs/medal.svg";
 import clsx from "classnames";
 import React from "react";

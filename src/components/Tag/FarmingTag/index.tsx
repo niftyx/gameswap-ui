@@ -2,7 +2,6 @@ import { makeStyles } from "@material-ui/core";
 import clsx from "classnames";
 import { transparentize } from "polished";
 import React from "react";
-import { EFarmingTag } from "utils/enums";
 
 const useStyles = makeStyles((theme) => ({
   root: {

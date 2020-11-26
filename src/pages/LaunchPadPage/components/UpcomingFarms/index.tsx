@@ -2,7 +2,6 @@ import { Typography, makeStyles } from "@material-ui/core";
 import clsx from "classnames";
 import { UpcomingFarmRow } from "components";
 import { MockUpcomingFarms } from "config/constants";
-import { transparentize } from "polished";
 import React, { useState } from "react";
 import { IUpcomingFarmItem } from "utils/types";
 

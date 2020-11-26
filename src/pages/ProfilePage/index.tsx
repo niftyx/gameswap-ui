@@ -11,7 +11,9 @@ import {
 } from "./components";
 
 const useStyles = makeStyles((theme) => ({
-  root: {},
+  root: {
+    height: "auto",
+  },
   content: {
     height: "100%",
   },
@@ -25,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
   },
   latestActivitySection: {
     marginTop: theme.spacing(5),
-    marginBottom: theme.spacing(5),
+    marginBottom: theme.spacing(2),
   },
 }));
 
