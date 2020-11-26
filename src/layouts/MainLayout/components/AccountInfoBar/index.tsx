@@ -12,6 +12,8 @@ import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import SendIcon from "@material-ui/icons/Send";
 import { ReactComponent as MetaMaskIcon } from "assets/svgs/metamask.svg";
 import clsx from "classnames";
+import { STORAGE_KEY_CONNECTOR } from "config/constants";
+import { useConnectedWeb3Context } from "contexts";
 import { transparentize } from "polished";
 import React from "react";
 import { useHistory } from "react-router-dom";
@@ -108,6 +110,7 @@ const AccountInfoBar = (props: IProps) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const history = useHistory();
+  const { account, rawWeb3Context } = useConnectedWeb3Context();
 
   const handleClick = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -123,7 +126,17 @@ const AccountInfoBar = (props: IProps) => {
     history.push("/profile");
   };
 
-  const isConnected = false;
+  const isConnected = !!account;
+
+  const onConnect = () => {
+    if (window.ethereum) {
+      rawWeb3Context.setConnector("MetaMask");
+      localStorage.setItem(STORAGE_KEY_CONNECTOR, "MetaMask");
+    }
+  };
+  const onDisconnect = () => {
+    rawWeb3Context.unsetConnector();
+  };
 
   return (
     <div className={clsx(classes.root, props.className)}>
@@ -178,6 +191,7 @@ const AccountInfoBar = (props: IProps) => {
         <Button
           className={classes.connectButton}
           color="primary"
+          onClick={onConnect}
           variant="contained"
         >
           <MetaMaskIcon />

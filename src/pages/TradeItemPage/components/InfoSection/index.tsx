@@ -41,12 +41,18 @@ const useStyles = makeStyles((theme) => ({
     fontSize: theme.spacing(7.5),
     color: theme.colors.text.default,
     maxWidth: 500,
+    [theme.breakpoints.down("xs")]: {
+      fontSize: theme.spacing(4),
+    },
   },
   priceChange: {
     borderRadius: theme.spacing(0.5),
     padding: "5px 14px",
     fontSize: theme.spacing(2.5),
     fontWeight: 500,
+    [theme.breakpoints.down("xs")]: {
+      fontSize: theme.spacing(1.5),
+    },
     "&.positive": {
       color: theme.colors.text.positive,
       backgroundColor: transparentize(0.73, theme.colors.text.positive),
@@ -59,11 +65,18 @@ const useStyles = makeStyles((theme) => ({
   gswap: {
     fontSize: theme.spacing(3),
     color: theme.colors.text.sixth,
+    [theme.breakpoints.down("xs")]: {
+      fontSize: theme.spacing(2),
+    },
   },
   buyNow: {
     minWidth: theme.spacing(45),
     height: theme.spacing(10),
     fontSize: theme.spacing(2.5),
+    [theme.breakpoints.down("xs")]: {
+      minWidth: theme.spacing(25),
+      height: theme.spacing(6),
+    },
   },
   avatar: {
     width: theme.spacing(6.25),
@@ -118,6 +131,9 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
     marginBottom: theme.spacing(2),
     textTransform: "capitalize",
+    [theme.breakpoints.down("xs")]: {
+      padding: "10px 20px",
+    },
   },
 }));
 

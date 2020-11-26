@@ -1,9 +1,11 @@
 import { makeStyles } from "@material-ui/core";
 import clsx from "classnames";
+import chartMockData from "config/chartMockData.json";
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
+import Highstockcharts from "highcharts/highstock";
 import { transparentize } from "polished";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,45 +30,28 @@ const useStyles = makeStyles((theme) => ({
       color: theme.colors.text.default,
     },
   },
-  toolbar: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "flex-end",
-    "& > * + *": {
-      marginLeft: theme.spacing(1.75),
-    },
-  },
-  toolbarItem: {
-    width: theme.spacing(4.25),
-    height: theme.spacing(4.25),
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    userSelect: "none",
-    borderRadius: theme.spacing(0.5),
-    backgroundColor: theme.colors.transparent,
-    fontSize: theme.spacing(1.6125),
-    color: theme.colors.text.seventh,
-    cursor: "pointer",
-    transition: "all 0.3s",
-    border: `2px solid ${theme.colors.border.fourth}`,
-    "&.active": {
-      color: theme.colors.text.default,
-      borderColor: theme.colors.background.fourth,
-      backgroundColor: theme.colors.background.fourth,
+  chart: {
+    "& .highcharts-range-selector-group": {
+      "& .highcharts-range-selector-buttons": {
+        "& .highcharts-button.highcharts-button-normal": {
+          "& text": {
+            color: `${theme.colors.text.seventh} !important`,
+            fill: `${theme.colors.text.seventh} !important`,
+          },
+        },
+      },
+      "& .highcharts-input-group": {
+        "& .highcharts-label.highcharts-range-input": {
+          "& text": {
+            color: `${theme.colors.text.seventh} !important`,
+            fill: `${theme.colors.text.seventh} !important`,
+          },
+        },
+      },
     },
   },
 }));
 
-const chartLabels = [
-  { label: "1H", hours: 1 },
-  { label: "1D", hours: 24 },
-  { label: "7D", hours: 168 },
-  { label: "1M", hours: 5040 },
-  { label: "3M", hours: 15120 },
-  { label: "6M", hours: 30240 },
-  { label: "1Y", hours: 60480 },
-];
 interface IProps {
   className?: string;
 }
@@ -77,20 +62,136 @@ enum EChart {
 }
 interface IState {
   chart: EChart;
-  duration: number;
 }
 
 export const ChartSection = (props: IProps) => {
   const classes = useStyles();
   const [state, setState] = useState<IState>({
     chart: EChart.priceHistory,
-    duration: chartLabels[0].hours,
   });
+
   const setChart = (chart: EChart) =>
     setState((prevState) => ({ ...prevState, chart }));
 
-  const setDuration = (duration: number) =>
-    setState((prevState) => ({ ...prevState, duration }));
+  const ohlc = [],
+    volume = [],
+    dataLength = chartMockData.length;
+  let i = 0;
+
+  for (i; i < dataLength; i += 1) {
+    ohlc.push([
+      chartMockData[i][0], // the date
+      chartMockData[i][4], // close
+    ]);
+
+    volume.push([
+      chartMockData[i][0], // the date
+      chartMockData[i][5], // the volume
+    ]);
+  }
+
+  const options: Highcharts.Options = {
+    title: { text: "" },
+    chart: {
+      backgroundColor: "#0000",
+      zoomType: "x",
+    },
+    rangeSelector: {
+      buttonPosition: { align: "right" },
+      buttonTheme: {
+        stroke: "#A6A9B7",
+        fill: "#0000",
+      },
+      inputPosition: { align: "left" },
+    },
+    yAxis: [
+      {
+        startOnTick: false,
+        endOnTick: false,
+        labels: {
+          align: "right",
+          x: -3,
+        },
+        title: {
+          text: "",
+        },
+        height: "60%",
+        lineWidth: 0,
+        gridLineWidth: 0,
+        resize: {
+          enabled: true,
+        },
+      },
+      {
+        labels: {
+          align: "right",
+          x: -3,
+        },
+        title: {
+          text: "Volume",
+        },
+        top: "65%",
+        height: "35%",
+        offset: 0,
+        lineWidth: 0,
+        gridLineWidth: 0,
+        tickWidth: 0,
+      },
+    ],
+
+    xAxis: {
+      zoomEnabled: true,
+      type: "datetime",
+      gridLineWidth: 0,
+      lineWidth: 0,
+      tickWidth: 0,
+    },
+
+    tooltip: {
+      split: true,
+    },
+
+    legend: {
+      enabled: false,
+    },
+    credits: {
+      enabled: false,
+    },
+
+    navigator: {
+      outlineWidth: 0,
+      handles: {
+        borderColor: "#0000",
+      },
+    },
+
+    scrollbar: {
+      barBackgroundColor: "#A6A9B7",
+      trackBackgroundColor: "#A6A9B755",
+      barBorderColor: "#A6A9B7",
+      trackBorderColor: "#A6A9B755",
+    },
+
+    series: [
+      {
+        type: "line",
+        name: "Price",
+        pointStart: ohlc[0][0],
+        pointInterval: 24 * 3600 * 1000,
+        data: ohlc,
+        color: "#5F6BDD",
+      },
+      {
+        type: "column",
+        name: "Volume",
+        id: "volume",
+        data: volume,
+        yAxis: 1,
+        color: "#1F263C",
+        borderWidth: 0,
+      },
+    ],
+  };
 
   return (
     <div className={clsx(classes.root, props.className)}>
@@ -108,19 +209,13 @@ export const ChartSection = (props: IProps) => {
           </span>
         ))}
       </div>
-      <div className={classes.toolbar}>
-        {chartLabels.map((item) => (
-          <span
-            className={clsx(
-              classes.toolbarItem,
-              state.duration === item.hours ? "active" : ""
-            )}
-            key={item.label}
-            onClick={() => setDuration(item.hours)}
-          >
-            {item.label}
-          </span>
-        ))}
+      <div className={classes.chart}>
+        <HighchartsReact
+          constructorType={"stockChart"}
+          highcharts={Highstockcharts}
+          // highCharts={Highcharts}
+          options={options}
+        />
       </div>
     </div>
   );

@@ -17,6 +17,7 @@ import {
 } from "utils/types";
 
 export const STORAGE_KEY_SETTINGS = "settings";
+export const STORAGE_KEY_CONNECTOR = "CONNECTOR";
 
 export const PRICE_FILTER_COLUMN_COUNT = 20;
 
