@@ -65,8 +65,8 @@ export const numberWithCommas = (x: number | string) => {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
-export const waitSeconds = (sec = 2) =>
-  new Promise((resolve) => {
+export const waitSeconds = (sec = 2): Promise<void> =>
+  new Promise<void>((resolve) => {
     setTimeout(() => {
       resolve();
     }, sec * 1000);
