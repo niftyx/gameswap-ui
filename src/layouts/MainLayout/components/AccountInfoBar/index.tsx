@@ -12,6 +12,7 @@ import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import SendIcon from "@material-ui/icons/Send";
 import { ReactComponent as MetaMaskIcon } from "assets/svgs/metamask.svg";
 import clsx from "classnames";
+import { ConnectWalletModal } from "components";
 import { STORAGE_KEY_CONNECTOR } from "config/constants";
 import { TokenEthereum, getToken } from "config/networks";
 import {
@@ -20,7 +21,7 @@ import {
   useGSwapBalance,
 } from "contexts";
 import { transparentize } from "polished";
-import React from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { formatBigNumber, formatToShortNumber, shortenAddress } from "utils";
 
@@ -115,6 +116,7 @@ const AccountInfoBar = (props: IProps) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const history = useHistory();
+  const [isModalOpen, setModalState] = useState<boolean>(false);
   const context = useConnectedWeb3Context();
   const { account, library: provider, networkId, rawWeb3Context } = context;
   const { balance: ethBalance } = useEthBalance(provider, account || "");
@@ -145,14 +147,11 @@ const AccountInfoBar = (props: IProps) => {
   const isConnected = !!account;
 
   const onConnect = () => {
-    if (window.ethereum) {
-      rawWeb3Context.setConnector("MetaMask");
-      localStorage.setItem(STORAGE_KEY_CONNECTOR, "MetaMask");
-    }
+    setModalState(true);
   };
   const onDisconnect = () => {
     handleClose();
-    rawWeb3Context.unsetConnector();
+    rawWeb3Context.deactivate();
     localStorage.removeItem(STORAGE_KEY_CONNECTOR);
   };
 
@@ -216,6 +215,10 @@ const AccountInfoBar = (props: IProps) => {
           <span className="button_connect__label">CONNECT WALLET</span>
         </Button>
       )}
+      <ConnectWalletModal
+        onClose={() => setModalState(false)}
+        visible={isModalOpen}
+      />
     </div>
   );
 };

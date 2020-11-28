@@ -1,14 +1,15 @@
+import { Web3Provider } from "@ethersproject/providers";
+import { useWeb3React } from "@web3-react/core";
 import { STORAGE_KEY_CONNECTOR } from "config/constants";
-import { providers } from "ethers";
 import React, { useEffect, useState } from "react";
 import connectors from "utils/connectors";
+import { ConnectorNames } from "utils/enums";
 import { Maybe } from "utils/types";
-import { useWeb3Context } from "web3-react";
 
 export interface ConnectedWeb3Context {
-  account: Maybe<string>;
-  library: providers.Web3Provider | null;
-  networkId: number | null;
+  account: Maybe<string> | null;
+  library: Web3Provider | undefined;
+  networkId: number | undefined;
   rawWeb3Context: any;
 }
 
@@ -34,41 +35,36 @@ export const useConnectedWeb3Context = () => {
  * `useConnectedWeb3Context` safely to get web3 stuff without having to null check it.
  */
 export const ConnectedWeb3: React.FC = (props) => {
-  const [networkId, setNetworkId] = useState<number | null>(null);
-  const context = useWeb3Context();
-  const { account, active, error, library } = context;
+  const context = useWeb3React<Web3Provider>();
+  const {
+    account,
+    activate,
+    active,
+    chainId,
+    connector,
+    deactivate,
+    error,
+    library,
+  } = context;
 
   useEffect(() => {
-    let isSubscribed = true;
-
     const connector = localStorage.getItem(STORAGE_KEY_CONNECTOR);
     if (error) {
       localStorage.removeItem(STORAGE_KEY_CONNECTOR);
-      context.unsetConnector();
-    } else if (connector && connector in connectors) {
-      if (!active) context.setConnector(connector);
-    } else {
-      context.unsetConnector();
+      deactivate();
+    } else if (connector && Object.keys(connectors).includes(connector)) {
+      if (!active) {
+        activate(connectors[connector as ConnectorNames]);
+      }
     }
 
-    const checkIfReady = async () => {
-      const network = await library.ready;
-      if (isSubscribed) setNetworkId(network.chainId);
-    };
-
-    if (library) {
-      checkIfReady();
-    }
-
-    return () => {
-      isSubscribed = false;
-    };
+    // eslint-disable-next-line
   }, [context, library, active, error]);
 
   const value = {
     account: account || null,
     library,
-    networkId,
+    networkId: chainId,
     rawWeb3Context: context,
   };
 

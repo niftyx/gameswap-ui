@@ -1,4 +1,5 @@
 import { getImageUrl } from "utils/token";
+import { entries } from "utils/type-utils";
 import {
   IKnownTokenData,
   INetwork,
@@ -13,15 +14,19 @@ export const networkIds = {
   RINKEBY: 4,
 } as const;
 
+const INFURA_PROJECT_ID = "f9df69e5cfef48799e2d20eaa7d15697";
+
 const networks: { [K in NetworkId]: INetwork } = {
   [networkIds.MAINNET]: {
     label: "Mainnet",
+    url: `https://mainnet.infura.io/v3/${INFURA_PROJECT_ID}`,
     contracts: {
       gswap: "0xaac41ec512808d64625576eddd580e7ea40ef8b2",
     },
   },
   [networkIds.RINKEBY]: {
     label: "Rinkeby",
+    url: `https://rinkeby.infura.io/v3/${INFURA_PROJECT_ID}`,
     contracts: {
       gswap: "0x620C988397fB253ac3D5ef019E167086986f036f",
     },
@@ -42,6 +47,16 @@ export const knownTokens: { [name in KnownToken]: IKnownTokenData } = {
     },
   },
 };
+
+export const supportedNetworkURLs = entries(networks).reduce<{
+  [networkId: number]: string;
+}>(
+  (acc, [networkId, network]) => ({
+    ...acc,
+    [networkId]: network.url,
+  }),
+  {}
+);
 
 const validNetworkId = (networkId: number): networkId is NetworkId => {
   return networks[networkId as NetworkId] !== undefined;

@@ -22,3 +22,8 @@ export enum EActivityType {
 export enum EBrowseGameBidItemStatus {
   FieldTested = "Field Tested",
 }
+
+export enum ConnectorNames {
+  Injected = "injected",
+  WalletConnect = "walletconnect",
+}

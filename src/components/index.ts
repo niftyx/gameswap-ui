@@ -12,3 +12,4 @@ export * from "./Menu";
 export * from "./Tag";
 export * from "./Activity";
 export * from "./Marker";
+export * from "./Modal";

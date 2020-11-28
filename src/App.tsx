@@ -1,4 +1,6 @@
+import { Web3Provider } from "@ethersproject/providers";
 import { ThemeProvider } from "@material-ui/styles";
+import { Web3ReactProvider } from "@web3-react/core";
 import { LoadingScreen } from "components";
 import { ConnectedWeb3 } from "contexts";
 import GlobalStyle from "global-styles";
@@ -12,10 +14,14 @@ import { createTheme } from "theme";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import connectors from "utils/connectors";
-import Web3Provider from "web3-react";
 
 import i18n from "./i18n";
+
+function getLibrary(provider: any): Web3Provider {
+  const library = new Web3Provider(provider);
+  library.pollingInterval = 12000;
+  return library;
+}
 
 function App() {
   const { settings } = useSettings();
@@ -25,14 +31,14 @@ function App() {
     <I18nextProvider i18n={i18n}>
       <React.Suspense fallback={<LoadingScreen />}>
         <ThemeProvider theme={theme}>
-          <Web3Provider connectors={connectors} libraryName="ethers.js">
+          <Web3ReactProvider getLibrary={getLibrary}>
             <ConnectedWeb3>
               <BrowserRouter>
                 <MainLayout>{renderRoutes()}</MainLayout>
                 <GlobalStyle />
               </BrowserRouter>
             </ConnectedWeb3>
-          </Web3Provider>
+          </Web3ReactProvider>
         </ThemeProvider>
       </React.Suspense>
     </I18nextProvider>

@@ -250,6 +250,7 @@ export type KnownToken = "gswap";
 
 export interface INetwork {
   label: string;
+  url: string;
   contracts: {
     gswap: string;
   };
