@@ -5,11 +5,7 @@ import {
   Typography,
   makeStyles,
 } from "@material-ui/core";
-import {
-  UnsupportedChainIdError,
-  Web3ReactProvider,
-  useWeb3React,
-} from "@web3-react/core";
+import { useWeb3React } from "@web3-react/core";
 import { WalletConnectConnector } from "@web3-react/walletconnect-connector";
 import { ReactComponent as MetaMaskIcon } from "assets/svgs/metamask-color.svg";
 import { ReactComponent as WalletConnectIcon } from "assets/svgs/wallet-connect.svg";
@@ -165,6 +161,14 @@ export const ConnectWalletModal = (props: IProps) => {
                     onClickWallet(ConnectorNames.WalletConnect);
                   }}
                   text="Wallet Connect"
+                />
+                <ConnectWalletButton
+                  disabled={disableWalletConnect}
+                  icon={<WalletConnectIcon />}
+                  onClick={() => {
+                    onClickWallet(ConnectorNames.WalletLink);
+                  }}
+                  text="Wallet Link"
                 />
               </>
             )}

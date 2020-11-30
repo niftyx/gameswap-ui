@@ -30,6 +30,13 @@ const useCommonStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
   },
+  fadeAnimation: {
+    transition: "all 1s",
+    opacity: 0,
+    "&.visible": {
+      opacity: 1,
+    },
+  },
 }));
 
 export default useCommonStyles;

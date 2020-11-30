@@ -153,6 +153,7 @@ const AccountInfoBar = (props: IProps) => {
     handleClose();
     rawWeb3Context.deactivate();
     localStorage.removeItem(STORAGE_KEY_CONNECTOR);
+    setModalState(false);
   };
 
   return (

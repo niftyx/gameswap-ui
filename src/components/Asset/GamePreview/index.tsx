@@ -1,6 +1,11 @@
 import { Typography, makeStyles } from "@material-ui/core";
+import {
+  IconTrendingGameImagePlaceholder,
+  IconTrendingGameTitlePlaceholder,
+} from "assets/icons";
 import clsx from "classnames";
-import React from "react";
+import React, { useState } from "react";
+import useCommonStyles from "styles/common";
 import { IGameItem } from "utils/types";
 
 const useStyles = makeStyles((theme) => ({
@@ -13,7 +18,6 @@ const useStyles = makeStyles((theme) => ({
   title: {
     color: theme.colors.text.default,
     fontSize: theme.spacing(2),
-    marginTop: theme.spacing(1.125),
   },
   content: {
     position: "relative",
@@ -26,9 +30,30 @@ const useStyles = makeStyles((theme) => ({
     top: 0,
     bottom: 0,
     borderRadius: theme.spacing(1),
-    backgroundSize: "cover",
-    backgroundRepeat: "no-repeat",
-    backgroundPositionX: "center",
+    objectFit: "cover",
+    width: "100%",
+    height: "100%",
+  },
+  imgPlaceholder: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    borderRadius: theme.spacing(1),
+    objectFit: "cover",
+    width: "100%",
+    height: "100%",
+    zIndex: 99,
+  },
+  titleWrapper: { marginTop: theme.spacing(1.125), position: "relative" },
+  titlePlaceholder: {
+    position: "absolute",
+    left: 0,
+    top: 0,
+    height: "100%",
+    width: "50%",
+    zIndex: 99,
   },
 }));
 
@@ -37,22 +62,56 @@ interface IProps {
   onClick?: () => void;
 }
 
+interface IState {
+  loaded: boolean;
+}
+
 export const GamePreview = (props: IProps & IGameItem) => {
   const classes = useStyles();
+  const commonClasses = useCommonStyles();
+  const [state, setState] = useState<IState>({ loaded: false });
+
+  const setLoaded = (loaded: boolean) =>
+    setState((prevState) => ({ ...prevState, loaded }));
 
   const { backgroundImage, onClick, title } = props;
 
   return (
     <div className={clsx(classes.root, props.className)}>
       <div className={classes.content}>
-        <div
-          className={classes.img}
-          style={{ backgroundImage: `url(${backgroundImage})` }}
+        {!state.loaded && (
+          <div className={classes.imgPlaceholder}>
+            <IconTrendingGameImagePlaceholder />
+          </div>
+        )}
+        <img
+          alt="img"
+          className={clsx(
+            classes.img,
+            commonClasses.fadeAnimation,
+            state.loaded ? "visible" : ""
+          )}
+          onLoad={() => setLoaded(true)}
+          src={backgroundImage}
         />
       </div>
-      <Typography className={classes.title} component="div">
-        {title}
-      </Typography>
+      <div className={classes.titleWrapper}>
+        {!state.loaded && (
+          <div className={classes.titlePlaceholder}>
+            <IconTrendingGameTitlePlaceholder />
+          </div>
+        )}
+        <Typography
+          className={clsx(
+            classes.title,
+            commonClasses.fadeAnimation,
+            state.loaded ? "visible" : ""
+          )}
+          component="div"
+        >
+          {title}
+        </Typography>
+      </div>
     </div>
   );
 };

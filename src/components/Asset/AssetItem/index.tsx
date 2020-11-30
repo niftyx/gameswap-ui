@@ -1,8 +1,10 @@
 import { Grid, Typography, makeStyles } from "@material-ui/core";
+import { IconAssetPlaceholder } from "assets/icons";
 import { ReactComponent as GswapIcon } from "assets/svgs/gameswap_token.svg";
 import clsx from "classnames";
 import { transparentize } from "polished";
-import React from "react";
+import React, { useState } from "react";
+import useCommonStyles from "styles/common";
 import { formatBigNumber, numberWithCommas } from "utils";
 import { IAssetItem } from "utils/types";
 
@@ -12,6 +14,15 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     paddingTop: "95%",
     position: "relative",
+  },
+  placeholder: {
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    position: "absolute",
+    zIndex: 99,
+    padding: theme.spacing(1),
   },
   content: {
     top: 0,
@@ -71,9 +82,18 @@ interface IProps {
   onClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }
 
+interface IState {
+  loaded: boolean;
+}
+
 const AssetItem = (props: IProps) => {
   const classes = useStyles();
+  const commonClasses = useCommonStyles();
   const { data, isFullWidth = false, onClick } = props;
+
+  const [state, setState] = useState<IState>({ loaded: false });
+  const setLoaded = (loaded: boolean) =>
+    setState((prevState) => ({ ...prevState, loaded }));
 
   const respnsive = isFullWidth
     ? { xl: 2, lg: 2, md: 4, xs: 6 }
@@ -86,8 +106,24 @@ const AssetItem = (props: IProps) => {
       {...(respnsive as any)}
     >
       <div className={classes.contentContainer} onClick={onClick}>
-        <div className={classes.content}>
-          <img alt="asset_img" className={classes.img} src={data.image} />
+        {!state.loaded && (
+          <div className={classes.placeholder}>
+            <IconAssetPlaceholder />
+          </div>
+        )}
+        <div
+          className={clsx(
+            classes.content,
+            commonClasses.fadeAnimation,
+            state.loaded ? "visible" : ""
+          )}
+        >
+          <img
+            alt="asset_img"
+            className={classes.img}
+            onLoad={() => setLoaded(true)}
+            src={data.image}
+          />
           <div className={classes.bottom}>
             <Typography className={classes.usd} component="div">
               ${numberWithCommas(data.usdPrice)}

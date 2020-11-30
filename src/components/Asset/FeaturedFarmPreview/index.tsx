@@ -1,9 +1,10 @@
 import { Button, Hidden, Typography, makeStyles } from "@material-ui/core";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
+import { IconFeaturedFarmPreview } from "assets/icons";
 import clsx from "classnames";
 import { transparentize } from "polished";
-import React from "react";
+import React, { useState } from "react";
 import useCommonStyles from "styles/common";
 import { IFeaturedFarmItem } from "utils/types";
 
@@ -53,10 +54,22 @@ const useStyles = makeStyles((theme) => ({
     top: 0,
     bottom: 0,
     borderRadius: theme.spacing(1),
-    backgroundSize: "cover",
-    backgroundRepeat: "no-repeat",
-    backgroundPositionX: "center",
     opacity: "0.6",
+    objectFit: "cover",
+    width: "100%",
+    height: "100%",
+  },
+  imgPlaceholder: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    zIndex: 99,
+    borderRadius: theme.spacing(1),
+    objectFit: "cover",
+    width: "100%",
+    height: "100%",
   },
   buttonFarm: {
     height: theme.spacing(5.5),
@@ -73,6 +86,9 @@ interface IProps {
   className?: string;
   onClick?: () => void;
 }
+interface IState {
+  loaded: boolean;
+}
 
 export const FeaturedFarmPreview = (props: IProps & IFeaturedFarmItem) => {
   const classes = useStyles();
@@ -87,13 +103,30 @@ export const FeaturedFarmPreview = (props: IProps & IFeaturedFarmItem) => {
     tokenDescription,
   } = props;
 
+  const [state, setState] = useState<IState>({ loaded: false });
+  const setLoaded = (loaded: boolean) =>
+    setState((prevState) => ({ ...prevState, loaded }));
+
   return (
     <div className={clsx(classes.root, props.className)}>
-      <div
+      {!state.loaded && (
+        <div className={classes.imgPlaceholder}>
+          <IconFeaturedFarmPreview />
+        </div>
+      )}
+      <img
+        alt="bg"
         className={classes.img}
-        style={{ backgroundImage: `url(${backgroundImage})` }}
+        onLoad={() => setLoaded(true)}
+        src={backgroundImage}
       />
-      <div className={classes.content}>
+      <div
+        className={clsx(
+          classes.content,
+          commonClasses.fadeAnimation,
+          state.loaded ? "visible" : ""
+        )}
+      >
         <div>
           <Typography className={classes.title} component="div">
             {title}
