@@ -32,17 +32,20 @@ const useStyles = makeStyles((theme) => ({
 
 interface IProps {
   className?: string;
+  value?: string;
   onSearch?: () => void;
+  onChange?: (_: string) => void;
 }
 
 export const SearchInput = (props: IProps) => {
   const classes = useStyles();
-  const [word, setWord] = useState<string>("");
+  const [word, setWord] = useState<string>(props.value || "");
   const onChangeWord = (
     event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ) => {
     event.persist();
     setWord(event.target.value);
+    if (props.onChange) props.onChange(event.target.value);
   };
 
   return (

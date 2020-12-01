@@ -43,6 +43,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",
     backgroundPositionX: "center",
+    opacity: 0.6,
   },
   comments: {
     position: "absolute",
@@ -94,26 +95,26 @@ export const HeroCarousel = (props: IProps) => {
         <div
           className={classes.imgItem}
           style={{
-            backgroundImage: `url("/svgs/League-of-legends_Background.svg")`,
+            backgroundImage: `url("/images/backgrounds/League-of-legends_Background.png")`,
           }}
         />
         <div
           className={classes.imgItem}
           style={{
-            backgroundImage: `url("/svgs/League-of-legends_Background.svg")`,
+            backgroundImage: `url("/images/backgrounds/League-of-legends_Background.png")`,
           }}
         />
         <div
           className={classes.imgItem}
           style={{
-            backgroundImage: `url("/svgs/League-of-legends_Background.svg")`,
+            backgroundImage: `url("/images/backgrounds/League-of-legends_Background.png")`,
           }}
         />
 
         <div
           className={classes.imgItem}
           style={{
-            backgroundImage: `url("/svgs/League-of-legends_Background.svg")`,
+            backgroundImage: `url("/images/backgrounds/League-of-legends_Background.png")`,
           }}
         />
       </Carousel>

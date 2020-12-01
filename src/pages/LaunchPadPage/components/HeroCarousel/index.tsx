@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
     height: "50vh",
     backgroundPositionY: "center",
     backgroundSize: "cover",
-    opacity: "0.4",
+    opacity: 0.3,
     backgroundRepeat: "no-repeat",
     backgroundPositionX: "center",
   },
@@ -108,26 +108,26 @@ export const HeroCarousel = (props: IProps) => {
         <div
           className={classes.imgItem}
           style={{
-            backgroundImage: `url("/svgs/backgrounds/launch-pad.svg")`,
+            backgroundImage: `url("/images/backgrounds/launch-pad.png")`,
           }}
         />
         <div
           className={classes.imgItem}
           style={{
-            backgroundImage: `url("/svgs/backgrounds/launch-pad.svg")`,
+            backgroundImage: `url("/images/backgrounds/launch-pad.png")`,
           }}
         />
         <div
           className={classes.imgItem}
           style={{
-            backgroundImage: `url("/svgs/backgrounds/launch-pad.svg")`,
+            backgroundImage: `url("/images/backgrounds/launch-pad.png")`,
           }}
         />
 
         <div
           className={classes.imgItem}
           style={{
-            backgroundImage: `url("/svgs/backgrounds/launch-pad.svg")`,
+            backgroundImage: `url("/images/backgrounds/launch-pad.png")`,
           }}
         />
       </Carousel>

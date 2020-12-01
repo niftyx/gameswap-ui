@@ -46,27 +46,27 @@ export const TrendingGames = (props: IProps) => {
     {
       id: "rhwf",
       title: "SkyFall 3",
-      backgroundImage: "/svgs/backgrounds/skyfall.svg",
+      backgroundImage: "/images/backgrounds/skyfall.png",
     },
     {
       id: "34535",
       title: "Cyberpunk Assault",
-      backgroundImage: "/svgs/backgrounds/cyber-assault.svg",
+      backgroundImage: "/images/backgrounds/cyber-assault.png",
     },
     {
       id: "23424",
       title: "No Man's Sky",
-      backgroundImage: "/svgs/backgrounds/no-mans-sky.svg",
+      backgroundImage: "/images/backgrounds/no-mans-sky.png",
     },
     {
       id: "i6i",
       title: "Horizon Zero Dawn",
-      backgroundImage: "/svgs/backgrounds/horizon.svg",
+      backgroundImage: "/images/backgrounds/horizon.png",
     },
     {
       id: "ne5",
       title: "Test",
-      backgroundImage: "/svgs/backgrounds/no-mans-sky.svg",
+      backgroundImage: "/images/backgrounds/no-mans-sky.png",
     },
   ];
 

@@ -273,3 +273,10 @@ declare global {
     ethereum: ExternalProvider | JsonRpcFetchFunc;
   }
 }
+
+export interface IFaqNavBarItem {
+  id: string;
+  title: string;
+  href?: string;
+  children?: IFaqNavBarItem[];
+}

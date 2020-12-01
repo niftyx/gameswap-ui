@@ -125,7 +125,7 @@ export const HeroSection = (props: IProps) => {
       <div
         className={classes.imgItem}
         style={{
-          backgroundImage: `url("/svgs/backgrounds/profile.svg")`,
+          backgroundImage: `url("/images/backgrounds/profile.png")`,
         }}
       />
       <Typography className={classes.title} component="div">

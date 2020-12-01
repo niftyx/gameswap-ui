@@ -37,6 +37,25 @@ const useCommonStyles = makeStyles((theme) => ({
       opacity: 1,
     },
   },
+  hideBelowWide: {
+    [theme.breakpoints.down("sm")]: {
+      display: "none !important",
+    },
+  },
+  showBelowWide: {
+    [theme.breakpoints.up("md")]: {
+      display: "none !important",
+    },
+  },
+  maxHeightTransition: {
+    overflow: "hidden",
+    maxHeight: 0,
+    transition: "max-height 0.5s cubic-bezier(0, 1, 0, 1)",
+    "&.visible": {
+      maxHeight: 2000,
+      transition: "max-height 1s ease-in-out",
+    },
+  },
 }));
 
 export default useCommonStyles;

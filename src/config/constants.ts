@@ -121,7 +121,7 @@ export const MockFeaturedFarms: IFeaturedFarmItem[] = [
     description: "First asymmetrical multiplayer horror game.",
     tokenDescription: "ERC-20 / ERC-721",
     isFavorite: true,
-    backgroundImage: "/svgs/backgrounds/daylight.svg",
+    backgroundImage: "/images/backgrounds/daylight.png",
   },
   {
     id: "292vvv",
@@ -129,7 +129,7 @@ export const MockFeaturedFarms: IFeaturedFarmItem[] = [
     description: "Continuation of the hit previously released - Resident Evil",
     tokenDescription: "ERC-721",
     isFavorite: true,
-    backgroundImage: "/svgs/backgrounds/resident.svg",
+    backgroundImage: "/images/backgrounds/resident.png",
   },
   {
     id: "29wfe4",
@@ -137,7 +137,7 @@ export const MockFeaturedFarms: IFeaturedFarmItem[] = [
     description: "Play the demo version!",
     tokenDescription: "ERC-1555",
     isFavorite: false,
-    backgroundImage: "/svgs/backgrounds/battlefield.svg",
+    backgroundImage: "/images/backgrounds/battlefield.png",
   },
 ];
 

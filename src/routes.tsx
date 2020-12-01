@@ -38,6 +38,11 @@ const routes = [
     path: "/browse/featured",
     component: lazy(() => import("pages/BrowsePage")),
   },
+  {
+    exact: false,
+    path: "/faq",
+    component: lazy(() => import("pages/FaqPage")),
+  },
 ];
 
 const renderRoutes = () => {

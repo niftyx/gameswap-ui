@@ -12,7 +12,7 @@ import { ReactComponent as LogoSvg } from "assets/svgs/logo.svg";
 import clsx from "clsx";
 import { BackNextGroup } from "components";
 import React from "react";
-import { Link as RouterLink, useHistory } from "react-router-dom";
+import { NavLink, matchPath, useHistory } from "react-router-dom";
 
 import AccountInfoBar from "../AccountInfoBar";
 import LaunchPad from "../LaunchPad";
@@ -51,8 +51,12 @@ const useStyles = makeStyles((theme) => ({
     fontSize: theme.custom.header.navItem.fontSize,
     lineHeight: theme.custom.header.navItem.lineHeight,
     fontWeight: theme.custom.header.navItem.fontWeight,
+    transition: "all 0.5s",
     "& + &": {
       marginLeft: theme.spacing(2),
+    },
+    "&.active": {
+      color: theme.colors.background.fourth,
     },
   },
   divider: {
@@ -82,12 +86,15 @@ const Header = ({ className, ...rest }: AppBarProps) => {
   const onBack = () => {
     history.go(-1);
   };
+  const isActivePath = (path: string) =>
+    !!matchPath(history.location.pathname, { path, exact: false });
+
   return (
     <AppBar className={clsx(classes.root, className)} color="default" {...rest}>
       <Toolbar className={classes.toolbar}>
-        <RouterLink className={classes.logoWrapper} to="/">
+        <NavLink className={classes.logoWrapper} to="/">
           <LogoSvg className={classes.logo} />
-        </RouterLink>
+        </NavLink>
         <div className={classes.toolbarRight}>
           <Hidden mdDown>
             <BackNextGroup onBack={onBack} onNext={onNext} />
@@ -99,7 +106,7 @@ const Header = ({ className, ...rest }: AppBarProps) => {
             <Link
               className={classes.link}
               color="textSecondary"
-              component={RouterLink}
+              component={NavLink}
               to="/trade"
               underline="none"
               variant="body2"
@@ -109,7 +116,7 @@ const Header = ({ className, ...rest }: AppBarProps) => {
             <Link
               className={classes.link}
               color="textSecondary"
-              component={RouterLink}
+              component={NavLink}
               to="/browse"
               underline="none"
               variant="body2"
@@ -119,12 +126,22 @@ const Header = ({ className, ...rest }: AppBarProps) => {
             <Link
               className={classes.link}
               color="textSecondary"
-              component={RouterLink}
+              component={NavLink}
               to="/launch-pad"
               underline="none"
               variant="body2"
             >
               LAUNCHPAD
+            </Link>
+            <Link
+              className={classes.link}
+              color="textSecondary"
+              component={NavLink}
+              to="/faq"
+              underline="none"
+              variant="body2"
+            >
+              FAQ
             </Link>
           </Box>
           <Hidden mdDown>
