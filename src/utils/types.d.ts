@@ -42,6 +42,7 @@ declare module "@material-ui/core/styles/createMuiTheme" {
         seventh: string;
         eighth: string;
         ninth: string;
+        tenth: string;
       };
       text: {
         default: string;
@@ -110,6 +111,7 @@ declare module "@material-ui/core/styles/createMuiTheme" {
         seventh: string;
         eighth: string;
         ninth: string;
+        tenth: string;
       };
       text: {
         default: string;
@@ -279,4 +281,9 @@ export interface IFaqNavBarItem {
   title: string;
   href?: string;
   children?: IFaqNavBarItem[];
+}
+
+export interface IGlobalData {
+  itemCartIds: string[];
+  inventoryCartIds: string[];
 }

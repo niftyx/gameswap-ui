@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   },
   navItem: {
     userSelect: "none",
-    padding: `${theme.spacing(1.5)}px 0`,
+    padding: theme.spacing(1.5),
     display: "block",
     textDecoration: "none",
     color: theme.colors.text.seventh,
@@ -46,8 +46,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   overEffect: {
-    paddingLeft: theme.spacing(1.5),
-    paddingRight: theme.spacing(1.5),
+    paddingLeft: theme.spacing(3),
     "&:hover": {
       color: theme.colors.text.default,
       backgroundColor: transparentize(0.6, theme.colors.text.default),

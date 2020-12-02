@@ -1,5 +1,4 @@
 export { default as LoadingScreen } from "./LoadingScreen";
-export { default as PageContainer } from "./PageContainer";
 export { default as NoWallet } from "./NoWallet";
 export * from "./Asset";
 export * from "./Toolbar";
@@ -13,3 +12,4 @@ export * from "./Tag";
 export * from "./Activity";
 export * from "./Marker";
 export * from "./Modal";
+export * from "./Container";

@@ -15,11 +15,8 @@ import clsx from "classnames";
 import { ConnectWalletModal } from "components";
 import { STORAGE_KEY_CONNECTOR } from "config/constants";
 import { TokenEthereum, getToken } from "config/networks";
-import {
-  useConnectedWeb3Context,
-  useEthBalance,
-  useGSwapBalance,
-} from "contexts";
+import { useConnectedWeb3Context } from "contexts";
+import { useEthBalance, useGSwapBalance } from "helpers";
 import { transparentize } from "polished";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";

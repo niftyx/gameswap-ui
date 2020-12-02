@@ -10,12 +10,9 @@ import clsx from "classnames";
 import { ProfileMarker } from "components/Marker";
 import { GSWAP_PRICE_DECIMALS } from "config/constants";
 import { getToken } from "config/networks";
-import {
-  useConnectedWeb3Context,
-  useGSwapBalance,
-  useGSwapPrice,
-} from "contexts";
+import { useConnectedWeb3Context } from "contexts";
 import { BigNumber } from "ethers";
+import { useGSwapBalance, useGSwapPrice } from "helpers";
 import { transparentize } from "polished";
 import React from "react";
 import useCommonStyles from "styles/common";

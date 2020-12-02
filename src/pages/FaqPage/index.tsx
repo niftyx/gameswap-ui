@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: theme.spacing(1),
     padding: theme.spacing(1),
     "& > * + *": {
-      marginLeft: theme.spacing(1.5),
+      marginLeft: theme.spacing(0.5),
     },
     [theme.breakpoints.down("sm")]: {
       "& > * + *": {
