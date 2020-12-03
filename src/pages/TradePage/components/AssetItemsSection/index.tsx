@@ -1,6 +1,11 @@
 import { makeStyles } from "@material-ui/core";
 import clsx from "classnames";
 import { AssetItem, AssetsContainer, AssetsToolbar } from "components";
+import {
+  CartContentItem,
+  CartContentWrapper,
+  CartEmpty,
+} from "components/Cart";
 import { MOCK_ASSET_ITEMS } from "config/constants";
 import { useGlobal } from "contexts";
 import React, { useState } from "react";
@@ -25,6 +30,7 @@ interface IState {
 const AssetItemsSection = (props: IProps) => {
   const classes = useStyles();
   const {
+    clearItemCart,
     data: { itemCartIds },
     isInItemCart,
     toggleItemCart,
@@ -40,8 +46,38 @@ const AssetItemsSection = (props: IProps) => {
     totalPrice = totalPrice + element.usdPrice;
   });
 
-  const renderCartContent = () => {
-    return <div>Cart</div>;
+  const onTrade = () => {};
+  const onClear = () => {
+    clearItemCart();
+  };
+
+  const renderCartContent = ({ handleClose }: { handleClose?: () => void }) => {
+    const itemsCount = selectedItems.length;
+    return (
+      <>
+        {!itemsCount ? (
+          <CartEmpty />
+        ) : (
+          <CartContentWrapper
+            itemsCount={itemsCount}
+            onClear={() => {
+              if (handleClose) handleClose();
+              onClear();
+            }}
+            onTrade={onTrade}
+            totalPrice={totalPrice}
+          >
+            {selectedItems.map((item: IAssetItem) => (
+              <CartContentItem
+                data={item}
+                key={item.id}
+                onRemove={() => toggleItemCart(item.id)}
+              />
+            ))}
+          </CartContentWrapper>
+        )}
+      </>
+    );
   };
 
   return (

@@ -30,8 +30,8 @@ const useStyles = makeStyles((theme) => ({
     flex: 1,
     color: theme.colors.text.third,
   },
+  cartWrapper: { cursor: "pointer" },
   cart: {
-    cursor: "pointer",
     color: theme.colors.text.third,
     transition: "all 0.3s",
     "&:hover": {
@@ -39,6 +39,9 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   cartPopover: {
+    overflowY: "hidden",
+  },
+  cartPopoverContent: {
     width: "36vw",
     maxWidth: theme.spacing(60),
   },
@@ -48,7 +51,11 @@ interface IProps {
   className?: string;
   cartItemCount: number;
   totalPrice: number;
-  renderCartContent: () => React.ReactNode | React.ReactNode[];
+  renderCartContent: ({
+    handleClose,
+  }: {
+    handleClose?: () => void;
+  }) => React.ReactNode | React.ReactNode[];
 }
 
 const AssetsToolbar = (props: IProps) => {
@@ -72,15 +79,19 @@ const AssetsToolbar = (props: IProps) => {
 
   return (
     <div className={clsx(classes.root, props.className)}>
-      <Badge badgeContent={cartItemCount} color="primary">
-        <CartIcon className={classes.cart} onClick={handleClick as any} />
-      </Badge>
+      <div className={classes.cartWrapper} onClick={handleClick as any}>
+        <Badge badgeContent={cartItemCount} color="primary">
+          <CartIcon className={classes.cart} />
+        </Badge>
+      </div>
+
       <Popover
         anchorEl={anchorEl}
         anchorOrigin={{
           vertical: "bottom",
           horizontal: "left",
         }}
+        className={classes.cartPopover}
         id={id}
         open={open}
         transformOrigin={{
@@ -89,11 +100,11 @@ const AssetsToolbar = (props: IProps) => {
         }}
       >
         <NoteContainer
-          className={classes.cartPopover}
+          className={classes.cartPopoverContent}
           onClose={handleClose}
           title="You receive"
         >
-          {props.renderCartContent()}
+          {props.renderCartContent({ handleClose })}
         </NoteContainer>
       </Popover>
       <Typography align="left" className={classes.balance} component="div">

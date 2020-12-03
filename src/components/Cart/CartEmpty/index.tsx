@@ -6,7 +6,7 @@ import React from "react";
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(2),
-    minHeight: theme.spacing(40),
+    minHeight: theme.spacing(30),
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",

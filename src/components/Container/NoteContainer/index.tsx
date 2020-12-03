@@ -8,6 +8,7 @@ const useStyles = makeStyles((theme) => ({
     padding: `${theme.spacing(2)}px ${theme.spacing(2)}px`,
     borderRadius: theme.spacing(0.5),
     backgroundColor: theme.colors.background.tenth,
+    userSelect: "none",
   },
   header: {
     position: "relative",

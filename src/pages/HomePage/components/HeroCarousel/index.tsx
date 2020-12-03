@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",
     backgroundPositionX: "center",
-    opacity: 0.6,
+    opacity: 0.3,
   },
   comments: {
     position: "absolute",

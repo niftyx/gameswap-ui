@@ -15,6 +15,8 @@ const GlobalContext = createContext({
   toggleInventoryCart: (_: string) => {},
   isInItemCart: (_: string) => {},
   isInInventoryCart: (_: string) => {},
+  clearItemCart: () => {},
+  clearInventoryCart: () => {},
 });
 
 /**
@@ -82,6 +84,20 @@ export const GlobalProvider = ({ children }: IProps) => {
     return currentData.inventoryCartIds.includes(cartId);
   };
 
+  const clearItemCart = () => {
+    setCurrentData((prevData) => ({
+      ...prevData,
+      itemCartIds: [],
+    }));
+  };
+
+  const clearInventoryCart = () => {
+    setCurrentData((prevData) => ({
+      ...prevData,
+      inventoryCartIds: [],
+    }));
+  };
+
   return (
     <GlobalContext.Provider
       value={{
@@ -91,6 +107,8 @@ export const GlobalProvider = ({ children }: IProps) => {
         toggleItemCart,
         isInInventoryCart,
         isInItemCart,
+        clearInventoryCart,
+        clearItemCart,
       }}
     >
       {children}

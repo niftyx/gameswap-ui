@@ -1,5 +1,6 @@
 import { Button, Typography, makeStyles } from "@material-ui/core";
 import clsx from "classnames";
+import { useConnectedWeb3Context } from "contexts";
 import { transparentize } from "polished";
 import React from "react";
 import useCommonStyles from "styles/common";
@@ -8,27 +9,45 @@ import { numberWithCommas } from "utils";
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(1),
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
+    userSelect: "none",
   },
   content: {
-    minHeight: theme.spacing(30),
-    maxHeight: theme.spacing(40),
+    maxHeight: theme.spacing(30),
+    overflowY: "auto",
+    marginBottom: theme.spacing(1),
+    paddingRight: theme.spacing(0.5),
   },
   bottom: {},
-  bottomNotice: {},
+  bottomNotice: {
+    padding: `${theme.spacing(1.5)}px ${theme.spacing(1)}px`,
+    borderRadius: theme.spacing(0.5),
+    backgroundColor: transparentize(0.9, theme.colors.text.default),
+    "& > * + *": {
+      marginTop: theme.spacing(1),
+    },
+  },
   bottomRow: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
   },
-  itemsText: {},
-  totalComment: {},
-  totalPrice: {},
-  tradeButton: {},
-  clearButton: {},
+  itemsText: {
+    color: transparentize(0.5, theme.colors.text.default),
+    fontSize: theme.spacing(1.75),
+  },
+  totalComment: {
+    color: transparentize(0.3, theme.colors.text.default),
+    fontSize: theme.spacing(2),
+  },
+  totalPrice: {
+    color: theme.colors.text.default,
+    fontSize: theme.spacing(2.5),
+  },
+  tradeButton: {
+    height: theme.spacing(5),
+    marginTop: theme.spacing(2),
+  },
+  clearButton: { height: theme.spacing(5), marginTop: theme.spacing(3) },
 }));
 
 interface IProps {
@@ -43,6 +62,8 @@ interface IProps {
 export const CartContentWrapper = (props: IProps) => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
+  const { account } = useConnectedWeb3Context();
+  const isConnected = !!account;
 
   return (
     <div className={clsx(classes.root, props.className)}>
@@ -71,7 +92,9 @@ export const CartContentWrapper = (props: IProps) => {
         <Button
           className={classes.tradeButton}
           color="secondary"
+          disabled={!isConnected}
           fullWidth
+          onClick={props.onTrade}
           variant="contained"
         >
           TRADE
@@ -80,6 +103,7 @@ export const CartContentWrapper = (props: IProps) => {
           className={classes.clearButton}
           color="secondary"
           fullWidth
+          onClick={props.onClear}
           variant="outlined"
         >
           CLEAR A CART
