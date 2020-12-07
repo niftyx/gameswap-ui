@@ -1,5 +1,6 @@
 import {
   Badge,
+  Box,
   Hidden,
   Popover,
   Typography,
@@ -26,12 +27,10 @@ const useStyles = makeStyles((theme) => ({
       marginLeft: theme.spacing(2.5),
     },
   },
-  balance: {
-    flex: 1,
-    color: theme.colors.text.third,
-  },
-  cartWrapper: { cursor: "pointer" },
-  cart: {
+  cartWrapper: {
+    cursor: "pointer",
+    display: "flex",
+    alignItems: "center",
     color: theme.colors.text.third,
     transition: "all 0.3s",
     "&:hover": {
@@ -81,8 +80,12 @@ const AssetsToolbar = (props: IProps) => {
     <div className={clsx(classes.root, props.className)}>
       <div className={classes.cartWrapper} onClick={handleClick as any}>
         <Badge badgeContent={cartItemCount} color="primary">
-          <CartIcon className={classes.cart} />
+          <CartIcon />
         </Badge>
+        &nbsp;&nbsp;
+        <Typography align="left" component="div">
+          $ {numberWithCommas(totalPrice.toFixed(2))}
+        </Typography>
       </div>
 
       <Popover
@@ -107,9 +110,7 @@ const AssetsToolbar = (props: IProps) => {
           {props.renderCartContent({ handleClose })}
         </NoteContainer>
       </Popover>
-      <Typography align="left" className={classes.balance} component="div">
-        $ {numberWithCommas(totalPrice.toFixed(2))}
-      </Typography>
+      <Box flex={1} />
       <Hidden lgDown>
         <SearchInput />
       </Hidden>
