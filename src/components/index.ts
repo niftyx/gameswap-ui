@@ -13,3 +13,6 @@ export * from "./Activity";
 export * from "./Marker";
 export * from "./Modal";
 export * from "./Container";
+export * from "./Guard";
+export * from "./Text";
+export * from "./Form";

@@ -255,10 +255,11 @@ export interface INetwork {
   url: string;
   contracts: {
     gswap: string;
+    erc721: string;
   };
 }
 
-export type NetworkId = 1 | 4;
+export type NetworkId = 1 | 4 | 42;
 
 export type KnownContracts = keyof INetwork["contracts"];
 
@@ -286,4 +287,10 @@ export interface IFaqNavBarItem {
 export interface IGlobalData {
   itemCartIds: string[];
   inventoryCartIds: string[];
+}
+
+export interface IIPFSConfig {
+  host: string;
+  port: number | string;
+  protocol: string;
 }

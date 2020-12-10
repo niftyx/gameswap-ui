@@ -26,13 +26,14 @@
     "axios": "^0.21.0",
     "classnames": "^2.2.6",
     "ethers": "^5.0.22",
-    "formik": "^2.2.3",
+    "formik": "^2.2.5",
     "highcharts": "^8.2.2",
     "highcharts-react-official": "^3.0.0",
     "history": "^5.0.0",
     "i18next": "^19.8.3",
     "i18next-browser-languagedetector": "^6.0.1",
     "i18next-http-backend": "^1.0.21",
+    "ipfs-mini": "^1.1.5",
     "lodash": "^4.17.20",
     "logdown": "^3.3.1",
     "moment": "^2.29.1",
@@ -48,7 +49,8 @@
     "slick-carousel": "^1.8.1",
     "styled-components": "^5.2.1",
     "typescript": "^4.0.5",
-    "web-vitals": "^0.2.4"
+    "web-vitals": "^0.2.4",
+    "yup": "^0.32.6"
   },
   "scripts": {
     "start": "react-scripts start",

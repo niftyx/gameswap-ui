@@ -1,15 +1,13 @@
 import axios from "axios";
-import { GSWAP_PRICE_DECIMALS } from "config/constants";
+import { ETH_PRICE_DECIMALS } from "config/constants";
 import { getToken, networkIds } from "config/networks";
 import { ConnectedWeb3Context } from "contexts/connectedWeb3";
 import { BigNumber } from "ethers";
 import { useEffect, useState } from "react";
 
-const defaultGswapPrice = BigNumber.from(
-  0.3 * Math.pow(10, GSWAP_PRICE_DECIMALS)
-);
+const defaultEthPrice = BigNumber.from(0.3 * Math.pow(10, ETH_PRICE_DECIMALS));
 
-export const useGSwapPrice = (
+export const useEthPrice = (
   context: ConnectedWeb3Context
 ): {
   price: BigNumber;
@@ -19,27 +17,22 @@ export const useGSwapPrice = (
   const { account, library: provider, networkId } = context;
   const [price, setPrice] = useState<BigNumber>(BigNumber.from(0));
   const [usd, setUsd] = useState<number>(0);
+
   const fetchPrice = async () => {
     try {
       if (account && networkId) {
         if (networkId === networkIds.MAINNET) {
           const token = getToken(networkId, "gswap");
           const response = (
-            await axios.get(
-              `https://api.coingecko.com/api/v3/coins/ethereum/contract/${token.address}`
-            )
+            await axios.get("https://api.coingecko.com/api/v3/coins/ethereum")
           ).data;
 
           const usdPrice = response["market_data"]["current_price"]["usd"];
-
           setUsd(Number(usdPrice));
-
-          setPrice(
-            BigNumber.from(usdPrice * Math.pow(10, GSWAP_PRICE_DECIMALS))
-          );
+          setPrice(BigNumber.from(usdPrice * Math.pow(10, ETH_PRICE_DECIMALS)));
         } else {
           setUsd(0);
-          setPrice(BigNumber.from(defaultGswapPrice));
+          setPrice(BigNumber.from(defaultEthPrice));
         }
       }
     } catch (error) {

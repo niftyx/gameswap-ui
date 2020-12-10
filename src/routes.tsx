@@ -1,4 +1,4 @@
-import { LoadingScreen } from "components";
+import { AuthGuard, LoadingScreen } from "components";
 import React, { Suspense, lazy } from "react";
 import { Route, Switch } from "react-router-dom";
 
@@ -23,11 +23,7 @@ const routes = [
     path: "/launch-pad",
     component: lazy(() => import("pages/LaunchPadPage")),
   },
-  {
-    exact: true,
-    path: "/profile",
-    component: lazy(() => import("pages/ProfilePage")),
-  },
+
   {
     exact: true,
     path: "/browse",
@@ -45,6 +41,24 @@ const routes = [
   },
 ];
 
+const authRoutes = [
+  {
+    exact: true,
+    path: "/profile",
+    component: lazy(() => import("pages/ProfilePage")),
+  },
+  {
+    exact: true,
+    path: "/create",
+    component: lazy(() => import("pages/CreateHomePage")),
+  },
+  {
+    exact: true,
+    path: "/create/erc721",
+    component: lazy(() => import("pages/CreateERC721Page")),
+  },
+];
+
 const renderRoutes = () => {
   return (
     <Suspense fallback={<LoadingScreen />}>
@@ -52,6 +66,11 @@ const renderRoutes = () => {
         {routes.map((route, i) => {
           return <Route key={i} {...route} />;
         })}
+        <AuthGuard>
+          {authRoutes.map((route, i) => {
+            return <Route key={i} {...route} />;
+          })}
+        </AuthGuard>
       </Switch>
     </Suspense>
   );

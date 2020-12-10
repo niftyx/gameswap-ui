@@ -32,7 +32,7 @@ const MainLayout = (props: IProps & RouteComponentProps) => {
   const commonClasses = useCommonStyles();
   const history = useHistory();
 
-  const hideNavbarRoutes = ["/trade", "/browse", "/faq"];
+  const hideNavbarRoutes = ["/trade", "/browse", "/faq", "/create/erc721"];
 
   const hideNavbar = hideNavbarRoutes
     .map(

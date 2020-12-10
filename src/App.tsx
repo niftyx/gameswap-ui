@@ -2,7 +2,7 @@ import { Web3Provider } from "@ethersproject/providers";
 import { ThemeProvider } from "@material-ui/styles";
 import { Web3ReactProvider } from "@web3-react/core";
 import { LoadingScreen } from "components";
-import { ConnectedWeb3, GlobalProvider } from "contexts";
+import { ConnectedWeb3, GlobalProvider, IpfsProvider } from "contexts";
 import GlobalStyle from "global-styles";
 import { useSettings } from "hooks";
 import { MainLayout } from "layouts";
@@ -34,10 +34,12 @@ function App() {
           <ThemeProvider theme={theme}>
             <Web3ReactProvider getLibrary={getLibrary}>
               <ConnectedWeb3>
-                <BrowserRouter>
-                  <MainLayout>{renderRoutes()}</MainLayout>
-                  <GlobalStyle />
-                </BrowserRouter>
+                <IpfsProvider>
+                  <BrowserRouter>
+                    <MainLayout>{renderRoutes()}</MainLayout>
+                    <GlobalStyle />
+                  </BrowserRouter>
+                </IpfsProvider>
               </ConnectedWeb3>
             </Web3ReactProvider>
           </ThemeProvider>

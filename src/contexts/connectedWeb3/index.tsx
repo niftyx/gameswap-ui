@@ -1,7 +1,7 @@
 import { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
 import { STORAGE_KEY_CONNECTOR } from "config/constants";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import connectors from "utils/connectors";
 import { ConnectorNames } from "utils/enums";
 import { Maybe } from "utils/types";
@@ -11,6 +11,7 @@ export interface ConnectedWeb3Context {
   library: Web3Provider | undefined;
   networkId: number | undefined;
   rawWeb3Context: any;
+  initialized: boolean;
 }
 
 const ConnectedWeb3Context = React.createContext<Maybe<ConnectedWeb3Context>>(
@@ -46,16 +47,26 @@ export const ConnectedWeb3: React.FC = (props) => {
     error,
     library,
   } = context;
+  const [initialized, setInitialized] = useState<boolean>(false);
+
+  const updateInitialized = () => {
+    if (!initialized) setInitialized(true);
+  };
 
   useEffect(() => {
     const connector = localStorage.getItem(STORAGE_KEY_CONNECTOR);
     if (error) {
       localStorage.removeItem(STORAGE_KEY_CONNECTOR);
       deactivate();
+      updateInitialized();
     } else if (connector && Object.keys(connectors).includes(connector)) {
       if (!active) {
-        activate(connectors[connector as ConnectorNames]);
+        activate(connectors[connector as ConnectorNames])
+          .then(() => updateInitialized())
+          .catch(() => updateInitialized());
       }
+    } else {
+      updateInitialized();
     }
 
     // eslint-disable-next-line
@@ -66,6 +77,7 @@ export const ConnectedWeb3: React.FC = (props) => {
     library,
     networkId: chainId,
     rawWeb3Context: context,
+    initialized,
   };
 
   return (

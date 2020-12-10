@@ -12,6 +12,7 @@ import {
 export const networkIds = {
   MAINNET: 1,
   RINKEBY: 4,
+  KOVAN: 42,
 } as const;
 
 const INFURA_PROJECT_ID = "f9df69e5cfef48799e2d20eaa7d15697";
@@ -22,6 +23,7 @@ const networks: { [K in NetworkId]: INetwork } = {
     url: `https://mainnet.infura.io/v3/${INFURA_PROJECT_ID}`,
     contracts: {
       gswap: "0xaac41ec512808d64625576eddd580e7ea40ef8b2",
+      erc721: "0x947161a5d422f95db832121b2946db5a616acf47",
     },
   },
   [networkIds.RINKEBY]: {
@@ -29,6 +31,15 @@ const networks: { [K in NetworkId]: INetwork } = {
     url: `https://rinkeby.infura.io/v3/${INFURA_PROJECT_ID}`,
     contracts: {
       gswap: "0x620C988397fB253ac3D5ef019E167086986f036f",
+      erc721: "0x947161a5d422f95db832121b2946db5a616acf47",
+    },
+  },
+  [networkIds.KOVAN]: {
+    label: "Kovan",
+    url: `https://kovan.infura.io/v3/${INFURA_PROJECT_ID}`,
+    contracts: {
+      gswap: "0xb2c7d27f78bec818391498dc4108ab782d65cd76",
+      erc721: "0x947161a5d422f95db832121b2946db5a616acf47",
     },
   },
 };
@@ -44,6 +55,7 @@ export const knownTokens: { [name in KnownToken]: IKnownTokenData } = {
     addresses: {
       [networkIds.MAINNET]: "0xaac41ec512808d64625576eddd580e7ea40ef8b2",
       [networkIds.RINKEBY]: "0x620C988397fB253ac3D5ef019E167086986f036f",
+      [networkIds.KOVAN]: "0xb2c7d27f78bec818391498dc4108ab782d65cd76",
     },
   },
 };
@@ -140,4 +152,11 @@ export const getContractAddressName = (networkId: number) => {
 export const TokenEthereum = {
   decimals: 18,
   symbol: "ETH",
+  name: "Ethereum",
+};
+
+export const TokenGswap = {
+  decimals: 18,
+  symbol: "GSWAP",
+  name: "Gameswap",
 };

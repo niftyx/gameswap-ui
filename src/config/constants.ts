@@ -12,9 +12,12 @@ import {
   IAssetItem,
   IBrowseGameBidItem,
   IFeaturedFarmItem,
+  IIPFSConfig,
   IPriceFilterItem,
   IUpcomingFarmItem,
 } from "utils/types";
+
+import { TokenEthereum, TokenGswap } from "./networks";
 
 export const STORAGE_KEY_SETTINGS = "settings";
 export const STORAGE_KEY_CONNECTOR = "CONNECTOR";
@@ -22,6 +25,20 @@ export const LOGGER_ID = "gameswap";
 
 export const PRICE_FILTER_COLUMN_COUNT = 20;
 export const GSWAP_PRICE_DECIMALS = 10;
+export const ETH_PRICE_DECIMALS = 10;
+
+export const SERVICE_FEE = Number(process.env.REACT_APP_SERVICE_FEE || 0.025);
+export const SERVICE_FEE_IN_PERCENT = SERVICE_FEE * 100;
+
+export const IPFS_CONFIG: IIPFSConfig = {
+  host: process.env.REACT_APP_IPFS_HOST || "ipfs.infura.io",
+  port: process.env.REACT_APP_IPFS_PORT || 5001,
+  protocol: process.env.REACT_APP_IPFS_PROTOCOL || "https",
+};
+
+export const IPFS_IMAGE_ENDPOINT = `${IPFS_CONFIG.protocol}://${IPFS_CONFIG.host}:${IPFS_CONFIG.port}/api/v0/cat/`;
+
+export const SALE_TOKENS = [TokenEthereum, TokenGswap];
 
 export const MOCK_ASSET_ITEMS: IAssetItem[] = [
   {
