@@ -30,7 +30,6 @@ export enum ECreateStep {
 
 interface IState {
   formValues?: IFormValues;
-  step: ECreateStep;
   visible: boolean;
 }
 
@@ -39,7 +38,6 @@ const CreateERC721Page = () => {
   const history = useHistory();
 
   const [state, setState] = useState<IState>({
-    step: ECreateStep.ApproveAll,
     visible: false,
   });
 
@@ -52,7 +50,6 @@ const CreateERC721Page = () => {
       ...prevState,
       formValues,
       visible: true,
-      step: ECreateStep.ApproveAll,
     }));
   };
 
@@ -74,7 +71,6 @@ const CreateERC721Page = () => {
           <ERC721ProgressModal
             formValues={state.formValues}
             onClose={onCloseModal}
-            step={state.step}
             steps={
               state.formValues.instantSale
                 ? (Object.values(ECreateStep) as Array<ECreateStep>)

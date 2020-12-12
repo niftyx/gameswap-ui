@@ -4,11 +4,11 @@ import IPFS from "ipfs-mini";
 import _ from "lodash";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
-const IpfsContext = createContext({
-  ipfs: null,
-});
-
 const ipfsInstance = new (IPFS as any)(IPFS_CONFIG);
+
+const IpfsContext = createContext({
+  ipfs: ipfsInstance,
+});
 
 /**
  * This hook can only be used by components under the `GlobalProvider` component. Otherwise it will throw.

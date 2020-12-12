@@ -55,6 +55,7 @@ declare module "@material-ui/core/styles/createMuiTheme" {
         negative: string;
         arrowUp: string;
         arrowDown: string;
+        error: string;
       };
       activity: {
         bg: {
@@ -124,6 +125,7 @@ declare module "@material-ui/core/styles/createMuiTheme" {
         negative: string;
         arrowUp: string;
         arrowDown: string;
+        error: string;
       };
       activity: {
         bg: {
@@ -242,6 +244,14 @@ export interface IToken {
   address: string;
   decimals: number;
   symbol: string;
+  image?: string;
+  volume?: string;
+}
+
+export interface IERC721Token {
+  address: string;
+  symbol: string;
+  name: string;
   image?: string;
   volume?: string;
 }

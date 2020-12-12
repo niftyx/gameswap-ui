@@ -25,6 +25,8 @@ import { useEthPrice, useGSwapPrice } from "helpers";
 import React from "react";
 import * as Yup from "yup";
 
+import { ERC721Preview } from "../ERC721Preview";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -314,7 +316,9 @@ export const ERC721CreateForm = (props: IProps) => {
                 Create item
               </Button>
             </div>
-            <div className={classes.right}>Right</div>
+            <div className={classes.right}>
+              <ERC721Preview data={values} />
+            </div>
           </div>
         </Form>
       )}

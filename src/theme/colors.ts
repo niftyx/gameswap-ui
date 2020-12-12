@@ -43,6 +43,7 @@ const colors = [
         negative: "#f28230",
         arrowUp: "#09B783",
         arrowDown: "#B94733",
+        error: "#f44336",
       },
       activity: {
         bg: {
@@ -99,6 +100,7 @@ const colors = [
         negative: "#f28230",
         arrowUp: "#09B783",
         arrowDown: "#B94733",
+        error: "#f44336",
       },
       activity: {
         bg: {
