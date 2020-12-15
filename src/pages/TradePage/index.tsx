@@ -1,6 +1,8 @@
 import { Hidden, makeStyles } from "@material-ui/core";
 import clsx from "classnames";
 import { PageContainer, TradeFilter } from "components";
+import { useConnectedWeb3Context } from "contexts";
+import { useInventoryAssets } from "helpers";
 import React from "react";
 import useCommonStyles from "styles/common";
 
@@ -34,13 +36,29 @@ const useStyles = makeStyles((theme) => ({
 const TradePage = () => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
+  const { account } = useConnectedWeb3Context();
+  const {
+    assets: inventoryAssets,
+    hasMore: hasMoreInventoryItems,
+    loadMore: loadMoreInventoryItems,
+    loading: inventoryLoading,
+  } = useInventoryAssets({
+    id: account || "",
+  });
 
   return (
     <PageContainer>
-      <Hidden mdDown>
+      <Hidden smDown>
         <div className={classes.content}>
           <InventorySection
+            assets={inventoryAssets}
             className={clsx(classes.inventory, commonClasses.scroll)}
+            loading={inventoryLoading}
+            onScrollEnd={
+              !inventoryLoading && hasMoreInventoryItems
+                ? loadMoreInventoryItems
+                : () => {}
+            }
           />
           <TradeFilter className={classes.filter} />
           <AssetItemsSection

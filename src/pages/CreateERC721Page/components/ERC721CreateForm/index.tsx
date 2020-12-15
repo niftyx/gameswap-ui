@@ -18,10 +18,9 @@ import {
   SERVICE_FEE,
   SERVICE_FEE_IN_PERCENT,
 } from "config/constants";
-import { TokenEthereum, TokenGswap } from "config/networks";
-import { useConnectedWeb3Context } from "contexts";
+import { TokenEthereum, TokenGswap } from "config/constants";
+import { useConnectedWeb3Context, useGlobal } from "contexts";
 import { Form, Formik } from "formik";
-import { useEthPrice, useGSwapPrice } from "helpers";
 import React from "react";
 import * as Yup from "yup";
 
@@ -96,13 +95,21 @@ const initialFormValue: IFormValues = {
 export const ERC721CreateForm = (props: IProps) => {
   const classes = useStyles();
   const context = useConnectedWeb3Context();
-  const { usd: gswapPrice } = useGSwapPrice(context);
-  const { usd: ethPrice } = useEthPrice(context);
+  const {
+    data: {
+      price: {
+        eth: { usd: ethPrice },
+        gswap: { usd: gswapPrice },
+      },
+    },
+  } = useGlobal();
 
   const usdPrices = {
     [TokenEthereum.symbol]: ethPrice,
     [TokenGswap.symbol]: gswapPrice,
   };
+
+  const isWalletConnected = !!context.account;
 
   return (
     <Formik
@@ -309,11 +316,11 @@ export const ERC721CreateForm = (props: IProps) => {
               <Button
                 className={clsx(classes.button)}
                 color="primary"
-                disabled={!isValid || isSubmitting}
+                disabled={!isValid || isSubmitting || !isWalletConnected}
                 type="submit"
                 variant="contained"
               >
-                Create item
+                {isWalletConnected ? "Create item" : "Please Connect Wallet"}
               </Button>
             </div>
             <div className={classes.right}>

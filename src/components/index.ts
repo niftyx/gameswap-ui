@@ -1,5 +1,6 @@
 export { default as LoadingScreen } from "./LoadingScreen";
 export { default as NoWallet } from "./NoWallet";
+export { default as Loader } from "./Loader";
 export * from "./Asset";
 export * from "./Toolbar";
 export * from "./Filter";

@@ -155,11 +155,17 @@ export interface ISettings {
 
 export interface IAssetItem {
   id: string;
+  tokenId?: BigNumber;
+  tokenURL?: string;
   name: string;
+  description?: string;
   image: string;
+  createTimeStamp?: number;
   usdPrice: number;
   gswapPrice: BigNumber;
   priceChange: number;
+  attributes?: [{ [key: string]: string }];
+  base64?: string;
 }
 
 export interface ISideMenuGroupHeaderItem {
@@ -263,13 +269,15 @@ export type KnownToken = "gswap";
 export interface INetwork {
   label: string;
   url: string;
+  graphHttpUri: string;
+  graphWsUri: string;
   contracts: {
     gswap: string;
     erc721: string;
   };
 }
 
-export type NetworkId = 1 | 4 | 42;
+export type NetworkId = 1 | 42;
 
 export type KnownContracts = keyof INetwork["contracts"];
 
@@ -297,6 +305,16 @@ export interface IFaqNavBarItem {
 export interface IGlobalData {
   itemCartIds: string[];
   inventoryCartIds: string[];
+  price: {
+    eth: {
+      usd: number;
+      price: BigNumber;
+    };
+    gswap: {
+      usd: number;
+      price: BigNumber;
+    };
+  };
 }
 
 export interface IIPFSConfig {

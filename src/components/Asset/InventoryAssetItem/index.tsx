@@ -1,12 +1,19 @@
 import { Button, Grid, Typography, makeStyles } from "@material-ui/core";
 import { IconAssetPlaceholder, IconCartInCircle } from "assets/icons";
 import { ReactComponent as GswapIcon } from "assets/svgs/gameswap_token.svg";
+import axios from "axios";
 import clsx from "classnames";
+import { BigNumber } from "ethers";
+import { useAssetDetailsFromInventoryItem } from "helpers";
 import { transparentize } from "polished";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useCommonStyles from "styles/common";
+import { IGraphInventoryAsset, IIPFSTokenData } from "types";
 import { formatBigNumber, numberWithCommas } from "utils";
+import { getLogger } from "utils/logger";
 import { IAssetItem } from "utils/types";
+
+const logger = getLogger("InventoryAssetItem::");
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -36,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
     bottom: 0,
     right: 0,
     position: "absolute",
-    zIndex: 99,
+    zIndex: 10,
     padding: theme.spacing(1),
   },
   content: {
@@ -102,7 +109,7 @@ const useStyles = makeStyles((theme) => ({
   moreWrapper: {
     opacity: 0,
     position: "absolute",
-    zIndex: 1,
+    zIndex: 11,
     outlineOffset: -1,
     width: "100%",
     transform: "translate3d(0, -110%, 0)",
@@ -115,7 +122,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface IProps {
-  data: IAssetItem;
+  data: IGraphInventoryAsset;
   className?: string;
   isFullWidth?: boolean;
   onClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
@@ -125,9 +132,11 @@ interface IProps {
 
 interface IState {
   loaded: boolean;
+  asset?: IAssetItem | null;
+  base64?: string | null;
 }
 
-const AssetItem = (props: IProps) => {
+const InventoryAssetItem = (props: IProps) => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
   const {
@@ -138,9 +147,7 @@ const AssetItem = (props: IProps) => {
     onToggleCart,
   } = props;
 
-  const [state, setState] = useState<IState>({ loaded: false });
-  const setLoaded = (loaded: boolean) =>
-    setState((prevState) => ({ ...prevState, loaded }));
+  const { asset, loaded } = useAssetDetailsFromInventoryItem(data);
 
   const respnsive = isFullWidth
     ? { xl: 2, lg: 2, md: 4, xs: 6 }
@@ -153,7 +160,7 @@ const AssetItem = (props: IProps) => {
       {...(respnsive as any)}
     >
       <div className={classes.contentContainer}>
-        {!state.loaded && (
+        {!loaded && (
           <div className={classes.placeholder}>
             <IconAssetPlaceholder />
           </div>
@@ -163,42 +170,20 @@ const AssetItem = (props: IProps) => {
             classes.content,
             "asset_item__content",
             commonClasses.fadeAnimation,
-            state.loaded ? "visible" : ""
+            loaded ? "visible" : ""
           )}
           onClick={onToggleCart}
         >
-          {state.loaded && isOnCart && (
+          {loaded && isOnCart && (
             <div className={classes.cartWrapper}>
               <IconCartInCircle />
             </div>
           )}
-          <img
-            alt="asset_img"
-            className={classes.img}
-            onLoad={() => setLoaded(true)}
-            src={data.image}
-          />
-          <div className={classes.bottom}>
-            <Typography className={classes.usd} component="div">
-              ${numberWithCommas(data.usdPrice)}
-            </Typography>
-            <div className={classes.gswap}>
-              <GswapIcon />
-              <Typography className={classes.gswapValue} component="div">
-                {formatBigNumber(data.gswapPrice, 2)}
-              </Typography>
-            </div>
-          </div>
-          <div
-            className={clsx(
-              classes.percentWrapper,
-              data.priceChange < 0 ? "positive" : "negative"
-            )}
-          >
-            {data.priceChange}
-          </div>
+          {asset && asset.base64 && (
+            <img alt="asset_img" className={classes.img} src={asset.base64} />
+          )}
         </div>
-        {state.loaded && (
+        {loaded && (
           <div
             className={clsx(classes.moreWrapper, "asset_item__more_wrapper")}
           >
@@ -218,4 +203,4 @@ const AssetItem = (props: IProps) => {
   );
 };
 
-export default AssetItem;
+export default InventoryAssetItem;

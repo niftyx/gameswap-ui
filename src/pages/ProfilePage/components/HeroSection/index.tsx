@@ -8,11 +8,11 @@ import {
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import clsx from "classnames";
 import { ProfileMarker } from "components/Marker";
-import { GSWAP_PRICE_DECIMALS } from "config/constants";
+import { PRICE_DECIMALS } from "config/constants";
 import { getToken } from "config/networks";
-import { useConnectedWeb3Context } from "contexts";
+import { useConnectedWeb3Context, useGlobal } from "contexts";
 import { BigNumber } from "ethers";
-import { useGSwapBalance, useGSwapPrice } from "helpers";
+import { useGSwapBalance } from "helpers";
 import { transparentize } from "polished";
 import React from "react";
 import useCommonStyles from "styles/common";
@@ -108,14 +108,20 @@ export const HeroSection = (props: IProps) => {
   const { account, networkId } = context;
   const gSwapToken = getToken(networkId || 1, "gswap");
   const { balance: gswapBalance } = useGSwapBalance(context);
-  const { price } = useGSwapPrice(context);
+  const {
+    data: {
+      price: {
+        gswap: { price },
+      },
+    },
+  } = useGlobal();
   const formattedGswapBalance = numberWithCommas(
     formatBigNumber(gswapBalance, gSwapToken.decimals)
   );
 
   const usdBalance = BigNumber.from(gswapBalance).mul(price);
   const formattedUsdBalance = numberWithCommas(
-    formatBigNumber(usdBalance, gSwapToken.decimals + GSWAP_PRICE_DECIMALS)
+    formatBigNumber(usdBalance, gSwapToken.decimals + PRICE_DECIMALS)
   );
 
   return (

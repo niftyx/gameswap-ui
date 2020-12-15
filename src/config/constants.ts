@@ -1,6 +1,6 @@
 import { ReactComponent as MacIcon } from "assets/svgs/mac.svg";
 import { ReactComponent as WindowsIcon } from "assets/svgs/windows.svg";
-import { BigNumber } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import {
   EActivityType,
   EBrowseGameBidItemStatus,
@@ -17,15 +17,17 @@ import {
   IUpcomingFarmItem,
 } from "utils/types";
 
-import { TokenEthereum, TokenGswap } from "./networks";
-
 export const STORAGE_KEY_SETTINGS = "settings";
 export const STORAGE_KEY_CONNECTOR = "CONNECTOR";
 export const LOGGER_ID = "gameswap";
 
 export const PRICE_FILTER_COLUMN_COUNT = 20;
-export const GSWAP_PRICE_DECIMALS = 10;
-export const ETH_PRICE_DECIMALS = 10;
+export const PRICE_DECIMALS = 10;
+export const DEFAULT_USD = Number(0);
+export const DEFAULT_PRICE = ethers.utils.parseUnits(
+  DEFAULT_USD.toString(),
+  PRICE_DECIMALS
+);
 
 export const SERVICE_FEE = Number(process.env.REACT_APP_SERVICE_FEE || 0.025);
 export const SERVICE_FEE_IN_PERCENT = SERVICE_FEE * 100;
@@ -36,9 +38,39 @@ export const IPFS_CONFIG: IIPFSConfig = {
   protocol: process.env.REACT_APP_IPFS_PROTOCOL || "https",
 };
 
+export const GRAPH_MAINNET_HTTP =
+  process.env.REACT_APP_GRAPH_MAINNET_HTTP ||
+  "https://api.thegraph.com/subgraphs/name/liaojikunwork/gameswapsubgraphkovan";
+export const GRAPH_MAINNET_WS =
+  process.env.REACT_APP_GRAPH_MAINNET_WS ||
+  "https://api.thegraph.com/subgraphs/name/liaojikunwork/gameswapsubgraphkovan";
+export const GRAPH_KOVAN_HTTP =
+  process.env.REACT_APP_GRAPH_KOVAN_HTTP ||
+  "https://api.thegraph.com/subgraphs/name/liaojikunwork/gameswapsubgraphkovan";
+export const GRAPH_KOVAN_WS =
+  process.env.REACT_APP_GRAPH_KOVAN_WS ||
+  "https://api.thegraph.com/subgraphs/name/liaojikunwork/gameswapsubgraphkovan";
+
 export const IPFS_IMAGE_ENDPOINT = `${IPFS_CONFIG.protocol}://${IPFS_CONFIG.host}:${IPFS_CONFIG.port}/api/v0/cat/`;
 
+export const INFURA_PROJECT_ID =
+  process.env.REACT_APP_INFURA_PROJECT_ID || "f9df69e5cfef48799e2d20eaa7d15697";
+
+export const TokenEthereum = {
+  decimals: 18,
+  symbol: "ETH",
+  name: "Ethereum",
+};
+
+export const TokenGswap = {
+  decimals: 18,
+  symbol: "GSWAP",
+  name: "Gameswap",
+};
+
 export const SALE_TOKENS = [TokenEthereum, TokenGswap];
+
+export const INVENTORY_PAGE_ASSET_COUNT = 20;
 
 export const MOCK_ASSET_ITEMS: IAssetItem[] = [
   {
