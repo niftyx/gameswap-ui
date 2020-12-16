@@ -1,17 +1,12 @@
-import {
-  CircularProgress,
-  IconButton,
-  Modal,
-  Typography,
-  makeStyles,
-} from "@material-ui/core";
+import { getContractAddressesForChainOrThrow } from "@0x/contract-addresses";
+import { IconButton, Modal, Typography, makeStyles } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import clsx from "classnames";
+import { CommentLoader } from "components";
 import { IPFS_IMAGE_ENDPOINT } from "config/constants";
 import { useConnectedWeb3Context, useIpfs } from "contexts";
 import { BigNumber } from "ethers";
 import { useContracts } from "helpers";
-import { transparentize } from "polished";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import useCommonStyles from "styles/common";
@@ -58,19 +53,6 @@ const useStyles = makeStyles((theme) => ({
       marginTop: theme.spacing(2),
     },
   },
-  loadWrapper: {
-    textAlign: "center",
-  },
-  loadTitle: {
-    fontSize: theme.spacing(3),
-    color: theme.colors.text.default,
-    textAlign: "center",
-  },
-  loadDescription: {
-    fontSize: theme.spacing(2.5),
-    color: transparentize(0.3, theme.colors.text.default),
-    textAlign: "center",
-  },
 }));
 
 interface IProps {
@@ -103,9 +85,10 @@ export const ERC721ProgressModal = (props: IProps) => {
   const commonClasses = useCommonStyles();
   const { ipfs } = useIpfs();
   const context = useConnectedWeb3Context();
-  const { account } = context;
+  const { account, networkId } = context;
   const { erc721 } = useContracts(context);
-  const erc721Address = erc721.address;
+  const erc721ProxyAddress = getContractAddressesForChainOrThrow(networkId || 1)
+    .erc721Proxy;
 
   const { formValues, onClose, steps, visible } = props;
   const history = useHistory();
@@ -135,12 +118,16 @@ export const ERC721ProgressModal = (props: IProps) => {
 
   const loadInitialData = async () => {
     try {
-      const isApprovedAll = await erc721.isApprovedForAll(
-        account || "",
-        erc721Address
-      );
+      let isApprovedAll: boolean;
 
-      logger.log("isApprovedAll", isApprovedAll);
+      if (formValues.instantSale) {
+        isApprovedAll = await erc721.isApprovedForAll(
+          account || "",
+          erc721ProxyAddress
+        );
+
+        logger.log("isApprovedAll", isApprovedAll);
+      }
 
       const imageURI = await uploadJsonToIPFS(formValues.image);
 
@@ -154,9 +141,10 @@ export const ERC721ProgressModal = (props: IProps) => {
         approvedAll: isApprovedAll,
         initialApprovedAll: isApprovedAll,
         currentStep: ECurrentStep.Steps,
-        followStep: isApprovedAll
-          ? ECreateStep.UploadFiles
-          : ECreateStep.ApproveAll,
+        followStep:
+          isApprovedAll || !formValues.instantSale
+            ? ECreateStep.UploadFiles
+            : ECreateStep.ApproveAll,
       }));
     } catch (error) {
       logger.error(error);
@@ -185,7 +173,7 @@ export const ERC721ProgressModal = (props: IProps) => {
   const approveAll = async () => {
     try {
       setState((prevState) => ({ ...prevState, error: "", isLoading: true }));
-      await erc721.approveForAll(erc721Address, true);
+      await erc721.approveForAll(erc721ProxyAddress, true);
       setState((prevState) => ({
         ...prevState,
         error: "",
@@ -287,13 +275,7 @@ export const ERC721ProgressModal = (props: IProps) => {
     <Modal disableBackdropClick onClose={onClose} open={visible}>
       <div className={clsx(classes.root, commonClasses.scroll)}>
         {state.currentStep === ECurrentStep.Loading ? (
-          <div className={classes.loadWrapper}>
-            <CircularProgress />
-            <Typography className={classes.loadTitle}>Loading...</Typography>
-            <Typography className={classes.loadDescription}>
-              Your NFT is being deploying...
-            </Typography>
-          </div>
+          <CommentLoader />
         ) : (
           <>
             <div className={classes.header}>

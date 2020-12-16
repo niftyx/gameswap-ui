@@ -14,11 +14,11 @@ const defaultData: IGlobalData = {
   itemCartIds: [],
   inventoryCartIds: [],
   price: {
-    eth: {
+    gswap: {
       usd: DEFAULT_USD,
       price: DEFAULT_PRICE,
     },
-    gswap: {
+    weth: {
       usd: DEFAULT_USD,
       price: DEFAULT_PRICE,
     },
@@ -73,19 +73,26 @@ const fetchGSwapPrice = async (): Promise<{
   }
 };
 
-const fetchEthPrice = async (): Promise<{ usd: number; price: BigNumber }> => {
+const fetchWEthPrice = async (): Promise<{
+  usd: number;
+  price: BigNumber;
+}> => {
   try {
+    const token = getToken(1, "weth");
     const response = (
-      await axios.get("https://api.coingecko.com/api/v3/coins/ethereum")
+      await axios.get(
+        `https://api.coingecko.com/api/v3/coins/ethereum/contract/${token.address}`
+      )
     ).data;
 
     const usdPrice = response["market_data"]["current_price"]["usd"];
+
     return {
       usd: Number(usdPrice),
       price: ethers.utils.parseUnits(String(usdPrice), PRICE_DECIMALS),
     };
   } catch (error) {
-    logger.error("fetchEthPrice::", error);
+    logger.error("fetchGSwapPrice::", error);
     return { usd: DEFAULT_USD, price: DEFAULT_PRICE };
   }
 };
@@ -95,30 +102,30 @@ interface IProps {
 }
 
 export const GlobalProvider = ({ children }: IProps) => {
-  const [currentData, setCurrentData] = useState(defaultData);
+  const [currentData, setCurrentData] = useState<IGlobalData>(defaultData);
 
   const fetchPrices = async (): Promise<void> => {
     try {
-      const [ethResult, gswapResult] = await Promise.all([
-        fetchEthPrice(),
+      const [gswapResult, wethResult] = await Promise.all([
         fetchGSwapPrice(),
+        fetchWEthPrice(),
       ]);
       setCurrentData((prevCurrentData) => ({
         ...prevCurrentData,
         price: {
-          eth: ethResult,
           gswap: gswapResult,
+          weth: wethResult,
         },
       }));
     } catch (error) {
       setCurrentData((prevCurrentData) => ({
         ...prevCurrentData,
         price: {
-          eth: {
+          gswap: {
             usd: DEFAULT_USD,
             price: DEFAULT_PRICE,
           },
-          gswap: {
+          weth: {
             usd: DEFAULT_USD,
             price: DEFAULT_PRICE,
           },

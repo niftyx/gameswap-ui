@@ -1,4 +1,4 @@
-import LoadingScreen from "components/LoadingScreen";
+import { LoadingScreen } from "components";
 import { useConnectedWeb3Context } from "contexts";
 import React from "react";
 import { Redirect } from "react-router-dom";

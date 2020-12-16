@@ -4,12 +4,12 @@ import {
   AssetsContainer,
   InventoryAssetItem,
   InventoryToolbar,
-  Loader,
   NoWallet,
+  SimpleLoader,
 } from "components";
-import { MOCK_ASSET_ITEMS } from "config/constants";
-import { useConnectedWeb3Context } from "contexts";
+import { useConnectedWeb3Context, useTrade } from "contexts";
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import { IGraphInventoryAsset } from "types";
 import { IAssetItem } from "utils/types";
 
@@ -43,6 +43,8 @@ const InventorySection = (props: IProps) => {
   const [state, setState] = useState<IState>({ selectedId: "" });
   const { account } = useConnectedWeb3Context();
   const isConnected = !!account;
+  const history = useHistory();
+  const { openSellModal } = useTrade();
 
   const handleScroll = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
     const bottom =
@@ -51,6 +53,10 @@ const InventorySection = (props: IProps) => {
     if (bottom) {
       onScrollEnd();
     }
+  };
+
+  const onSell = (asset: IAssetItem) => {
+    openSellModal(asset);
   };
 
   return (
@@ -64,11 +70,16 @@ const InventorySection = (props: IProps) => {
           <div className={classes.assets}>
             <AssetsContainer>
               {assets.map((asset) => (
-                <InventoryAssetItem data={asset} key={asset.id} />
+                <InventoryAssetItem
+                  data={asset}
+                  key={asset.id}
+                  onClick={onSell}
+                  onMore={() => history.push(`/trade/${asset.id}`)}
+                />
               ))}
             </AssetsContainer>
           </div>
-          {loading && <Loader />}
+          {loading && <SimpleLoader />}
         </>
       ) : (
         <div className={classes.noWallet}>

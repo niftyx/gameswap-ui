@@ -22,7 +22,6 @@ const logger = getLogger("ConnectWalletModal::Index");
 const useStyles = makeStyles((theme) => ({
   modal: {
     display: "flex",
-
     alignItems: "center",
     justifyContent: "center",
   },

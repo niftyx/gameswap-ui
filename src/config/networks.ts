@@ -31,6 +31,7 @@ const networks: { [K in NetworkId]: INetwork } = {
     contracts: {
       gswap: "0xaac41ec512808d64625576eddd580e7ea40ef8b2",
       erc721: "0x947161a5d422f95db832121b2946db5a616acf47",
+      weth: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
     },
   },
   [networkIds.KOVAN]: {
@@ -41,6 +42,7 @@ const networks: { [K in NetworkId]: INetwork } = {
     contracts: {
       gswap: "0xb2c7d27f78bec818391498dc4108ab782d65cd76",
       erc721: "0x947161a5d422f95db832121b2946db5a616acf47",
+      weth: "0xd0a1e359811322d97991e03f863a0c30c2cf029c",
     },
   },
 };
@@ -56,6 +58,14 @@ export const knownTokens: { [name in KnownToken]: IKnownTokenData } = {
     addresses: {
       [networkIds.MAINNET]: "0xaac41ec512808d64625576eddd580e7ea40ef8b2",
       [networkIds.KOVAN]: "0xb2c7d27f78bec818391498dc4108ab782d65cd76",
+    },
+  },
+  weth: {
+    symbol: "WETH",
+    decimals: 18,
+    addresses: {
+      [networkIds.MAINNET]: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+      [networkIds.KOVAN]: "0xd0a1e359811322d97991e03f863a0c30c2cf029c",
     },
   },
 };
@@ -77,7 +87,7 @@ const validNetworkId = (networkId: number): networkId is NetworkId => {
 export const getContractAddress = (
   networkId: number,
   contract: KnownContracts
-) => {
+): string => {
   if (!validNetworkId(networkId)) {
     throw new Error(`Unsupported network id: '${networkId}'`);
   }

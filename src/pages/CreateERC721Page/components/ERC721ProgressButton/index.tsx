@@ -6,6 +6,7 @@ import {
 } from "@material-ui/core";
 import DoneIcon from "@material-ui/icons/Done";
 import clsx from "classnames";
+import { ErrorText } from "components";
 import { transparentize } from "polished";
 import React from "react";
 
@@ -33,10 +34,6 @@ const useStyles = makeStyles((theme) => ({
   },
   description: {
     color: transparentize(0.3, theme.colors.text.default),
-    fontSize: theme.spacing(2),
-  },
-  error: {
-    color: theme.colors.text.error,
     fontSize: theme.spacing(2),
   },
   button: {
@@ -89,9 +86,7 @@ export const ERC721ProgressButton = (props: IProps) => {
           <Typography className={classes.description}>{description}</Typography>
         </div>
       </div>
-      {errorText && (
-        <Typography className={classes.error}>{errorText}</Typography>
-      )}
+      <ErrorText error={errorText} />
       <Button
         className={classes.button}
         color="primary"

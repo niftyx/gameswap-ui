@@ -1,3 +1,5 @@
+import { ContractWrappers } from "@0x/contract-wrappers";
+import { Web3Wrapper } from "@0x/web3-wrapper";
 import { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
 import { STORAGE_KEY_CONNECTOR } from "config/constants";
@@ -5,14 +7,18 @@ import React, { useEffect, useState } from "react";
 import connectors from "utils/connectors";
 import { ConnectorNames } from "utils/enums";
 import { Maybe } from "utils/types";
-
 export interface ConnectedWeb3Context {
   account: Maybe<string> | null;
   library: Web3Provider | undefined;
   networkId: number | undefined;
   rawWeb3Context: any;
   initialized: boolean;
+  web3Wrapper: Web3Wrapper | null;
+  contractWrappers: ContractWrappers | null;
 }
+
+let web3Wrapper: Web3Wrapper | null = null;
+let contractWrappers: ContractWrappers | null = null;
 
 const ConnectedWeb3Context = React.createContext<Maybe<ConnectedWeb3Context>>(
   null
@@ -68,9 +74,20 @@ export const ConnectedWeb3: React.FC = (props) => {
     } else {
       updateInitialized();
     }
-
     // eslint-disable-next-line
   }, [context, library, active, error]);
+
+  useEffect(() => {
+    if (!library) {
+      web3Wrapper = null;
+      contractWrappers = null;
+    } else {
+      web3Wrapper = new Web3Wrapper(library);
+      contractWrappers = new ContractWrappers(web3Wrapper.getProvider(), {
+        chainId: chainId || 1,
+      });
+    }
+  }, [library]);
 
   const value = {
     account: account || null,
@@ -78,6 +95,8 @@ export const ConnectedWeb3: React.FC = (props) => {
     networkId: chainId,
     rawWeb3Context: context,
     initialized,
+    web3Wrapper,
+    contractWrappers,
   };
 
   return (

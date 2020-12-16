@@ -1,6 +1,13 @@
 import { Theme } from "@material-ui/core/styles/createMuiTheme";
+import { knownTokens } from "config/networks";
 import { BigNumber } from "ethers";
-import { EBrowseGameBidItemStatus, EFarmingTag, EPlatform } from "./enums";
+
+import {
+  EBrowseGameBidItemStatus,
+  EFarmingTag,
+  EPlatform,
+  ESellBuy,
+} from "./enums";
 declare module "@material-ui/core/styles/createMuiTheme" {
   interface Theme {
     custom: {
@@ -153,6 +160,11 @@ export interface ISettings {
   responsiveFontSizes: boolean;
 }
 
+export interface ITokenAmount {
+  amount: BigNumber;
+  token: IToken;
+}
+
 export interface IAssetItem {
   id: string;
   tokenId?: BigNumber;
@@ -166,6 +178,7 @@ export interface IAssetItem {
   priceChange: number;
   attributes?: [{ [key: string]: string }];
   base64?: string;
+  price?: ITokenAmount;
 }
 
 export interface ISideMenuGroupHeaderItem {
@@ -264,7 +277,7 @@ export interface IERC721Token {
 
 export type Maybe<T> = T | null;
 
-export type KnownToken = "gswap";
+export type KnownToken = "gswap" | "weth";
 
 export interface INetwork {
   label: string;
@@ -274,6 +287,7 @@ export interface INetwork {
   contracts: {
     gswap: string;
     erc721: string;
+    weth: string;
   };
 }
 
@@ -306,11 +320,11 @@ export interface IGlobalData {
   itemCartIds: string[];
   inventoryCartIds: string[];
   price: {
-    eth: {
+    gswap: {
       usd: number;
       price: BigNumber;
     };
-    gswap: {
+    weth: {
       usd: number;
       price: BigNumber;
     };
@@ -321,4 +335,9 @@ export interface IIPFSConfig {
   host: string;
   port: number | string;
   protocol: string;
+}
+
+export interface ITradeData {
+  asset?: IAssetItem | null;
+  mode: ESellBuy;
 }

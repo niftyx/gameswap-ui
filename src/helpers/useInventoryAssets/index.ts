@@ -1,4 +1,3 @@
-import { gql, useQuery } from "@apollo/react-hooks";
 import axios from "axios";
 import { INVENTORY_PAGE_ASSET_COUNT } from "config/constants";
 import { getGraphUris } from "config/networks";

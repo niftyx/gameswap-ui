@@ -7,6 +7,7 @@ import {
   ConnectedWeb3,
   GlobalProvider,
   IpfsProvider,
+  TradeProvider,
 } from "contexts";
 import GlobalStyle from "global-styles";
 import { useSettings } from "hooks";
@@ -42,7 +43,9 @@ function App() {
                 <IpfsProvider>
                   <ApolloProviderWrapper>
                     <BrowserRouter>
-                      <MainLayout>{renderRoutes()}</MainLayout>
+                      <MainLayout>
+                        <TradeProvider>{renderRoutes()}</TradeProvider>
+                      </MainLayout>
                       <GlobalStyle />
                     </BrowserRouter>
                   </ApolloProviderWrapper>

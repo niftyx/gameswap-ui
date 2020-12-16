@@ -1,6 +1,5 @@
-export { default as LoadingScreen } from "./LoadingScreen";
 export { default as NoWallet } from "./NoWallet";
-export { default as Loader } from "./Loader";
+
 export * from "./Asset";
 export * from "./Toolbar";
 export * from "./Filter";
@@ -17,3 +16,4 @@ export * from "./Container";
 export * from "./Guard";
 export * from "./Text";
 export * from "./Form";
+export * from "./Loader";

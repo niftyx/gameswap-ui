@@ -125,31 +125,18 @@ interface IProps {
   data: IGraphInventoryAsset;
   className?: string;
   isFullWidth?: boolean;
-  onClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
-  onToggleCart?: () => void;
-  isOnCart?: boolean;
-}
-
-interface IState {
-  loaded: boolean;
-  asset?: IAssetItem | null;
-  base64?: string | null;
+  onClick?: (_: IAssetItem) => void;
+  onMore?: () => void;
 }
 
 const InventoryAssetItem = (props: IProps) => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
-  const {
-    data,
-    isFullWidth = false,
-    isOnCart = false,
-    onClick,
-    onToggleCart,
-  } = props;
+  const { data, isFullWidth = false, onClick, onMore } = props;
 
   const { asset, loaded } = useAssetDetailsFromInventoryItem(data);
 
-  const respnsive = isFullWidth
+  const responsive = isFullWidth
     ? { xl: 2, lg: 2, md: 4, xs: 6 }
     : { xl: 3, lg: 4, md: 6, xs: 6 };
 
@@ -157,7 +144,7 @@ const InventoryAssetItem = (props: IProps) => {
     <Grid
       className={clsx(classes.root, props.className)}
       item
-      {...(respnsive as any)}
+      {...(responsive as any)}
     >
       <div className={classes.contentContainer}>
         {!loaded && (
@@ -172,13 +159,10 @@ const InventoryAssetItem = (props: IProps) => {
             commonClasses.fadeAnimation,
             loaded ? "visible" : ""
           )}
-          onClick={onToggleCart}
+          onClick={() => {
+            if (asset && onClick) onClick(asset);
+          }}
         >
-          {loaded && isOnCart && (
-            <div className={classes.cartWrapper}>
-              <IconCartInCircle />
-            </div>
-          )}
           {asset && asset.base64 && (
             <img alt="asset_img" className={classes.img} src={asset.base64} />
           )}
@@ -191,7 +175,7 @@ const InventoryAssetItem = (props: IProps) => {
               className={classes.moreButton}
               color="secondary"
               fullWidth
-              onClick={onClick as any}
+              onClick={onMore as any}
               variant="contained"
             >
               More Info

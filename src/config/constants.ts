@@ -56,6 +56,17 @@ export const IPFS_IMAGE_ENDPOINT = `${IPFS_CONFIG.protocol}://${IPFS_CONFIG.host
 export const INFURA_PROJECT_ID =
   process.env.REACT_APP_INFURA_PROJECT_ID || "f9df69e5cfef48799e2d20eaa7d15697";
 
+export const FEE_RECIPIENT_ADDRESS =
+  process.env.REACT_APP_FEE_RECIPIENT_ADDRESS ||
+  "0x18B13ef88822292E59bfF80210D815F7FBFC9b32";
+
+export const RELAYER_URL =
+  process.env.REACT_APP_RELAYER_URL || "https://sra.bamboorelay.com/0x/v3/";
+export const RELAYER_WS_URL =
+  process.env.REACT_APP_RELAYER_WS_URL || "wss://sra.bamboorelay.com/0x/v3/ws";
+
+export const RELAYER_RPS = Number(process.env.REACT_APP_RELAYER_RPS || 5);
+
 export const TokenEthereum = {
   decimals: 18,
   symbol: "ETH",
@@ -70,7 +81,9 @@ export const TokenGswap = {
 
 export const SALE_TOKENS = [TokenEthereum, TokenGswap];
 
-export const INVENTORY_PAGE_ASSET_COUNT = 20;
+export const INVENTORY_PAGE_ASSET_COUNT = Number(
+  process.env.REACT_APP_INVENTORY_PAGE_ASSET_COUNT || 20
+);
 
 export const MOCK_ASSET_ITEMS: IAssetItem[] = [
   {

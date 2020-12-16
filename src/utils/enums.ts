@@ -28,3 +28,16 @@ export enum ConnectorNames {
   WalletConnect = "walletconnect",
   WalletLink = "walletlink",
 }
+
+export enum ESellBuy {
+  Sell,
+  Buy,
+}
+
+export enum ETradeStep {
+  InputPrice,
+  ShowPrice,
+  GetSellApproveInfo,
+  SetSellApproval,
+  SellAsset,
+}

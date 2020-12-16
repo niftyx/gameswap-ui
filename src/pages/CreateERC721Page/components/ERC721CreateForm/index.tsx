@@ -18,10 +18,11 @@ import {
   SERVICE_FEE,
   SERVICE_FEE_IN_PERCENT,
 } from "config/constants";
-import { TokenEthereum, TokenGswap } from "config/constants";
+import { getToken, knownTokens } from "config/networks";
 import { useConnectedWeb3Context, useGlobal } from "contexts";
 import { Form, Formik } from "formik";
 import React from "react";
+import { IToken, KnownToken } from "utils/types";
 import * as Yup from "yup";
 
 import { ERC721Preview } from "../ERC721Preview";
@@ -76,40 +77,44 @@ interface IProps {
   onSubmit: (values: IFormValues) => void;
 }
 
-const initialFormValue: IFormValues = {
-  name: "",
-  description: "",
-  royalties: 10,
-  attributes: [
-    {
-      key: "",
-      value: "",
-    },
-  ],
-  image: "",
-  instantSale: false,
-  salePrice: 3,
-  saleToken: TokenEthereum.symbol,
-};
-
 export const ERC721CreateForm = (props: IProps) => {
   const classes = useStyles();
   const context = useConnectedWeb3Context();
   const {
     data: {
       price: {
-        eth: { usd: ethPrice },
         gswap: { usd: gswapPrice },
+        weth: { usd: wethPrice },
       },
     },
   } = useGlobal();
 
   const usdPrices = {
-    [TokenEthereum.symbol]: ethPrice,
-    [TokenGswap.symbol]: gswapPrice,
+    weth: wethPrice,
+    gswap: gswapPrice,
   };
 
+  const SALE_TOKENS: IToken[] = Object.keys(knownTokens).map((key) =>
+    getToken(context.networkId || 1, key as KnownToken)
+  );
+
   const isWalletConnected = !!context.account;
+
+  const initialFormValue: IFormValues = {
+    name: "",
+    description: "",
+    royalties: 10,
+    attributes: [
+      {
+        key: "",
+        value: "",
+      },
+    ],
+    image: "",
+    instantSale: false,
+    salePrice: 3,
+    saleToken: "",
+  };
 
   return (
     <Formik
@@ -214,8 +219,8 @@ export const ERC721CreateForm = (props: IProps) => {
                             value={values.saleToken}
                           >
                             {SALE_TOKENS.map((e) => (
-                              <MenuItem key={e.symbol} value={e.symbol}>
-                                {e.name}
+                              <MenuItem key={e.address} value={e.address}>
+                                {e.symbol}
                               </MenuItem>
                             ))}
                           </Select>
@@ -238,16 +243,26 @@ export const ERC721CreateForm = (props: IProps) => {
                   <Typography className={classes.notice}>
                     Service fee {SERVICE_FEE_IN_PERCENT}%
                   </Typography>
-                  <Typography className={classes.notice} component="div">
-                    You will receive {values.salePrice}
-                    {values.saleToken}
-                    &nbsp;$
-                    {Number(
-                      values.salePrice *
-                        usdPrices[values.saleToken] *
-                        (1 - SERVICE_FEE)
-                    ).toFixed(2)}
-                  </Typography>
+                  {values.saleToken && (
+                    <Typography className={classes.notice} component="div">
+                      You will receive {values.salePrice}
+                      {
+                        SALE_TOKENS.find(
+                          (token) => token.address === values.saleToken
+                        )?.symbol
+                      }
+                      &nbsp;$
+                      {Number(
+                        values.salePrice *
+                          usdPrices[
+                            SALE_TOKENS.find(
+                              (token) => token.address === values.saleToken
+                            )?.symbol.toLowerCase() as KnownToken
+                          ] *
+                          (1 - SERVICE_FEE)
+                      ).toFixed(2)}
+                    </Typography>
+                  )}
                 </>
               )}
               <FormTextField
@@ -324,7 +339,15 @@ export const ERC721CreateForm = (props: IProps) => {
               </Button>
             </div>
             <div className={classes.right}>
-              <ERC721Preview data={values} />
+              <ERC721Preview
+                data={{
+                  ...values,
+                  saleToken:
+                    SALE_TOKENS.find(
+                      (token) => token.address === values.saleToken
+                    )?.symbol || "",
+                }}
+              />
             </div>
           </div>
         </Form>

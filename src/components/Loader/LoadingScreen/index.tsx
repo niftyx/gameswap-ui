@@ -1,4 +1,4 @@
-import { Box, CircularProgress, makeStyles } from "@material-ui/core";
+import { Box, LinearProgress, makeStyles } from "@material-ui/core";
 import React from "react";
 
 const useStyles = makeStyles((theme) => ({
@@ -6,19 +6,22 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     backgroundColor: theme.palette.background.default,
     display: "flex",
+    flexDirection: "column",
+    height: "100%",
     justifyContent: "center",
-    padding: theme.spacing(2),
+    minHeight: "100%",
+    padding: theme.spacing(3),
   },
 }));
 
-const Loader = () => {
+export const LoadingScreen = () => {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
-      <CircularProgress />
+      <Box width={400}>
+        <LinearProgress />
+      </Box>
     </div>
   );
 };
-
-export default Loader;
