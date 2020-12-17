@@ -15,6 +15,7 @@ import {
   IIPFSConfig,
   IPriceFilterItem,
   IUpcomingFarmItem,
+  NetworkId,
 } from "utils/types";
 
 export const STORAGE_KEY_SETTINGS = "settings";
@@ -60,10 +61,18 @@ export const FEE_RECIPIENT_ADDRESS =
   process.env.REACT_APP_FEE_RECIPIENT_ADDRESS ||
   "0x18B13ef88822292E59bfF80210D815F7FBFC9b32";
 
-export const RELAYER_URL =
-  process.env.REACT_APP_RELAYER_URL || "https://sra.bamboorelay.com/0x/v3/";
-export const RELAYER_WS_URL =
-  process.env.REACT_APP_RELAYER_WS_URL || "wss://sra.bamboorelay.com/0x/v3/ws";
+export const RELAYER_URL: { [key in NetworkId]: string } = {
+  1: process.env.REACT_APP_RELAYER_URL_MAINNET || "https://api.0x.org/sra/v3",
+  42:
+    process.env.REACT_APP_RELAYER_URL_KOVAN ||
+    "https://kovan.api.0x.org/sra/v3",
+};
+export const RELAYER_WS_URL: { [key in NetworkId]: string } = {
+  1: process.env.REACT_APP_RELAYER_WS_URL_MAINNET || "wss://api.0x.org/sra/v3",
+  42:
+    process.env.REACT_APP_RELAYER_WS_URL_KOVAN ||
+    "wss://kovan.api.0x.org/sra/v3",
+};
 
 export const RELAYER_RPS = Number(process.env.REACT_APP_RELAYER_RPS || 5);
 

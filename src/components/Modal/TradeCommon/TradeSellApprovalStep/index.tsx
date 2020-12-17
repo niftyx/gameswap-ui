@@ -38,19 +38,17 @@ export const TradeSellApprovalStep = (props: IProps) => {
   const { onConfirm } = props;
 
   const approveAll = async () => {
-    const { account, networkId } = context;
-    if (!account || !networkId) return;
+    const { account, contractWrappers, networkId } = context;
+    if (!account || !networkId || !contractWrappers) return;
     setState((prevState) => ({
       ...prevState,
       error: "",
       loading: true,
     }));
     try {
-      // get approval information
-      await erc721.approveForAll(
-        getContractAddressesForChainOrThrow(networkId).erc721Proxy,
-        true
-      );
+      const operator = contractWrappers.contractAddresses.erc721Proxy;
+      logger.log("operator::", operator);
+      await erc721.approveForAll(operator, true);
 
       onConfirm();
 

@@ -2,6 +2,7 @@ import axios from "axios";
 import { INVENTORY_PAGE_ASSET_COUNT } from "config/constants";
 import { getGraphUris } from "config/networks";
 import { useConnectedWeb3Context } from "contexts";
+import { BigNumber } from "ethers";
 import { useEffect, useState } from "react";
 import { IGraphInventoryAsset, IGraphInventoryResponse } from "types";
 import { getLogger } from "utils/logger";
@@ -40,6 +41,20 @@ const fetchQuery = (
   endpoint: string
 ) => {
   return axios.post(endpoint, { query, variables });
+};
+
+const wrangleAsset = (asset: {
+  assetId: string;
+  assetURL: string;
+  createTimeStamp: string;
+  id: string;
+}): IGraphInventoryAsset => {
+  return {
+    id: asset.id,
+    assetURL: asset.assetURL,
+    createTimeStamp: Number(asset.createTimeStamp),
+    assetId: BigNumber.from(asset.assetId),
+  };
 };
 
 export const useInventoryAssets = (
@@ -81,7 +96,10 @@ export const useInventoryAssets = (
           hasMore:
             info.assetCount >
             prevState.assets.length + INVENTORY_PAGE_ASSET_COUNT,
-          assets: [...prevState.assets, ...info.assets],
+          assets: [
+            ...prevState.assets,
+            ...info.assets.map((e) => wrangleAsset(e as any)),
+          ],
           loading: false,
         }));
       else setState((prevState) => ({ ...prevState, loading: false }));

@@ -1,3 +1,5 @@
+import { BigNumber } from "ethers";
+
 export interface IGraphInventoryAsset {
   id: string;
   assetId: BigNumber;
@@ -13,6 +15,11 @@ export interface IGraphAccount {
 
 export interface IGraphInventoryResponse {
   account: IGraphAccount & {
-    assets: IGraphInventoryAsset[];
+    assets: {
+      id: string;
+      assetId: string;
+      assetURL: string;
+      createTimeStamp: string;
+    }[];
   };
 }

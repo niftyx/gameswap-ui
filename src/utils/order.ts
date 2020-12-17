@@ -1,52 +1,113 @@
-import { OrderConfigRequest } from "@0x/connect";
-import { Order, SignedOrder, assetDataUtils } from "@0x/order-utils";
-import { BigNumber } from "ethers";
+import {
+  Order,
+  SignedOrder,
+  assetDataUtils,
+  signatureUtils,
+} from "@0x/order-utils";
+import { MetamaskSubprovider } from "@0x/subproviders";
+import { OrderConfigRequest } from "@0x/types";
+import { BigNumber } from "@0x/utils";
+import { FEE_RECIPIENT_ADDRESS } from "config/constants";
+import { getRelayer } from "services/relayer";
 
-import { ESellBuy } from "./enums";
+import { getExpirationTimeOrdersFromConfig } from "./time-utils";
+import { ZERO_ADDRESS } from "./token";
+import { NetworkId } from "./types";
 
 interface BuildSellCollectibleOrderParams {
-  collectibleAddress: string;
-  collectibleId: BigNumber;
+  erc721: string;
+  tokenId: BigNumber;
   account: string;
   amount: BigNumber;
   exchangeAddress: string;
-  expirationDate: BigNumber;
-  wethAddress: string;
+  erc20Address: string;
   price: BigNumber;
 }
 
 export const buildSellCollectibleOrder = async (
   params: BuildSellCollectibleOrderParams,
-  side: ESellBuy
+  networkId: NetworkId,
+  provider: any
 ) => {
   const {
     account,
     amount,
-    collectibleAddress,
-    collectibleId,
+    erc20Address,
+    erc721,
     exchangeAddress,
-    expirationDate,
     price,
-    wethAddress,
+    tokenId,
   } = params;
-  const collectibleData = assetDataUtils.encodeERC721AssetData(
-    collectibleAddress,
-    collectibleId
-  );
-  const wethAssetData = assetDataUtils.encodeERC20AssetData(wethAddress);
+
+  console.log("===params===", params);
+
+  const collectibleData = assetDataUtils.encodeERC721AssetData(erc721, tokenId);
+  const erc20AssetData = assetDataUtils.encodeERC20AssetData(erc20Address);
+
+  // const erc20AssetData = await contractWrappers.devUtils
+  //   .encodeERC20AssetData(erc20Address)
+  //   .callAsync();
+  // const collectibleData = await contractWrappers.devUtils
+  //   .encodeERC721AssetData(erc721, tokenId)
+  //   .callAsync();
 
   const round = (num: BigNumber): BigNumber =>
     num.integerValue(BigNumber.ROUND_FLOOR);
+
+  console.log("==exchangeAddress==", exchangeAddress);
+
   const orderConfigRequest: OrderConfigRequest = {
-    exchangeAddress,
+    exchangeAddress, //: "0x4eacd0aF335451709e1e7B570B8Ea68EdEC8bc97",
     makerAssetData: collectibleData,
-    takerAssetData: wethAssetData,
-    makerAssetAmount:
-      side === OrderSide.Buy ? round(amount.multipliedBy(price)) : amount,
-    takerAssetAmount:
-      side === OrderSide.Buy ? amount : round(amount.multipliedBy(price)),
+    takerAssetData: erc20AssetData,
+    makerAssetAmount: amount,
+    takerAssetAmount: round(amount.multipliedBy(price)),
     makerAddress: account,
     takerAddress: ZERO_ADDRESS,
-    expirationTimeSeconds: expirationDate,
+    expirationTimeSeconds: getExpirationTimeOrdersFromConfig(),
   };
+
+  const client = getRelayer({ networkId });
+  const orderResult = await client.getOrderConfigAsync(orderConfigRequest);
+
+  const order: Order = {
+    ...orderConfigRequest,
+    ...orderResult,
+    chainId: networkId,
+    salt: new BigNumber(Date.now()),
+  };
+
+  // const order: Order = {
+  //   exchangeAddress,
+  //   makerAssetData: collectibleData,
+  //   takerAssetData: erc20AssetData,
+  //   makerAssetAmount: amount,
+  //   takerAssetAmount: round(amount.multipliedBy(price)),
+  //   makerAddress: account,
+  //   takerAddress: ZERO_ADDRESS,
+  //   expirationTimeSeconds: getExpirationTimeOrdersFromConfig(),
+  //   chainId: networkId,
+  //   salt: new BigNumber(Date.now()),
+  //   feeRecipientAddress: FEE_RECIPIENT_ADDRESS,
+  //   makerFee: new BigNumber(0),
+  //   takerFee: new BigNumber(0),
+  //   makerFeeAssetData: erc20AssetData,
+  //   takerFeeAssetData: erc20AssetData,
+  //   senderAddress: ZERO_ADDRESS,
+  // };
+
+  console.log(order);
+
+  return signatureUtils.ecSignOrderAsync(
+    new MetamaskSubprovider(provider),
+    order,
+    account
+  );
+};
+
+export const submitCollectibleOrder = async (
+  signedOrder: SignedOrder,
+  networkId: NetworkId
+) => {
+  return getRelayer({ networkId }).submitOrderAsync(signedOrder);
 };

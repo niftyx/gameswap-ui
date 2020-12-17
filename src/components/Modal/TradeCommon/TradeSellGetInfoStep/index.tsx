@@ -38,8 +38,8 @@ export const TradeSellGetInfoStep = (props: IProps) => {
   const { onConfirm } = props;
 
   const getInfo = async () => {
-    const { account, networkId } = context;
-    if (!account || !networkId) return;
+    const { account, contractWrappers, networkId } = context;
+    if (!account || !networkId || !contractWrappers) return;
     setState((prevState) => ({
       ...prevState,
       error: "",
@@ -47,10 +47,9 @@ export const TradeSellGetInfoStep = (props: IProps) => {
     }));
     try {
       // get approval information
-      const isUnlocked = await erc721.isApprovedForAll(
-        account || "",
-        getContractAddressesForChainOrThrow(networkId).erc721Proxy
-      );
+      const operator = contractWrappers.contractAddresses.erc721Proxy;
+      logger.log("operator::", operator);
+      const isUnlocked = await erc721.isApprovedForAll(account || "", operator);
 
       logger.log("isUnlocked::", isUnlocked);
 

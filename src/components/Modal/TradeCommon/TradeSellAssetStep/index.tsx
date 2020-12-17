@@ -1,13 +1,19 @@
 import { getContractAddressesForChainOrThrow } from "@0x/contract-addresses";
+import { BigNumber } from "@0x/utils";
 import { Button, makeStyles } from "@material-ui/core";
 import clsx from "classnames";
 import { CommentLoader } from "components/Loader";
 import { ErrorText } from "components/Text";
 import { useConnectedWeb3Context } from "contexts";
+import { BigNumber as EthersBigNumber } from "ethers";
 import { useContracts } from "helpers";
 import React, { useEffect, useState } from "react";
+import { getRelayer } from "services/relayer";
+import { ESellBuy } from "utils/enums";
 import { getLogger } from "utils/logger";
-import { IAssetItem } from "utils/types";
+import { buildSellCollectibleOrder, submitCollectibleOrder } from "utils/order";
+import { EthersBigNumberTo0xBigNumber } from "utils/token";
+import { IAssetItem, NetworkId } from "utils/types";
 
 const logger = getLogger("TradeSellAssetStep::");
 
@@ -41,14 +47,42 @@ export const TradeSellAssetStep = (props: IProps) => {
 
   const sellAsset = async () => {
     const { account, networkId } = context;
-    if (!account || !networkId || !asset.price) return;
+    if (
+      !account ||
+      !networkId ||
+      !asset.price ||
+      !asset.tokenId ||
+      !context.library ||
+      !context.contractWrappers
+    )
+      return;
     setState((prevState) => ({
       ...prevState,
       error: "",
       loading: true,
     }));
     try {
-      onConfirm();
+      const signedOrder = await buildSellCollectibleOrder(
+        {
+          erc721: erc721.address,
+          tokenId: EthersBigNumberTo0xBigNumber(asset.tokenId),
+          account: context.account || "",
+          amount: new BigNumber(1),
+          exchangeAddress: context.contractWrappers.exchange.address,
+          erc20Address: asset.price.token.address,
+          price: EthersBigNumberTo0xBigNumber(asset.price.amount),
+        },
+        networkId as NetworkId,
+        context.library.provider
+      );
+      logger.log("signedOrder::", signedOrder);
+      const submitResult = await submitCollectibleOrder(
+        signedOrder,
+        networkId as NetworkId
+      );
+
+      logger.log("submitResult::", submitResult);
+      // onConfirm();
 
       setState((prevState) => ({
         ...prevState,

@@ -3,7 +3,7 @@ import { Web3Wrapper } from "@0x/web3-wrapper";
 import { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
 import { STORAGE_KEY_CONNECTOR } from "config/constants";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import connectors from "utils/connectors";
 import { ConnectorNames } from "utils/enums";
 import { Maybe } from "utils/types";
@@ -77,7 +77,10 @@ export const ConnectedWeb3: React.FC = (props) => {
     // eslint-disable-next-line
   }, [context, library, active, error]);
 
-  useEffect(() => {
+  const xWrappers: {
+    web3Wrapper: Web3Wrapper | null;
+    contractWrappers: ContractWrappers | null;
+  } = useMemo(() => {
     if (!library) {
       web3Wrapper = null;
       contractWrappers = null;
@@ -87,6 +90,7 @@ export const ConnectedWeb3: React.FC = (props) => {
         chainId: chainId || 1,
       });
     }
+    return { web3Wrapper, contractWrappers };
   }, [library]);
 
   const value = {
@@ -95,8 +99,7 @@ export const ConnectedWeb3: React.FC = (props) => {
     networkId: chainId,
     rawWeb3Context: context,
     initialized,
-    web3Wrapper,
-    contractWrappers,
+    ...xWrappers,
   };
 
   return (
