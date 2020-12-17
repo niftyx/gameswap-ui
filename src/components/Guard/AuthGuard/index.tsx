@@ -1,4 +1,3 @@
-import { LoadingScreen } from "components";
 import { useConnectedWeb3Context } from "contexts";
 import React from "react";
 import { Redirect } from "react-router-dom";
@@ -8,10 +7,8 @@ interface IProps {
 }
 
 export const AuthGuard = (props: IProps) => {
-  const { account, initialized } = useConnectedWeb3Context();
-  if (!initialized) {
-    return <LoadingScreen />;
-  }
+  const { account } = useConnectedWeb3Context();
+
   if (!account) {
     return <Redirect to="/" />;
   }

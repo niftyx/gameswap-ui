@@ -1,5 +1,7 @@
 import { makeStyles } from "@material-ui/core";
 import clsx from "classnames";
+import { LoadingScreen } from "components";
+import { useConnectedWeb3Context } from "contexts";
 import React from "react";
 import {
   RouteComponentProps,
@@ -31,6 +33,7 @@ const MainLayout = (props: IProps & RouteComponentProps) => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
   const history = useHistory();
+  const { account, initialized } = useConnectedWeb3Context();
 
   const hideNavbarRoutes = ["/trade", "/browse", "/faq", "/create/erc721"];
 
@@ -55,7 +58,8 @@ const MainLayout = (props: IProps & RouteComponentProps) => {
         )}
       >
         {!hideNavbar && <Navbar />}
-        {props.children}
+
+        {initialized ? props.children : <LoadingScreen />}
       </main>
     </>
   );

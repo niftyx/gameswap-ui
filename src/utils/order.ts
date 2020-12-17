@@ -39,25 +39,14 @@ export const buildSellCollectibleOrder = async (
     tokenId,
   } = params;
 
-  console.log("===params===", params);
-
   const collectibleData = assetDataUtils.encodeERC721AssetData(erc721, tokenId);
   const erc20AssetData = assetDataUtils.encodeERC20AssetData(erc20Address);
-
-  // const erc20AssetData = await contractWrappers.devUtils
-  //   .encodeERC20AssetData(erc20Address)
-  //   .callAsync();
-  // const collectibleData = await contractWrappers.devUtils
-  //   .encodeERC721AssetData(erc721, tokenId)
-  //   .callAsync();
 
   const round = (num: BigNumber): BigNumber =>
     num.integerValue(BigNumber.ROUND_FLOOR);
 
-  console.log("==exchangeAddress==", exchangeAddress);
-
   const orderConfigRequest: OrderConfigRequest = {
-    exchangeAddress, //: "0x4eacd0aF335451709e1e7B570B8Ea68EdEC8bc97",
+    exchangeAddress,
     makerAssetData: collectibleData,
     takerAssetData: erc20AssetData,
     makerAssetAmount: amount,
@@ -96,7 +85,7 @@ export const buildSellCollectibleOrder = async (
   //   senderAddress: ZERO_ADDRESS,
   // };
 
-  console.log(order);
+  console.log("==order==", order);
 
   return signatureUtils.ecSignOrderAsync(
     new MetamaskSubprovider(provider),

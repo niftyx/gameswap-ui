@@ -1,8 +1,8 @@
-import { getContractAddressesForChainOrThrow } from "@0x/contract-addresses";
 import { Button, makeStyles } from "@material-ui/core";
 import clsx from "classnames";
 import { CommentLoader } from "components/Loader";
 import { ErrorText } from "components/Text";
+import { get0xContractAddresses } from "config/networks";
 import { useConnectedWeb3Context } from "contexts";
 import { useContracts } from "helpers";
 import React, { useEffect, useState } from "react";
@@ -46,7 +46,7 @@ export const TradeSellApprovalStep = (props: IProps) => {
       loading: true,
     }));
     try {
-      const operator = contractWrappers.contractAddresses.erc721Proxy;
+      const operator = get0xContractAddresses(networkId).exchange;
       logger.log("operator::", operator);
       await erc721.approveForAll(operator, true);
 

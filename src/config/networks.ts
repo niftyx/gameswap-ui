@@ -1,6 +1,7 @@
 import { getImageUrl } from "utils/token";
 import { entries } from "utils/type-utils";
 import {
+  I0xContractAddresses,
   IKnownTokenData,
   INetwork,
   IToken,
@@ -169,4 +170,26 @@ export const getGraphUris = (
   const httpUri = networks[networkId].graphHttpUri;
   const wsUri = networks[networkId].graphWsUri;
   return { httpUri, wsUri };
+};
+
+const OxContractAddresses: { [key in NetworkId]: I0xContractAddresses } = {
+  [networkIds.MAINNET]: {
+    exchange: "0x61935cbdd02287b511119ddb11aeb42f1593b7ef",
+    erc20Proxy: "0x95e6f48254609a6ee006f7d493c8e5fb97094cef",
+    erc721proxy: "0xefc70a1b18c432bdc64b596838b4d138f6bc6cad",
+  },
+  [networkIds.KOVAN]: {
+    exchange: "0x4eacd0af335451709e1e7b570b8ea68edec8bc97",
+    erc20Proxy: "0xf1ec01d6236d3cd881a0bf0130ea25fe4234003e",
+    erc721proxy: "0x2a9127c745688a165106c11cd4d647d2220af821",
+  },
+};
+
+export const get0xContractAddresses = (
+  networkId: number
+): I0xContractAddresses => {
+  if (!validNetworkId(networkId)) {
+    throw new Error(`Unsupported network id: '${networkId}'`);
+  }
+  return OxContractAddresses[networkId];
 };

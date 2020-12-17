@@ -1,4 +1,3 @@
-import { getContractAddressesForChainOrThrow } from "@0x/contract-addresses";
 import { IconButton, Modal, Typography, makeStyles } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import clsx from "classnames";
@@ -87,8 +86,7 @@ export const ERC721ProgressModal = (props: IProps) => {
   const context = useConnectedWeb3Context();
   const { account, networkId } = context;
   const { erc721 } = useContracts(context);
-  const erc721ProxyAddress = getContractAddressesForChainOrThrow(networkId || 1)
-    .erc721Proxy;
+  const erc721ProxyAddress = "0x2a9127c745688a165106c11cd4d647d2220af821";
 
   const { formValues, onClose, steps, visible } = props;
   const history = useHistory();

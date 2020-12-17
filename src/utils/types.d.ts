@@ -303,6 +303,12 @@ export interface IKnownTokenData {
   };
 }
 
+export interface I0xContractAddresses {
+  exchange: string;
+  erc20Proxy: string;
+  erc721proxy: string;
+}
+
 declare global {
   interface Window {
     ethereum: ExternalProvider | JsonRpcFetchFunc;

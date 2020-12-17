@@ -1,15 +1,12 @@
-import { getContractAddressesForChainOrThrow } from "@0x/contract-addresses";
 import { BigNumber } from "@0x/utils";
 import { Button, makeStyles } from "@material-ui/core";
 import clsx from "classnames";
 import { CommentLoader } from "components/Loader";
 import { ErrorText } from "components/Text";
+import { get0xContractAddresses } from "config/networks";
 import { useConnectedWeb3Context } from "contexts";
-import { BigNumber as EthersBigNumber } from "ethers";
 import { useContracts } from "helpers";
 import React, { useEffect, useState } from "react";
-import { getRelayer } from "services/relayer";
-import { ESellBuy } from "utils/enums";
 import { getLogger } from "utils/logger";
 import { buildSellCollectibleOrder, submitCollectibleOrder } from "utils/order";
 import { EthersBigNumberTo0xBigNumber } from "utils/token";
@@ -68,7 +65,7 @@ export const TradeSellAssetStep = (props: IProps) => {
           tokenId: EthersBigNumberTo0xBigNumber(asset.tokenId),
           account: context.account || "",
           amount: new BigNumber(1),
-          exchangeAddress: context.contractWrappers.exchange.address,
+          exchangeAddress: get0xContractAddresses(networkId).exchange,
           erc20Address: asset.price.token.address,
           price: EthersBigNumberTo0xBigNumber(asset.price.amount),
         },
@@ -82,7 +79,8 @@ export const TradeSellAssetStep = (props: IProps) => {
       );
 
       logger.log("submitResult::", submitResult);
-      // onConfirm();
+
+      onConfirm();
 
       setState((prevState) => ({
         ...prevState,

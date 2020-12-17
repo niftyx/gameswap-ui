@@ -10,6 +10,7 @@ import { AssetProxyId } from "@0x/types";
 import { BigNumber } from "@0x/utils";
 import { RateLimit } from "async-sema";
 import { RELAYER_RPS, RELAYER_URL, RELAYER_WS_URL } from "config/constants";
+import { networkIds } from "config/networks";
 import { tokenAmountInUnitsToBigNumber } from "utils/token";
 import { IToken, NetworkId } from "utils/types";
 
@@ -127,8 +128,8 @@ export class Relayer {
 }
 
 const relayers: { [key in NetworkId]: Relayer } = {
-  1: new Relayer({ networkId: 1 }),
-  42: new Relayer({ networkId: 42 }),
+  [networkIds.MAINNET]: new Relayer({ networkId: networkIds.MAINNET }),
+  [networkIds.KOVAN]: new Relayer({ networkId: networkIds.KOVAN }),
 };
 
 export const getRelayer = ({

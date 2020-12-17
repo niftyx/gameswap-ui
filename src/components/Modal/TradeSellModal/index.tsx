@@ -95,7 +95,7 @@ export const TradeSellModal = (props: IProps) => {
           <TradeSellAssetStep
             asset={asset}
             onConfirm={() => {
-              window.location.reload();
+              // window.location.reload();
             }}
           />
         );
