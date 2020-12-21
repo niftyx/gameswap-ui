@@ -46,7 +46,7 @@ export const TradeSellApprovalStep = (props: IProps) => {
       loading: true,
     }));
     try {
-      const operator = get0xContractAddresses(networkId).exchange;
+      const operator = get0xContractAddresses(networkId).erc721proxy;
       logger.log("operator::", operator);
       await erc721.approveForAll(operator, true);
 

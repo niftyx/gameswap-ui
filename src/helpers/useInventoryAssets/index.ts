@@ -18,6 +18,7 @@ const query = `query GetInventoryAssets($id: ID!, $skip: Int!, $first: Int!) {
         assetId
         assetURL
         createTimeStamp
+        updateTimeStamp
       }
     }
   }
@@ -47,6 +48,7 @@ const wrangleAsset = (asset: {
   assetId: string;
   assetURL: string;
   createTimeStamp: string;
+  updateTimeStamp: string;
   id: string;
 }): IGraphInventoryAsset => {
   return {
@@ -54,6 +56,7 @@ const wrangleAsset = (asset: {
     assetURL: asset.assetURL,
     createTimeStamp: Number(asset.createTimeStamp),
     assetId: BigNumber.from(asset.assetId),
+    updateTimeStamp: Number(asset.updateTimeStamp),
   };
 };
 

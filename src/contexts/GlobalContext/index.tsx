@@ -17,10 +17,12 @@ const defaultData: IGlobalData = {
     gswap: {
       usd: DEFAULT_USD,
       price: DEFAULT_PRICE,
+      decimals: PRICE_DECIMALS,
     },
     weth: {
       usd: DEFAULT_USD,
       price: DEFAULT_PRICE,
+      decimals: PRICE_DECIMALS,
     },
   },
 };
@@ -52,6 +54,7 @@ export const useGlobal = () => {
 const fetchGSwapPrice = async (): Promise<{
   usd: number;
   price: BigNumber;
+  decimals: number;
 }> => {
   try {
     const token = getToken(1, "gswap");
@@ -66,16 +69,18 @@ const fetchGSwapPrice = async (): Promise<{
     return {
       usd: Number(usdPrice),
       price: ethers.utils.parseUnits(String(usdPrice), PRICE_DECIMALS),
+      decimals: PRICE_DECIMALS,
     };
   } catch (error) {
     logger.error("fetchGSwapPrice::", error);
-    return { usd: DEFAULT_USD, price: DEFAULT_PRICE };
+    return { usd: DEFAULT_USD, price: DEFAULT_PRICE, decimals: PRICE_DECIMALS };
   }
 };
 
 const fetchWEthPrice = async (): Promise<{
   usd: number;
   price: BigNumber;
+  decimals: number;
 }> => {
   try {
     const token = getToken(1, "weth");
@@ -90,10 +95,11 @@ const fetchWEthPrice = async (): Promise<{
     return {
       usd: Number(usdPrice),
       price: ethers.utils.parseUnits(String(usdPrice), PRICE_DECIMALS),
+      decimals: PRICE_DECIMALS,
     };
   } catch (error) {
     logger.error("fetchGSwapPrice::", error);
-    return { usd: DEFAULT_USD, price: DEFAULT_PRICE };
+    return { usd: DEFAULT_USD, price: DEFAULT_PRICE, decimals: PRICE_DECIMALS };
   }
 };
 
@@ -124,10 +130,12 @@ export const GlobalProvider = ({ children }: IProps) => {
           gswap: {
             usd: DEFAULT_USD,
             price: DEFAULT_PRICE,
+            decimals: PRICE_DECIMALS,
           },
           weth: {
             usd: DEFAULT_USD,
             price: DEFAULT_PRICE,
+            decimals: PRICE_DECIMALS,
           },
         },
       }));

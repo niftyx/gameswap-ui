@@ -23,7 +23,7 @@ export const STORAGE_KEY_CONNECTOR = "CONNECTOR";
 export const LOGGER_ID = "gameswap";
 
 export const PRICE_FILTER_COLUMN_COUNT = 20;
-export const PRICE_DECIMALS = 10;
+export const PRICE_DECIMALS = 18;
 export const DEFAULT_USD = Number(0);
 export const DEFAULT_PRICE = ethers.utils.parseUnits(
   DEFAULT_USD.toString(),
@@ -37,6 +37,7 @@ export const IPFS_CONFIG: IIPFSConfig = {
   host: process.env.REACT_APP_IPFS_HOST || "ipfs.infura.io",
   port: process.env.REACT_APP_IPFS_PORT || 5001,
   protocol: process.env.REACT_APP_IPFS_PROTOCOL || "https",
+  preload: { enabled: false },
 };
 
 export const GRAPH_MAINNET_HTTP =
@@ -44,13 +45,13 @@ export const GRAPH_MAINNET_HTTP =
   "https://api.thegraph.com/subgraphs/name/liaojikunwork/gameswapsubgraphkovan";
 export const GRAPH_MAINNET_WS =
   process.env.REACT_APP_GRAPH_MAINNET_WS ||
-  "https://api.thegraph.com/subgraphs/name/liaojikunwork/gameswapsubgraphkovan";
+  "wss://api.thegraph.com/subgraphs/name/liaojikunwork/gameswapsubgraphkovan";
 export const GRAPH_KOVAN_HTTP =
   process.env.REACT_APP_GRAPH_KOVAN_HTTP ||
   "https://api.thegraph.com/subgraphs/name/liaojikunwork/gameswapsubgraphkovan";
 export const GRAPH_KOVAN_WS =
   process.env.REACT_APP_GRAPH_KOVAN_WS ||
-  "https://api.thegraph.com/subgraphs/name/liaojikunwork/gameswapsubgraphkovan";
+  "wss://api.thegraph.com/subgraphs/name/liaojikunwork/gameswapsubgraphkovan";
 
 export const IPFS_IMAGE_ENDPOINT = `${IPFS_CONFIG.protocol}://${IPFS_CONFIG.host}:${IPFS_CONFIG.port}/api/v0/cat/`;
 
@@ -94,13 +95,14 @@ export const INVENTORY_PAGE_ASSET_COUNT = Number(
   process.env.REACT_APP_INVENTORY_PAGE_ASSET_COUNT || 20
 );
 
+export const ORDERS_PAGE_COUNT = 20;
+
 export const MOCK_ASSET_ITEMS: IAssetItem[] = [
   {
     id: "Test",
     name: "JetPlane",
     image: "/svgs/mock/1.svg",
     usdPrice: 7240,
-    gswapPrice: BigNumber.from("23"),
     priceChange: -0.127,
   },
   {
@@ -108,7 +110,6 @@ export const MOCK_ASSET_ITEMS: IAssetItem[] = [
     name: "JetPlane",
     image: "/svgs/mock/2.svg",
     usdPrice: 7240,
-    gswapPrice: BigNumber.from("23"),
     priceChange: -0.127,
   },
   {
@@ -116,7 +117,6 @@ export const MOCK_ASSET_ITEMS: IAssetItem[] = [
     name: "JetPlane",
     image: "/svgs/mock/3.svg",
     usdPrice: 7240,
-    gswapPrice: BigNumber.from("23"),
     priceChange: -0.127,
   },
   {
@@ -124,7 +124,7 @@ export const MOCK_ASSET_ITEMS: IAssetItem[] = [
     name: "JetPlane",
     image: "/svgs/mock/4.svg",
     usdPrice: 7240,
-    gswapPrice: BigNumber.from("23"),
+
     priceChange: -0.127,
   },
   {
@@ -132,7 +132,7 @@ export const MOCK_ASSET_ITEMS: IAssetItem[] = [
     name: "JetPlane",
     image: "/svgs/mock/5.svg",
     usdPrice: 7240,
-    gswapPrice: BigNumber.from("23"),
+
     priceChange: -0.127,
   },
   {
@@ -140,7 +140,7 @@ export const MOCK_ASSET_ITEMS: IAssetItem[] = [
     name: "JetPlane",
     image: "/svgs/mock/6.svg",
     usdPrice: 7240,
-    gswapPrice: BigNumber.from("23"),
+
     priceChange: -0.127,
   },
   {
@@ -148,7 +148,7 @@ export const MOCK_ASSET_ITEMS: IAssetItem[] = [
     name: "JetPlane",
     image: "/svgs/mock/7.svg",
     usdPrice: 7240,
-    gswapPrice: BigNumber.from("23"),
+
     priceChange: -0.127,
   },
   {
@@ -156,7 +156,7 @@ export const MOCK_ASSET_ITEMS: IAssetItem[] = [
     name: "JetPlane",
     image: "/svgs/mock/8.svg",
     usdPrice: 7240,
-    gswapPrice: BigNumber.from("23"),
+
     priceChange: -0.127,
   },
   {
@@ -164,7 +164,7 @@ export const MOCK_ASSET_ITEMS: IAssetItem[] = [
     name: "JetPlane",
     image: "/svgs/mock/9.svg",
     usdPrice: 7240,
-    gswapPrice: BigNumber.from("23"),
+
     priceChange: -0.127,
   },
   {
@@ -172,7 +172,7 @@ export const MOCK_ASSET_ITEMS: IAssetItem[] = [
     name: "JetPlane",
     image: "/svgs/mock/10.svg",
     usdPrice: 7240,
-    gswapPrice: BigNumber.from("23"),
+
     priceChange: -0.127,
   },
   {
@@ -180,7 +180,7 @@ export const MOCK_ASSET_ITEMS: IAssetItem[] = [
     name: "JetPlane",
     image: "/svgs/mock/11.svg",
     usdPrice: 7240,
-    gswapPrice: BigNumber.from("23"),
+
     priceChange: -0.127,
   },
 ];

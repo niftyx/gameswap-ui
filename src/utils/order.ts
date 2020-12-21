@@ -7,7 +7,11 @@ import {
 import { MetamaskSubprovider } from "@0x/subproviders";
 import { OrderConfigRequest } from "@0x/types";
 import { BigNumber } from "@0x/utils";
-import { FEE_RECIPIENT_ADDRESS } from "config/constants";
+import {
+  FEE_RECIPIENT_ADDRESS,
+  ORDERS_PAGE_COUNT,
+  RELAYER_URL,
+} from "config/constants";
 import { getRelayer } from "services/relayer";
 
 import { getExpirationTimeOrdersFromConfig } from "./time-utils";
@@ -85,7 +89,7 @@ export const buildSellCollectibleOrder = async (
   //   senderAddress: ZERO_ADDRESS,
   // };
 
-  console.log("==order==", order);
+  console.log("==order=before sign=", order);
 
   return signatureUtils.ecSignOrderAsync(
     new MetamaskSubprovider(provider),
@@ -99,4 +103,39 @@ export const submitCollectibleOrder = async (
   networkId: NetworkId
 ) => {
   return getRelayer({ networkId }).submitOrderAsync(signedOrder);
+};
+
+export const buildOrdersQuery = (
+  networkId: NetworkId,
+  params: {
+    makerAddress?: string;
+    makerAssetProxyId?: string;
+    takerAssetProxyId?: string;
+    makerAssetAddress?: string;
+    takerAssetAddress?: string;
+    makerAssetData?: string;
+    page?: number;
+    perPage?: number;
+  }
+): string => {
+  const endPoint = `${RELAYER_URL[(networkId || 1) as NetworkId]}/orders`;
+  const {
+    makerAssetProxyId = "0x02571792",
+    page = 1,
+    perPage = ORDERS_PAGE_COUNT,
+    takerAssetProxyId = "0xf47261b0",
+  } = params;
+  const finalParams: { [key: string]: string | number | undefined } = {
+    ...params,
+    perPage,
+    page,
+    makerAssetProxyId,
+    takerAssetProxyId,
+  };
+  const query = Object.keys(finalParams)
+    .filter((key) => finalParams[key])
+    .map((key) => `${key}=${encodeURIComponent(String(finalParams[key]))}`)
+    .join("&");
+
+  return `${endPoint}?${query}`;
 };

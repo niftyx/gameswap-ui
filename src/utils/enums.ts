@@ -35,9 +35,15 @@ export enum ESellBuy {
 }
 
 export enum ETradeStep {
+  // Sell
   InputPrice,
   ShowPrice,
   GetSellApproveInfo,
   SetSellApproval,
   SellAsset,
+  // Buy
+  SelectOrder,
+  BuyAsset,
+  // Result
+  Success,
 }

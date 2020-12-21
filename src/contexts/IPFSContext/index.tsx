@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { IPFS_CONFIG } from "config/constants";
 import IPFS from "ipfs-mini";
-import _ from "lodash";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
 const ipfsInstance = new (IPFS as any)(IPFS_CONFIG);

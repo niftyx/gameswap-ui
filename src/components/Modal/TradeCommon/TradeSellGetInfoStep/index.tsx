@@ -47,7 +47,7 @@ export const TradeSellGetInfoStep = (props: IProps) => {
     }));
     try {
       // get approval information
-      const operator = get0xContractAddresses(networkId).exchange;
+      const operator = get0xContractAddresses(networkId).erc721proxy;
       logger.log("operator::", operator);
       const isUnlocked = await erc721.isApprovedForAll(account || "", operator);
 

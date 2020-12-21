@@ -2,11 +2,16 @@ import { Hidden, makeStyles } from "@material-ui/core";
 import clsx from "classnames";
 import { PageContainer, TradeFilter } from "components";
 import { useConnectedWeb3Context } from "contexts";
-import { useInventoryAssets } from "helpers";
+import { useInventoryAssets, useMyOrders } from "helpers";
+import { useAllOrders } from "helpers/useAllOrders";
 import React from "react";
 import useCommonStyles from "styles/common";
+import { getLogger } from "utils/logger";
+import { getObjectIdFromHex } from "utils/tools";
 
 import { AssetItemsSection, InventorySection } from "./components";
+
+const logger = getLogger("TradePage::");
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -46,13 +51,32 @@ const TradePage = () => {
     id: account || "",
   });
 
+  const { orders: myOrders } = useMyOrders();
+
+  const {
+    allLoaded: allOrdersLoaded,
+    loadMore: loadMoreAllOrders,
+    loading: allOrdersLoading,
+    orders: allOrders,
+  } = useAllOrders();
+
+  const myOrderAssetIds = myOrders.map((order) =>
+    getObjectIdFromHex(order.assetId.toHexString())
+  );
+
+  const finalInventoryAssets = inventoryAssets.map((asset) => {
+    const isInSale = myOrderAssetIds.includes(asset.id);
+
+    return { ...asset, isInSale };
+  });
+
   return (
     <PageContainer>
       <Hidden smDown>
         <div className={classes.content}>
           <InventorySection
-            assets={inventoryAssets}
-            className={clsx(classes.inventory, commonClasses.scroll)}
+            assets={finalInventoryAssets}
+            className={clsx(classes.inventory)}
             loading={inventoryLoading}
             onScrollEnd={
               !inventoryLoading && hasMoreInventoryItems
@@ -63,6 +87,13 @@ const TradePage = () => {
           <TradeFilter className={classes.filter} />
           <AssetItemsSection
             className={clsx(classes.assets, commonClasses.scroll)}
+            loading={allOrdersLoading}
+            onScrollEnd={
+              !allOrdersLoading && !allOrdersLoaded
+                ? loadMoreAllOrders
+                : () => {}
+            }
+            orders={allOrders}
           />
         </div>
       </Hidden>

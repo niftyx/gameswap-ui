@@ -73,12 +73,9 @@ export const TradeSellAssetStep = (props: IProps) => {
         context.library.provider
       );
       logger.log("signedOrder::", signedOrder);
-      const submitResult = await submitCollectibleOrder(
-        signedOrder,
-        networkId as NetworkId
-      );
+      await submitCollectibleOrder(signedOrder, networkId as NetworkId);
 
-      logger.log("submitResult::", submitResult);
+      logger.log("submitResult::Success");
 
       onConfirm();
 
@@ -103,6 +100,9 @@ export const TradeSellAssetStep = (props: IProps) => {
   return (
     <div className={clsx(classes.root, props.className)}>
       {state.loading && <CommentLoader comment="Creating a sell order..." />}
+      {!state.loading && !state.error && (
+        <CommentLoader comment="Redirecting..." />
+      )}
       <ErrorText error={state.error} />
       {!state.loading && state.error && (
         <Button

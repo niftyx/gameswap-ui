@@ -1,6 +1,5 @@
-import axios from "axios";
-import { BigNumber } from "ethers";
 import { useEffect, useState } from "react";
+import { getIPFSService } from "services/ipfs";
 import { IGraphInventoryAsset, IIPFSTokenData } from "types";
 import { getLogger } from "utils/logger";
 import { IAssetItem } from "utils/types";
@@ -26,9 +25,10 @@ export const useAssetDetailsFromInventoryItem = (
     const loadAssetDetails = async () => {
       try {
         const details: IIPFSTokenData = JSON.parse(
-          (await axios.get(data.assetURL)).data
+          (await getIPFSService().getData(data.assetURL)).data
         );
-        const base64: string = (await axios.get(details.image)).data;
+        const base64: string = (await getIPFSService().getData(details.image))
+          .data;
         setState((prevState) => ({
           ...prevState,
           asset: {
@@ -39,8 +39,8 @@ export const useAssetDetailsFromInventoryItem = (
             ...details,
             priceChange: 0,
             usdPrice: 0,
-            gswapPrice: BigNumber.from(0),
             base64,
+            isInSale: data.isInSale,
           },
           loaded: true,
         }));

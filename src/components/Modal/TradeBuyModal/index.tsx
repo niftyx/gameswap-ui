@@ -1,3 +1,4 @@
+import { SignedOrder } from "@0x/types";
 import { makeStyles } from "@material-ui/core";
 import { useTrade } from "contexts";
 import React, { useState } from "react";
@@ -27,9 +28,10 @@ interface IProps {
 
 interface IState {
   step: ETradeStep;
+  selectedOrder: SignedOrder | null;
 }
 
-export const TradeSellModal = (props: IProps) => {
+export const TradeBuyModal = (props: IProps) => {
   const classes = useStyles();
   const {
     data: { asset },
@@ -37,7 +39,8 @@ export const TradeSellModal = (props: IProps) => {
   } = useTrade();
   const { onClose, visible } = props;
   const [state, setState] = useState<IState>({
-    step: ETradeStep.InputPrice,
+    step: ETradeStep.SelectOrder,
+    selectedOrder: null,
   });
 
   if (!asset) return null;
@@ -48,7 +51,7 @@ export const TradeSellModal = (props: IProps) => {
 
   const renderContent = () => {
     switch (state.step) {
-      case ETradeStep.InputPrice:
+      case ETradeStep.SelectOrder:
         return (
           <TradePriceInputStep
             asset={asset}

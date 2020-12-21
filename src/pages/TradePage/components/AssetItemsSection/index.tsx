@@ -1,16 +1,21 @@
 import { makeStyles } from "@material-ui/core";
 import clsx from "classnames";
-import { AssetItem, AssetsContainer, AssetsToolbar } from "components";
+import {
+  AssetsContainer,
+  AssetsToolbar,
+  ScrollContainer,
+  SimpleLoader,
+  TradeAssetItem,
+} from "components";
 import {
   CartContentItem,
   CartContentWrapper,
   CartEmpty,
 } from "components/Cart";
-import { MOCK_ASSET_ITEMS } from "config/constants";
-import { useGlobal } from "contexts";
+import { useGlobal, useTrade } from "contexts";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { IAssetItem } from "utils/types";
+import { IAssetItem, ISignedOrder, ITradeAssetItem } from "utils/types";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -21,10 +26,13 @@ const useStyles = makeStyles((theme) => ({
 
 interface IProps {
   className?: string;
+  onScrollEnd?: () => void;
+  loading?: boolean;
+  orders: ISignedOrder[];
 }
 
 interface IState {
-  assets: IAssetItem[];
+  selectedId: string;
 }
 
 const AssetItemsSection = (props: IProps) => {
@@ -36,15 +44,39 @@ const AssetItemsSection = (props: IProps) => {
     toggleItemCart,
   } = useGlobal();
   const history = useHistory();
-  const [state, setState] = useState<IState>({ assets: MOCK_ASSET_ITEMS });
+  const { loading, onScrollEnd, orders } = props;
+  const { openBuyModal } = useTrade();
+  const [state, setState] = useState<IState>({ selectedId: "" });
 
-  const selectedItems: IAssetItem[] = state.assets.filter((item) =>
+  const assets: ITradeAssetItem[] = [];
+
+  orders.forEach((order) => {
+    const assetId = order.assetId.toHexString();
+    const addedElement = assets.find((asset) => asset.id === assetId);
+    if (addedElement) {
+      addedElement.orders.push(order);
+    } else {
+      assets.push({
+        id: assetId,
+        orders: [order],
+      });
+    }
+  });
+
+  const selectedItems: ITradeAssetItem[] = assets.filter((item) =>
     isInItemCart(item.id)
   );
+
   let totalPrice = 0;
-  selectedItems.forEach((element: IAssetItem) => {
-    totalPrice = totalPrice + element.usdPrice;
+  selectedItems.forEach((element: ITradeAssetItem) => {
+    // totalPrice = totalPrice + element.usdPrice;
   });
+
+  totalPrice = 1;
+
+  const onBuy = (asset: IAssetItem) => {
+    openBuyModal(asset);
+  };
 
   const onTrade = () => {};
   const onClear = () => {
@@ -67,13 +99,13 @@ const AssetItemsSection = (props: IProps) => {
             onTrade={onTrade}
             totalPrice={totalPrice}
           >
-            {selectedItems.map((item: IAssetItem) => (
+            {/* {selectedItems.map((item: IAssetItem) => (
               <CartContentItem
                 data={item}
                 key={item.id}
                 onRemove={() => toggleItemCart(item.id)}
               />
-            ))}
+            ))} */}
           </CartContentWrapper>
         )}
       </>
@@ -81,7 +113,10 @@ const AssetItemsSection = (props: IProps) => {
   };
 
   return (
-    <div className={clsx(classes.root, props.className)}>
+    <ScrollContainer
+      className={clsx(classes.root, props.className)}
+      onScrollEnd={onScrollEnd}
+    >
       <AssetsToolbar
         cartItemCount={itemCartIds.length}
         renderCartContent={renderCartContent}
@@ -89,18 +124,19 @@ const AssetItemsSection = (props: IProps) => {
       />
       <div className={classes.assets}>
         <AssetsContainer>
-          {state.assets.map((asset) => (
-            <AssetItem
+          {assets.map((asset) => (
+            <TradeAssetItem
               data={asset}
               isOnCart={isInItemCart(asset.id) as any}
               key={asset.id}
-              onClick={() => history.push(`/trade/${asset.id}`)}
-              onToggleCart={() => toggleItemCart(asset.id)}
+              onClick={onBuy}
+              onMore={() => history.push(`/trade/${asset.id}`)}
             />
           ))}
         </AssetsContainer>
       </div>
-    </div>
+      {loading && <SimpleLoader />}
+    </ScrollContainer>
   );
 };
 

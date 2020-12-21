@@ -1,11 +1,11 @@
-import { TradeSellModal } from "components";
+import { TradeBuyModal, TradeSellModal } from "components";
 import { getToken } from "config/networks";
 import { useConnectedWeb3Context } from "contexts/connectedWeb3";
 import { BigNumber } from "ethers";
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useState } from "react";
 import { ESellBuy } from "utils/enums";
 import { getLogger } from "utils/logger";
-import { IAssetItem, IToken, ITokenAmount, ITradeData } from "utils/types";
+import { IAssetItem, ITokenAmount, ITradeData } from "utils/types";
 
 const logger = getLogger("TradeContext::");
 
@@ -97,6 +97,9 @@ export const TradeProvider = ({ children }: IProps) => {
           onClose={onCloseModal}
           visible={isTradeSellModalOpened}
         />
+      )}
+      {isTradeBuyModalOpened && (
+        <TradeBuyModal onClose={onCloseModal} visible={isTradeBuyModalOpened} />
       )}
     </TradeContext.Provider>
   );

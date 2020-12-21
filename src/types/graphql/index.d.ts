@@ -5,6 +5,8 @@ export interface IGraphInventoryAsset {
   assetId: BigNumber;
   assetURL: string;
   createTimeStamp: number;
+  updateTimeStamp: number;
+  isInSale?: boolean;
 }
 
 export interface IGraphAccount {
@@ -22,4 +24,9 @@ export interface IGraphInventoryResponse {
       createTimeStamp: string;
     }[];
   };
+}
+
+export interface IAssetDetails extends IGraphInventoryAsset {
+  currentOwner: string;
+  tokenAddress: string;
 }

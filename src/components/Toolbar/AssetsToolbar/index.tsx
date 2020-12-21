@@ -78,7 +78,7 @@ const AssetsToolbar = (props: IProps) => {
 
   return (
     <div className={clsx(classes.root, props.className)}>
-      <div className={classes.cartWrapper} onClick={handleClick as any}>
+      {/* <div className={classes.cartWrapper} onClick={handleClick as any}>
         <Badge badgeContent={cartItemCount} color="primary">
           <CartIcon />
         </Badge>
@@ -86,7 +86,7 @@ const AssetsToolbar = (props: IProps) => {
         <Typography align="left" component="div">
           $ {numberWithCommas(totalPrice.toFixed(2))}
         </Typography>
-      </div>
+      </div> */}
 
       <Popover
         anchorEl={anchorEl}

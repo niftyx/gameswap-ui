@@ -2,11 +2,14 @@ import { Button, Grid, Typography, makeStyles } from "@material-ui/core";
 import { IconAssetPlaceholder, IconCartInCircle } from "assets/icons";
 import { ReactComponent as GswapIcon } from "assets/svgs/gameswap_token.svg";
 import clsx from "classnames";
+import { useConnectedWeb3Context, useGlobal } from "contexts";
+import { useAssetDetailsFromId } from "helpers";
 import { transparentize } from "polished";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useCommonStyles from "styles/common";
 import { formatBigNumber, numberWithCommas } from "utils";
-import { IAssetItem } from "utils/types";
+import { getAssetObjectWithPrices, getObjectIdFromHex } from "utils/tools";
+import { IAssetItem, ITradeAssetItem } from "utils/types";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -75,12 +78,12 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 17,
     lineHeight: "23px",
   },
-  gswap: {
+  token: {
     display: "flex",
     alignItems: "center",
     color: theme.colors.text.secondary,
   },
-  gswapValue: {
+  tokenAmount: {
     fontSize: 15,
     lineHeight: "20px",
   },
@@ -115,11 +118,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface IProps {
-  data: IAssetItem;
+  data: ITradeAssetItem;
   className?: string;
   isFullWidth?: boolean;
-  onClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
-  onToggleCart?: () => void;
+  onClick?: (_: IAssetItem) => void;
+  onMore?: () => void;
   isOnCart?: boolean;
 }
 
@@ -127,7 +130,7 @@ interface IState {
   loaded: boolean;
 }
 
-const AssetItem = (props: IProps) => {
+const TradeAssetItem = (props: IProps) => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
   const {
@@ -135,25 +138,46 @@ const AssetItem = (props: IProps) => {
     isFullWidth = false,
     isOnCart = false,
     onClick,
-    onToggleCart,
+    onMore,
   } = props;
+  const {
+    data: { price },
+  } = useGlobal();
+  const { networkId } = useConnectedWeb3Context();
+
+  const objectId = getObjectIdFromHex(data.id);
+  const { data: assetDetails, loading } = useAssetDetailsFromId(objectId);
 
   const [state, setState] = useState<IState>({ loaded: false });
   const setLoaded = (loaded: boolean) =>
     setState((prevState) => ({ ...prevState, loaded }));
 
-  const respnsive = isFullWidth
+  const assetDataLoaded =
+    assetDetails && !loading && assetDetails.id === objectId;
+
+  const responsive = isFullWidth
     ? { xl: 2, lg: 2, md: 4, xs: 6 }
     : { xl: 3, lg: 4, md: 6, xs: 6 };
+
+  const assetDataWithPriceInfo = getAssetObjectWithPrices(
+    assetDetails,
+    data.orders,
+    price,
+    networkId || 1
+  );
+
+  useEffect(() => {
+    if (!assetDataLoaded) setLoaded(false);
+  }, [assetDataLoaded]);
 
   return (
     <Grid
       className={clsx(classes.root, props.className)}
       item
-      {...(respnsive as any)}
+      {...(responsive as any)}
     >
       <div className={classes.contentContainer}>
-        {!state.loaded && (
+        {!assetDataLoaded && (
           <div className={classes.placeholder}>
             <IconAssetPlaceholder />
           </div>
@@ -165,40 +189,50 @@ const AssetItem = (props: IProps) => {
             commonClasses.fadeAnimation,
             state.loaded ? "visible" : ""
           )}
-          onClick={onToggleCart}
+          onClick={() => {
+            if (assetDataWithPriceInfo.asset && onClick) {
+              onClick(assetDataWithPriceInfo.asset);
+            }
+          }}
         >
-          {state.loaded && isOnCart && (
+          {/* {state.loaded && isOnCart && (
             <div className={classes.cartWrapper}>
               <IconCartInCircle />
             </div>
           )}
-          <img
-            alt="asset_img"
-            className={classes.img}
-            onLoad={() => setLoaded(true)}
-            src={data.image}
-          />
-          <div className={classes.bottom}>
-            <Typography className={classes.usd} component="div">
-              $356
-            </Typography>
-            <div className={classes.gswap}>
-              <GswapIcon />
-              <Typography className={classes.gswapValue} component="div">
-                0
-              </Typography>
-            </div>
-          </div>
-          <div
-            className={clsx(
-              classes.percentWrapper,
-              data.priceChange < 0 ? "positive" : "negative"
-            )}
-          >
-            {data.priceChange}
-          </div>
+           */}
+          {assetDataLoaded && assetDetails && (
+            <>
+              <img
+                alt="asset_img"
+                className={classes.img}
+                onLoad={() => setLoaded(true)}
+                src={assetDetails?.base64}
+              />
+              <div className={classes.bottom}>
+                <Typography className={classes.usd} component="div">
+                  ${assetDataWithPriceInfo.minUSDPrice}
+                </Typography>
+                {assetDataWithPriceInfo.asset && (
+                  <div className={classes.token}>
+                    <Typography className={classes.tokenAmount} component="div">
+                      {assetDataWithPriceInfo.minTokenAmountString}
+                    </Typography>
+                  </div>
+                )}
+              </div>
+              {/* <div
+                className={clsx(
+                  classes.percentWrapper,
+                  assetDetails.priceChange < 0 ? "positive" : "negative"
+                )}
+              >
+                {assetDetails.priceChange}
+              </div> */}
+            </>
+          )}
         </div>
-        {state.loaded && (
+        {assetDataLoaded && (
           <div
             className={clsx(classes.moreWrapper, "asset_item__more_wrapper")}
           >
@@ -206,7 +240,7 @@ const AssetItem = (props: IProps) => {
               className={classes.moreButton}
               color="secondary"
               fullWidth
-              onClick={onClick as any}
+              onClick={onMore as any}
               variant="contained"
             >
               More Info
@@ -218,4 +252,4 @@ const AssetItem = (props: IProps) => {
   );
 };
 
-export default AssetItem;
+export default TradeAssetItem;

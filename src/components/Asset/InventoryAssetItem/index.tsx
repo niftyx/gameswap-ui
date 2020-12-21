@@ -1,18 +1,16 @@
-import { Button, Grid, Typography, makeStyles } from "@material-ui/core";
-import { IconAssetPlaceholder, IconCartInCircle } from "assets/icons";
-import { ReactComponent as GswapIcon } from "assets/svgs/gameswap_token.svg";
-import axios from "axios";
+import { Button, Grid, makeStyles } from "@material-ui/core";
+import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
+import { IconAssetPlaceholder } from "assets/icons";
 import clsx from "classnames";
-import { BigNumber } from "ethers";
 import { useAssetDetailsFromInventoryItem } from "helpers";
 import { transparentize } from "polished";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import useCommonStyles from "styles/common";
-import { IGraphInventoryAsset, IIPFSTokenData } from "types";
-import { formatBigNumber, numberWithCommas } from "utils";
+import { IGraphInventoryAsset } from "types";
 import { getLogger } from "utils/logger";
 import { IAssetItem } from "utils/types";
 
+// eslint-disable-next-line
 const logger = getLogger("InventoryAssetItem::");
 
 const useStyles = makeStyles((theme) => ({
@@ -59,52 +57,19 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1),
     willChange: "background",
   },
-  cartWrapper: {
-    top: theme.spacing(1),
-    left: theme.spacing(1),
-    bottom: theme.spacing(1),
-    right: theme.spacing(1),
-    position: "absolute",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
   img: {
     height: "80%",
+  },
+  inSaleIcon: {
+    position: "absolute",
+    top: theme.spacing(1),
+    right: theme.spacing(1),
+    color: transparentize(0.2, theme.colors.text.default),
   },
   bottom: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-  },
-  usd: {
-    color: theme.colors.text.default,
-    fontSize: 17,
-    lineHeight: "23px",
-  },
-  gswap: {
-    display: "flex",
-    alignItems: "center",
-    color: theme.colors.text.secondary,
-  },
-  gswapValue: {
-    fontSize: 15,
-    lineHeight: "20px",
-  },
-  percentWrapper: {
-    position: "absolute",
-    top: theme.spacing(1),
-    right: theme.spacing(1),
-    borderRadius: theme.spacing(0.5),
-    padding: "2px 6px",
-    "&.positive": {
-      backgroundColor: transparentize(0.73, theme.colors.text.positive),
-      color: theme.colors.text.positive,
-    },
-    "&.negative": {
-      backgroundColor: transparentize(0.73, theme.colors.text.negative),
-      color: theme.colors.text.negative,
-    },
   },
   moreWrapper: {
     opacity: 0,
@@ -165,6 +130,9 @@ const InventoryAssetItem = (props: IProps) => {
         >
           {asset && asset.base64 && (
             <img alt="asset_img" className={classes.img} src={asset.base64} />
+          )}
+          {asset && asset.isInSale && (
+            <AttachMoneyIcon className={classes.inSaleIcon} />
           )}
         </div>
         {loaded && (

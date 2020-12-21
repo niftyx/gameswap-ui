@@ -5,6 +5,7 @@ import {
   InventoryAssetItem,
   InventoryToolbar,
   NoWallet,
+  ScrollContainer,
   SimpleLoader,
 } from "components";
 import { useConnectedWeb3Context, useTrade } from "contexts";
@@ -46,23 +47,14 @@ const InventorySection = (props: IProps) => {
   const history = useHistory();
   const { openSellModal } = useTrade();
 
-  const handleScroll = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
-    const bottom =
-      e.currentTarget.scrollHeight - e.currentTarget.scrollTop ===
-      e.currentTarget.clientHeight;
-    if (bottom) {
-      onScrollEnd();
-    }
-  };
-
   const onSell = (asset: IAssetItem) => {
     openSellModal(asset);
   };
 
   return (
-    <div
+    <ScrollContainer
       className={clsx(classes.root, props.className)}
-      onScroll={handleScroll}
+      onScrollEnd={onScrollEnd}
     >
       {isConnected ? (
         <>
@@ -86,7 +78,7 @@ const InventorySection = (props: IProps) => {
           <NoWallet />
         </div>
       )}
-    </div>
+    </ScrollContainer>
   );
 };
 

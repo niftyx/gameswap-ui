@@ -1,3 +1,4 @@
+import { SignedOrder } from "@0x/types";
 import { Theme } from "@material-ui/core/styles/createMuiTheme";
 import { knownTokens } from "config/networks";
 import { BigNumber } from "ethers";
@@ -174,11 +175,13 @@ export interface IAssetItem {
   image: string;
   createTimeStamp?: number;
   usdPrice: number;
-  gswapPrice: BigNumber;
   priceChange: number;
+  royalties?: number;
   attributes?: [{ [key: string]: string }];
   base64?: string;
   price?: ITokenAmount;
+  prices?: ITokenAmount[];
+  isInSale?: boolean;
 }
 
 export interface ISideMenuGroupHeaderItem {
@@ -322,6 +325,8 @@ export interface IFaqNavBarItem {
   children?: IFaqNavBarItem[];
 }
 
+export type IUSDPriceTokenSymbol = "gswap" | "weth";
+
 export interface IGlobalData {
   itemCartIds: string[];
   inventoryCartIds: string[];
@@ -329,10 +334,12 @@ export interface IGlobalData {
     gswap: {
       usd: number;
       price: BigNumber;
+      decimals: number;
     };
     weth: {
       usd: number;
       price: BigNumber;
+      decimals: number;
     };
   };
 }
@@ -341,9 +348,21 @@ export interface IIPFSConfig {
   host: string;
   port: number | string;
   protocol: string;
+  preload?: { enabled: boolean };
 }
 
 export interface ITradeData {
   asset?: IAssetItem | null;
   mode: ESellBuy;
+}
+
+export interface ISignedOrder extends SignedOrder {
+  erc721Address: string;
+  erc20Address: string;
+  assetId: BigNumber;
+}
+
+export interface ITradeAssetItem {
+  id: string;
+  orders: ISignedOrder[];
 }
