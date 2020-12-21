@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     bottom: 0,
     right: 0,
     position: "absolute",
-    zIndex: 99,
+    zIndex: 10,
     padding: theme.spacing(1),
   },
   content: {
@@ -105,7 +105,7 @@ const useStyles = makeStyles((theme) => ({
   moreWrapper: {
     opacity: 0,
     position: "absolute",
-    zIndex: 1,
+    zIndex: 11,
     outlineOffset: -1,
     width: "100%",
     transform: "translate3d(0, -110%, 0)",
@@ -166,10 +166,6 @@ const TradeAssetItem = (props: IProps) => {
     networkId || 1
   );
 
-  useEffect(() => {
-    if (!assetDataLoaded) setLoaded(false);
-  }, [assetDataLoaded]);
-
   return (
     <Grid
       className={clsx(classes.root, props.className)}
@@ -177,7 +173,7 @@ const TradeAssetItem = (props: IProps) => {
       {...(responsive as any)}
     >
       <div className={classes.contentContainer}>
-        {!assetDataLoaded && (
+        {(!assetDataLoaded || !state.loaded) && (
           <div className={classes.placeholder}>
             <IconAssetPlaceholder />
           </div>
@@ -191,7 +187,7 @@ const TradeAssetItem = (props: IProps) => {
           )}
           onClick={() => {
             if (assetDataWithPriceInfo.asset && onClick) {
-              onClick(assetDataWithPriceInfo.asset);
+              onClick({ ...assetDataWithPriceInfo.asset, orders: data.orders });
             }
           }}
         >
@@ -232,7 +228,7 @@ const TradeAssetItem = (props: IProps) => {
             </>
           )}
         </div>
-        {assetDataLoaded && (
+        {state.loaded && (
           <div
             className={clsx(classes.moreWrapper, "asset_item__more_wrapper")}
           >

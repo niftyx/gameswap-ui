@@ -1,3 +1,4 @@
+import { ContractWrappers, ExchangeContract } from "@0x/contract-wrappers";
 import {
   Order,
   SignedOrder,
@@ -7,11 +8,16 @@ import {
 import { MetamaskSubprovider } from "@0x/subproviders";
 import { OrderConfigRequest } from "@0x/types";
 import { BigNumber } from "@0x/utils";
+import { Web3Wrapper } from "@0x/web3-wrapper";
 import {
   FEE_RECIPIENT_ADDRESS,
   ORDERS_PAGE_COUNT,
+  PROTOCOL_FEE_MULTIPLIER,
   RELAYER_URL,
+  SERVICE_FEE_IN_PERCENT,
+  TX_DEFAULTS,
 } from "config/constants";
+import { get0xContractAddresses } from "config/networks";
 import { getRelayer } from "services/relayer";
 
 import { getExpirationTimeOrdersFromConfig } from "./time-utils";
@@ -89,8 +95,6 @@ export const buildSellCollectibleOrder = async (
   //   senderAddress: ZERO_ADDRESS,
   // };
 
-  console.log("==order=before sign=", order);
-
   return signatureUtils.ecSignOrderAsync(
     new MetamaskSubprovider(provider),
     order,
@@ -139,3 +143,73 @@ export const buildOrdersQuery = (
 
   return `${endPoint}?${query}`;
 };
+
+export const calculateWorstCaseProtocolFee = (
+  orders: SignedOrder[],
+  gasPrice: BigNumber
+): BigNumber => {
+  const protocolFee = new BigNumber(
+    orders.length * PROTOCOL_FEE_MULTIPLIER
+  ).times(gasPrice);
+  return protocolFee;
+};
+
+export const getTransactionOptions = (gasPrice: BigNumber) => {
+  let options = {
+    gasPrice,
+  };
+
+  if (process.env.NODE_ENV === "development") {
+    options = {
+      ...options,
+      ...TX_DEFAULTS,
+    };
+  }
+
+  return options;
+};
+
+export const submitBuyCollectible = async (
+  contractWrappers: ContractWrappers,
+  web3Wrapper: Web3Wrapper,
+  order: SignedOrder,
+  account: string,
+  gasPriceInWei: BigNumber,
+  networkId: number
+): Promise<string> => {
+  const protocolFee = calculateWorstCaseProtocolFee([order], gasPriceInWei);
+  const FEE_PERCENTAGE = new BigNumber(0);
+  const affiliateFeeAmount = order.takerAssetAmount
+    .plus(protocolFee)
+    .multipliedBy(FEE_PERCENTAGE)
+    .integerValue(BigNumber.ROUND_CEIL);
+
+  const exchangeContract = new ExchangeContract(
+    get0xContractAddresses(networkId).exchange,
+    contractWrappers.getProvider()
+  );
+
+  console.log(
+    "========",
+    order,
+    protocolFee,
+    affiliateFeeAmount,
+    gasPriceInWei
+  );
+
+  const tx = await exchangeContract
+    .fillOrder(order, order.takerAssetAmount, order.signature)
+    .sendTransactionAsync({
+      from: account,
+      ...getTransactionOptions(gasPriceInWei),
+      value: protocolFee,
+    });
+
+  return tx;
+};
+
+export const wrangeOrderResponse = (order: SignedOrder): SignedOrder => ({
+  ...order,
+  takerAssetAmount: new BigNumber(order.takerAssetAmount),
+  makerAssetAmount: new BigNumber(order.makerAssetAmount),
+});

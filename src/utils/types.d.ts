@@ -182,6 +182,7 @@ export interface IAssetItem {
   price?: ITokenAmount;
   prices?: ITokenAmount[];
   isInSale?: boolean;
+  orders?: ISignedOrder[];
 }
 
 export interface ISideMenuGroupHeaderItem {

@@ -6,7 +6,7 @@ import { getContractAddress } from "config/networks";
 import { useConnectedWeb3Context } from "contexts";
 import { useEffect, useState } from "react";
 import { getLogger } from "utils/logger";
-import { buildOrdersQuery } from "utils/order";
+import { buildOrdersQuery, wrangeOrderResponse } from "utils/order";
 import { xBigNumberToEthersBigNumber } from "utils/token";
 import { ISignedOrder, NetworkId } from "utils/types";
 
@@ -54,7 +54,7 @@ export const useMyOrders = (): IState & { loadMore: () => Promise<void> } => {
           ) as any;
 
           return {
-            ...order,
+            ...wrangeOrderResponse(order),
             assetId: xBigNumberToEthersBigNumber(erc721.tokenId),
             erc721Address: erc721.tokenAddress,
             erc20Address: erc20.tokenAddress,

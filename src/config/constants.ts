@@ -33,6 +33,10 @@ export const DEFAULT_PRICE = ethers.utils.parseUnits(
 export const SERVICE_FEE = Number(process.env.REACT_APP_SERVICE_FEE || 0.025);
 export const SERVICE_FEE_IN_PERCENT = SERVICE_FEE * 100;
 
+export const TX_DEFAULTS = {
+  gas: 1000000,
+};
+
 export const IPFS_CONFIG: IIPFSConfig = {
   host: process.env.REACT_APP_IPFS_HOST || "ipfs.infura.io",
   port: process.env.REACT_APP_IPFS_PORT || 5001,
@@ -96,6 +100,8 @@ export const INVENTORY_PAGE_ASSET_COUNT = Number(
 );
 
 export const ORDERS_PAGE_COUNT = 20;
+
+export const PROTOCOL_FEE_MULTIPLIER = 70000;
 
 export const MOCK_ASSET_ITEMS: IAssetItem[] = [
   {

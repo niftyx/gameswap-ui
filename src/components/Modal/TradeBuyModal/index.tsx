@@ -7,12 +7,14 @@ import { getLogger } from "utils/logger";
 
 import {
   TradeBasicModal,
+  TradeBuyAssetStep,
   TradePriceInputStep,
   TradeSellApprovalStep,
   TradeSellAssetStep,
   TradeSellGetInfoStep,
   TradeSuccessStep,
 } from "../TradeCommon";
+import { TradeSelectOrderStep } from "../TradeCommon/TradeSelectOrderStep";
 
 const logger = getLogger("TradeSellModal::");
 
@@ -35,7 +37,6 @@ export const TradeBuyModal = (props: IProps) => {
   const classes = useStyles();
   const {
     data: { asset },
-    updateAssetPrice,
   } = useTrade();
   const { onClose, visible } = props;
   const [state, setState] = useState<IState>({
@@ -45,67 +46,40 @@ export const TradeBuyModal = (props: IProps) => {
 
   if (!asset) return null;
 
-  const { price } = asset;
+  const { prices } = asset;
 
-  if (!price) return null;
+  if (!prices) return null;
 
   const renderContent = () => {
     switch (state.step) {
       case ETradeStep.SelectOrder:
         return (
-          <TradePriceInputStep
+          <TradeSelectOrderStep
             asset={asset}
-            onConfirm={() => {
-              // go to next step and get approval for the token and amount selected
+            onConfirm={(order: SignedOrder) => {
               setState((prevState) => ({
                 ...prevState,
-                step: ETradeStep.GetSellApproveInfo,
+                step: ETradeStep.BuyAsset,
+                selectedOrder: order,
               }));
             }}
-            updatePrice={updateAssetPrice}
           />
         );
-      case ETradeStep.GetSellApproveInfo:
+      case ETradeStep.BuyAsset:
         return (
-          <TradeSellGetInfoStep
-            onConfirm={(isUnlocked: boolean) => {
-              if (!isUnlocked) {
+          state.selectedOrder && (
+            <TradeBuyAssetStep
+              asset={asset}
+              onConfirm={() => {
                 setState((prevState) => ({
                   ...prevState,
-                  step: ETradeStep.SetSellApproval,
+                  step: ETradeStep.Success,
                 }));
-              } else {
-                setState((prevState) => ({
-                  ...prevState,
-                  step: ETradeStep.SellAsset,
-                }));
-              }
-            }}
-          />
-        );
-      case ETradeStep.SetSellApproval:
-        return (
-          <TradeSellApprovalStep
-            onConfirm={() => {
-              setState((prevState) => ({
-                ...prevState,
-                step: ETradeStep.SellAsset,
-              }));
-            }}
-          />
-        );
-      case ETradeStep.SellAsset:
-        return (
-          <TradeSellAssetStep
-            asset={asset}
-            onConfirm={() => {
-              setState((prevState) => ({
-                ...prevState,
-                step: ETradeStep.Success,
-              }));
-              window.location.reload();
-            }}
-          />
+                window.location.reload();
+              }}
+              order={state.selectedOrder}
+            />
+          )
         );
       case ETradeStep.Success:
         return <TradeSuccessStep title="Order is created successfully!" />;

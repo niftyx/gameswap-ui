@@ -18,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
     transform: "translate(-50%, -50%)",
     outline: "none",
     maxHeight: "80vh",
+    userSelect: "none",
   },
   header: {
     display: "flex",

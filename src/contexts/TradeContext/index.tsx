@@ -40,6 +40,7 @@ export const TradeProvider = ({ children }: IProps) => {
   const { networkId } = useConnectedWeb3Context();
 
   const openSellModal = (asset: IAssetItem) => {
+    logger.log("openSellModal");
     setCurrentData((prevData) => ({
       ...prevData,
       mode: ESellBuy.Sell,
@@ -54,6 +55,7 @@ export const TradeProvider = ({ children }: IProps) => {
   };
 
   const openBuyModal = (asset: IAssetItem) => {
+    logger.log("openBuyModal", asset);
     setCurrentData((prevData) => ({
       ...prevData,
       mode: ESellBuy.Buy,
@@ -80,7 +82,7 @@ export const TradeProvider = ({ children }: IProps) => {
   const isTradeSellModalOpened =
     currentData.asset && currentData.mode === ESellBuy.Sell;
   const isTradeBuyModalOpened =
-    currentData.asset && currentData.mode === ESellBuy.Sell;
+    currentData.asset && currentData.mode === ESellBuy.Buy;
 
   return (
     <TradeContext.Provider

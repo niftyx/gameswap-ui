@@ -68,11 +68,6 @@ export const useAssetDetailsFromId = (id: string): IResponse => {
   });
 
   useEffect(() => {
-    setState({
-      asset: null,
-      loading: true,
-    });
-
     refetch();
   }, [networkId]);
 
