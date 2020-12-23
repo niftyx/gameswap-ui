@@ -41,6 +41,7 @@ export const useAssetDetailsFromInventoryItem = (
             usdPrice: 0,
             base64,
             isInSale: data.isInSale,
+            orders: data.orders,
           },
           loaded: true,
         }));

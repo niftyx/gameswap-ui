@@ -1,3 +1,4 @@
+import { SignedOrder } from "@0x/types";
 import { makeStyles } from "@material-ui/core";
 import { useTrade } from "contexts";
 import React, { useState } from "react";
@@ -5,6 +6,7 @@ import { ETradeStep } from "utils/enums";
 import { getLogger } from "utils/logger";
 
 import {
+  TradCancelOrderStep,
   TradeBasicModal,
   TradePriceInputStep,
   TradeSellApprovalStep,
@@ -27,6 +29,7 @@ interface IProps {
 
 interface IState {
   step: ETradeStep;
+  orderToCancel?: SignedOrder;
 }
 
 export const TradeSellModal = (props: IProps) => {
@@ -52,6 +55,13 @@ export const TradeSellModal = (props: IProps) => {
         return (
           <TradePriceInputStep
             asset={asset}
+            onCancel={(order: SignedOrder) => {
+              setState((prevState) => ({
+                ...prevState,
+                orderToCancel: order,
+                step: ETradeStep.CancelOrder,
+              }));
+            }}
             onConfirm={() => {
               // go to next step and get approval for the token and amount selected
               setState((prevState) => ({
@@ -61,6 +71,21 @@ export const TradeSellModal = (props: IProps) => {
             }}
             updatePrice={updateAssetPrice}
           />
+        );
+      case ETradeStep.CancelOrder:
+        return (
+          state.orderToCancel && (
+            <TradCancelOrderStep
+              onConfirm={() => {
+                setState((prevState) => ({
+                  ...prevState,
+                  step: ETradeStep.Success,
+                }));
+                window.location.reload();
+              }}
+              order={state.orderToCancel}
+            />
+          )
         );
       case ETradeStep.GetSellApproveInfo:
         return (
@@ -105,7 +130,15 @@ export const TradeSellModal = (props: IProps) => {
           />
         );
       case ETradeStep.Success:
-        return <TradeSuccessStep title="Order is created successfully!" />;
+        return (
+          <TradeSuccessStep
+            title={
+              state.orderToCancel
+                ? "Order is cancelled successfully!"
+                : "Order is created successfully!"
+            }
+          />
+        );
       default:
         return null;
     }

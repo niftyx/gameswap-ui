@@ -177,11 +177,13 @@ const OxContractAddresses: { [key in NetworkId]: I0xContractAddresses } = {
     exchange: "0x61935cbdd02287b511119ddb11aeb42f1593b7ef",
     erc20Proxy: "0x95e6f48254609a6ee006f7d493c8e5fb97094cef",
     erc721proxy: "0xefc70a1b18c432bdc64b596838b4d138f6bc6cad",
+    devUtils: "0x161793cdca4ff9e766a706c2c49c36ac1340bbcd",
   },
   [networkIds.KOVAN]: {
     exchange: "0x4eacd0af335451709e1e7b570b8ea68edec8bc97",
     erc20Proxy: "0xf1ec01d6236d3cd881a0bf0130ea25fe4234003e",
     erc721proxy: "0x2a9127c745688a165106c11cd4d647d2220af821",
+    devUtils: "0x161793cdca4ff9e766a706c2c49c36ac1340bbcd",
   },
 };
 

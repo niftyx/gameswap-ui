@@ -6,6 +6,7 @@ import { useInventoryAssets, useMyOrders } from "helpers";
 import { useAllOrders } from "helpers/useAllOrders";
 import React from "react";
 import useCommonStyles from "styles/common";
+import { IGraphInventoryAsset } from "types";
 import { getLogger } from "utils/logger";
 import { getObjectIdFromHex } from "utils/tools";
 
@@ -60,15 +61,19 @@ const TradePage = () => {
     orders: allOrders,
   } = useAllOrders();
 
-  const myOrderAssetIds = myOrders.map((order) =>
-    getObjectIdFromHex(order.assetId.toHexString())
+  const finalInventoryAssets: IGraphInventoryAsset[] = inventoryAssets.map(
+    (asset) => {
+      const relatedOrders = myOrders.filter(
+        (order) => getObjectIdFromHex(order.assetId.toHexString()) === asset.id
+      );
+
+      return {
+        ...asset,
+        isInSale: relatedOrders.length > 0,
+        orders: relatedOrders,
+      };
+    }
   );
-
-  const finalInventoryAssets = inventoryAssets.map((asset) => {
-    const isInSale = myOrderAssetIds.includes(asset.id);
-
-    return { ...asset, isInSale };
-  });
 
   return (
     <PageContainer>

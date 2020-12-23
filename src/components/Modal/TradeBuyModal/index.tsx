@@ -6,14 +6,11 @@ import { ETradeStep } from "utils/enums";
 import { getLogger } from "utils/logger";
 
 import {
+  TradCancelOrderStep,
   TradeBasicModal,
   TradeBuyApprovalStep,
   TradeBuyAssetStep,
   TradeBuyGetInfoStep,
-  TradePriceInputStep,
-  TradeSellApprovalStep,
-  TradeSellAssetStep,
-  TradeSellGetInfoStep,
   TradeSuccessStep,
 } from "../TradeCommon";
 import { TradeSelectOrderStep } from "../TradeCommon/TradeSelectOrderStep";
@@ -33,6 +30,7 @@ interface IProps {
 interface IState {
   step: ETradeStep;
   selectedOrder: SignedOrder | null;
+  orderToCancel?: SignedOrder;
 }
 
 export const TradeBuyModal = (props: IProps) => {
@@ -58,6 +56,13 @@ export const TradeBuyModal = (props: IProps) => {
         return (
           <TradeSelectOrderStep
             asset={asset}
+            onCancel={(order: SignedOrder) => {
+              setState((prevState) => ({
+                ...prevState,
+                orderToCancel: order,
+                step: ETradeStep.CancelOrder,
+              }));
+            }}
             onConfirm={(order: SignedOrder) => {
               setState((prevState) => ({
                 ...prevState,
@@ -66,6 +71,21 @@ export const TradeBuyModal = (props: IProps) => {
               }));
             }}
           />
+        );
+      case ETradeStep.CancelOrder:
+        return (
+          state.orderToCancel && (
+            <TradCancelOrderStep
+              onConfirm={() => {
+                setState((prevState) => ({
+                  ...prevState,
+                  step: ETradeStep.Success,
+                }));
+                window.location.reload();
+              }}
+              order={state.orderToCancel}
+            />
+          )
         );
       case ETradeStep.BuyGetApproveInfo:
         return (
@@ -119,7 +139,15 @@ export const TradeBuyModal = (props: IProps) => {
           )
         );
       case ETradeStep.Success:
-        return <TradeSuccessStep title="Order is created successfully!" />;
+        return (
+          <TradeSuccessStep
+            title={
+              state.orderToCancel
+                ? "Order is cancelled successfully!"
+                : "Order is filled successfully!"
+            }
+          />
+        );
       default:
         return null;
     }

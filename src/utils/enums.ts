@@ -46,6 +46,8 @@ export enum ETradeStep {
   BuyGetApproveInfo,
   BuySetApproval,
   BuyAsset,
+  // Cancel Order
+  CancelOrder,
   // Result
   Success,
 }

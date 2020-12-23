@@ -1,3 +1,4 @@
+import { SignedOrder } from "@0x/types";
 import { Button, makeStyles } from "@material-ui/core";
 import clsx from "classnames";
 import { TokenAmountInput } from "components/Input";
@@ -5,6 +6,8 @@ import { BigNumber } from "ethers";
 import React from "react";
 import { ZERO_NUMBER } from "utils/number";
 import { IAssetItem, IToken, ITokenAmount } from "utils/types";
+
+import { TradeCancelOrderRow } from "../TradeCancelOrderRow";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,33 +26,53 @@ const useStyles = makeStyles((theme) => ({
 
 interface IProps {
   onConfirm: () => void;
+  onCancel: (order: SignedOrder) => void;
   asset: IAssetItem;
   updatePrice: (_: ITokenAmount) => void;
   className?: string;
 }
 
 export const TradePriceInputStep = (props: IProps) => {
-  const { asset, onConfirm, updatePrice } = props;
+  const { asset, onCancel, onConfirm, updatePrice } = props;
   const classes = useStyles();
 
   if (!asset.price) return null;
+
+  const isInSale = asset.isInSale;
 
   return (
     <div className={clsx(classes.root, props.className)}>
       {asset.base64 && (
         <img alt="asset-img" className={classes.img} src={asset.base64} />
       )}
-      <TokenAmountInput onChange={updatePrice} value={asset.price} />
-      <Button
-        className={classes.button}
-        color="primary"
-        disabled={asset.price.amount.eq(ZERO_NUMBER)}
-        fullWidth
-        onClick={onConfirm}
-        variant="contained"
-      >
-        Sell
-      </Button>
+      {isInSale ? (
+        <>
+          {asset.orders &&
+            asset.orders.map((order) => (
+              <TradeCancelOrderRow
+                key={order.salt.toString()}
+                onCancel={() => {
+                  onCancel(order);
+                }}
+                order={order}
+              />
+            ))}
+        </>
+      ) : (
+        <>
+          <TokenAmountInput onChange={updatePrice} value={asset.price} />
+          <Button
+            className={classes.button}
+            color="primary"
+            disabled={asset.price.amount.eq(ZERO_NUMBER)}
+            fullWidth
+            onClick={onConfirm}
+            variant="contained"
+          >
+            Sell
+          </Button>
+        </>
+      )}
     </div>
   );
 };

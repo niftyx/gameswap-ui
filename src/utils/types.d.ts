@@ -183,6 +183,7 @@ export interface IAssetItem {
   prices?: ITokenAmount[];
   isInSale?: boolean;
   orders?: ISignedOrder[];
+  owner?: string;
 }
 
 export interface ISideMenuGroupHeaderItem {
@@ -311,6 +312,7 @@ export interface I0xContractAddresses {
   exchange: string;
   erc20Proxy: string;
   erc721proxy: string;
+  devUtils: string;
 }
 
 declare global {

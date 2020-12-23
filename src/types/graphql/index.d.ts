@@ -1,4 +1,5 @@
 import { BigNumber } from "ethers";
+import { ISignedOrder } from "utils/types";
 
 export interface IGraphInventoryAsset {
   id: string;
@@ -7,6 +8,7 @@ export interface IGraphInventoryAsset {
   createTimeStamp: number;
   updateTimeStamp: number;
   isInSale?: boolean;
+  orders?: ISignedOrder[];
 }
 
 export interface IGraphAccount {

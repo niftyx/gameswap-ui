@@ -87,6 +87,7 @@ export const useAssetDetailsFromId = (id: string): IResponse => {
             createTimeStamp: asset.createTimeStamp,
             usdPrice: 0,
             priceChange: 0,
+            owner: asset.currentOwner.address,
           },
         }));
       }

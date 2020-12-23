@@ -1,7 +1,7 @@
 import { SignedOrder } from "@0x/types";
 import { Button, Typography, makeStyles } from "@material-ui/core";
 import clsx from "classnames";
-import { useGlobal } from "contexts";
+import { useConnectedWeb3Context, useGlobal } from "contexts";
 import React from "react";
 import useCommonStyles from "styles/common";
 import { formatBigNumber } from "utils";
@@ -41,19 +41,26 @@ const useStyles = makeStyles((theme) => ({
 
 interface IProps {
   onConfirm: (_: SignedOrder) => void;
+  onCancel: (_: SignedOrder) => void;
   asset: IAssetItem;
   className?: string;
 }
 
 export const TradeSelectOrderStep = (props: IProps) => {
-  const { asset, onConfirm } = props;
+  const { asset, onCancel, onConfirm } = props;
   const {
     data: { price },
   } = useGlobal();
   const classes = useStyles();
   const commonClasses = useCommonStyles();
+  const { account } = useConnectedWeb3Context();
 
   if (!asset.prices) return null;
+
+  const isMine =
+    asset.owner &&
+    account &&
+    asset.owner.toLowerCase() === account.toLowerCase();
 
   return (
     <div className={clsx(classes.root, props.className)}>
@@ -83,12 +90,15 @@ export const TradeSelectOrderStep = (props: IProps) => {
                 onClick={() => {
                   const { orders } = asset;
                   if (orders && orders[priceIndex]) {
+                    if (isMine) {
+                      return onCancel(orders[priceIndex]);
+                    }
                     onConfirm(orders[priceIndex]);
                   }
                 }}
                 variant="contained"
               >
-                BUY
+                {isMine ? "Cancel" : "Buy"}
               </Button>
             </div>
           );

@@ -1,4 +1,8 @@
-import { ContractWrappers, ExchangeContract } from "@0x/contract-wrappers";
+import {
+  ContractWrappers,
+  DevUtilsContract,
+  ExchangeContract,
+} from "@0x/contract-wrappers";
 import {
   Order,
   SignedOrder,
@@ -6,7 +10,7 @@ import {
   signatureUtils,
 } from "@0x/order-utils";
 import { MetamaskSubprovider } from "@0x/subproviders";
-import { OrderConfigRequest } from "@0x/types";
+import { OrderConfigRequest, ZeroExTransaction } from "@0x/types";
 import { BigNumber } from "@0x/utils";
 import { Web3Wrapper } from "@0x/web3-wrapper";
 import {
@@ -199,3 +203,54 @@ export const wrangeOrderResponse = (order: SignedOrder): SignedOrder => ({
   takerAssetAmount: new BigNumber(order.takerAssetAmount),
   makerAssetAmount: new BigNumber(order.makerAssetAmount),
 });
+
+export const cancelOrder = async (
+  provider: any,
+  order: SignedOrder,
+  account: string,
+  gasPriceInWei: BigNumber,
+  networkId: number
+) => {
+  const exchangeContract = new ExchangeContract(
+    get0xContractAddresses(networkId).exchange,
+    provider
+  );
+  const cancelData = exchangeContract
+    .cancelOrder(order)
+    .getABIEncodedTransactionData();
+  const makerCancelOrderTransactionSalt = new BigNumber(Date.now());
+  // The maker signs the operation data (cancelOrder) with the salt
+  const zeroExTransaction: ZeroExTransaction = {
+    data: cancelData,
+    salt: makerCancelOrderTransactionSalt,
+    signerAddress: account,
+    expirationTimeSeconds: getExpirationTimeOrdersFromConfig(),
+    gasPrice: gasPriceInWei,
+    domain: {
+      chainId: networkId,
+      verifyingContract: exchangeContract.address,
+    },
+  };
+  const devUtils = new DevUtilsContract(
+    get0xContractAddresses(networkId).devUtils,
+    provider
+  );
+  const executeTransactionHex = await devUtils
+    .getTransactionHash(
+      zeroExTransaction,
+      new BigNumber(networkId),
+      exchangeContract.address
+    )
+    .callAsync();
+  const makerCancelOrderSignatureHex = await signatureUtils.ecSignHashAsync(
+    new MetamaskSubprovider(provider),
+    executeTransactionHex,
+    account
+  );
+  return exchangeContract
+    .executeTransaction(zeroExTransaction, makerCancelOrderSignatureHex)
+    .sendTransactionAsync({
+      from: account,
+      ...getTransactionOptions(gasPriceInWei),
+    });
+};
