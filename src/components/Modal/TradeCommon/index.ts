@@ -5,3 +5,5 @@ export * from "./TradeSellApprovalStep";
 export * from "./TradeSellAssetStep";
 export * from "./TradeSuccessStep";
 export * from "./TradeBuyAssetStep";
+export * from "./TradeBuyGetInfoStep";
+export * from "./TradeBuyApprovalStep";

@@ -170,31 +170,17 @@ export const getTransactionOptions = (gasPrice: BigNumber) => {
 };
 
 export const submitBuyCollectible = async (
-  contractWrappers: ContractWrappers,
-  web3Wrapper: Web3Wrapper,
+  provider: any,
   order: SignedOrder,
   account: string,
   gasPriceInWei: BigNumber,
   networkId: number
 ): Promise<string> => {
   const protocolFee = calculateWorstCaseProtocolFee([order], gasPriceInWei);
-  const FEE_PERCENTAGE = new BigNumber(0);
-  const affiliateFeeAmount = order.takerAssetAmount
-    .plus(protocolFee)
-    .multipliedBy(FEE_PERCENTAGE)
-    .integerValue(BigNumber.ROUND_CEIL);
 
   const exchangeContract = new ExchangeContract(
     get0xContractAddresses(networkId).exchange,
-    contractWrappers.getProvider()
-  );
-
-  console.log(
-    "========",
-    order,
-    protocolFee,
-    affiliateFeeAmount,
-    gasPriceInWei
+    provider
   );
 
   const tx = await exchangeContract

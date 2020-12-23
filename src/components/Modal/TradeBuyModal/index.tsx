@@ -7,7 +7,9 @@ import { getLogger } from "utils/logger";
 
 import {
   TradeBasicModal,
+  TradeBuyApprovalStep,
   TradeBuyAssetStep,
+  TradeBuyGetInfoStep,
   TradePriceInputStep,
   TradeSellApprovalStep,
   TradeSellAssetStep,
@@ -59,11 +61,46 @@ export const TradeBuyModal = (props: IProps) => {
             onConfirm={(order: SignedOrder) => {
               setState((prevState) => ({
                 ...prevState,
-                step: ETradeStep.BuyAsset,
+                step: ETradeStep.BuyGetApproveInfo,
                 selectedOrder: order,
               }));
             }}
           />
+        );
+      case ETradeStep.BuyGetApproveInfo:
+        return (
+          state.selectedOrder && (
+            <TradeBuyGetInfoStep
+              onConfirm={(approved) => {
+                if (!approved) {
+                  setState((prevState) => ({
+                    ...prevState,
+                    step: ETradeStep.BuySetApproval,
+                  }));
+                } else {
+                  setState((prevState) => ({
+                    ...prevState,
+                    step: ETradeStep.BuyAsset,
+                  }));
+                }
+              }}
+              order={state.selectedOrder}
+            />
+          )
+        );
+      case ETradeStep.BuySetApproval:
+        return (
+          state.selectedOrder && (
+            <TradeBuyApprovalStep
+              onConfirm={() => {
+                setState((prevState) => ({
+                  ...prevState,
+                  step: ETradeStep.BuyAsset,
+                }));
+              }}
+              order={state.selectedOrder}
+            />
+          )
         );
       case ETradeStep.BuyAsset:
         return (

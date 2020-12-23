@@ -55,7 +55,7 @@ export const TradeProvider = ({ children }: IProps) => {
   };
 
   const openBuyModal = (asset: IAssetItem) => {
-    logger.log("openBuyModal", asset);
+    logger.log("openBuyModal");
     setCurrentData((prevData) => ({
       ...prevData,
       mode: ESellBuy.Buy,

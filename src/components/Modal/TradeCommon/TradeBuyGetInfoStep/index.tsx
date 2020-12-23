@@ -1,23 +1,16 @@
-import { SignedOrder } from "@0x/types";
-import { BigNumber } from "@0x/utils";
+import { SignedOrder, assetDataUtils } from "@0x/order-utils";
 import { Button, makeStyles } from "@material-ui/core";
 import clsx from "classnames";
 import { CommentLoader } from "components/Loader";
 import { ErrorText } from "components/Text";
 import { get0xContractAddresses } from "config/networks";
 import { useConnectedWeb3Context } from "contexts";
-import { useContracts } from "helpers";
 import React, { useEffect, useState } from "react";
+import { ERC20Service } from "services";
 import { getLogger } from "utils/logger";
-import {
-  buildSellCollectibleOrder,
-  submitBuyCollectible,
-  submitCollectibleOrder,
-} from "utils/order";
-import { EthersBigNumberTo0xBigNumber } from "utils/token";
-import { IAssetItem } from "utils/types";
+import { xBigNumberToEthersBigNumber } from "utils/token";
 
-const logger = getLogger("TradeBuyAssetStep::");
+const logger = getLogger("TradeBuyGetInfoStep::");
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,9 +23,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface IProps {
-  onConfirm: () => void;
+  onConfirm: (_: boolean) => void;
   className?: string;
-  asset: IAssetItem;
   order: SignedOrder;
 }
 
@@ -41,51 +33,47 @@ interface IState {
   error: string;
 }
 
-export const TradeBuyAssetStep = (props: IProps) => {
+export const TradeBuyGetInfoStep = (props: IProps) => {
   const classes = useStyles();
   const [state, setState] = useState<IState>({ loading: false, error: "" });
   const context = useConnectedWeb3Context();
-  const { erc721 } = useContracts(context);
-  const { asset, onConfirm, order } = props;
+  const { onConfirm, order } = props;
 
-  const buyAsset = async () => {
-    const { account, networkId } = context;
-    if (
-      !account ||
-      !networkId ||
-      !context.library ||
-      !context.contractWrappers ||
-      !context.web3Wrapper
-    )
-      return;
+  const getInfo = async () => {
+    const { account, library, networkId } = context;
+    if (!account || !networkId || !library) return;
     setState((prevState) => ({
       ...prevState,
       error: "",
       loading: true,
     }));
     try {
-      const gasPrice = await context.library.getGasPrice();
-
-      const txHash = await submitBuyCollectible(
-        context.library.provider,
-        order,
+      // get approval information
+      const operator = get0xContractAddresses(networkId).erc20Proxy;
+      const assetTakerInfo = assetDataUtils.decodeAssetDataOrThrow(
+        order.takerAssetData
+      );
+      const erc20Service = new ERC20Service(
+        context.library,
+        context.account,
+        (assetTakerInfo as any).tokenAddress
+      );
+      const isApproved = await erc20Service.hasEnoughAllowance(
         account,
-        EthersBigNumberTo0xBigNumber(gasPrice),
-        networkId
+        operator,
+        xBigNumberToEthersBigNumber(order.takerAssetAmount)
       );
 
-      await context.library.waitForTransaction(txHash);
-      logger.log("buy Asset::Success");
+      logger.log("isApproved::", isApproved);
 
-      onConfirm();
+      onConfirm(isApproved);
 
       setState((prevState) => ({
         ...prevState,
         loading: false,
       }));
     } catch (error) {
-      logger.error("sellAsset", error);
-      logger.error(JSON.stringify(error));
+      logger.error("getInfo", error);
       setState((prevState) => ({
         ...prevState,
         error: error.message || "Something went wrong!",
@@ -95,22 +83,19 @@ export const TradeBuyAssetStep = (props: IProps) => {
   };
 
   useEffect(() => {
-    buyAsset();
+    getInfo();
   }, []);
 
   return (
     <div className={clsx(classes.root, props.className)}>
-      {state.loading && <CommentLoader comment="Filling order..." />}
-      {!state.loading && !state.error && (
-        <CommentLoader comment="Redirecting..." />
-      )}
+      {state.loading && <CommentLoader comment="Checking if approved..." />}
       <ErrorText error={state.error} />
       {!state.loading && state.error && (
         <Button
           className={classes.button}
           color="primary"
           fullWidth
-          onClick={buyAsset}
+          onClick={getInfo}
           variant="contained"
         >
           Try again
