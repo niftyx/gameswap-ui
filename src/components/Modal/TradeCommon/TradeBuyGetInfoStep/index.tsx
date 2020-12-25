@@ -61,7 +61,7 @@ export const TradeBuyGetInfoStep = (props: IProps) => {
       const isApproved = await erc20Service.hasEnoughAllowance(
         account,
         operator,
-        xBigNumberToEthersBigNumber(order.takerAssetAmount)
+        xBigNumberToEthersBigNumber(order.takerAssetAmount.plus(order.takerFee))
       );
 
       logger.log("isApproved::", isApproved);

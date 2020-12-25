@@ -1,8 +1,4 @@
-import {
-  ContractWrappers,
-  DevUtilsContract,
-  ExchangeContract,
-} from "@0x/contract-wrappers";
+import { DevUtilsContract, ExchangeContract } from "@0x/contract-wrappers";
 import {
   Order,
   SignedOrder,
@@ -12,13 +8,12 @@ import {
 import { MetamaskSubprovider } from "@0x/subproviders";
 import { OrderConfigRequest, ZeroExTransaction } from "@0x/types";
 import { BigNumber } from "@0x/utils";
-import { Web3Wrapper } from "@0x/web3-wrapper";
 import {
   FEE_RECIPIENT_ADDRESS,
   ORDERS_PAGE_COUNT,
   PROTOCOL_FEE_MULTIPLIER,
   RELAYER_URL,
-  SERVICE_FEE_IN_PERCENT,
+  SERVICE_FEE,
   TX_DEFAULTS,
 } from "config/constants";
 import { get0xContractAddresses } from "config/networks";
@@ -78,26 +73,12 @@ export const buildSellCollectibleOrder = async (
     ...orderResult,
     chainId: networkId,
     salt: new BigNumber(Date.now()),
+    feeRecipientAddress: FEE_RECIPIENT_ADDRESS,
+    takerFeeAssetData: erc20AssetData,
+    takerFee: new BigNumber(orderConfigRequest.takerAssetAmount).multipliedBy(
+      new BigNumber(SERVICE_FEE)
+    ),
   };
-
-  // const order: Order = {
-  //   exchangeAddress,
-  //   makerAssetData: collectibleData,
-  //   takerAssetData: erc20AssetData,
-  //   makerAssetAmount: amount,
-  //   takerAssetAmount: round(amount.multipliedBy(price)),
-  //   makerAddress: account,
-  //   takerAddress: ZERO_ADDRESS,
-  //   expirationTimeSeconds: getExpirationTimeOrdersFromConfig(),
-  //   chainId: networkId,
-  //   salt: new BigNumber(Date.now()),
-  //   feeRecipientAddress: FEE_RECIPIENT_ADDRESS,
-  //   makerFee: new BigNumber(0),
-  //   takerFee: new BigNumber(0),
-  //   makerFeeAssetData: erc20AssetData,
-  //   takerFeeAssetData: erc20AssetData,
-  //   senderAddress: ZERO_ADDRESS,
-  // };
 
   return signatureUtils.ecSignOrderAsync(
     new MetamaskSubprovider(provider),

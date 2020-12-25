@@ -60,7 +60,7 @@ export const TradeBuyApprovalStep = (props: IProps) => {
       );
       await erc20Service.approve(
         operator,
-        xBigNumberToEthersBigNumber(order.takerAssetAmount)
+        xBigNumberToEthersBigNumber(order.takerAssetAmount.plus(order.takerFee))
       );
 
       onConfirm();
