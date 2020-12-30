@@ -95,9 +95,8 @@ export const TokenGswap = {
 
 export const SALE_TOKENS = [TokenEthereum, TokenGswap];
 
-export const INVENTORY_PAGE_ASSET_COUNT = Number(
-  process.env.REACT_APP_INVENTORY_PAGE_ASSET_COUNT || 20
-);
+export const INVENTORY_PAGE_ASSET_COUNT = 20;
+export const BROWSE_PAGE_ASSET_COUNT = 20;
 
 export const ORDERS_PAGE_COUNT = 20;
 

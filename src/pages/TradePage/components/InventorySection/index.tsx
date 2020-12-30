@@ -66,7 +66,7 @@ const InventorySection = (props: IProps) => {
                   data={asset}
                   key={asset.id}
                   onClick={onSell}
-                  onMore={() => history.push(`/trade/${asset.id}`)}
+                  onMore={() => history.push(`/assets/${asset.id}`)}
                 />
               ))}
             </AssetsContainer>

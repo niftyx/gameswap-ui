@@ -1,8 +1,14 @@
 import { makeStyles } from "@material-ui/core";
 import clsx from "classnames";
-import { AssetItem, AssetsContainer, BrowseToolbar } from "components";
-import { MOCK_ASSET_ITEMS } from "config/constants";
+import {
+  AssetsContainer,
+  BrowseAssetItem,
+  BrowseToolbar,
+  ScrollContainer,
+  SimpleLoader,
+} from "components";
 import React, { useState } from "react";
+import { IAssetDetails } from "types";
 import { IAssetItem } from "utils/types";
 
 import AuctionItemsSection from "../AuctionItemsSection";
@@ -16,17 +22,21 @@ const useStyles = makeStyles((theme) => ({
 
 interface IProps {
   className?: string;
+  onScrollEnd?: () => void;
+  loading?: boolean;
+  assets: IAssetDetails[];
 }
 
 interface IState {
-  assets: IAssetItem[];
   isAuctionActive: boolean;
 }
 
 const AssetItemsSection = (props: IProps) => {
   const classes = useStyles();
+
+  const { assets, loading, onScrollEnd } = props;
+
   const [state, setState] = useState<IState>({
-    assets: MOCK_ASSET_ITEMS,
     isAuctionActive: false,
   });
 
@@ -37,8 +47,13 @@ const AssetItemsSection = (props: IProps) => {
     }));
   };
 
+  console.log("-=-=-=", assets);
+
   return (
-    <div className={clsx(classes.root, props.className)}>
+    <ScrollContainer
+      className={clsx(classes.root, props.className)}
+      onScrollEnd={onScrollEnd}
+    >
       <BrowseToolbar
         isAuctionActive={state.isAuctionActive}
         onAuction={onAuction}
@@ -48,13 +63,14 @@ const AssetItemsSection = (props: IProps) => {
           <AuctionItemsSection />
         ) : (
           <AssetsContainer>
-            {state.assets.map((asset) => (
-              <AssetItem data={asset} isFullWidth key={asset.id} />
+            {assets.map((asset) => (
+              <BrowseAssetItem data={asset} isFullWidth key={asset.id} />
             ))}
           </AssetsContainer>
         )}
       </div>
-    </div>
+      {loading && <SimpleLoader />}
+    </ScrollContainer>
   );
 };
 

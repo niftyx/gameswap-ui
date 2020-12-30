@@ -130,7 +130,7 @@ const AssetItemsSection = (props: IProps) => {
               isOnCart={isInItemCart(asset.id) as any}
               key={asset.id}
               onClick={onBuy}
-              onMore={() => history.push(`/trade/${asset.id}`)}
+              onMore={() => history.push(`/assets/${asset.id}`)}
             />
           ))}
         </AssetsContainer>
