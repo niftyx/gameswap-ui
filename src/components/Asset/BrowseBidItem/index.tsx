@@ -86,15 +86,7 @@ export const BrowseBidItem = (props: IProps & IBrowseGameBidItem) => {
     setAnchorEl(null);
   };
 
-  const {
-    image,
-    name,
-    offers,
-    onClick,
-    startFromAmount,
-    startFromToken,
-    status,
-  } = props;
+  const { image, name, offers, startFromAmount, status } = props;
 
   return (
     <div className={clsx(classes.root, props.className)}>

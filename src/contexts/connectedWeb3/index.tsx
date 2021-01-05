@@ -48,7 +48,6 @@ export const ConnectedWeb3: React.FC = (props) => {
     activate,
     active,
     chainId,
-    connector,
     deactivate,
     error,
     library,
@@ -91,6 +90,7 @@ export const ConnectedWeb3: React.FC = (props) => {
       });
     }
     return { web3Wrapper, contractWrappers };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [library]);
 
   const value = {

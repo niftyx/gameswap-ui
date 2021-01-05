@@ -1,17 +1,13 @@
 import { SignedOrder } from "@0x/types";
-import { BigNumber } from "@0x/utils";
 import { Button, makeStyles } from "@material-ui/core";
 import clsx from "classnames";
 import { CommentLoader } from "components/Loader";
 import { ErrorText } from "components/Text";
-import { get0xContractAddresses } from "config/networks";
 import { useConnectedWeb3Context } from "contexts";
-import { useContracts } from "helpers";
 import React, { useEffect, useState } from "react";
 import { getLogger } from "utils/logger";
 import { cancelOrder } from "utils/order";
 import { EthersBigNumberTo0xBigNumber } from "utils/token";
-import { IAssetItem, NetworkId } from "utils/types";
 
 const logger = getLogger("TradeSellAssetStep::");
 
@@ -40,7 +36,6 @@ export const TradCancelOrderStep = (props: IProps) => {
   const classes = useStyles();
   const [state, setState] = useState<IState>({ loading: false, error: "" });
   const context = useConnectedWeb3Context();
-  const { erc721 } = useContracts(context);
   const { onConfirm, order } = props;
 
   const sellAsset = async () => {

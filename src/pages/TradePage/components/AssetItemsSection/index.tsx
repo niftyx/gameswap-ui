@@ -7,11 +7,7 @@ import {
   SimpleLoader,
   TradeAssetItem,
 } from "components";
-import {
-  CartContentItem,
-  CartContentWrapper,
-  CartEmpty,
-} from "components/Cart";
+import { CartContentWrapper, CartEmpty } from "components/Cart";
 import { useGlobal, useTrade } from "contexts";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
@@ -41,12 +37,10 @@ const AssetItemsSection = (props: IProps) => {
     clearItemCart,
     data: { itemCartIds },
     isInItemCart,
-    toggleItemCart,
   } = useGlobal();
   const history = useHistory();
   const { loading, onScrollEnd, orders } = props;
   const { openBuyModal } = useTrade();
-  const [state, setState] = useState<IState>({ selectedId: "" });
 
   const assets: ITradeAssetItem[] = [];
 
@@ -68,9 +62,6 @@ const AssetItemsSection = (props: IProps) => {
   );
 
   let totalPrice = 0;
-  selectedItems.forEach((element: ITradeAssetItem) => {
-    // totalPrice = totalPrice + element.usdPrice;
-  });
 
   totalPrice = 1;
 

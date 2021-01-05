@@ -1,5 +1,4 @@
 import { SignedOrder } from "@0x/types";
-import { BigNumber } from "@0x/utils";
 import { Button, makeStyles } from "@material-ui/core";
 import clsx from "classnames";
 import { CommentLoader } from "components/Loader";
@@ -40,8 +39,7 @@ export const TradeBuyAssetStep = (props: IProps) => {
   const classes = useStyles();
   const [state, setState] = useState<IState>({ loading: false, error: "" });
   const context = useConnectedWeb3Context();
-  const { erc721 } = useContracts(context);
-  const { asset, onConfirm, order } = props;
+  const { onConfirm, order } = props;
 
   const buyAsset = async () => {
     const { account, networkId } = context;

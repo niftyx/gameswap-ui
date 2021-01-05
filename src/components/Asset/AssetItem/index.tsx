@@ -5,7 +5,6 @@ import clsx from "classnames";
 import { transparentize } from "polished";
 import React, { useState } from "react";
 import useCommonStyles from "styles/common";
-import { formatBigNumber, numberWithCommas } from "utils";
 import { IAssetItem } from "utils/types";
 
 const useStyles = makeStyles((theme) => ({

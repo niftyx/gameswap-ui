@@ -1,4 +1,4 @@
-import { Button, Hidden, Typography, makeStyles } from "@material-ui/core";
+import { Button, Typography, makeStyles } from "@material-ui/core";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import { IconFeaturedFarmPreview } from "assets/icons";
@@ -98,7 +98,6 @@ export const FeaturedFarmPreview = (props: IProps & IFeaturedFarmItem) => {
     backgroundImage,
     description,
     isFavorite,
-    onClick,
     title,
     tokenDescription,
   } = props;

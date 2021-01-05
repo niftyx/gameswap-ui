@@ -1,13 +1,11 @@
 import { Button, Grid, Typography, makeStyles } from "@material-ui/core";
-import { IconAssetPlaceholder, IconCartInCircle } from "assets/icons";
-import { ReactComponent as GswapIcon } from "assets/svgs/gameswap_token.svg";
+import { IconAssetPlaceholder } from "assets/icons";
 import clsx from "classnames";
 import { useConnectedWeb3Context, useGlobal } from "contexts";
 import { useAssetDetailsFromId } from "helpers";
 import { transparentize } from "polished";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import useCommonStyles from "styles/common";
-import { formatBigNumber, numberWithCommas } from "utils";
 import { getAssetObjectWithPrices, getObjectIdFromHex } from "utils/tools";
 import { IAssetItem, ITradeAssetItem } from "utils/types";
 

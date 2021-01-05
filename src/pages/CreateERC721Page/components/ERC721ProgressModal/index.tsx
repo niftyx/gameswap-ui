@@ -84,11 +84,11 @@ export const ERC721ProgressModal = (props: IProps) => {
   const commonClasses = useCommonStyles();
   const { ipfs } = useIpfs();
   const context = useConnectedWeb3Context();
-  const { account, networkId } = context;
+  const { account } = context;
   const { erc721 } = useContracts(context);
   const erc721ProxyAddress = "0x2a9127c745688a165106c11cd4d647d2220af821";
 
-  const { formValues, onClose, steps, visible } = props;
+  const { formValues, onClose, visible } = props;
   const history = useHistory();
   const [state, setState] = useState<IState>({
     isLoading: false,

@@ -1,12 +1,4 @@
-import {
-  Badge,
-  Box,
-  Hidden,
-  Popover,
-  Typography,
-  makeStyles,
-} from "@material-ui/core";
-import { ReactComponent as CartIcon } from "assets/svgs/cart-arrow-up.svg";
+import { Box, Hidden, Popover, makeStyles } from "@material-ui/core";
 import clsx from "classnames";
 import { SyncButton } from "components/Button";
 import { NoteContainer } from "components/Container";
@@ -14,7 +6,6 @@ import { VerticalDivider } from "components/Divider";
 import { SearchInput } from "components/Input";
 import { GamesSelect, SortSelect } from "components/Select";
 import React from "react";
-import { numberWithCommas } from "utils";
 
 const useStyles = makeStyles((theme) => ({
   root: {

@@ -3,7 +3,6 @@ import { makeStyles } from "@material-ui/core";
 import { useTrade } from "contexts";
 import React, { useState } from "react";
 import { ETradeStep } from "utils/enums";
-import { getLogger } from "utils/logger";
 
 import {
   TradCancelOrderStep,
@@ -14,8 +13,6 @@ import {
   TradeSuccessStep,
 } from "../TradeCommon";
 import { TradeSelectOrderStep } from "../TradeCommon/TradeSelectOrderStep";
-
-const logger = getLogger("TradeSellModal::");
 
 const useStyles = makeStyles((theme) => ({
   root: {},

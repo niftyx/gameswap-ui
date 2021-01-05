@@ -2,10 +2,9 @@ import { SignedOrder } from "@0x/types";
 import { Button, makeStyles } from "@material-ui/core";
 import clsx from "classnames";
 import { TokenAmountInput } from "components/Input";
-import { BigNumber } from "ethers";
 import React from "react";
 import { ZERO_NUMBER } from "utils/number";
-import { IAssetItem, IToken, ITokenAmount } from "utils/types";
+import { IAssetItem, ITokenAmount } from "utils/types";
 
 import { TradeCancelOrderRow } from "../TradeCancelOrderRow";
 

@@ -13,11 +13,7 @@ import {
   FormSwitchField,
   FormTextField,
 } from "components";
-import {
-  SALE_TOKENS,
-  SERVICE_FEE,
-  SERVICE_FEE_IN_PERCENT,
-} from "config/constants";
+import { SERVICE_FEE, SERVICE_FEE_IN_PERCENT } from "config/constants";
 import { getToken, knownTokens } from "config/networks";
 import { useConnectedWeb3Context, useGlobal } from "contexts";
 import { Form, Formik } from "formik";
@@ -119,10 +115,7 @@ export const ERC721CreateForm = (props: IProps) => {
   return (
     <Formik
       initialValues={initialFormValue}
-      onSubmit={async (
-        values,
-        { resetForm, setErrors, setStatus, setSubmitting }
-      ) => {
+      onSubmit={async (values, { setErrors }) => {
         const { attributes } = values;
         for (let index = 0; index < attributes.length - 1; index += 1) {
           const attribute = attributes[index];
