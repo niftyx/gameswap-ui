@@ -24,6 +24,7 @@ interface IState {
 
 const AuctionItemsSection = (props: IProps) => {
   const classes = useStyles();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [state, setState] = useState<IState>({
     assets: MOCK_AUCTIONS_ITEMS,
   });

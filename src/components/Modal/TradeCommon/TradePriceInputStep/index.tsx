@@ -41,8 +41,8 @@ export const TradePriceInputStep = (props: IProps) => {
 
   return (
     <div className={clsx(classes.root, props.className)}>
-      {asset.base64 && (
-        <img alt="asset-img" className={classes.img} src={asset.base64} />
+      {asset.image && (
+        <img alt="asset-img" className={classes.img} src={asset.image} />
       )}
       {isInSale ? (
         <>

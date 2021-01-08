@@ -128,8 +128,8 @@ const BrowseAssetItem = (props: IProps) => {
             if (asset && onClick) onClick(asset);
           }}
         >
-          {asset && asset.base64 && (
-            <img alt="asset_img" className={classes.img} src={asset.base64} />
+          {asset && asset.image && (
+            <img alt="asset_img" className={classes.img} src={asset.image} />
           )}
           {asset && asset.isInSale && (
             <AttachMoneyIcon className={classes.inSaleIcon} />

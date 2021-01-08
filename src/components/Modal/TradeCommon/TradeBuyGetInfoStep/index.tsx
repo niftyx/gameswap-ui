@@ -84,6 +84,7 @@ export const TradeBuyGetInfoStep = (props: IProps) => {
 
   useEffect(() => {
     getInfo();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

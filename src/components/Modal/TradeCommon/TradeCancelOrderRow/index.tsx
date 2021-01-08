@@ -1,15 +1,11 @@
 import { assetDataUtils } from "@0x/order-utils";
 import { Button, Typography, makeStyles } from "@material-ui/core";
-import clsx from "classnames";
 import { getTokenFromAddress } from "config/networks";
 import { useConnectedWeb3Context } from "contexts";
 import React from "react";
 import { formatBigNumber } from "utils";
-import { getLogger } from "utils/logger";
 import { xBigNumberToEthersBigNumber } from "utils/token";
 import { ISignedOrder } from "utils/types";
-
-const logger = getLogger("TradeCancelOrderRow");
 
 const useStyles = makeStyles((theme) => ({
   root: {

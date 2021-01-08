@@ -31,7 +31,7 @@ const networks: { [K in NetworkId]: INetwork } = {
     graphWsUri: GRAPH_MAINNET_WS,
     contracts: {
       gswap: "0xaac41ec512808d64625576eddd580e7ea40ef8b2",
-      erc721: "0x947161a5d422f95db832121b2946db5a616acf47",
+      erc721: "0x254D5259539b3ec85Cd76A1931899ec7E8851dD4",
       weth: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
     },
   },
@@ -42,7 +42,7 @@ const networks: { [K in NetworkId]: INetwork } = {
     graphWsUri: GRAPH_KOVAN_WS,
     contracts: {
       gswap: "0xb2c7d27f78bec818391498dc4108ab782d65cd76",
-      erc721: "0x947161a5d422f95db832121b2946db5a616acf47",
+      erc721: "0x254D5259539b3ec85Cd76A1931899ec7E8851dD4",
       weth: "0xd0a1e359811322d97991e03f863a0c30c2cf029c",
     },
   },

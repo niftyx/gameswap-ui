@@ -88,7 +88,7 @@ export const UpcomingFarmRow = (props: IProps & IUpcomingFarmItem) => {
     setAnchorEl(null);
   };
 
-  const { image, onClick, platforms, tags, title, tokenDescription } = props;
+  const { image, platforms, tags, title, tokenDescription } = props;
 
   return (
     <div className={clsx(classes.root, props.className)}>
@@ -103,7 +103,7 @@ export const UpcomingFarmRow = (props: IProps & IUpcomingFarmItem) => {
         </Grid>
         <Grid item xs={4}>
           <div className={classes.tags}>
-            {Object.values(EFarmingTag).map((value, index) => (
+            {Object.values(EFarmingTag).map((value) => (
               <FarmingTag
                 active={tags.includes(value as EFarmingTag)}
                 key={value}

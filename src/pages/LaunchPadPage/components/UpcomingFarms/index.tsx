@@ -38,6 +38,7 @@ interface IState {
 
 export const UpcomingFarms = (props: IProps) => {
   const classes = useStyles();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [state, setState] = useState<IState>({ items: MockUpcomingFarms });
 
   return (

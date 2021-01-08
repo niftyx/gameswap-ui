@@ -9,7 +9,7 @@ import {
 } from "components";
 import { CartContentWrapper, CartEmpty } from "components/Cart";
 import { useGlobal, useTrade } from "contexts";
-import React, { useState } from "react";
+import React from "react";
 import { useHistory } from "react-router-dom";
 import { IAssetItem, ISignedOrder, ITradeAssetItem } from "utils/types";
 
@@ -25,10 +25,6 @@ interface IProps {
   onScrollEnd?: () => void;
   loading?: boolean;
   orders: ISignedOrder[];
-}
-
-interface IState {
-  selectedId: string;
 }
 
 const AssetItemsSection = (props: IProps) => {

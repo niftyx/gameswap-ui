@@ -3,7 +3,7 @@ import clsx from "classnames";
 import React from "react";
 import useCommonStyles from "styles/common";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {},
 }));
 

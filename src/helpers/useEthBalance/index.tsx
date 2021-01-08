@@ -1,4 +1,5 @@
 import { BigNumber } from "ethers";
+import { useIsMountedRef } from "hooks";
 import { useEffect, useState } from "react";
 
 export const useEthBalance = (
@@ -9,11 +10,12 @@ export const useEthBalance = (
   fetchBalance: () => Promise<void>;
 } => {
   const [ethBalance, setEthBalance] = useState<BigNumber>(BigNumber.from(0));
+  const isRefMounted = useIsMountedRef();
   const fetchEthBalance = async () => {
     try {
       if (account) {
         const balance = await provider.getBalance(account || "");
-        setEthBalance(balance);
+        if (isRefMounted.current === true) setEthBalance(balance);
       } else {
         setEthBalance(BigNumber.from(0));
       }

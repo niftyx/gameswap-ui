@@ -95,6 +95,7 @@ export const TradeSellAssetStep = (props: IProps) => {
 
   useEffect(() => {
     sellAsset();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

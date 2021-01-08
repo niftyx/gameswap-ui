@@ -1,5 +1,4 @@
-import { Divider, Typography, makeStyles } from "@material-ui/core";
-import clsx from "classnames";
+import { Typography, makeStyles } from "@material-ui/core";
 import { transparentize } from "polished";
 import React from "react";
 import { NavLink } from "react-router-dom";

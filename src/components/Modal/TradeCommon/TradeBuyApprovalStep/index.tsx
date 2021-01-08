@@ -81,6 +81,7 @@ export const TradeBuyApprovalStep = (props: IProps) => {
 
   useEffect(() => {
     approve();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

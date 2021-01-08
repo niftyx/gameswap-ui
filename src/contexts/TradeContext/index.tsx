@@ -16,8 +16,11 @@ const defaultData: ITradeData = {
 
 const TradeContext = createContext({
   data: defaultData,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   openSellModal: (_: IAssetItem) => {},
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   openBuyModal: (_: IAssetItem) => {},
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   updateAssetPrice: (_: ITokenAmount) => {},
 });
 

@@ -35,12 +35,12 @@ export const TokenAmountInput = (props: IProps) => {
 
   useEffect(() => {
     if (!value) {
-      setCurrentValue("");
+      setCurrentValue(() => "");
     } else if (
       value &&
       !ethers.utils.parseUnits(currentValue || "0", decimals).eq(value.amount)
     ) {
-      setCurrentValue(ethers.utils.formatUnits(value.amount, decimals));
+      setCurrentValue(() => ethers.utils.formatUnits(value.amount, decimals));
     }
     // eslint-disable-next-line
   }, [value.amount, value.token.decimals, currentValue]);
@@ -62,7 +62,7 @@ export const TokenAmountInput = (props: IProps) => {
       );
       onChange({ ...value, amount: newValue });
     }
-    setCurrentValue(inputValue);
+    setCurrentValue(() => inputValue);
   };
 
   const onChangeToken = (

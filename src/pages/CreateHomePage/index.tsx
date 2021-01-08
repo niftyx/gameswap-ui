@@ -4,7 +4,7 @@ import React from "react";
 
 import { AssetCreateOption } from "./components";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     height: "100%",
     display: "flex",

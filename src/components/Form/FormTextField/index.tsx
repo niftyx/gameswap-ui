@@ -13,7 +13,7 @@ import React from "react";
 
 import { FormInputLabel } from "../FormInputLabel";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {},
 }));
 

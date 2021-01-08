@@ -4,6 +4,7 @@ import axios from "axios";
 import { ORDERS_PAGE_COUNT } from "config/constants";
 import { getContractAddress } from "config/networks";
 import { useConnectedWeb3Context } from "contexts";
+import { useIsMountedRef } from "hooks";
 import { useEffect, useState } from "react";
 import { getLogger } from "utils/logger";
 import { buildOrdersQuery, wrangeOrderResponse } from "utils/order";
@@ -21,6 +22,7 @@ interface IState {
 export const useAllOrders = (): IState & { loadMore: () => Promise<void> } => {
   const { networkId } = useConnectedWeb3Context();
   const erc721Address = getContractAddress(networkId || 1, "erc721");
+  const isRefMounted = useIsMountedRef();
   const [state, setState] = useState<IState>({
     allLoaded: false,
     orders: [],
@@ -58,13 +60,13 @@ export const useAllOrders = (): IState & { loadMore: () => Promise<void> } => {
             erc20Address: erc20.tokenAddress,
           };
         });
-
-      setState((prevState) => ({
-        ...prevState,
-        orders: ordersResult,
-        allLoaded,
-        loading: false,
-      }));
+      if (isRefMounted.current === true)
+        setState((prevState) => ({
+          ...prevState,
+          orders: ordersResult,
+          allLoaded,
+          loading: false,
+        }));
     } catch (error) {
       setState((prevState) => ({ ...prevState, loading: false }));
       logger.error("loadOrders", error);

@@ -50,15 +50,15 @@ interface IProps {
 
 const AssetsToolbar = (props: IProps) => {
   const classes = useStyles();
-  const { cartItemCount, totalPrice } = props;
+  // const { cartItemCount, totalPrice } = props;
 
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
+  // const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  //   setAnchorEl(event.currentTarget);
+  // };
 
   const handleClose = () => {
     setAnchorEl(null);

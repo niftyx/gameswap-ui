@@ -61,7 +61,7 @@ export const useAssetDetailsFromId = (id: string): IResponse => {
     loading: false,
   });
 
-  const { data, error, loading, refetch } = useQuery<IGraphResponse>(query, {
+  const { data, refetch } = useQuery<IGraphResponse>(query, {
     notifyOnNetworkStatusChange: true,
     skip: false,
     variables: { id },
@@ -69,65 +69,73 @@ export const useAssetDetailsFromId = (id: string): IResponse => {
 
   useEffect(() => {
     refetch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [networkId]);
 
   useEffect(() => {
+    let isMounted = true;
     if (data && data.asset && id === data.asset.id) {
       if (!state.asset || state.asset.id !== id) {
         const { asset } = data;
-        setState((prevState) => ({
-          ...prevState,
-          asset: {
-            id: asset?.id,
-            tokenId: asset?.assetId,
-            tokenURL: asset.assetURL,
-            name: "",
-            description: "",
-            image: "",
-            createTimeStamp: asset.createTimeStamp,
-            usdPrice: 0,
-            priceChange: 0,
-            owner: asset.currentOwner.address,
-          },
-        }));
+        if (isMounted)
+          setState((prevState) => ({
+            ...prevState,
+            asset: {
+              id: asset?.id,
+              tokenId: asset?.assetId,
+              tokenURL: asset.assetURL,
+              name: "",
+              description: "",
+              image: "",
+              createTimeStamp: asset.createTimeStamp,
+              usdPrice: 0,
+              priceChange: 0,
+              owner: asset.currentOwner.address,
+            },
+          }));
       }
     } else {
       setState((prevState) => ({ ...prevState, asset: null, loading: false }));
     }
+
+    return () => {
+      isMounted = false;
+    };
     // eslint-disable-next-line
   }, [data]);
 
-  const loadAssetDetails = async () => {
-    if (!state.asset || !state.asset.tokenURL) return;
-    try {
-      const details: IIPFSTokenData = JSON.parse(
-        (await getIPFSService().getData(state.asset.tokenURL)).data
-      );
-      const base64: string = (await getIPFSService().getData(details.image))
-        .data;
-      setState((prevState) => ({
-        ...prevState,
-        loading: false,
-        asset: prevState.asset
-          ? {
-              ...prevState.asset,
-              ...details,
-              priceChange: 0,
-              usdPrice: 0,
-              base64,
-            }
-          : null,
-      }));
-    } catch (error) {
-      logger.error(error);
-      setState((prevState) => ({ ...prevState, loading: false }));
-    }
-  };
-
   useEffect(() => {
+    let isMounted = true;
+    const loadAssetDetails = async () => {
+      if (!state.asset || !state.asset.tokenURL) return;
+      try {
+        const details: IIPFSTokenData = JSON.parse(
+          (await getIPFSService().getData(state.asset.tokenURL)).data
+        );
+        if (isMounted)
+          setState((prevState) => ({
+            ...prevState,
+            loading: false,
+            asset: prevState.asset
+              ? {
+                  ...prevState.asset,
+                  ...details,
+                  priceChange: 0,
+                  usdPrice: 0,
+                }
+              : null,
+          }));
+      } catch (error) {
+        logger.error(error);
+        setState((prevState) => ({ ...prevState, loading: false }));
+      }
+    };
     if (state.asset && state.asset.id === id && !state.asset.name) {
       loadAssetDetails();
     }
+    return () => {
+      isMounted = false;
+    };
     // eslint-disable-next-line
   }, [state.asset]);
 

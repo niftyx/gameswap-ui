@@ -4,7 +4,6 @@ import clsx from "classnames";
 import { CommentLoader } from "components/Loader";
 import { ErrorText } from "components/Text";
 import { useConnectedWeb3Context } from "contexts";
-import { useContracts } from "helpers";
 import React, { useEffect, useState } from "react";
 import { getLogger } from "utils/logger";
 import { submitBuyCollectible } from "utils/order";
@@ -89,6 +88,7 @@ export const TradeBuyAssetStep = (props: IProps) => {
 
   useEffect(() => {
     buyAsset();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

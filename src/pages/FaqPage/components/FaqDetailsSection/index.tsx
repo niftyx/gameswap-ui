@@ -45,8 +45,6 @@ const FaqDetailsSection = (props: IProps & RouteComponentProps) => {
   const commonClasses = useCommonStyles();
   const faqId = ((props.match.params as any) || {})["id"] || "how-to-trade";
 
-  console.log(faqId);
-
   return (
     <div className={clsx(classes.root, props.className)}>
       <div className={classes.toolbar}>

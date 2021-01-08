@@ -5,7 +5,7 @@ class IPFSService {
   private readonly _rateLimit: () => Promise<void>;
 
   constructor() {
-    this._rateLimit = RateLimit(3);
+    this._rateLimit = RateLimit(10);
   }
 
   async getData(ipfsEndpoint: string) {

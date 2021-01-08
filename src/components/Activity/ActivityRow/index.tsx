@@ -47,7 +47,7 @@ export const ActivityRow = (props: IProps) => {
     onClickViewTx,
     title,
     trustPoints,
-    txHash,
+    // txHash,
     type,
   } = props;
   const classes = useStyles();

@@ -9,7 +9,7 @@ import {
   SimpleLoader,
 } from "components";
 import { useConnectedWeb3Context, useTrade } from "contexts";
-import React, { useState } from "react";
+import React from "react";
 import { useHistory } from "react-router-dom";
 import { IGraphInventoryAsset } from "types";
 import { IAssetItem } from "utils/types";
@@ -34,14 +34,9 @@ interface IProps {
   assets: IGraphInventoryAsset[];
 }
 
-interface IState {
-  selectedId: string;
-}
-
 const InventorySection = (props: IProps) => {
   const classes = useStyles();
   const { loading = false, onScrollEnd = () => {}, assets } = props;
-  const [state, setState] = useState<IState>({ selectedId: "" });
   const { account } = useConnectedWeb3Context();
   const isConnected = !!account;
   const history = useHistory();

@@ -3,6 +3,7 @@ import { INVENTORY_PAGE_ASSET_COUNT } from "config/constants";
 import { getGraphUris } from "config/networks";
 import { useConnectedWeb3Context } from "contexts";
 import { BigNumber } from "ethers";
+import { useIsMountedRef } from "hooks";
 import { useEffect, useState } from "react";
 import { IGraphInventoryAsset, IGraphInventoryResponse } from "types";
 import { getLogger } from "utils/logger";
@@ -71,7 +72,7 @@ export const useInventoryAssets = (
 } => {
   const { networkId } = useConnectedWeb3Context();
   const { httpUri } = getGraphUris(networkId || 1);
-
+  const isRefMounted = useIsMountedRef();
   const [state, setState] = useState<IState>({
     hasMore: false,
     assets: [],
@@ -93,6 +94,7 @@ export const useInventoryAssets = (
         )
       ).data;
       const info = response.data.account;
+      if (isRefMounted.current === false) return;
       if (info)
         setState((prevState) => ({
           ...prevState,

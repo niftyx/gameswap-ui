@@ -37,11 +37,11 @@ const Notifications = (props: IProps) => {
   const handleClick = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    setAnchorEl(event.currentTarget as any);
+    setAnchorEl(() => event.currentTarget as any);
   };
 
   const handleClose = () => {
-    setAnchorEl(null);
+    setAnchorEl(() => null);
   };
 
   return (

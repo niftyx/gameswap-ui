@@ -35,6 +35,7 @@ interface IState {
 
 export const TrendingItems = (props: IProps) => {
   const classes = useStyles();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [state, setState] = useState<IState>({ assets: MOCK_ASSET_ITEMS });
 
   return (

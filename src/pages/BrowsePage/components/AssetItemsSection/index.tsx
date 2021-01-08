@@ -9,7 +9,6 @@ import {
 } from "components";
 import React, { useState } from "react";
 import { IAssetDetails } from "types";
-import { IAssetItem } from "utils/types";
 
 import AuctionItemsSection from "../AuctionItemsSection";
 
@@ -46,8 +45,6 @@ const AssetItemsSection = (props: IProps) => {
       isAuctionActive: !prevState.isAuctionActive,
     }));
   };
-
-  console.log("-=-=-=", assets);
 
   return (
     <ScrollContainer

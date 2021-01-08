@@ -134,7 +134,7 @@ const TradeAssetItem = (props: IProps) => {
   const {
     data,
     isFullWidth = false,
-    isOnCart = false,
+    // isOnCart = false,
     onClick,
     onMore,
   } = props;
@@ -201,7 +201,7 @@ const TradeAssetItem = (props: IProps) => {
                 alt="asset_img"
                 className={classes.img}
                 onLoad={() => setLoaded(true)}
-                src={assetDetails?.base64}
+                src={assetDetails?.image}
               />
               <div className={classes.bottom}>
                 <Typography className={classes.usd} component="div">

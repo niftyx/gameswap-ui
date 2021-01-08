@@ -33,6 +33,7 @@ interface IState {
 
 export const NoticeSection = (props: IProps) => {
   const classes = useStyles();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [state, setState] = useState<IState>({
     transactions: 178,
     itemsInMarket: 23,

@@ -12,7 +12,7 @@ import { ReactComponent as LogoSvg } from "assets/svgs/logo.svg";
 import clsx from "clsx";
 import { BackNextGroup } from "components";
 import React from "react";
-import { NavLink, matchPath, useHistory } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 
 import AccountInfoBar from "../AccountInfoBar";
 import LaunchPad from "../LaunchPad";
@@ -86,8 +86,6 @@ const Header = ({ className, ...rest }: AppBarProps) => {
   const onBack = () => {
     history.go(-1);
   };
-  const isActivePath = (path: string) =>
-    !!matchPath(history.location.pathname, { path, exact: false });
 
   return (
     <AppBar className={clsx(classes.root, className)} color="default" {...rest}>

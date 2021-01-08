@@ -37,11 +37,11 @@ const LaunchPad = (props: IProps) => {
   const handleClick = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    setAnchorEl(event.currentTarget as any);
+    setAnchorEl(() => event.currentTarget as any);
   };
 
   const handleClose = () => {
-    setAnchorEl(null);
+    setAnchorEl(() => null);
   };
 
   return (
@@ -58,7 +58,7 @@ const LaunchPad = (props: IProps) => {
         anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
         elevation={0}
         getContentAnchorEl={null}
-        id="notifications-menu"
+        id="launchpad-menu"
         keepMounted
         onClose={handleClose}
         open={Boolean(anchorEl)}

@@ -1,1 +1,2 @@
-export { default as useSettings } from "./useSettings";
+export * from "./useSettings";
+export * from "./useIsMountedRef";

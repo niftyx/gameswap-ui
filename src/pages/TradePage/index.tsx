@@ -7,12 +7,9 @@ import { useAllOrders } from "helpers/useAllOrders";
 import React from "react";
 import useCommonStyles from "styles/common";
 import { IGraphInventoryAsset } from "types";
-import { getLogger } from "utils/logger";
 import { getObjectIdFromHex } from "utils/tools";
 
 import { AssetItemsSection, InventorySection } from "./components";
-
-const logger = getLogger("TradePage::");
 
 const useStyles = makeStyles((theme) => ({
   root: {},

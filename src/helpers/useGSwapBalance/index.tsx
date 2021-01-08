@@ -1,6 +1,7 @@
 import { getToken } from "config/networks";
 import { ConnectedWeb3Context } from "contexts/connectedWeb3";
 import { BigNumber } from "ethers";
+import { useIsMountedRef } from "hooks";
 import { useEffect, useState } from "react";
 import { ERC20Service } from "services";
 
@@ -11,8 +12,8 @@ export const useGSwapBalance = (
   fetchBalance: () => Promise<void>;
 } => {
   const { account, library: provider, networkId } = context;
+  const isRefMounted = useIsMountedRef();
   const [balance, setBalance] = useState<BigNumber>(BigNumber.from(0));
-
   const updateBalance = (newValue: BigNumber) => {
     if (!balance.eq(newValue)) {
       setBalance(newValue);
@@ -26,8 +27,7 @@ export const useGSwapBalance = (
         const token = getToken(networkId, "gswap");
         const erc20Service = new ERC20Service(provider, account, token.address);
         const tokenBalance = await erc20Service.getBalanceOf(account);
-
-        updateBalance(tokenBalance);
+        if (isRefMounted.current === true) updateBalance(tokenBalance);
       } else {
         updateBalance(BigNumber.from(0));
       }

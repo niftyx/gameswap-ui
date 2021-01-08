@@ -178,7 +178,6 @@ export interface IAssetItem {
   priceChange: number;
   royalties?: number;
   attributes?: [{ [key: string]: string }];
-  base64?: string;
   price?: ITokenAmount;
   prices?: ITokenAmount[];
   isInSale?: boolean;

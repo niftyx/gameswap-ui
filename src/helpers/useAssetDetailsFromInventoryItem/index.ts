@@ -22,29 +22,29 @@ export const useAssetDetailsFromInventoryItem = (
     setState((prevState) => ({ ...prevState, loaded }));
 
   useEffect(() => {
+    let isMounted = true;
+
     const loadAssetDetails = async () => {
       try {
         const details: IIPFSTokenData = JSON.parse(
           (await getIPFSService().getData(data.assetURL)).data
         );
-        const base64: string = (await getIPFSService().getData(details.image))
-          .data;
-        setState((prevState) => ({
-          ...prevState,
-          asset: {
-            id: data.id,
-            tokenId: data.assetId,
-            tokenURL: data.assetURL,
-            createTimeStamp: data.createTimeStamp,
-            ...details,
-            priceChange: 0,
-            usdPrice: 0,
-            base64,
-            isInSale: data.isInSale,
-            orders: data.orders,
-          },
-          loaded: true,
-        }));
+        if (isMounted)
+          setState((prevState) => ({
+            ...prevState,
+            asset: {
+              id: data.id,
+              tokenId: data.assetId,
+              tokenURL: data.assetURL,
+              createTimeStamp: data.createTimeStamp,
+              ...details,
+              priceChange: 0,
+              usdPrice: 0,
+              isInSale: data.isInSale,
+              orders: data.orders,
+            },
+            loaded: true,
+          }));
       } catch (error) {
         logger.error(error);
         setLoaded(false);
@@ -60,6 +60,11 @@ export const useAssetDetailsFromInventoryItem = (
       }));
       loadAssetDetails();
     }
+
+    return () => {
+      isMounted = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data.id]);
 
   return state;

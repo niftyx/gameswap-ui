@@ -74,7 +74,7 @@ export const GamePreview = (props: IProps & IGameItem) => {
   const setLoaded = (loaded: boolean) =>
     setState((prevState) => ({ ...prevState, loaded }));
 
-  const { backgroundImage, onClick, title } = props;
+  const { backgroundImage, title } = props;
 
   return (
     <div className={clsx(classes.root, props.className)}>

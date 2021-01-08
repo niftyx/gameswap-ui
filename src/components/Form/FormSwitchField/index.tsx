@@ -2,7 +2,6 @@ import {
   FormControl,
   FormControlProps,
   InputLabelProps,
-  InputProps,
   Switch,
   SwitchClassKey,
   SwitchProps,

@@ -68,7 +68,6 @@ enum ECurrentStep {
 interface IState {
   isLoading: boolean;
   currentStep: ECurrentStep;
-  imageURI: string;
   approvedAll: boolean;
   initialApprovedAll: boolean;
   followStep: ECreateStep;
@@ -93,7 +92,6 @@ export const ERC721ProgressModal = (props: IProps) => {
   const [state, setState] = useState<IState>({
     isLoading: false,
     currentStep: ECurrentStep.Loading,
-    imageURI: "",
     followStep: ECreateStep.ApproveAll,
     error: "",
     approvedAll: false,
@@ -127,15 +125,8 @@ export const ERC721ProgressModal = (props: IProps) => {
         logger.log("isApprovedAll", isApprovedAll);
       }
 
-      const imageURI = await uploadJsonToIPFS(formValues.image);
-
-      const imageEndPoint = `${IPFS_IMAGE_ENDPOINT}${imageURI}`;
-
-      logger.log("imageURI", imageEndPoint);
-
       setState((prevState) => ({
         ...prevState,
-        imageURI: imageEndPoint,
         approvedAll: isApprovedAll,
         initialApprovedAll: isApprovedAll,
         currentStep: ECurrentStep.Steps,
@@ -151,6 +142,7 @@ export const ERC721ProgressModal = (props: IProps) => {
 
   useEffect(() => {
     loadInitialData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -194,7 +186,7 @@ export const ERC721ProgressModal = (props: IProps) => {
       logger.log("UploadFiles");
       setState((prevState) => ({ ...prevState, error: "", isLoading: true }));
       const payload = {
-        image: state.imageURI,
+        image: formValues.image,
         name: formValues.name,
         description: formValues.description,
         royalties: formValues.royalties,

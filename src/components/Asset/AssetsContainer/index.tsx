@@ -2,7 +2,7 @@ import { Grid, makeStyles } from "@material-ui/core";
 import clsx from "classnames";
 import React from "react";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {},
 }));
 

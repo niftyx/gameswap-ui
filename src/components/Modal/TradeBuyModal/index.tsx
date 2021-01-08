@@ -1,5 +1,4 @@
 import { SignedOrder } from "@0x/types";
-import { makeStyles } from "@material-ui/core";
 import { useTrade } from "contexts";
 import React, { useState } from "react";
 import { ETradeStep } from "utils/enums";
@@ -14,11 +13,6 @@ import {
 } from "../TradeCommon";
 import { TradeSelectOrderStep } from "../TradeCommon/TradeSelectOrderStep";
 
-const useStyles = makeStyles((theme) => ({
-  root: {},
-  content: {},
-}));
-
 interface IProps {
   visible: boolean;
   onClose: () => void;
@@ -31,7 +25,6 @@ interface IState {
 }
 
 export const TradeBuyModal = (props: IProps) => {
-  const classes = useStyles();
   const {
     data: { asset },
   } = useTrade();

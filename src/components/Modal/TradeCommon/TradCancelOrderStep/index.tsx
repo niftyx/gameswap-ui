@@ -78,6 +78,7 @@ export const TradCancelOrderStep = (props: IProps) => {
 
   useEffect(() => {
     sellAsset();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

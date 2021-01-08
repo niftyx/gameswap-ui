@@ -33,7 +33,7 @@ const MainLayout = (props: IProps & RouteComponentProps) => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
   const history = useHistory();
-  const { account, initialized } = useConnectedWeb3Context();
+  const { initialized } = useConnectedWeb3Context();
 
   const hideNavbarRoutes = ["/trade", "/browse", "/faq", "/create/erc721"];
 
