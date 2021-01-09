@@ -1,7 +1,9 @@
 import { Grid, makeStyles } from "@material-ui/core";
 import clsx from "classnames";
-import { NavToolbar, PageContainer } from "components";
+import { NavToolbar, PageContainer, SimpleLoader } from "components";
+import { useAssetDetailsWithOrderFromId } from "helpers";
 import React from "react";
+import { Redirect, useParams } from "react-router-dom";
 import useCommonStyles from "styles/common";
 
 import { ChartSection, InfoSection, ItemViewSection } from "./components";
@@ -29,29 +31,41 @@ const useStyles = makeStyles((theme) => ({
 const TradeItemPage = () => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
+  const params = useParams();
+  const assetId = ((params || {}) as any).id as string;
+  const { data: assetData, loading } = useAssetDetailsWithOrderFromId(
+    assetId || ""
+  );
+
+  if (!assetId || !assetId.startsWith("0x")) {
+    return <Redirect to="/trade" />;
+  }
 
   return (
     <PageContainer className={classes.root}>
       <div className={clsx(classes.content, commonClasses.scroll)}>
-        <NavToolbar
+        {/* <NavToolbar
           className={classes.navToolbar}
           items={[
             { title: "All games", href: "/all-games" },
             { title: "Cyber Assault", href: "/all-games/cyber-assault" },
             { title: "Stealth Fighter KN-30", href: "/trade/test" },
           ]}
-        />
-        <Grid container spacing={3}>
-          <Grid item md={7} xs={12}>
-            <div className={classes.left}>
-              <ItemViewSection img={"/svgs/mock/1.svg"} />
-              <ChartSection className={classes.chartSection} />
-            </div>
+        /> */}
+        {(!assetData || !assetData.image) && <SimpleLoader />}
+        {assetData && assetData.image && (
+          <Grid container spacing={3}>
+            <Grid item md={7} xs={12}>
+              <div className={classes.left}>
+                <ItemViewSection img={assetData.image} />
+                <ChartSection className={classes.chartSection} />
+              </div>
+            </Grid>
+            <Grid item md={5} xs={12}>
+              <InfoSection className={classes.infoSection} data={assetData} />
+            </Grid>
           </Grid>
-          <Grid item md={5} xs={12}>
-            <InfoSection className={classes.infoSection} />
-          </Grid>
-        </Grid>
+        )}
       </div>
     </PageContainer>
   );

@@ -1,13 +1,14 @@
-import { Button, Grid, makeStyles } from "@material-ui/core";
-import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
+import { Button, Grid, Typography, makeStyles } from "@material-ui/core";
 import { IconAssetPlaceholder } from "assets/icons";
 import clsx from "classnames";
+import { useConnectedWeb3Context, useGlobal, useTrade } from "contexts";
 import { useAssetDetailsFromInventoryItem } from "helpers";
 import { transparentize } from "polished";
 import React from "react";
 import useCommonStyles from "styles/common";
 import { IGraphInventoryAsset } from "types";
 import { getLogger } from "utils/logger";
+import { getAssetObjectWithPrices } from "utils/tools";
 import { IAssetItem } from "utils/types";
 
 // eslint-disable-next-line
@@ -60,11 +61,19 @@ const useStyles = makeStyles((theme) => ({
   img: {
     height: "80%",
   },
-  inSaleIcon: {
-    position: "absolute",
-    top: theme.spacing(1),
-    right: theme.spacing(1),
-    color: transparentize(0.2, theme.colors.text.default),
+  usd: {
+    color: theme.colors.text.default,
+    fontSize: 17,
+    lineHeight: "23px",
+  },
+  token: {
+    display: "flex",
+    alignItems: "center",
+    color: theme.colors.text.default,
+  },
+  tokenAmount: {
+    fontSize: 15,
+    lineHeight: "20px",
   },
   bottom: {
     display: "flex",
@@ -97,13 +106,27 @@ interface IProps {
 const BrowseAssetItem = (props: IProps) => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
-  const { data, isFullWidth = false, onClick, onMore } = props;
+  const { openBuyModal } = useTrade();
 
+  const { data, isFullWidth = false, onMore } = props;
+  const {
+    data: { price },
+  } = useGlobal();
+  const { account, networkId } = useConnectedWeb3Context();
   const { asset, loaded } = useAssetDetailsFromInventoryItem(data);
 
   const responsive = isFullWidth
     ? { xl: 2, lg: 2, md: 4, xs: 6 }
     : { xl: 3, lg: 4, md: 6, xs: 6 };
+
+  const assetDataWithPriceInfo = getAssetObjectWithPrices(
+    asset,
+    data.orders || [],
+    price,
+    networkId || 1
+  );
+
+  const isInSale = (data.orders || []).length > 0;
 
   return (
     <Grid
@@ -125,14 +148,36 @@ const BrowseAssetItem = (props: IProps) => {
             loaded ? "visible" : ""
           )}
           onClick={() => {
-            if (asset && onClick) onClick(asset);
+            if (asset) {
+              if (
+                isInSale &&
+                asset.owner !== account &&
+                assetDataWithPriceInfo.asset
+              ) {
+                openBuyModal({
+                  ...assetDataWithPriceInfo.asset,
+                  orders: data.orders,
+                });
+              }
+            }
           }}
         >
           {asset && asset.image && (
             <img alt="asset_img" className={classes.img} src={asset.image} />
           )}
-          {asset && asset.isInSale && (
-            <AttachMoneyIcon className={classes.inSaleIcon} />
+          {isInSale && (
+            <div className={classes.bottom}>
+              <Typography className={classes.usd} component="div">
+                ${assetDataWithPriceInfo.minUSDPrice}
+              </Typography>
+              {assetDataWithPriceInfo.asset && (
+                <div className={classes.token}>
+                  <Typography className={classes.tokenAmount} component="div">
+                    {assetDataWithPriceInfo.minTokenAmountString}
+                  </Typography>
+                </div>
+              )}
+            </div>
           )}
         </div>
         {loaded && (

@@ -1,12 +1,19 @@
+import { SignedOrder, assetDataUtils } from "@0x/order-utils";
 import axios from "axios";
 import { BROWSE_PAGE_ASSET_COUNT } from "config/constants";
-import { getGraphUris } from "config/networks";
+import { getContractAddress, getGraphUris } from "config/networks";
 import { useConnectedWeb3Context } from "contexts";
 import { BigNumber } from "ethers";
 import { useIsMountedRef } from "hooks";
 import { useEffect, useState } from "react";
 import { IAssetDetails } from "types";
 import { getLogger } from "utils/logger";
+import { buildOrdersQuery, wrangeOrderResponse } from "utils/order";
+import {
+  EthersBigNumberTo0xBigNumber,
+  xBigNumberToEthersBigNumber,
+} from "utils/token";
+import { ISignedOrder, NetworkId } from "utils/types";
 
 const logger = getLogger("useInventoryAssets:");
 
@@ -87,6 +94,7 @@ export const useBrowseAssets = (): {
   const { networkId } = useConnectedWeb3Context();
   const { httpUri } = getGraphUris(networkId || 1);
   const isRefMounted = useIsMountedRef();
+  const erc721TokenAddress = getContractAddress(networkId || 1, "erc721");
 
   const [state, setState] = useState<IState>({
     hasMore: false,
@@ -101,6 +109,47 @@ export const useBrowseAssets = (): {
         await fetchQuery(query, variables, httpUri)
       ).data;
       const info = response.data;
+
+      const getOrderPromises: Promise<ISignedOrder[]>[] = info.assets.map(
+        (e) => {
+          const asset = wrangleAsset(e as any);
+          const endPoint = buildOrdersQuery((networkId || 1) as NetworkId, {
+            perPage: 1,
+            makerAssetData: assetDataUtils.encodeERC721AssetData(
+              erc721TokenAddress,
+              EthersBigNumberTo0xBigNumber(asset.assetId)
+            ),
+          });
+          return new Promise((resolve, reject) => {
+            axios
+              .get(endPoint)
+              .then((res) => {
+                const ordersResult: ISignedOrder[] = res.data.records
+                  .map((e: any) => e.order)
+                  .map((order: SignedOrder) => {
+                    const erc721 = assetDataUtils.decodeAssetDataOrThrow(
+                      order.makerAssetData
+                    ) as any;
+                    const erc20 = assetDataUtils.decodeAssetDataOrThrow(
+                      order.takerAssetData
+                    ) as any;
+
+                    return {
+                      ...wrangeOrderResponse(order),
+                      assetId: xBigNumberToEthersBigNumber(erc721.tokenId),
+                      erc721Address: erc721.tokenAddress,
+                      erc20Address: erc20.tokenAddress,
+                    };
+                  });
+                resolve(ordersResult);
+              })
+              .catch(reject);
+          });
+        }
+      );
+
+      const orders = await Promise.all(getOrderPromises);
+
       if (isRefMounted.current === false) return;
       if (info)
         setState((prevState) => ({
@@ -108,7 +157,10 @@ export const useBrowseAssets = (): {
           hasMore: info.assets.length >= BROWSE_PAGE_ASSET_COUNT,
           assets: [
             ...prevState.assets,
-            ...info.assets.map((e) => wrangleAsset(e as any)),
+            ...info.assets.map((e, index) => ({
+              ...wrangleAsset(e as any),
+              orders: orders[index],
+            })),
           ],
           loading: false,
         }));

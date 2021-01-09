@@ -79,7 +79,7 @@ const useStyles = makeStyles((theme) => ({
   token: {
     display: "flex",
     alignItems: "center",
-    color: theme.colors.text.secondary,
+    color: theme.colors.text.default,
   },
   tokenAmount: {
     fontSize: 15,

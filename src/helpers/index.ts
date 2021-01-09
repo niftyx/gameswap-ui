@@ -6,3 +6,4 @@ export * from "./useAssetDetailsFromInventoryItem";
 export * from "./useMyOrders";
 export * from "./useAssetDetailsFromId";
 export * from "./useBrowseAssets";
+export * from "./useAssetDetailsWithOrderFromId";

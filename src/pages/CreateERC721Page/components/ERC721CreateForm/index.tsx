@@ -18,7 +18,7 @@ import { getToken, knownTokens } from "config/networks";
 import { useConnectedWeb3Context, useGlobal } from "contexts";
 import { Form, Formik } from "formik";
 import React from "react";
-import { IToken, KnownToken } from "utils/types";
+import { IAssetAttribute, IToken, KnownToken } from "utils/types";
 import * as Yup from "yup";
 
 import { ERC721Preview } from "../ERC721Preview";
@@ -61,7 +61,7 @@ export interface IFormValues {
   name: string;
   description: string;
   royalties: number;
-  attributes: Array<{ key: string; value: string }>;
+  attributes: Array<IAssetAttribute>;
   image: string;
   instantSale: boolean;
   salePrice: number;

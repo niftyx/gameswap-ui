@@ -177,7 +177,7 @@ export interface IAssetItem {
   usdPrice: number;
   priceChange: number;
   royalties?: number;
-  attributes?: [{ [key: string]: string }];
+  attributes?: IAssetAttribute[];
   price?: ITokenAmount;
   prices?: ITokenAmount[];
   isInSale?: boolean;
@@ -241,15 +241,6 @@ export interface IBrowseGameBidItem {
   startFromAmount: BigNumber;
   startFromToken: string;
   status: EBrowseGameBidItemStatus;
-}
-
-export interface IItemDetails {
-  id: string;
-  collection: string;
-  patternTemplate: string;
-  finishCatalog: string;
-  description: string;
-  tags: string[];
 }
 
 export interface INavToolbarItem {
@@ -367,4 +358,9 @@ export interface ISignedOrder extends SignedOrder {
 export interface ITradeAssetItem {
   id: string;
   orders: ISignedOrder[];
+}
+
+export interface IAssetAttribute {
+  key: string;
+  value: string;
 }

@@ -8,6 +8,7 @@ import {
   SimpleLoader,
 } from "components";
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import { IAssetDetails } from "types";
 
 import AuctionItemsSection from "../AuctionItemsSection";
@@ -34,6 +35,7 @@ const AssetItemsSection = (props: IProps) => {
   const classes = useStyles();
 
   const { assets, loading, onScrollEnd } = props;
+  const history = useHistory();
 
   const [state, setState] = useState<IState>({
     isAuctionActive: false,
@@ -61,7 +63,14 @@ const AssetItemsSection = (props: IProps) => {
         ) : (
           <AssetsContainer>
             {assets.map((asset) => (
-              <BrowseAssetItem data={asset} isFullWidth key={asset.id} />
+              <BrowseAssetItem
+                data={asset}
+                isFullWidth
+                key={asset.id}
+                onMore={() => {
+                  history.push(`/assets/${asset.id}`);
+                }}
+              />
             ))}
           </AssetsContainer>
         )}

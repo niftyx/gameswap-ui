@@ -1,11 +1,13 @@
 import { Avatar, Button, Typography, makeStyles } from "@material-ui/core";
 import clsx from "classnames";
 import { ProfileMarker } from "components/Marker";
+import { useConnectedWeb3Context, useGlobal } from "contexts";
 import { transparentize } from "polished";
 import React from "react";
 import useCommonStyles from "styles/common";
 import { EProfileMarker } from "utils/enums";
-import { IItemDetails } from "utils/types";
+import { getAssetObjectWithPrices } from "utils/tools";
+import { IAssetAttribute, IAssetItem } from "utils/types";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -82,6 +84,10 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
     marginRight: theme.spacing(3.5),
   },
+  address: {
+    fontSize: theme.spacing(2),
+    color: theme.colors.text.default,
+  },
   description: {
     fontSize: theme.spacing(2),
     color: theme.colors.text.sixth,
@@ -130,32 +136,26 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const itemDetails: IItemDetails = {
-  id: "whigowef",
-  collection: "Wing Heroes 2013",
-  patternTemplate: "7663",
-  finishCatalog: "289-C",
-  description: `Old generation fighter with unbeatable manoeuvrability at Match 5.0 
-speeds. This aerial vehicle is capable of competing with interstellar 
-destructors. It boasts 2 Merlin Engines v9.
-
-Well conserved, almost factory new.`,
-  tags: [
-    "fighter",
-    "factory new",
-    "cyber assault",
-    "merlin v9",
-    "wings heroes 2013",
-  ],
-};
-
 interface IProps {
   className?: string;
+  data: IAssetItem;
 }
 
 export const InfoSection = (props: IProps) => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
+  const {
+    data: { price },
+  } = useGlobal();
+  const { networkId } = useConnectedWeb3Context();
+  const { data } = props;
+  const assetDataWithPriceInfo = getAssetObjectWithPrices(
+    data,
+    data.orders || [],
+    price,
+    networkId || 1
+  );
+  const isInSale = (data.orders || []).length > 0;
 
   const onBuy = () => {};
 
@@ -163,101 +163,85 @@ export const InfoSection = (props: IProps) => {
     <div className={clsx(classes.root, props.className)}>
       <div>
         <Typography className={classes.title} component="div">
-          Stealth Fighter KN-30
+          {data.name}
         </Typography>
-        <Typography className={classes.gameType} component="div">
+        {/* <Typography className={classes.gameType} component="div">
           Cyber Assault
-        </Typography>
+        </Typography> */}
       </div>
-      <div>
-        <div className={clsx(commonClasses.row, classes.priceRow)}>
-          <Typography className={classes.priceUsd} component="div">
-            $ 320.728,29
-          </Typography>
-          <Typography
+      {isInSale && (
+        <div>
+          <div className={clsx(commonClasses.row, classes.priceRow)}>
+            <Typography className={classes.priceUsd} component="div">
+              $ {assetDataWithPriceInfo.minUSDPrice}
+            </Typography>
+            {/* <Typography
             className={clsx(classes.priceChange, "positive")}
             component="div"
           >
             17.7%
+          </Typography> */}
+          </div>
+          <Typography className={classes.gswap} component="div">
+            {assetDataWithPriceInfo.minTokenAmountString}
           </Typography>
         </div>
-        <Typography className={classes.gswap} component="div">
-          17.8766 GSWAP
-        </Typography>
-      </div>
+      )}
       <div>
-        <Button
-          className={classes.buyNow}
-          color="primary"
-          onClick={onBuy}
-          variant="contained"
-        >
-          BUY NOW
-        </Button>
+        {isInSale && (
+          <Button
+            className={classes.buyNow}
+            color="primary"
+            onClick={onBuy}
+            variant="contained"
+          >
+            BUY NOW
+          </Button>
+        )}
       </div>
       <div className={commonClasses.row}>
         <Avatar className={classes.avatar} src="/svgs/mock/avatar.svg" />
         <div>
           <div className={commonClasses.row}>
-            <Typography className={classes.name} component="div">
-              Elon Must
+            <Typography className={classes.address} component="div">
+              {data.owner}
             </Typography>
-            <ProfileMarker
+            {/* <ProfileMarker
               marker={EProfileMarker.ProTrader}
               showLabel={false}
-            />
+            /> */}
           </div>
-          <Typography className={classes.description} component="div">
-            Seller
-          </Typography>
+          {isInSale && (
+            <Typography className={classes.description} component="div">
+              Seller
+            </Typography>
+          )}
         </div>
       </div>
       <div>
         <Typography className={classes.groupLabel} component="div">
           ITEM DETAILS
         </Typography>
-        <div className={clsx(commonClasses.row, classes.itemDetailsItemRow)}>
-          <Typography
-            className={classes.itemDetailsItemRowTitle}
-            component="div"
+        {(data.attributes || []).map((attribute: IAssetAttribute, index) => (
+          <div
+            className={clsx(commonClasses.row, classes.itemDetailsItemRow)}
+            key={index}
           >
-            Collection
-          </Typography>
-          <Typography
-            className={classes.itemDetailsItemRowContent}
-            component="div"
-          >
-            {itemDetails.collection}
-          </Typography>
-        </div>
-        <div className={clsx(commonClasses.row, classes.itemDetailsItemRow)}>
-          <Typography
-            className={classes.itemDetailsItemRowTitle}
-            component="div"
-          >
-            Pattern Template
-          </Typography>
-          <Typography
-            className={classes.itemDetailsItemRowContent}
-            component="div"
-          >
-            {itemDetails.patternTemplate}
-          </Typography>
-        </div>
-        <div className={clsx(commonClasses.row, classes.itemDetailsItemRow)}>
-          <Typography
-            className={classes.itemDetailsItemRowTitle}
-            component="div"
-          >
-            Finish Catalog
-          </Typography>
-          <Typography
-            className={classes.itemDetailsItemRowContent}
-            component="div"
-          >
-            {itemDetails.finishCatalog}
-          </Typography>
-        </div>
+            <Typography
+              className={classes.itemDetailsItemRowTitle}
+              component="div"
+            >
+              {attribute.key}
+            </Typography>
+            <Typography
+              className={classes.itemDetailsItemRowContent}
+              component="div"
+            >
+              {attribute.value}
+            </Typography>
+          </div>
+        ))}
+
         <div className={clsx(commonClasses.row, classes.itemDetailsItemRow)}>
           <Typography
             className={classes.itemDetailsItemRowTitle}
@@ -268,10 +252,11 @@ export const InfoSection = (props: IProps) => {
           <Typography
             className={classes.itemDetailsItemRowContent}
             component="div"
-            dangerouslySetInnerHTML={{ __html: itemDetails.description }}
-          ></Typography>
+          >
+            {data.description}
+          </Typography>
         </div>
-        <div className={classes.tags}>
+        {/* <div className={classes.tags}>
           <Typography className={classes.groupLabel} component="div">
             TAGS
           </Typography>
@@ -282,7 +267,7 @@ export const InfoSection = (props: IProps) => {
               </span>
             ))}
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );
