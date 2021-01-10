@@ -30,7 +30,7 @@ export const DEFAULT_PRICE = ethers.utils.parseUnits(
   PRICE_DECIMALS
 );
 
-export const SERVICE_FEE = Number(process.env.REACT_APP_SERVICE_FEE || 0.025);
+export const SERVICE_FEE = Number(process.env.REACT_APP_SERVICE_FEE);
 export const SERVICE_FEE_IN_PERCENT = SERVICE_FEE * 100;
 
 export const TX_DEFAULTS = {
@@ -38,48 +38,35 @@ export const TX_DEFAULTS = {
 };
 
 export const IPFS_CONFIG: IIPFSConfig = {
-  host: process.env.REACT_APP_IPFS_HOST || "ipfs.infura.io",
-  port: process.env.REACT_APP_IPFS_PORT || 5001,
-  protocol: process.env.REACT_APP_IPFS_PROTOCOL || "https",
+  host: process.env.REACT_APP_IPFS_HOST || "",
+  port: process.env.REACT_APP_IPFS_PORT || "",
+  protocol: process.env.REACT_APP_IPFS_PROTOCOL || "",
   preload: { enabled: false },
 };
 
 export const GRAPH_MAINNET_HTTP =
-  process.env.REACT_APP_GRAPH_MAINNET_HTTP ||
-  "https://api.thegraph.com/subgraphs/name/liaojikunwork/gameswapsubgraphkovan";
-export const GRAPH_MAINNET_WS =
-  process.env.REACT_APP_GRAPH_MAINNET_WS ||
-  "wss://api.thegraph.com/subgraphs/name/liaojikunwork/gameswapsubgraphkovan";
-export const GRAPH_KOVAN_HTTP =
-  process.env.REACT_APP_GRAPH_KOVAN_HTTP ||
-  "https://api.thegraph.com/subgraphs/name/liaojikunwork/gameswapsubgraphkovan";
-export const GRAPH_KOVAN_WS =
-  process.env.REACT_APP_GRAPH_KOVAN_WS ||
-  "wss://api.thegraph.com/subgraphs/name/liaojikunwork/gameswapsubgraphkovan";
+  process.env.REACT_APP_GRAPH_MAINNET_HTTP || "";
+export const GRAPH_MAINNET_WS = process.env.REACT_APP_GRAPH_MAINNET_WS || "";
+export const GRAPH_KOVAN_HTTP = process.env.REACT_APP_GRAPH_KOVAN_HTTP || "";
+export const GRAPH_KOVAN_WS = process.env.REACT_APP_GRAPH_KOVAN_WS || "";
 
 export const IPFS_IMAGE_ENDPOINT = `${IPFS_CONFIG.protocol}://${IPFS_CONFIG.host}:${IPFS_CONFIG.port}/api/v0/cat/`;
 
-export const INFURA_PROJECT_ID =
-  process.env.REACT_APP_INFURA_PROJECT_ID || "f9df69e5cfef48799e2d20eaa7d15697";
+export const INFURA_PROJECT_ID = process.env.REACT_APP_INFURA_PROJECT_ID || "";
 
 export const FEE_RECIPIENT_ADDRESS =
-  process.env.REACT_APP_FEE_RECIPIENT_ADDRESS ||
-  "0x18B13ef88822292E59bfF80210D815F7FBFC9b32";
+  process.env.REACT_APP_FEE_RECIPIENT_ADDRESS || "";
 
 export const RELAYER_URL: { [key in NetworkId]: string } = {
-  1: process.env.REACT_APP_RELAYER_URL_MAINNET || "https://api.0x.org/sra/v3",
-  42:
-    process.env.REACT_APP_RELAYER_URL_KOVAN ||
-    "https://kovan.api.0x.org/sra/v3",
+  1: process.env.REACT_APP_RELAYER_URL_MAINNET || "",
+  42: process.env.REACT_APP_RELAYER_URL_KOVAN || "",
 };
 export const RELAYER_WS_URL: { [key in NetworkId]: string } = {
-  1: process.env.REACT_APP_RELAYER_WS_URL_MAINNET || "wss://api.0x.org/sra/v3",
-  42:
-    process.env.REACT_APP_RELAYER_WS_URL_KOVAN ||
-    "wss://kovan.api.0x.org/sra/v3",
+  1: process.env.REACT_APP_RELAYER_WS_URL_MAINNET || "",
+  42: process.env.REACT_APP_RELAYER_WS_URL_KOVAN || "",
 };
 
-export const RELAYER_RPS = Number(process.env.REACT_APP_RELAYER_RPS || 5);
+export const RELAYER_RPS = Number(process.env.REACT_APP_RELAYER_RPS);
 
 export const TokenEthereum = {
   decimals: 18,
