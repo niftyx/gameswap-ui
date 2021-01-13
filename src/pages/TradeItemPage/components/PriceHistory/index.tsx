@@ -4,32 +4,10 @@ import chartMockData from "config/chartMockData.json";
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import Highstockcharts from "highcharts/highstock";
-import React, { useState } from "react";
+import React from "react";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: "100%",
-    position: "relative",
-    overflow: "hidden",
-  },
-  header: {
-    display: "flex",
-    alignItems: "center",
-    "& > * + *": {
-      marginLeft: theme.spacing(6),
-    },
-  },
-  headerItem: {
-    userSelect: "none",
-    fontSize: theme.spacing(3),
-    color: theme.colors.text.third,
-    cursor: "pointer",
-    transition: "all 0.3s",
-    "&.active": {
-      color: theme.colors.text.default,
-    },
-  },
-  chart: {
     "& .highcharts-range-selector-group": {
       "& .highcharts-range-selector-buttons": {
         "& .highcharts-button.highcharts-button-normal": {
@@ -55,22 +33,8 @@ interface IProps {
   className?: string;
 }
 
-enum EChart {
-  priceHistory = "Price History",
-  tradeHistory = "Trade History",
-}
-interface IState {
-  chart: EChart;
-}
-
-export const ChartSection = (props: IProps) => {
+export const PriceHistory = (props: IProps) => {
   const classes = useStyles();
-  const [state, setState] = useState<IState>({
-    chart: EChart.priceHistory,
-  });
-
-  const setChart = (chart: EChart) =>
-    setState((prevState) => ({ ...prevState, chart }));
 
   const ohlc = [],
     volume = [],
@@ -194,28 +158,12 @@ export const ChartSection = (props: IProps) => {
 
   return (
     <div className={clsx(classes.root, props.className)}>
-      <div className={classes.header}>
-        {Object.values(EChart).map((value) => (
-          <span
-            className={clsx(
-              classes.headerItem,
-              state.chart === value ? "active" : ""
-            )}
-            key={value}
-            onClick={() => setChart(value)}
-          >
-            {value}
-          </span>
-        ))}
-      </div>
-      <div className={classes.chart}>
-        <HighchartsReact
-          constructorType={"stockChart"}
-          highcharts={Highstockcharts}
-          // highCharts={Highcharts}
-          options={options}
-        />
-      </div>
+      <HighchartsReact
+        constructorType={"stockChart"}
+        highcharts={Highstockcharts}
+        // highCharts={Highcharts}
+        options={options}
+      />
     </div>
   );
 };

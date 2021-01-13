@@ -1,12 +1,12 @@
 import { SignedOrder, assetDataUtils } from "@0x/order-utils";
 import { useQuery } from "@apollo/react-hooks";
-import axios from "axios";
 import { getContractAddress } from "config/networks";
 import { useConnectedWeb3Context } from "contexts";
 import { BigNumber } from "ethers";
 import gql from "graphql-tag";
 import { useEffect, useState } from "react";
 import { getIPFSService } from "services/ipfs";
+import { getZEROXService } from "services/zeroX";
 import { IAssetDetails, IIPFSTokenData } from "types";
 import { getLogger } from "utils/logger";
 import { buildOrdersQuery, wrangeOrderResponse } from "utils/order";
@@ -128,7 +128,8 @@ export const useAssetDetailsWithOrderFromId = (id: string): IResponse => {
             EthersBigNumberTo0xBigNumber(state.asset.tokenId)
           ),
         });
-        const ordersResponse = (await axios.get(orderEndPoint)).data;
+        const zeroXService = getZEROXService();
+        const ordersResponse = (await zeroXService.getData(orderEndPoint)).data;
         const ordersResult: ISignedOrder[] = ordersResponse.records
           .map((e: any) => e.order)
           .map((order: SignedOrder) => {

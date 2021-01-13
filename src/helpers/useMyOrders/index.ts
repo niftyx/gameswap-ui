@@ -1,11 +1,11 @@
 import { assetDataUtils } from "@0x/order-utils";
 import { SignedOrder } from "@0x/types";
-import axios from "axios";
 import { ORDERS_PAGE_COUNT } from "config/constants";
 import { getContractAddress } from "config/networks";
 import { useConnectedWeb3Context } from "contexts";
 import { useIsMountedRef } from "hooks";
 import { useEffect, useState } from "react";
+import { getZEROXService } from "services/zeroX";
 import { getLogger } from "utils/logger";
 import { buildOrdersQuery, wrangeOrderResponse } from "utils/order";
 import { xBigNumberToEthersBigNumber } from "utils/token";
@@ -40,7 +40,8 @@ export const useMyOrders = (): IState & { loadMore: () => Promise<void> } => {
     setState((prevState) => ({ ...prevState, loading: true }));
 
     try {
-      const fetchResult = (await axios.get(endPoint)).data;
+      const zeroXService = getZEROXService();
+      const fetchResult = (await zeroXService.getData(endPoint)).data;
 
       const allLoaded =
         fetchResult.total === state.orders.length + fetchResult.records.length;

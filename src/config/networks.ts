@@ -34,6 +34,7 @@ const networks: { [K in NetworkId]: INetwork } = {
       erc721: "0x254D5259539b3ec85Cd76A1931899ec7E8851dD4",
       weth: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
     },
+    etherscanUri: "https://etherscan.io/",
   },
   [networkIds.KOVAN]: {
     label: "Kovan",
@@ -45,6 +46,7 @@ const networks: { [K in NetworkId]: INetwork } = {
       erc721: "0x254D5259539b3ec85Cd76A1931899ec7E8851dD4",
       weth: "0xd0a1e359811322d97991e03f863a0c30c2cf029c",
     },
+    etherscanUri: "https://kovan.etherscan.io/",
   },
 };
 
@@ -158,6 +160,14 @@ export const getContractAddressName = (networkId: number) => {
     networkName.substr(0, 1).toUpperCase() +
       networkName.substr(1).toLowerCase();
   return networkNameCase;
+};
+
+export const getEtherscanUri = (networkId: number): string => {
+  if (!validNetworkId(networkId)) {
+    throw new Error(`Unsupported network id: '${networkId}'`);
+  }
+
+  return networks[networkId].etherscanUri;
 };
 
 export const getGraphUris = (

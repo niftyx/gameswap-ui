@@ -6,7 +6,7 @@ import { useAssetDetailsFromInventoryItem } from "helpers";
 import { transparentize } from "polished";
 import React from "react";
 import useCommonStyles from "styles/common";
-import { IGraphInventoryAsset } from "types";
+import { IAssetDetails, IGraphInventoryAsset } from "types";
 import { getLogger } from "utils/logger";
 import { getAssetObjectWithPrices } from "utils/tools";
 import { IAssetItem } from "utils/types";
@@ -96,7 +96,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface IProps {
-  data: IGraphInventoryAsset;
+  data: IAssetDetails;
   className?: string;
   isFullWidth?: boolean;
   onClick?: (_: IAssetItem) => void;
@@ -151,7 +151,8 @@ const BrowseAssetItem = (props: IProps) => {
             if (asset) {
               if (
                 isInSale &&
-                asset.owner !== account &&
+                data.currentOwner.toLowerCase() !==
+                  (account || "").toLowerCase() &&
                 assetDataWithPriceInfo.asset
               ) {
                 openBuyModal({

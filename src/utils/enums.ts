@@ -51,3 +51,10 @@ export enum ETradeStep {
   // Result
   Success,
 }
+
+export enum EHistoryItemType {
+  Created,
+  List,
+  Sale,
+  Transfer,
+}

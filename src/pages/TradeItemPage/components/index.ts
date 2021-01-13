@@ -1,3 +1,3 @@
 export * from "./InfoSection";
-export * from "./ChartSection";
+export * from "./HistorySection";
 export * from "./ItemViewSection";

@@ -1,11 +1,9 @@
 import { Avatar, Button, Typography, makeStyles } from "@material-ui/core";
 import clsx from "classnames";
-import { ProfileMarker } from "components/Marker";
 import { useConnectedWeb3Context, useGlobal } from "contexts";
 import { transparentize } from "polished";
 import React from "react";
 import useCommonStyles from "styles/common";
-import { EProfileMarker } from "utils/enums";
 import { getAssetObjectWithPrices } from "utils/tools";
 import { IAssetAttribute, IAssetItem } from "utils/types";
 

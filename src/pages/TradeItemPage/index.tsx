@@ -1,12 +1,12 @@
 import { Grid, makeStyles } from "@material-ui/core";
 import clsx from "classnames";
-import { NavToolbar, PageContainer, SimpleLoader } from "components";
+import { PageContainer, SimpleLoader } from "components";
 import { useAssetDetailsWithOrderFromId } from "helpers";
 import React from "react";
 import { Redirect, useParams } from "react-router-dom";
 import useCommonStyles from "styles/common";
 
-import { ChartSection, InfoSection, ItemViewSection } from "./components";
+import { HistorySection, InfoSection, ItemViewSection } from "./components";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -33,9 +33,7 @@ const TradeItemPage = () => {
   const commonClasses = useCommonStyles();
   const params = useParams();
   const assetId = ((params || {}) as any).id as string;
-  const { data: assetData, loading } = useAssetDetailsWithOrderFromId(
-    assetId || ""
-  );
+  const { data: assetData } = useAssetDetailsWithOrderFromId(assetId || "");
 
   if (!assetId || !assetId.startsWith("0x")) {
     return <Redirect to="/trade" />;
@@ -58,7 +56,7 @@ const TradeItemPage = () => {
             <Grid item md={7} xs={12}>
               <div className={classes.left}>
                 <ItemViewSection img={assetData.image} />
-                <ChartSection className={classes.chartSection} />
+                <HistorySection className={classes.chartSection} />
               </div>
             </Grid>
             <Grid item md={5} xs={12}>

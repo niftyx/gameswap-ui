@@ -6,6 +6,7 @@ import { BigNumber } from "ethers";
 import {
   EBrowseGameBidItemStatus,
   EFarmingTag,
+  EHistoryItemType,
   EPlatform,
   ESellBuy,
 } from "./enums";
@@ -284,6 +285,7 @@ export interface INetwork {
     erc721: string;
     weth: string;
   };
+  etherscanUri: string;
 }
 
 export type NetworkId = 1 | 42;
@@ -363,4 +365,14 @@ export interface ITradeAssetItem {
 export interface IAssetAttribute {
   key: string;
   value: string;
+}
+
+export interface IHistoryItem {
+  id: string;
+  timestamp: number;
+  from: string;
+  to?: string;
+  type: EHistoryItemType;
+  price?: { tokenAddress: string; amount: string };
+  txHash?: string;
 }
