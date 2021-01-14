@@ -43,7 +43,7 @@ const networks: { [K in NetworkId]: INetwork } = {
     graphWsUri: GRAPH_KOVAN_WS,
     contracts: {
       gswap: "0xb2c7d27f78bec818391498dc4108ab782d65cd76",
-      erc721: "0x254D5259539b3ec85Cd76A1931899ec7E8851dD4",
+      erc721: "0xb917795f6b1107f2635df03df1f4a97c29959dd9",
       weth: "0xd0a1e359811322d97991e03f863a0c30c2cf029c",
     },
     etherscanUri: "https://kovan.etherscan.io/",

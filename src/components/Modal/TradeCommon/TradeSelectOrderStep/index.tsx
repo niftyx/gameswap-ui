@@ -1,6 +1,7 @@
 import { SignedOrder } from "@0x/types";
 import { Button, Typography, makeStyles } from "@material-ui/core";
 import clsx from "classnames";
+import { AssetPhoto } from "components/Asset";
 import { useConnectedWeb3Context, useGlobal } from "contexts";
 import React from "react";
 import useCommonStyles from "styles/common";
@@ -65,7 +66,11 @@ export const TradeSelectOrderStep = (props: IProps) => {
   return (
     <div className={clsx(classes.root, props.className)}>
       {asset.image && (
-        <img alt="asset-img" className={classes.img} src={asset.image} />
+        <AssetPhoto
+          className={classes.img}
+          type={asset.imageType}
+          uri={asset.image}
+        />
       )}
       <div className={clsx(classes.prices, commonClasses.scroll)}>
         {asset.prices.map((tPrice: ITokenAmount, priceIndex: number) => {

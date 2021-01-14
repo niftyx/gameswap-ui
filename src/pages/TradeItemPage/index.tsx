@@ -55,7 +55,7 @@ const TradeItemPage = () => {
           <Grid container spacing={3}>
             <Grid item md={7} xs={12}>
               <div className={classes.left}>
-                <ItemViewSection img={assetData.image} />
+                <ItemViewSection data={assetData} />
                 <HistorySection className={classes.chartSection} />
               </div>
             </Grid>

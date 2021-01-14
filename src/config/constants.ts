@@ -5,6 +5,7 @@ import {
   EActivityType,
   EBrowseGameBidItemStatus,
   EFarmingTag,
+  EFileType,
   EPlatform,
 } from "utils/enums";
 import {
@@ -39,9 +40,8 @@ export const TX_DEFAULTS = {
 
 export const IPFS_CONFIG: IIPFSConfig = {
   host: process.env.REACT_APP_IPFS_HOST || "",
-  port: process.env.REACT_APP_IPFS_PORT || "",
+  port: Number(process.env.REACT_APP_IPFS_PORT || "5001"),
   protocol: process.env.REACT_APP_IPFS_PROTOCOL || "",
-  preload: { enabled: false },
 };
 
 export const GRAPH_MAINNET_HTTP =
@@ -49,8 +49,6 @@ export const GRAPH_MAINNET_HTTP =
 export const GRAPH_MAINNET_WS = process.env.REACT_APP_GRAPH_MAINNET_WS || "";
 export const GRAPH_KOVAN_HTTP = process.env.REACT_APP_GRAPH_KOVAN_HTTP || "";
 export const GRAPH_KOVAN_WS = process.env.REACT_APP_GRAPH_KOVAN_WS || "";
-
-export const IPFS_IMAGE_ENDPOINT = `${IPFS_CONFIG.protocol}://${IPFS_CONFIG.host}:${IPFS_CONFIG.port}/api/v0/cat/`;
 
 export const INFURA_PROJECT_ID = process.env.REACT_APP_INFURA_PROJECT_ID || "";
 
@@ -96,6 +94,7 @@ export const MOCK_ASSET_ITEMS: IAssetItem[] = [
     image: "/svgs/mock/1.svg",
     usdPrice: 7240,
     priceChange: -0.127,
+    imageType: EFileType.Image,
   },
   {
     id: "234",
@@ -103,6 +102,7 @@ export const MOCK_ASSET_ITEMS: IAssetItem[] = [
     image: "/svgs/mock/2.svg",
     usdPrice: 7240,
     priceChange: -0.127,
+    imageType: EFileType.Image,
   },
   {
     id: "wefwf",
@@ -110,13 +110,14 @@ export const MOCK_ASSET_ITEMS: IAssetItem[] = [
     image: "/svgs/mock/3.svg",
     usdPrice: 7240,
     priceChange: -0.127,
+    imageType: EFileType.Image,
   },
   {
     id: "wvwv",
     name: "JetPlane",
     image: "/svgs/mock/4.svg",
     usdPrice: 7240,
-
+    imageType: EFileType.Image,
     priceChange: -0.127,
   },
   {
@@ -124,6 +125,7 @@ export const MOCK_ASSET_ITEMS: IAssetItem[] = [
     name: "JetPlane",
     image: "/svgs/mock/5.svg",
     usdPrice: 7240,
+    imageType: EFileType.Image,
 
     priceChange: -0.127,
   },
@@ -132,7 +134,7 @@ export const MOCK_ASSET_ITEMS: IAssetItem[] = [
     name: "JetPlane",
     image: "/svgs/mock/6.svg",
     usdPrice: 7240,
-
+    imageType: EFileType.Image,
     priceChange: -0.127,
   },
   {
@@ -140,7 +142,7 @@ export const MOCK_ASSET_ITEMS: IAssetItem[] = [
     name: "JetPlane",
     image: "/svgs/mock/7.svg",
     usdPrice: 7240,
-
+    imageType: EFileType.Image,
     priceChange: -0.127,
   },
   {
@@ -148,7 +150,7 @@ export const MOCK_ASSET_ITEMS: IAssetItem[] = [
     name: "JetPlane",
     image: "/svgs/mock/8.svg",
     usdPrice: 7240,
-
+    imageType: EFileType.Image,
     priceChange: -0.127,
   },
   {
@@ -156,7 +158,7 @@ export const MOCK_ASSET_ITEMS: IAssetItem[] = [
     name: "JetPlane",
     image: "/svgs/mock/9.svg",
     usdPrice: 7240,
-
+    imageType: EFileType.Image,
     priceChange: -0.127,
   },
   {
@@ -164,7 +166,7 @@ export const MOCK_ASSET_ITEMS: IAssetItem[] = [
     name: "JetPlane",
     image: "/svgs/mock/10.svg",
     usdPrice: 7240,
-
+    imageType: EFileType.Image,
     priceChange: -0.127,
   },
   {
@@ -172,7 +174,7 @@ export const MOCK_ASSET_ITEMS: IAssetItem[] = [
     name: "JetPlane",
     image: "/svgs/mock/11.svg",
     usdPrice: 7240,
-
+    imageType: EFileType.Image,
     priceChange: -0.127,
   },
 ];
@@ -454,3 +456,6 @@ export const MOCK_PRICE_FILTER_ITEMS: IPriceFilterItem[] = [
     price: 97,
   },
 ];
+
+export const ASSET_IMAGE_FILE_SIZE_LIMIT = 30 * 1024 * 1024; // 30MB
+export const ASSET_ZIP_FILE_SIZE_LIMIT = 200 * 1024 * 1024; // 30MB

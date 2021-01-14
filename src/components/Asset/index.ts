@@ -8,3 +8,4 @@ export * from "./FeaturedFarmPreview";
 export * from "./UpcomingFarmRow";
 export * from "./BrowsedFeaturedItem";
 export * from "./BrowseBidItem";
+export * from "./AssetPhoto";

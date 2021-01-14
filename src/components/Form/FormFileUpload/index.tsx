@@ -10,12 +10,11 @@ import {
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import clsx from "classnames";
-import { ASSET_IMAGE_FILE_SIZE_LIMIT } from "config/constants";
+import { ASSET_ZIP_FILE_SIZE_LIMIT } from "config/constants";
 import { useSnackbar } from "notistack";
 import { transparentize } from "polished";
 import React from "react";
-import { getFileType } from "utils/asset";
-import { EFileType } from "utils/enums";
+import { bytesToSize } from "utils/asset";
 
 import { FormInputLabel } from "../FormInputLabel";
 
@@ -55,12 +54,8 @@ const useStyles = makeStyles((theme) => ({
   result: {
     position: "relative",
   },
-  image: {
-    width: "100%",
-  },
-  audio: {
-    width: "100%",
-    marginTop: theme.spacing(10),
+  fileInfo: {
+    color: theme.colors.text.default,
   },
   removeButton: {
     position: "absolute",
@@ -74,10 +69,7 @@ const useStyles = makeStyles((theme) => ({
 interface InputProps {
   id: string;
   name: string;
-  value: {
-    file: File | null;
-    fileURL?: string;
-  };
+  value: File | null;
   placeholder?: string;
   onBlur: (e: React.FocusEvent<any>) => void;
   onChange: (_: File | null) => void;
@@ -91,11 +83,13 @@ interface IProps {
   FormHelperTextProps?: FormHelperTextProps;
   label: string;
   helperText?: string | false | undefined;
+  accept?: string;
 }
 
-export const FormImageUpload = (props: IProps) => {
+export const FormFileUpload = (props: IProps) => {
   const {
     InputProps: { onChange, placeholder, value, ...restInputProps },
+    accept = "*",
     className,
     helperText,
   } = props;
@@ -116,30 +110,15 @@ export const FormImageUpload = (props: IProps) => {
   };
 
   const renderContent = () => {
-    if (!value.file || !value.fileURL) return null;
-    const fileType = getFileType(value.file);
+    if (!value) return null;
+
     return (
       <div className={classes.result}>
-        {fileType === EFileType.Image && (
-          <img alt="img" className={classes.image} src={value.fileURL} />
-        )}
-        {fileType === EFileType.Audio && (
-          // eslint-disable-next-line jsx-a11y/media-has-caption
-          <audio
-            autoPlay
-            className={classes.audio}
-            controls
-            src={value.fileURL}
-          >
-            Your browser does not support the <code>audio</code> element
-          </audio>
-        )}
-        {fileType === EFileType.Video && (
-          // eslint-disable-next-line jsx-a11y/media-has-caption
-          <video autoPlay className={classes.image} controls>
-            <source src={value.fileURL} type={value.file.type}></source>
-          </video>
-        )}
+        <div className={classes.fileInfo}>
+          <Typography>{value.name}</Typography>
+          <Typography>{value.type}</Typography>
+          <Typography>{bytesToSize(value.size)}</Typography>
+        </div>
         <IconButton
           className={classes.removeButton}
           onClick={() => onChange(null)}
@@ -152,8 +131,8 @@ export const FormImageUpload = (props: IProps) => {
 
   const onChangeFiles = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
-      if (event.target.files[0].size > ASSET_IMAGE_FILE_SIZE_LIMIT) {
-        return enqueueSnackbar("File size is larger than 30MG", {
+      if (event.target.files[0].size > ASSET_ZIP_FILE_SIZE_LIMIT) {
+        return enqueueSnackbar("File size is larger than 200MG", {
           variant: "warning",
         });
       }
@@ -168,14 +147,14 @@ export const FormImageUpload = (props: IProps) => {
     >
       <FormInputLabel title={props.label} {...props.InputLabelProps} />
       <input
-        accept="image/png,image/jpeg,image/gif,image/webp,video/mp4,video/webm,audio/mp3,audio/webm,audio/mpeg"
+        accept={accept}
         className={classes.input}
         onChange={onChangeFiles}
         type="file"
         {...restInputProps}
       />
       <div className={classes.content}>
-        {value.file ? renderContent() : renderSelector()}
+        {value ? renderContent() : renderSelector()}
       </div>
       {helperText && (
         <FormHelperText {...props.FormHelperTextProps}>

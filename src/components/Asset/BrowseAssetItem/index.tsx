@@ -6,13 +6,15 @@ import { useAssetDetailsFromInventoryItem } from "helpers";
 import { transparentize } from "polished";
 import React from "react";
 import useCommonStyles from "styles/common";
-import { IAssetDetails, IGraphInventoryAsset } from "types";
+import { IAssetDetails } from "types";
 import { getLogger } from "utils/logger";
 import { getAssetObjectWithPrices } from "utils/tools";
 import { IAssetItem } from "utils/types";
 
+import { AssetPhoto } from "../AssetPhoto";
+
 // eslint-disable-next-line
-const logger = getLogger("InventoryAssetItem::");
+const logger = getLogger("BrowseAssetItem::");
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -164,7 +166,11 @@ const BrowseAssetItem = (props: IProps) => {
           }}
         >
           {asset && asset.image && (
-            <img alt="asset_img" className={classes.img} src={asset.image} />
+            <AssetPhoto
+              className={classes.img}
+              type={asset.imageType}
+              uri={asset.image}
+            />
           )}
           {isInSale && (
             <div className={classes.bottom}>

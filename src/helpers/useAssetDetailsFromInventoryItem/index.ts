@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { getIPFSService } from "services/ipfs";
-import { IGraphInventoryAsset, IIPFSTokenData } from "types";
+import { IGraphInventoryAsset } from "types";
 import { getLogger } from "utils/logger";
-import { IAssetItem } from "utils/types";
+import { IAssetItem, IIpfsMainData } from "utils/types";
 
 const logger = getLogger("useAssetDetailsFromInventoryItem::");
 
@@ -26,9 +26,10 @@ export const useAssetDetailsFromInventoryItem = (
 
     const loadAssetDetails = async () => {
       try {
-        const details: IIPFSTokenData = JSON.parse(
-          (await getIPFSService().getData(data.assetURL)).data
-        );
+        const details: IIpfsMainData = (
+          await getIPFSService().getData(data.assetURL)
+        ).data;
+
         if (isMounted)
           setState((prevState) => ({
             ...prevState,

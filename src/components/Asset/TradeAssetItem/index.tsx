@@ -9,6 +9,8 @@ import useCommonStyles from "styles/common";
 import { getAssetObjectWithPrices, getObjectIdFromHex } from "utils/tools";
 import { IAssetItem, ITradeAssetItem } from "utils/types";
 
+import { AssetPhoto } from "../AssetPhoto";
+
 const useStyles = makeStyles((theme) => ({
   root: {},
   contentContainer: {
@@ -197,11 +199,11 @@ const TradeAssetItem = (props: IProps) => {
            */}
           {assetDataLoaded && assetDetails && (
             <>
-              <img
-                alt="asset_img"
+              <AssetPhoto
                 className={classes.img}
                 onLoad={() => setLoaded(true)}
-                src={assetDetails?.image}
+                type={assetDetails.imageType}
+                uri={assetDetails.image}
               />
               <div className={classes.bottom}>
                 <Typography className={classes.usd} component="div">

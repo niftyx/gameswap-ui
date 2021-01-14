@@ -9,6 +9,7 @@ import {
 import clsx from "classnames";
 import {
   FormAttributesField,
+  FormFileUpload,
   FormImageUpload,
   FormSwitchField,
   FormTextField,
@@ -62,7 +63,9 @@ export interface IFormValues {
   description: string;
   royalties: number;
   attributes: Array<IAssetAttribute>;
-  image: string;
+  image: File | null;
+  rar: File | null;
+  imageObjectURL?: string;
   instantSale: boolean;
   salePrice: number;
   saleToken: string;
@@ -106,7 +109,9 @@ export const ERC721CreateForm = (props: IProps) => {
         value: "",
       },
     ],
-    image: "",
+    image: null,
+    imageObjectURL: "",
+    rar: null,
     instantSale: false,
     salePrice: 3,
     saleToken: "",
@@ -171,12 +176,23 @@ export const ERC721CreateForm = (props: IProps) => {
                   id: "image",
                   name: "image",
                   onBlur: handleBlur,
-                  onChange: (base64: string) => {
-                    setFieldValue("image", base64);
+                  onChange: (file: File | null) => {
+                    setFieldValue("image", file);
+                    if (values.imageObjectURL) {
+                      URL.revokeObjectURL(values.imageObjectURL);
+                    }
+                    if (file) {
+                      setFieldValue(
+                        "imageObjectURL",
+                        URL.createObjectURL(file)
+                      );
+                    } else {
+                      setFieldValue("imageObjectURL", "");
+                    }
                   },
                   placeholder:
                     "JPG, PNG, GIF, WEBP, MP4 or MP3. Max size 30mb.",
-                  value: values.image,
+                  value: { file: values.image, fileURL: values.imageObjectURL },
                 }}
                 helperText={touched.image && errors.image}
                 label="Upload file"
@@ -307,6 +323,23 @@ export const ERC721CreateForm = (props: IProps) => {
                 }}
                 helperText="Suggested: 10%, 20%, 30%"
                 label="Royalties"
+              />
+              <FormFileUpload
+                FormControlProps={{ fullWidth: true }}
+                InputLabelProps={{ shrink: true }}
+                InputProps={{
+                  id: "rar",
+                  name: "rar",
+                  onBlur: handleBlur,
+                  onChange: (file: File | null) => {
+                    setFieldValue("rar", file);
+                  },
+                  placeholder: "RAR, ZIP File. Max size 200mb.",
+                  value: values.rar,
+                }}
+                accept="zip,application/octet-stream,application/zip,application/x-zip,application/x-zip-compressed"
+                helperText={touched.rar && errors.rar}
+                label="Upload ZIP/RAR FILE"
               />
               <FormAttributesField
                 FormControlProps={{ fullWidth: true }}

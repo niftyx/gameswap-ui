@@ -6,6 +6,7 @@ import { BigNumber } from "ethers";
 import {
   EBrowseGameBidItemStatus,
   EFarmingTag,
+  EFileType,
   EHistoryItemType,
   EPlatform,
   ESellBuy,
@@ -174,6 +175,8 @@ export interface IAssetItem {
   name: string;
   description?: string;
   image: string;
+  imageType: EFileType;
+  rar?: string;
   createTimeStamp?: number;
   usdPrice: number;
   priceChange: number;
@@ -341,9 +344,8 @@ export interface IGlobalData {
 
 export interface IIPFSConfig {
   host: string;
-  port: number | string;
+  port: number;
   protocol: string;
-  preload?: { enabled: boolean };
 }
 
 export interface ITradeData {
@@ -373,6 +375,16 @@ export interface IHistoryItem {
   from: string;
   to?: string;
   type: EHistoryItemType;
-  price?: { tokenAddress: string; amount: string };
+  price?: { tokenAddress: string; amount: BigNumber };
   txHash?: string;
+}
+
+export interface IIpfsMainData {
+  attributes: IAssetAttribute[];
+  description?: string;
+  image: string;
+  imageType: EFileType;
+  name: string;
+  rar?: string;
+  royalties: number;
 }

@@ -2,13 +2,14 @@ import { IconButton, Modal, Typography, makeStyles } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import clsx from "classnames";
 import { CommentLoader } from "components";
-import { IPFS_IMAGE_ENDPOINT } from "config/constants";
-import { useConnectedWeb3Context, useIpfs } from "contexts";
+import { useConnectedWeb3Context } from "contexts";
 import { BigNumber } from "ethers";
 import { useContracts } from "helpers";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
+import { getIPFSService } from "services/ipfs";
 import useCommonStyles from "styles/common";
+import { getFileType } from "utils/asset";
 import { getLogger } from "utils/logger";
 
 import { ECreateStep } from "../../index";
@@ -72,6 +73,7 @@ interface IState {
   initialApprovedAll: boolean;
   followStep: ECreateStep;
   error: string;
+  filesUploadPercent: string;
   filesUploaded: boolean;
   tokenMint: boolean;
   tokenURI: string;
@@ -81,12 +83,11 @@ interface IState {
 export const ERC721ProgressModal = (props: IProps) => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
-  const { ipfs } = useIpfs();
   const context = useConnectedWeb3Context();
   const { account } = context;
   const { erc721 } = useContracts(context);
   const erc721ProxyAddress = "0x2a9127c745688a165106c11cd4d647d2220af821";
-
+  const ipfsService = getIPFSService();
   const { formValues, onClose, visible } = props;
   const history = useHistory();
   const [state, setState] = useState<IState>({
@@ -100,17 +101,8 @@ export const ERC721ProgressModal = (props: IProps) => {
     tokenMint: false,
     tokenURI: "",
     tokenId: BigNumber.from(0),
+    filesUploadPercent: "0",
   });
-
-  const uploadJsonToIPFS = (value: string) =>
-    new Promise<string>((resolve, reject) => {
-      if (ipfs)
-        ipfs.addJSON(value, (err: any, _hash: string) => {
-          if (err) reject(err);
-          else resolve(_hash);
-        });
-      else reject();
-    });
 
   const loadInitialData = async () => {
     try {
@@ -183,10 +175,46 @@ export const ERC721ProgressModal = (props: IProps) => {
 
   const uploadFiles = async () => {
     try {
-      logger.log("UploadFiles");
-      setState((prevState) => ({ ...prevState, error: "", isLoading: true }));
+      if (!formValues.image) return;
+      setState((prevState) => ({
+        ...prevState,
+        error: "",
+        isLoading: true,
+        filesUploadPercent: "0",
+      }));
+
+      const totalFileSize =
+        formValues.image.size + (formValues.rar ? formValues.rar.size : 0);
+
+      const imageURL = await ipfsService.uploadData(
+        formValues.image,
+        (progress) => {
+          const currentPercent = progress / totalFileSize;
+          setState((prevState) => ({
+            ...prevState,
+            filesUploadPercent:
+              currentPercent < 99 ? currentPercent.toFixed(0) : "99",
+          }));
+        }
+      );
+      let rarURL = "";
+      if (formValues.rar) {
+        rarURL = await ipfsService.uploadData(formValues.rar, (progress) => {
+          const currentPercent =
+            ((formValues.image ? formValues.image.size : 0) + progress) /
+            totalFileSize;
+          setState((prevState) => ({
+            ...prevState,
+            filesUploadPercent:
+              currentPercent < 99 ? currentPercent.toFixed(0) : "99",
+          }));
+        });
+      }
+
       const payload = {
-        image: formValues.image,
+        image: imageURL,
+        imageType: getFileType(formValues.image),
+        rar: rarURL,
         name: formValues.name,
         description: formValues.description,
         royalties: formValues.royalties,
@@ -195,8 +223,11 @@ export const ERC721ProgressModal = (props: IProps) => {
           formValues.attributes.length - 1
         ),
       };
-      const tokenURIHash = await uploadJsonToIPFS(JSON.stringify(payload));
-      const tokenURI = `${IPFS_IMAGE_ENDPOINT}${tokenURIHash}`;
+      const tokenURI = await ipfsService.uploadData(JSON.stringify(payload));
+      setState((prevState) => ({
+        ...prevState,
+        filesUploadPercent: "100",
+      }));
       logger.log(tokenURI);
       setState((prevState) => ({
         ...prevState,
@@ -313,7 +344,7 @@ export const ERC721ProgressModal = (props: IProps) => {
                     : false
                 }
                 onClick={uploadFiles}
-                title="Upload files"
+                title={`Upload files ... ${state.filesUploadPercent}%`}
               />
               <ERC721ProgressButton
                 approved={state.tokenMint}

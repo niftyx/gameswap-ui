@@ -56,5 +56,11 @@ export enum EHistoryItemType {
   Created,
   List,
   Sale,
-  Transfer,
+}
+
+export enum EFileType {
+  Image = "Image",
+  Audio = "Audio",
+  Video = "Video",
+  Unknown = "Unknown",
 }

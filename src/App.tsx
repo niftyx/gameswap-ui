@@ -6,12 +6,12 @@ import {
   ApolloProviderWrapper,
   ConnectedWeb3,
   GlobalProvider,
-  IpfsProvider,
   TradeProvider,
 } from "contexts";
 import GlobalStyle from "global-styles";
 import { useSettings } from "hooks";
 import { MainLayout } from "layouts";
+import { SnackbarProvider } from "notistack";
 import * as React from "react";
 import { I18nextProvider } from "react-i18next";
 import { BrowserRouter } from "react-router-dom";
@@ -38,9 +38,16 @@ function App() {
       <React.Suspense fallback={<LoadingScreen />}>
         <GlobalProvider>
           <ThemeProvider theme={theme}>
-            <Web3ReactProvider getLibrary={getLibrary}>
-              <ConnectedWeb3>
-                <IpfsProvider>
+            <SnackbarProvider
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              autoHideDuration={3000}
+              maxSnack={3}
+            >
+              <Web3ReactProvider getLibrary={getLibrary}>
+                <ConnectedWeb3>
                   <ApolloProviderWrapper>
                     <BrowserRouter>
                       <MainLayout>
@@ -49,9 +56,9 @@ function App() {
                       <GlobalStyle />
                     </BrowserRouter>
                   </ApolloProviderWrapper>
-                </IpfsProvider>
-              </ConnectedWeb3>
-            </Web3ReactProvider>
+                </ConnectedWeb3>
+              </Web3ReactProvider>
+            </SnackbarProvider>
           </ThemeProvider>
         </GlobalProvider>
       </React.Suspense>

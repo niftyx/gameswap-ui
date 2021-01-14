@@ -3,7 +3,8 @@ import { useConnectedWeb3Context } from "contexts";
 import gql from "graphql-tag";
 import { useEffect, useState } from "react";
 import { getIPFSService } from "services/ipfs";
-import { IAssetDetails, IIPFSTokenData } from "types";
+import { IAssetDetails } from "types";
+import { EFileType } from "utils/enums";
 import { getLogger } from "utils/logger";
 import { IAssetItem, Maybe } from "utils/types";
 
@@ -87,6 +88,7 @@ export const useAssetDetailsFromId = (id: string): IResponse => {
               name: "",
               description: "",
               image: "",
+              imageType: EFileType.Unknown,
               createTimeStamp: asset.createTimeStamp,
               usdPrice: 0,
               priceChange: 0,
@@ -109,9 +111,8 @@ export const useAssetDetailsFromId = (id: string): IResponse => {
     const loadAssetDetails = async () => {
       if (!state.asset || !state.asset.tokenURL) return;
       try {
-        const details: IIPFSTokenData = JSON.parse(
-          (await getIPFSService().getData(state.asset.tokenURL)).data
-        );
+        const details = (await getIPFSService().getData(state.asset.tokenURL))
+          .data;
         if (isMounted)
           setState((prevState) => ({
             ...prevState,

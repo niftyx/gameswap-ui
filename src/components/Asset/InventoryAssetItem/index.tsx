@@ -10,6 +10,8 @@ import { IGraphInventoryAsset } from "types";
 import { getLogger } from "utils/logger";
 import { IAssetItem } from "utils/types";
 
+import { AssetPhoto } from "../AssetPhoto";
+
 // eslint-disable-next-line
 const logger = getLogger("InventoryAssetItem::");
 
@@ -129,7 +131,11 @@ const InventoryAssetItem = (props: IProps) => {
           }}
         >
           {asset && asset.image && (
-            <img alt="asset_img" className={classes.img} src={asset.image} />
+            <AssetPhoto
+              className={classes.img}
+              type={asset.imageType}
+              uri={asset.image}
+            />
           )}
           {asset && asset.isInSale && (
             <AttachMoneyIcon className={classes.inSaleIcon} />

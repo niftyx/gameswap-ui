@@ -145,7 +145,7 @@ export const InfoSection = (props: IProps) => {
   const {
     data: { price },
   } = useGlobal();
-  const { networkId } = useConnectedWeb3Context();
+  const { account, networkId } = useConnectedWeb3Context();
   const { data } = props;
   const assetDataWithPriceInfo = getAssetObjectWithPrices(
     data,
@@ -154,6 +154,7 @@ export const InfoSection = (props: IProps) => {
     networkId || 1
   );
   const isInSale = (data.orders || []).length > 0;
+  const isMine = data.owner?.toLowerCase() === account?.toLowerCase();
 
   const onBuy = () => {};
 
@@ -186,7 +187,7 @@ export const InfoSection = (props: IProps) => {
         </div>
       )}
       <div>
-        {isInSale && (
+        {isInSale && !isMine && (
           <Button
             className={classes.buyNow}
             color="primary"

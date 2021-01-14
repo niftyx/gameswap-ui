@@ -1,6 +1,8 @@
 import { makeStyles } from "@material-ui/core";
 import clsx from "classnames";
+import { AssetPhoto } from "components";
 import React from "react";
+import { IAssetItem } from "utils/types";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,16 +31,20 @@ const useStyles = makeStyles((theme) => ({
 
 interface IProps {
   className?: string;
-  img?: string;
+  data: IAssetItem;
 }
 
 export const ItemViewSection = (props: IProps) => {
   const classes = useStyles();
-
+  const { data } = props;
   return (
     <div className={clsx(classes.root, props.className)}>
       <div className={classes.content}>
-        <img alt="img" className={classes.img} src={props.img} />
+        <AssetPhoto
+          className={classes.img}
+          type={data.imageType}
+          uri={data.image}
+        />
       </div>
     </div>
   );

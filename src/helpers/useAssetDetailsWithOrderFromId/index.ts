@@ -7,14 +7,21 @@ import gql from "graphql-tag";
 import { useEffect, useState } from "react";
 import { getIPFSService } from "services/ipfs";
 import { getZEROXService } from "services/zeroX";
-import { IAssetDetails, IIPFSTokenData } from "types";
+import { IAssetDetails } from "types";
+import { EFileType } from "utils/enums";
 import { getLogger } from "utils/logger";
 import { buildOrdersQuery, wrangeOrderResponse } from "utils/order";
 import {
   EthersBigNumberTo0xBigNumber,
   xBigNumberToEthersBigNumber,
 } from "utils/token";
-import { IAssetItem, ISignedOrder, Maybe, NetworkId } from "utils/types";
+import {
+  IAssetItem,
+  IIpfsMainData,
+  ISignedOrder,
+  Maybe,
+  NetworkId,
+} from "utils/types";
 
 const logger = getLogger("useAssetDetailsWithOrderFromId");
 
@@ -96,6 +103,7 @@ export const useAssetDetailsWithOrderFromId = (id: string): IResponse => {
               name: "",
               description: "",
               image: "",
+              imageType: EFileType.Unknown,
               createTimeStamp: asset.createTimeStamp,
               usdPrice: 0,
               priceChange: 0,
@@ -118,9 +126,9 @@ export const useAssetDetailsWithOrderFromId = (id: string): IResponse => {
     const loadAssetDetails = async () => {
       if (!state.asset || !state.asset.tokenURL || !state.asset.tokenId) return;
       try {
-        const details: IIPFSTokenData = JSON.parse(
-          (await getIPFSService().getData(state.asset.tokenURL)).data
-        );
+        const details: IIpfsMainData = (
+          await getIPFSService().getData(state.asset.tokenURL)
+        ).data;
         const orderEndPoint = buildOrdersQuery((networkId || 1) as NetworkId, {
           perPage: 1,
           makerAssetData: assetDataUtils.encodeERC721AssetData(
