@@ -125,18 +125,13 @@ export const FormImageUpload = (props: IProps) => {
         )}
         {fileType === EFileType.Audio && (
           // eslint-disable-next-line jsx-a11y/media-has-caption
-          <audio
-            autoPlay
-            className={classes.audio}
-            controls
-            src={value.fileURL}
-          >
+          <audio className={classes.audio} controls src={value.fileURL}>
             Your browser does not support the <code>audio</code> element
           </audio>
         )}
         {fileType === EFileType.Video && (
           // eslint-disable-next-line jsx-a11y/media-has-caption
-          <video autoPlay className={classes.image} controls>
+          <video className={classes.image} controls>
             <source src={value.fileURL} type={value.file.type}></source>
           </video>
         )}

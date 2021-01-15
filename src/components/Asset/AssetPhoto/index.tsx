@@ -33,7 +33,6 @@ export const AssetPhoto = (props: IProps) => {
       return (
         // eslint-disable-next-line jsx-a11y/media-has-caption
         <audio
-          autoPlay
           className={clsx(props.className, classes.root)}
           controls
           onLoad={props.onLoad}
@@ -46,7 +45,6 @@ export const AssetPhoto = (props: IProps) => {
       return (
         // eslint-disable-next-line jsx-a11y/media-has-caption
         <video
-          autoPlay
           className={clsx(props.className, classes.root)}
           controls
           onLoadStart={props.onLoad}
