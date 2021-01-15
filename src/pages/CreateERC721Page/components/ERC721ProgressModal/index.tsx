@@ -189,7 +189,7 @@ export const ERC721ProgressModal = (props: IProps) => {
       const imageURL = await ipfsService.uploadData(
         formValues.image,
         (progress) => {
-          const currentPercent = progress / totalFileSize;
+          const currentPercent = (progress * 100) / totalFileSize;
           setState((prevState) => ({
             ...prevState,
             filesUploadPercent:
@@ -201,7 +201,8 @@ export const ERC721ProgressModal = (props: IProps) => {
       if (formValues.rar) {
         rarURL = await ipfsService.uploadData(formValues.rar, (progress) => {
           const currentPercent =
-            ((formValues.image ? formValues.image.size : 0) + progress) /
+            (((formValues.image ? formValues.image.size : 0) + progress) *
+              100) /
             totalFileSize;
           setState((prevState) => ({
             ...prevState,
