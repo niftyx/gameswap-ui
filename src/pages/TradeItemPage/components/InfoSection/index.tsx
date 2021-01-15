@@ -1,6 +1,6 @@
 import { Avatar, Button, Typography, makeStyles } from "@material-ui/core";
 import clsx from "classnames";
-import { useConnectedWeb3Context, useGlobal } from "contexts";
+import { useConnectedWeb3Context, useGlobal, useTrade } from "contexts";
 import { transparentize } from "polished";
 import React from "react";
 import useCommonStyles from "styles/common";
@@ -155,8 +155,16 @@ export const InfoSection = (props: IProps) => {
   );
   const isInSale = (data.orders || []).length > 0;
   const isMine = data.owner?.toLowerCase() === account?.toLowerCase();
-
-  const onBuy = () => {};
+  const { openBuyModal } = useTrade();
+  const onBuy = () => {
+    if (data && isInSale) {
+      openBuyModal({
+        ...data,
+        ...assetDataWithPriceInfo.asset,
+        orders: data.orders,
+      });
+    }
+  };
 
   return (
     <div className={clsx(classes.root, props.className)}>

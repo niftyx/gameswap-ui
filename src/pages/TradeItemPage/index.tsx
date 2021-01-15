@@ -6,7 +6,12 @@ import React from "react";
 import { Redirect, useParams } from "react-router-dom";
 import useCommonStyles from "styles/common";
 
-import { HistorySection, InfoSection, ItemViewSection } from "./components";
+import {
+  ChainInfoSection,
+  HistorySection,
+  InfoSection,
+  ItemViewSection,
+} from "./components";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -61,6 +66,7 @@ const TradeItemPage = () => {
             </Grid>
             <Grid item md={5} xs={12}>
               <InfoSection className={classes.infoSection} data={assetData} />
+              <ChainInfoSection data={assetData} />
             </Grid>
           </Grid>
         )}

@@ -4,7 +4,7 @@ import clsx from "classnames";
 import { useConnectedWeb3Context, useGlobal } from "contexts";
 import { useAssetDetailsFromId } from "helpers";
 import { transparentize } from "polished";
-import React, { useState } from "react";
+import React from "react";
 import useCommonStyles from "styles/common";
 import { getAssetObjectWithPrices, getObjectIdFromHex } from "utils/tools";
 import { IAssetItem, ITradeAssetItem } from "utils/types";
@@ -126,10 +126,6 @@ interface IProps {
   isOnCart?: boolean;
 }
 
-interface IState {
-  loaded: boolean;
-}
-
 const TradeAssetItem = (props: IProps) => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
@@ -147,10 +143,6 @@ const TradeAssetItem = (props: IProps) => {
 
   const objectId = getObjectIdFromHex(data.id);
   const { data: assetDetails, loading } = useAssetDetailsFromId(objectId);
-
-  const [state, setState] = useState<IState>({ loaded: false });
-  const setLoaded = (loaded: boolean) =>
-    setState((prevState) => ({ ...prevState, loaded }));
 
   const assetDataLoaded =
     assetDetails && !loading && assetDetails.id === objectId;
@@ -173,7 +165,7 @@ const TradeAssetItem = (props: IProps) => {
       {...(responsive as any)}
     >
       <div className={classes.contentContainer}>
-        {(!assetDataLoaded || !state.loaded) && (
+        {loading && (
           <div className={classes.placeholder}>
             <IconAssetPlaceholder />
           </div>
@@ -183,7 +175,7 @@ const TradeAssetItem = (props: IProps) => {
             classes.content,
             "asset_item__content",
             commonClasses.fadeAnimation,
-            state.loaded ? "visible" : ""
+            !loading ? "visible" : ""
           )}
           onClick={() => {
             if (assetDataWithPriceInfo.asset && onClick) {
@@ -201,7 +193,6 @@ const TradeAssetItem = (props: IProps) => {
             <>
               <AssetPhoto
                 className={classes.img}
-                onLoad={() => setLoaded(true)}
                 type={assetDetails.imageType}
                 uri={assetDetails.image}
               />
@@ -228,7 +219,7 @@ const TradeAssetItem = (props: IProps) => {
             </>
           )}
         </div>
-        {state.loaded && (
+        {!loading && (
           <div
             className={clsx(classes.moreWrapper, "asset_item__more_wrapper")}
           >
