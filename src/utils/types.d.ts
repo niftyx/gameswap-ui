@@ -34,6 +34,7 @@ declare module "@material-ui/core/styles/createMuiTheme" {
         third: string;
         fourth: string;
         fifth: string;
+        sixth: string;
       };
       icon: {
         active: string;
@@ -104,6 +105,7 @@ declare module "@material-ui/core/styles/createMuiTheme" {
         third: string;
         fourth: string;
         fifth: string;
+        sixth: string;
       };
       icon: {
         active: string;

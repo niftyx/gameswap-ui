@@ -90,6 +90,9 @@ const useStyles = makeStyles((theme) => ({
   left: {
     flex: 1,
   },
+  label: {
+    color: theme.colors.text.default,
+  },
   subLabel: {
     color: transparentize(0.4, theme.colors.text.default),
     fontSize: theme.spacing(1.6125),
@@ -117,7 +120,11 @@ export const FormSwitchField = (props: IProps) => {
       <div className={classes.content}>
         <div className={classes.left}>
           {props.label && (
-            <FormInputLabel title={props.label} {...props.InputLabelProps} />
+            <FormInputLabel
+              className={classes.label}
+              title={props.label}
+              {...props.InputLabelProps}
+            />
           )}
           {props.subLabel && (
             <Typography className={classes.subLabel}>

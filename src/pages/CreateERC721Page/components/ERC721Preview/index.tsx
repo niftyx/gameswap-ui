@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     marginTop: theme.spacing(1),
-    border: `1px solid ${theme.colors.border.primary}`,
+    border: `1px solid ${theme.colors.border.sixth}`,
     padding: theme.spacing(2),
     borderRadius: theme.spacing(2),
     minHeight: theme.spacing(40),
@@ -50,7 +50,22 @@ const useStyles = makeStyles((theme) => ({
   },
   price: {
     fontSize: theme.spacing(2),
-    color: transparentize(0.3, theme.colors.text.default),
+    color: transparentize(0.2, theme.colors.text.default),
+  },
+  unlockWrapper: {
+    marginTop: theme.spacing(1),
+    border: `1px solid ${theme.colors.border.sixth}`,
+    padding: theme.spacing(2),
+    borderRadius: theme.spacing(2),
+  },
+  unlockPlaceholder: {
+    fontSize: theme.spacing(2),
+    color: transparentize(0.5, theme.colors.text.default),
+  },
+  unlockData: {
+    fontSize: theme.spacing(2),
+    color: theme.colors.text.default,
+    whiteSpace: "pre-line",
   },
 }));
 
@@ -61,7 +76,16 @@ interface IProps {
 export const ERC721Preview = (props: IProps) => {
   const classes = useStyles();
   const {
-    data: { image, imageObjectURL, instantSale, name, salePrice, saleToken },
+    data: {
+      image,
+      imageObjectURL,
+      instantSale,
+      lockedContent,
+      name,
+      salePrice,
+      saleToken,
+      unlockOncePurchased,
+    },
   } = props;
 
   const renderImage = () => {
@@ -99,6 +123,20 @@ export const ERC721Preview = (props: IProps) => {
           </Typography>
         )}
       </div>
+      {unlockOncePurchased && (
+        <div className={classes.unlockWrapper}>
+          {lockedContent ? (
+            <div
+              className={classes.unlockData}
+              dangerouslySetInnerHTML={{ __html: lockedContent }}
+            ></div>
+          ) : (
+            <Typography align="center" className={classes.unlockPlaceholder}>
+              Unlockable content
+            </Typography>
+          )}
+        </div>
+      )}
     </div>
   );
 };

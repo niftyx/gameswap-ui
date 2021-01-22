@@ -66,6 +66,9 @@ export interface IFormValues {
   image: File | null;
   rar: File | null;
   imageObjectURL?: string;
+  putOnSale: boolean;
+  unlockOncePurchased: boolean;
+  lockedContent: string;
   instantSale: boolean;
   salePrice: number;
   saleToken: string;
@@ -112,6 +115,9 @@ export const ERC721CreateForm = (props: IProps) => {
     image: null,
     imageObjectURL: "",
     rar: null,
+    unlockOncePurchased: false,
+    lockedContent: "",
+    putOnSale: false,
     instantSale: false,
     salePrice: 3,
     saleToken: "",
@@ -121,7 +127,14 @@ export const ERC721CreateForm = (props: IProps) => {
     <Formik
       initialValues={initialFormValue}
       onSubmit={async (values, { setErrors }) => {
-        const { attributes } = values;
+        const {
+          attributes,
+          image,
+          instantSale,
+          lockedContent,
+          saleToken,
+          unlockOncePurchased,
+        } = values;
         for (let index = 0; index < attributes.length - 1; index += 1) {
           const attribute = attributes[index];
           if (!attribute.key) {
@@ -137,6 +150,21 @@ export const ERC721CreateForm = (props: IProps) => {
             return;
           }
         }
+        if (instantSale) {
+          if (!SALE_TOKENS.find((token) => token.address === saleToken)) {
+            return setErrors({ saleToken: "Please select token!" });
+          }
+        }
+        if (unlockOncePurchased && !lockedContent) {
+          return setErrors({
+            lockedContent: `"Locked content" is not allowed to be empty`,
+          });
+        }
+        if (!image) {
+          return setErrors({
+            image: `"Image" is not allowed to be empty`,
+          });
+        }
         props.onSubmit(values);
       }}
       validationSchema={Yup.object().shape({
@@ -149,7 +177,6 @@ export const ERC721CreateForm = (props: IProps) => {
             value: Yup.string(),
           })
         ),
-        image: Yup.string().required(),
       })}
     >
       {({
@@ -199,81 +226,156 @@ export const ERC721CreateForm = (props: IProps) => {
               />
               <FormSwitchField
                 FormControlProps={{ fullWidth: true }}
-                InputLabelProps={{ htmlFor: "instantSale", shrink: true }}
+                InputLabelProps={{ htmlFor: "putOnSale", shrink: true }}
                 InputProps={{
-                  id: "instantSale",
-                  name: "instantSale",
+                  id: "putOnSale",
+                  name: "putOnSale",
                   onBlur: handleBlur,
                   onChange: handleChange,
-                  checked: values.instantSale,
+                  checked: values.putOnSale,
                 }}
-                label="Instant sale price"
-                subLabel="Enter the price for which the item will be instantly sold"
+                label="Put on sale"
+                subLabel="You'll receive bids on this item"
               />
-              {values.instantSale && (
+              {values.putOnSale && (
                 <>
-                  <FormTextField
+                  <FormSwitchField
                     FormControlProps={{ fullWidth: true }}
-                    FormHelperTextProps={{
-                      error: Boolean(touched.salePrice && !values.salePrice),
-                    }}
-                    InputLabelProps={{ htmlFor: "salePrice", shrink: true }}
+                    InputLabelProps={{ htmlFor: "instantSale", shrink: true }}
                     InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <Select
-                            name="saleToken"
-                            onBlur={handleBlur}
-                            onChange={handleChange}
-                            value={values.saleToken}
-                          >
-                            {SALE_TOKENS.map((e) => (
-                              <MenuItem key={e.address} value={e.address}>
-                                {e.symbol}
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        </InputAdornment>
-                      ),
-                      id: "salePrice",
-                      name: "salePrice",
+                      id: "instantSale",
+                      name: "instantSale",
                       onBlur: handleBlur,
                       onChange: handleChange,
-                      placeholder: "Enter price for one piece",
-                      value: values.salePrice,
-                      type: "number",
+                      checked: values.instantSale,
                     }}
-                    helperText={
-                      touched.salePrice &&
-                      !values.salePrice &&
-                      "SalesPrice can't be equal 0"
-                    }
+                    label="Instant sale price"
+                    subLabel="Enter the price for which the item will be instantly sold"
                   />
-                  <Typography className={classes.notice}>
-                    Service fee {SERVICE_FEE_IN_PERCENT}%
-                  </Typography>
-                  {values.saleToken && (
-                    <Typography className={classes.notice} component="div">
-                      You will receive {values.salePrice}
-                      {
+                  {values.instantSale && (
+                    <>
+                      <FormTextField
+                        FormControlProps={{ fullWidth: true }}
+                        FormHelperTextProps={{
+                          error: Boolean(
+                            touched.salePrice &&
+                              (!values.salePrice || !values.saleToken)
+                          ),
+                        }}
+                        InputLabelProps={{ htmlFor: "salePrice", shrink: true }}
+                        InputProps={{
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <Select
+                                name="saleToken"
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                                value={values.saleToken}
+                              >
+                                {SALE_TOKENS.map((e) => (
+                                  <MenuItem key={e.address} value={e.address}>
+                                    {e.symbol}
+                                  </MenuItem>
+                                ))}
+                              </Select>
+                            </InputAdornment>
+                          ),
+                          id: "salePrice",
+                          name: "salePrice",
+                          onBlur: handleBlur,
+                          onChange: handleChange,
+                          placeholder: "Enter price for one piece",
+                          value: values.salePrice,
+                          type: "number",
+                        }}
+                        helperText={
+                          touched.salePrice &&
+                          (!values.salePrice
+                            ? "SalesPrice can't be equal 0"
+                            : !values.saleToken
+                            ? "Please select saleToken!"
+                            : "")
+                        }
+                      />
+                      <Typography className={classes.notice}>
+                        Service fee {SERVICE_FEE_IN_PERCENT}%
+                      </Typography>
+                      {values.saleToken &&
                         SALE_TOKENS.find(
                           (token) => token.address === values.saleToken
-                        )?.symbol
-                      }
-                      &nbsp;$
-                      {Number(
-                        values.salePrice *
-                          usdPrices[
-                            SALE_TOKENS.find(
-                              (token) => token.address === values.saleToken
-                            )?.symbol.toLowerCase() as KnownToken
-                          ] *
-                          (1 - SERVICE_FEE)
-                      ).toFixed(2)}
-                    </Typography>
+                        ) && (
+                          <Typography
+                            className={classes.notice}
+                            component="div"
+                          >
+                            You will receive {values.salePrice}
+                            {
+                              SALE_TOKENS.find(
+                                (token) => token.address === values.saleToken
+                              )?.symbol
+                            }
+                            &nbsp;$
+                            {Number(
+                              values.salePrice *
+                                usdPrices[
+                                  SALE_TOKENS.find(
+                                    (token) =>
+                                      token.address === values.saleToken
+                                  )?.symbol.toLowerCase() as KnownToken
+                                ] *
+                                (1 - SERVICE_FEE)
+                            ).toFixed(2)}
+                          </Typography>
+                        )}
+                    </>
                   )}
                 </>
               )}
+
+              <FormSwitchField
+                FormControlProps={{ fullWidth: true }}
+                InputLabelProps={{
+                  htmlFor: "unlockOncePurchased",
+                  shrink: true,
+                }}
+                InputProps={{
+                  id: "unlockOncePurchased",
+                  name: "unlockOncePurchased",
+                  onBlur: handleBlur,
+                  onChange: handleChange,
+                  checked: values.unlockOncePurchased,
+                }}
+                label="Unlock once purchased"
+                subLabel="Content will be unlocked after successful transaction"
+              />
+
+              {values.unlockOncePurchased && (
+                <FormTextField
+                  FormControlProps={{ fullWidth: true }}
+                  FormHelperTextProps={{
+                    error: Boolean(
+                      touched.lockedContent && !values.lockedContent
+                    ),
+                  }}
+                  InputLabelProps={{ htmlFor: "lockedContent", shrink: true }}
+                  InputProps={{
+                    id: "lockedContent",
+                    name: "lockedContent",
+                    onBlur: handleBlur,
+                    onChange: handleChange,
+                    placeholder: "",
+                    value: values.lockedContent,
+                    multiline: true,
+                  }}
+                  helperText={
+                    touched.lockedContent && !values.lockedContent
+                      ? "'Locked content' is not allowed to be empty"
+                      : "Tip: Markdown syntax is supported"
+                  }
+                  label="Digital key, code to redeem or link to a file..."
+                />
+              )}
+
               <FormTextField
                 FormControlProps={{ fullWidth: true }}
                 FormHelperTextProps={{
@@ -324,7 +426,7 @@ export const ERC721CreateForm = (props: IProps) => {
                 helperText="Suggested: 10%, 20%, 30%"
                 label="Royalties"
               />
-              <FormFileUpload
+              {/* <FormFileUpload
                 FormControlProps={{ fullWidth: true }}
                 InputLabelProps={{ shrink: true }}
                 InputProps={{
@@ -340,7 +442,7 @@ export const ERC721CreateForm = (props: IProps) => {
                 accept="zip,application/octet-stream,application/zip,application/x-zip,application/x-zip-compressed"
                 helperText={touched.rar && errors.rar}
                 label="Upload ZIP/RAR FILE"
-              />
+              /> */}
               <FormAttributesField
                 FormControlProps={{ fullWidth: true }}
                 InputLabelProps={{ shrink: true }}
