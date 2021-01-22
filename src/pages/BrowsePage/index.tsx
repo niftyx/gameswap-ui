@@ -55,9 +55,8 @@ const BrowsePage = () => {
   return (
     <PageContainer>
       <div className={classes.content}>
-        {isFeatured && (
-          <FeaturedItemsSection className={classes.featuredItems} />
-        )}
+        <FeaturedItemsSection className={classes.featuredItems} />
+
         <div className={classes.mainContent}>
           <BrowseFilter className={classes.filter} />
           <AssetItemsSection

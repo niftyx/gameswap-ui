@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     position: "relative",
-    paddingTop: "35%",
+    paddingTop: "59%",
     borderRadius: theme.spacing(1),
     border: `8px solid ${theme.colors.transparent}`,
     transition: "all 0.3s",
