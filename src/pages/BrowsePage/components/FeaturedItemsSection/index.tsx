@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
   },
   slick: {
     margin: `0 -${theme.spacing(1.5)}px`,
+    padding: `0 ${theme.spacing(1.5)}px`,
   },
 }));
 
