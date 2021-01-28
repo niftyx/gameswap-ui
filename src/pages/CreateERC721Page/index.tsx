@@ -1,12 +1,17 @@
 import { makeStyles } from "@material-ui/core";
-import { PageBackButton, PageContainer, PageTitle } from "components";
+import {
+  CollectionCreateModal,
+  PageBackButton,
+  PageContainer,
+  PageTitle,
+} from "components";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 
 import {
   ERC721CreateForm,
   ERC721ProgressModal,
-  IFormValues,
+  IERC721FormValues,
 } from "./components";
 
 const useStyles = makeStyles((theme) => ({
@@ -28,8 +33,9 @@ export enum ECreateStep {
 }
 
 interface IState {
-  formValues?: IFormValues;
+  formValues?: IERC721FormValues;
   visible: boolean;
+  collectionModalVisible: boolean;
 }
 
 const CreateERC721Page = () => {
@@ -38,13 +44,14 @@ const CreateERC721Page = () => {
 
   const [state, setState] = useState<IState>({
     visible: false,
+    collectionModalVisible: false,
   });
 
   const onBack = () => {
     history.push("/create");
   };
 
-  const onSubmit = (formValues: IFormValues) => {
+  const onSubmit = (formValues: IERC721FormValues) => {
     setState((prevState) => ({
       ...prevState,
       formValues,
@@ -60,12 +67,22 @@ const CreateERC721Page = () => {
     }));
   };
 
+  const toggleCollectionModal = () => {
+    setState((prevState) => ({
+      ...prevState,
+      collectionModalVisible: !prevState.collectionModalVisible,
+    }));
+  };
+
   return (
     <PageContainer className={classes.root}>
       <div className={classes.content}>
         <PageBackButton onBack={onBack} title="Manage Asset Type" />
         <PageTitle title="Create single asset" />
-        <ERC721CreateForm onSubmit={onSubmit} />
+        <ERC721CreateForm
+          onNewCollection={toggleCollectionModal}
+          onSubmit={onSubmit}
+        />
         {state.visible && state.formValues && (
           <ERC721ProgressModal
             formValues={state.formValues}
@@ -83,6 +100,12 @@ const CreateERC721Page = () => {
           />
         )}
       </div>
+      {state.collectionModalVisible && (
+        <CollectionCreateModal
+          onClose={toggleCollectionModal}
+          visible={state.collectionModalVisible}
+        />
+      )}
     </PageContainer>
   );
 };

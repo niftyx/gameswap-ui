@@ -543,7 +543,6 @@ export const GSWAP_COLLECTION: ICollection = {
   id: "1",
   displayName: "Gameswap721",
   description: "GameSwap Collection",
-  symbol: "GS7",
   imageUrl:
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnH4_d12NJiVZLkPeU0DcPuVNRWisZPWTFWg&usqp=CAU",
 };

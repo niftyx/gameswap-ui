@@ -65,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export interface IFormValues {
+export interface IERC721FormValues {
   name: string;
   description: string;
   royalties: number;
@@ -85,7 +85,8 @@ export interface IFormValues {
 
 interface IProps {
   className?: string;
-  onSubmit: (values: IFormValues) => void;
+  onSubmit: (values: IERC721FormValues) => void;
+  onNewCollection: () => void;
 }
 
 export const ERC721CreateForm = (props: IProps) => {
@@ -111,7 +112,7 @@ export const ERC721CreateForm = (props: IProps) => {
 
   const isWalletConnected = !!context.account;
 
-  const initialFormValue: IFormValues = {
+  const initialFormValue: IERC721FormValues = {
     name: "",
     description: "",
     royalties: 10,
@@ -393,6 +394,7 @@ export const ERC721CreateForm = (props: IProps) => {
                 onChange={(value) => {
                   setFieldValue("collectionId", value);
                 }}
+                onNewCollection={props.onNewCollection}
               />
 
               <FormSelectField

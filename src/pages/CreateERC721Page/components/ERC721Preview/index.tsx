@@ -6,7 +6,7 @@ import React from "react";
 import { getFileType } from "utils/asset";
 import { EFileType } from "utils/enums";
 
-import { IFormValues } from "../ERC721CreateForm";
+import { IERC721FormValues } from "../ERC721CreateForm";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -70,7 +70,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface IProps {
-  data: IFormValues;
+  data: IERC721FormValues;
 }
 
 export const ERC721Preview = (props: IProps) => {

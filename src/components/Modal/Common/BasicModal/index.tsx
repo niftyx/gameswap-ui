@@ -48,7 +48,7 @@ interface IProps {
   className?: string;
 }
 
-export const TradeBasicModal = (props: IProps) => {
+export const BasicModal = (props: IProps) => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
 

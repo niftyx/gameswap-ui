@@ -6,3 +6,4 @@ export * from "./FormSwitchField";
 export * from "./FormFileUpload";
 export * from "./FormCollectionChoose";
 export * from "./FormSelectField";
+export * from "./FormCollectionImageUpload";

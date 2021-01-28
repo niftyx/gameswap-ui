@@ -13,7 +13,7 @@ import { getFileType } from "utils/asset";
 import { getLogger } from "utils/logger";
 
 import { ECreateStep } from "../../index";
-import { IFormValues } from "../ERC721CreateForm";
+import { IERC721FormValues } from "../ERC721CreateForm";
 import { ERC721ProgressButton } from "../ERC721ProgressButton";
 
 const logger = getLogger("CreateERC721Page::Modal");
@@ -59,7 +59,7 @@ interface IProps {
   visible: boolean;
   onClose: () => void;
   steps: Array<ECreateStep>;
-  formValues: IFormValues;
+  formValues: IERC721FormValues;
 }
 
 enum ECurrentStep {

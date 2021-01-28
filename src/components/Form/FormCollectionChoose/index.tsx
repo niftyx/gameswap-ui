@@ -2,7 +2,6 @@ import { Typography, makeStyles } from "@material-ui/core";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import clsx from "classnames";
 import { useGlobal } from "contexts";
-import { transparentize } from "polished";
 import React from "react";
 import useCommonStyles from "styles/common";
 
@@ -36,17 +35,16 @@ interface IProps {
   comment: string;
   collectionId: string;
   onChange: (_: string) => void;
+  onNewCollection: () => void;
 }
 
 export const FormCollectionChoose = (props: IProps) => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
-  const { collectionId, comment, onChange } = props;
+  const { collectionId, comment, onChange, onNewCollection } = props;
   const {
     data: { collections },
   } = useGlobal();
-
-  const onNewCollection = () => {};
 
   return (
     <div className={classes.root}>
@@ -77,7 +75,7 @@ export const FormCollectionChoose = (props: IProps) => {
                 src={collection.imageUrl}
               />
             )}
-            subTitle={collection.symbol}
+            subTitle={" "}
             title={collection.displayName}
           />
         ))}
