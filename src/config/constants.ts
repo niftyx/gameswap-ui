@@ -12,7 +12,10 @@ import {
   IActivityItem,
   IAssetItem,
   IBrowseGameBidItem,
+  ICollection,
   IFeaturedFarmItem,
+  IGame,
+  IGameCategory,
   IIPFSConfig,
   IPriceFilterItem,
   IUpcomingFarmItem,
@@ -459,3 +462,88 @@ export const MOCK_PRICE_FILTER_ITEMS: IPriceFilterItem[] = [
 
 export const ASSET_IMAGE_FILE_SIZE_LIMIT = 30 * 1024 * 1024; // 30MB
 export const ASSET_ZIP_FILE_SIZE_LIMIT = 200 * 1024 * 1024; // 30MB
+
+export const GAME_CATEGORIES: IGameCategory[] = [
+  { value: "0", name: "Action" },
+  { value: "1", name: "Horror" },
+  { value: "2", name: "Adventure" },
+  { value: "3", name: "Fangame" },
+  { value: "4", name: "Fnaf" },
+  { value: "5", name: "RPG" },
+  { value: "6", name: "Multiplayer" },
+  { value: "7", name: "Platformer" },
+  { value: "8", name: "Scifi" },
+  { value: "9", name: "Retro" },
+  { value: "10", name: "Point & Click" },
+  { value: "11", name: "Shooter" },
+  { value: "12", name: "Altgame" },
+  { value: "13", name: "VR" },
+  { value: "14", name: "Survival" },
+  { value: "15", name: "Arcade" },
+  { value: "16", name: "Roguelike" },
+  { value: "17", name: "Puzzle" },
+  { value: "18", name: "Strategy" },
+  { value: "19", name: "Sports" },
+  { value: "20", name: "Adult" },
+  { value: "21", name: "Other" },
+];
+
+export const GAMES: IGame[] = [
+  {
+    id: "1",
+    title: "Skyfall",
+    version: "3",
+    imageUrl: "...",
+    category: GAME_CATEGORIES[2],
+    description: "test des",
+    platform: [
+      { os: "windows", version: "10" },
+      { os: "mac", version: "10.13.6" },
+    ],
+  },
+  {
+    id: "2",
+    title: "Cyberpunk Assault",
+    version: "1.1",
+    imageUrl: "...",
+    category: GAME_CATEGORIES[3],
+    description: "test des",
+    platform: [
+      { os: "windows", version: "10" },
+      { os: "mac", version: "10.13.6" },
+    ],
+  },
+  {
+    id: "3",
+    title: `No Man's Sky`,
+    version: "1.2",
+    imageUrl: "...",
+    category: GAME_CATEGORIES[4],
+    description: "test nnn",
+    platform: [
+      { os: "windows", version: "10" },
+      { os: "mac", version: "10.13.6" },
+    ],
+  },
+  {
+    id: "4",
+    title: "Horizon Zero Dawn",
+    version: "1.2",
+    imageUrl: "...",
+    category: GAME_CATEGORIES[5],
+    description: "test horizon",
+    platform: [
+      { os: "windows", version: "10" },
+      { os: "mac", version: "10.13.6" },
+    ],
+  },
+];
+
+export const GSWAP_COLLECTION: ICollection = {
+  id: "1",
+  displayName: "Gameswap721",
+  description: "GameSwap Collection",
+  symbol: "GS7",
+  imageUrl:
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnH4_d12NJiVZLkPeU0DcPuVNRWisZPWTFWg&usqp=CAU",
+};

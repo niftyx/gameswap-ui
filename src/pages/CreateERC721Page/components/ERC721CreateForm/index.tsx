@@ -9,12 +9,19 @@ import {
 import clsx from "classnames";
 import {
   FormAttributesField,
+  FormCollectionChoose,
   FormFileUpload,
   FormImageUpload,
+  FormSelectField,
   FormSwitchField,
   FormTextField,
 } from "components";
-import { SERVICE_FEE, SERVICE_FEE_IN_PERCENT } from "config/constants";
+import {
+  GAMES,
+  GSWAP_COLLECTION,
+  SERVICE_FEE,
+  SERVICE_FEE_IN_PERCENT,
+} from "config/constants";
 import { getToken, knownTokens } from "config/networks";
 import { useConnectedWeb3Context, useGlobal } from "contexts";
 import { Form, Formik } from "formik";
@@ -72,6 +79,8 @@ export interface IFormValues {
   instantSale: boolean;
   salePrice: number;
   saleToken: string;
+  collectionId: string;
+  gameId: string;
 }
 
 interface IProps {
@@ -121,6 +130,8 @@ export const ERC721CreateForm = (props: IProps) => {
     instantSale: false,
     salePrice: 3,
     saleToken: "",
+    collectionId: GSWAP_COLLECTION.id,
+    gameId: "0",
   };
 
   return (
@@ -375,6 +386,31 @@ export const ERC721CreateForm = (props: IProps) => {
                   label="Digital key, code to redeem or link to a file..."
                 />
               )}
+
+              <FormCollectionChoose
+                collectionId={values.collectionId}
+                comment="Choose collection"
+                onChange={(value) => {
+                  setFieldValue("collectionId", value);
+                }}
+              />
+
+              <FormSelectField
+                FormControlProps={{ fullWidth: true }}
+                InputLabelProps={{ htmlFor: "gameId", shrink: true }}
+                SelectProps={{
+                  id: "gameId",
+                  name: "gameId",
+                  onBlur: handleBlur,
+                  onChange: handleChange,
+                  value: values.gameId,
+                }}
+                items={GAMES.map((game) => ({
+                  value: game.id,
+                  label: game.title,
+                }))}
+                label="Game"
+              />
 
               <FormTextField
                 FormControlProps={{ fullWidth: true }}

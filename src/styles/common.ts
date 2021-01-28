@@ -15,6 +15,19 @@ const useCommonStyles = makeStyles((theme) => ({
       backgroundColor: theme.colors.background.fourth,
     },
   },
+  scrollHorizontal: {
+    "&::-webkit-scrollbar": {
+      height: theme.spacing(0.25),
+      boxShadow: `inset 0 0 6px ${transparentize(
+        0.3,
+        theme.colors.background.fourth
+      )}`,
+    },
+    "&::-webkit-scrollbar-track": {},
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: theme.colors.background.fourth,
+    },
+  },
   transparentButton: {
     backgroundColor: transparentize(0.9, theme.colors.text.default),
     borderRadius: theme.spacing(0.75),

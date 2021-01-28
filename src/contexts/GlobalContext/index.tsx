@@ -1,6 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import axios from "axios";
-import { DEFAULT_PRICE, DEFAULT_USD, PRICE_DECIMALS } from "config/constants";
+import {
+  DEFAULT_PRICE,
+  DEFAULT_USD,
+  GSWAP_COLLECTION,
+  PRICE_DECIMALS,
+} from "config/constants";
 import { getToken } from "config/networks";
 import { BigNumber, ethers } from "ethers";
 import _ from "lodash";
@@ -25,6 +30,7 @@ const defaultData: IGlobalData = {
       decimals: PRICE_DECIMALS,
     },
   },
+  collections: [GSWAP_COLLECTION],
 };
 
 const GlobalContext = createContext({

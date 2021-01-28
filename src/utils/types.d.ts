@@ -342,6 +342,7 @@ export interface IGlobalData {
       decimals: number;
     };
   };
+  collections: ICollection[];
 }
 
 export interface IIPFSConfig {
@@ -389,4 +390,32 @@ export interface IIpfsMainData {
   name: string;
   rar?: string;
   royalties: number;
+}
+
+export interface IGameCategory {
+  value: string;
+  name: string;
+}
+
+export interface IGamePlatform {
+  os: string;
+  version: string;
+}
+
+export interface IGame {
+  id: string;
+  title: string;
+  version: string;
+  imageUrl: string;
+  category: IGameCategory;
+  description: string;
+  platform: IGamePlatform[];
+}
+
+export interface ICollection {
+  id: string;
+  displayName: string;
+  description: string;
+  symbol: string;
+  imageUrl: string;
 }
