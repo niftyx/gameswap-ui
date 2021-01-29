@@ -144,7 +144,7 @@ export const TradeBuyModal = (props: IProps) => {
   };
 
   return (
-    <TradeBasicModal onClose={onClose} title="Buy Asset" visible={visible}>
+    <TradeBasicModal onClose={onClose} title="Trade Process" visible={visible}>
       {renderContent()}
     </TradeBasicModal>
   );

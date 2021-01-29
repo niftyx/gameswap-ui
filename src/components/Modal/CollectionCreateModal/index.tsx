@@ -54,7 +54,9 @@ export const CollectionCreateModal = (props: IProps) => {
     <BasicModal onClose={onClose} title="Collection" visible={visible}>
       <Formik
         initialValues={initialFormValues}
-        onSubmit={async (values, { setErrors }) => {}}
+        onSubmit={async (values, { setErrors }) => {
+          // create a new collection
+        }}
         validationSchema={Yup.object().shape({
           id: Yup.string(),
           displayName: Yup.string().required(),

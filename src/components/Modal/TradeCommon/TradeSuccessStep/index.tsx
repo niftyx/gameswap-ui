@@ -15,6 +15,13 @@ const useStyles = makeStyles((theme) => ({
     color: theme.colors.text.default,
     fontSize: theme.spacing(3),
   },
+  content: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    minHeight: 200,
+  },
 }));
 
 interface IProps {
@@ -25,8 +32,10 @@ export const TradeSuccessStep = (props: IProps) => {
   const classes = useStyles();
   return (
     <div className={classes.root}>
-      <Typography className={classes.title}>{props.title}</Typography>
-      <Typography className={classes.redirect}>Redirecting...</Typography>
+      <div className={classes.content}>
+        <Typography className={classes.title}>{props.title}</Typography>
+        <Typography className={classes.redirect}>Redirecting...</Typography>
+      </div>
     </div>
   );
 };

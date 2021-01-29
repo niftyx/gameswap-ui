@@ -21,6 +21,13 @@ const useStyles = makeStyles((theme) => ({
     height: theme.spacing(6),
     marginTop: theme.spacing(2),
   },
+  content: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    minHeight: 200,
+  },
 }));
 
 interface IProps {
@@ -86,8 +93,10 @@ export const TradeBuyApprovalStep = (props: IProps) => {
 
   return (
     <div className={clsx(classes.root, props.className)}>
-      {state.loading && <CommentLoader comment="Approving token..." />}
-      <ErrorText error={state.error} />
+      <div className={classes.content}>
+        {state.loading && <CommentLoader comment="Approving token..." />}
+        <ErrorText error={state.error} />
+      </div>
       {!state.loading && state.error && (
         <Button
           className={classes.button}

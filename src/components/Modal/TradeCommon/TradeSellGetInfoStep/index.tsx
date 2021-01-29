@@ -18,6 +18,13 @@ const useStyles = makeStyles((theme) => ({
     height: theme.spacing(6),
     marginTop: theme.spacing(2),
   },
+  content: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    minHeight: 200,
+  },
 }));
 
 interface IProps {
@@ -75,8 +82,11 @@ export const TradeSellGetInfoStep = (props: IProps) => {
 
   return (
     <div className={clsx(classes.root, props.className)}>
-      {state.loading && <CommentLoader comment="Checking if unlocked..." />}
-      <ErrorText error={state.error} />
+      <div className={classes.content}>
+        {state.loading && <CommentLoader comment="Checking if unlocked..." />}
+        <ErrorText error={state.error} />
+      </div>
+
       {!state.loading && state.error && (
         <Button
           className={classes.button}

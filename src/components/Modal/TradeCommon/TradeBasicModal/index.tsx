@@ -7,11 +7,11 @@ import useCommonStyles from "styles/common";
 const useStyles = makeStyles((theme) => ({
   root: {
     position: "absolute",
-    width: 400,
+    width: 500,
     backgroundColor: theme.palette.background.paper,
     border: `2px solid ${theme.colors.border.primary}`,
     boxShadow: theme.shadows[5],
-    borderRadius: theme.spacing(2),
+    borderRadius: theme.spacing(1),
     padding: theme.spacing(2),
     top: "50%",
     left: "50%",
@@ -30,7 +30,6 @@ const useStyles = makeStyles((theme) => ({
     flex: 1,
   },
   closeButton: {
-    border: `1px solid ${theme.colors.text.default}`,
     color: theme.colors.text.default,
     padding: theme.spacing(0.5),
   },
