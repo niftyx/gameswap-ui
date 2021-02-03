@@ -9,14 +9,17 @@ const useStyles = makeStyles((theme) => ({
     transition: "all 0.5s",
     color: theme.colors.text.default,
     "&:hover": {
-      color: transparentize(0.2, theme.colors.text.default),
+      color: transparentize(0.4, theme.colors.text.default),
+    },
+    "& + &": {
+      marginLeft: theme.spacing(1.5),
     },
   },
   content: {
     width: theme.spacing(20),
     height: theme.spacing(20),
     borderRadius: theme.spacing(1),
-    border: `1px solid ${theme.colors.border.primary}`,
+    border: `1px solid ${theme.colors.border.fourth}`,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -36,7 +39,7 @@ export const AssetCreateOption = (props: IProps) => {
   return (
     <NavLink className={classes.root} to={props.link}>
       <div className={classes.content}>
-        <Typography className={classes.text} component="span">
+        <Typography align="center" className={classes.text} component="span">
           {props.title}
         </Typography>
       </div>

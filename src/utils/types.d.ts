@@ -397,7 +397,7 @@ export interface IGameCategory {
   name: string;
 }
 
-export interface IGamePlatform {
+export interface IPlatform {
   os: string;
   version: string;
 }
@@ -409,7 +409,7 @@ export interface IGame {
   imageUrl: string;
   category: IGameCategory;
   description: string;
-  platform: IGamePlatform[];
+  platform: IPlatform[];
 }
 
 export interface ICollection {
