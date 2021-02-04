@@ -8,6 +8,14 @@ const useStyles = makeStyles(() => ({
     width: "auto",
     outline: "none",
   },
+  img: {
+    display: "none",
+  },
+  bImg: {
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "contain",
+    backgroundPosition: "center",
+  },
 }));
 
 interface IProps {
@@ -22,12 +30,17 @@ export const AssetPhoto = (props: IProps) => {
   switch (props.type) {
     case EFileType.Image:
       return (
-        <img
-          alt="asset_img"
-          className={clsx(props.className, classes.root)}
-          onLoad={props.onLoad}
-          src={props.uri}
-        />
+        <div
+          className={clsx(props.className, classes.root, classes.bImg)}
+          style={{ backgroundImage: `url(${props.uri})` }}
+        >
+          <img
+            alt="asset_img"
+            className={classes.img}
+            onLoad={props.onLoad}
+            src={props.uri}
+          />
+        </div>
       );
     case EFileType.Audio:
       return (
