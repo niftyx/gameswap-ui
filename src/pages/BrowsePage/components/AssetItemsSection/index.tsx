@@ -7,9 +7,10 @@ import {
   ScrollContainer,
   SimpleLoader,
 } from "components";
+import { useTrade } from "contexts";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { IAssetDetails } from "types";
+import { IAssetItem, ISignedOrder, ITradeAssetItem } from "utils/types";
 
 import AuctionItemsSection from "../AuctionItemsSection";
 
@@ -24,7 +25,7 @@ interface IProps {
   className?: string;
   onScrollEnd?: () => void;
   loading?: boolean;
-  assets: IAssetDetails[];
+  orders: ISignedOrder[];
 }
 
 interface IState {
@@ -34,11 +35,27 @@ interface IState {
 const AssetItemsSection = (props: IProps) => {
   const classes = useStyles();
 
-  const { assets, loading, onScrollEnd } = props;
+  const { loading, onScrollEnd, orders } = props;
   const history = useHistory();
+  const { openBuyModal } = useTrade();
 
   const [state, setState] = useState<IState>({
     isAuctionActive: false,
+  });
+
+  const assets: ITradeAssetItem[] = [];
+
+  orders.forEach((order) => {
+    const assetId = order.assetId.toHexString();
+    const addedElement = assets.find((asset) => asset.id === assetId);
+    if (addedElement) {
+      addedElement.orders.push(order);
+    } else {
+      assets.push({
+        id: assetId,
+        orders: [order],
+      });
+    }
   });
 
   const onAuction = () => {
@@ -46,6 +63,10 @@ const AssetItemsSection = (props: IProps) => {
       ...prevState,
       isAuctionActive: !prevState.isAuctionActive,
     }));
+  };
+
+  const onBuy = (asset: IAssetItem) => {
+    openBuyModal(asset);
   };
 
   return (
@@ -65,11 +86,10 @@ const AssetItemsSection = (props: IProps) => {
             {assets.map((asset) => (
               <BrowseAssetItem
                 data={asset}
-                isFullWidth
+                isOnCart={false}
                 key={asset.id}
-                onMore={() => {
-                  history.push(`/assets/${asset.id}`);
-                }}
+                onClick={onBuy}
+                onMore={() => history.push(`/assets/${asset.id}`)}
               />
             ))}
           </AssetsContainer>

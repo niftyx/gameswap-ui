@@ -2,6 +2,7 @@ import { makeStyles } from "@material-ui/core";
 import clsx from "classnames";
 import { BrowseFilter, PageContainer } from "components";
 import { useBrowseAssets } from "helpers";
+import { useAllOrders } from "helpers/useAllOrders";
 import React from "react";
 import { matchPath, useHistory } from "react-router-dom";
 import useCommonStyles from "styles/common";
@@ -46,11 +47,12 @@ const BrowsePage = () => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
   const history = useHistory();
-  const isFeatured = !!matchPath(history.location.pathname, {
-    exact: true,
-    path: "/browse/featured",
-  });
-  const { assets, hasMore, loadMore, loading } = useBrowseAssets();
+  const {
+    allLoaded: allOrdersLoaded,
+    loadMore: loadMoreAllOrders,
+    loading: allOrdersLoading,
+    orders: allOrders,
+  } = useAllOrders();
 
   return (
     <PageContainer>
@@ -60,10 +62,14 @@ const BrowsePage = () => {
         <div className={classes.mainContent}>
           <BrowseFilter className={classes.filter} />
           <AssetItemsSection
-            assets={assets}
             className={clsx(classes.assets, commonClasses.scroll)}
-            loading={loading}
-            onScrollEnd={!loading && hasMore ? loadMore : () => {}}
+            loading={allOrdersLoading}
+            onScrollEnd={
+              !allOrdersLoading && !allOrdersLoaded
+                ? loadMoreAllOrders
+                : () => {}
+            }
+            orders={allOrders}
           />
         </div>
       </div>

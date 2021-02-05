@@ -1,14 +1,16 @@
 import { Typography, makeStyles } from "@material-ui/core";
 import clsx from "classnames";
 import { AssetItem, AssetsContainer, TrendingToolbar } from "components";
-import { MOCK_ASSET_ITEMS } from "config/constants";
-import React, { useState } from "react";
-import { IAssetItem } from "utils/types";
+import { useTrade } from "contexts";
+import React from "react";
+import { useHistory } from "react-router-dom";
+import { IAssetItem, ISignedOrder, ITradeAssetItem } from "utils/types";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
   assets: {
     marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
   },
   header: {
     display: "flex",
@@ -28,15 +30,36 @@ const useStyles = makeStyles((theme) => ({
 
 interface IProps {
   className?: string;
-}
-interface IState {
-  assets: IAssetItem[];
+  onScrollEnd?: () => void;
+  loading?: boolean;
+  orders: ISignedOrder[];
 }
 
 export const TrendingItems = (props: IProps) => {
   const classes = useStyles();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [state, setState] = useState<IState>({ assets: MOCK_ASSET_ITEMS });
+  const { loading, onScrollEnd, orders } = props;
+  const history = useHistory();
+  const { openBuyModal } = useTrade();
+
+  const assets: ITradeAssetItem[] = [];
+
+  orders.forEach((order) => {
+    const assetId = order.assetId.toHexString();
+    const addedElement = assets.find((asset) => asset.id === assetId);
+    if (addedElement) {
+      addedElement.orders.push(order);
+    } else {
+      assets.push({
+        id: assetId,
+        orders: [order],
+      });
+    }
+  });
+
+  const onBuy = (asset: IAssetItem) => {
+    openBuyModal(asset);
+  };
 
   return (
     <div className={clsx(classes.root, props.className)}>
@@ -49,8 +72,13 @@ export const TrendingItems = (props: IProps) => {
 
       <div className={classes.assets}>
         <AssetsContainer>
-          {state.assets.map((asset) => (
-            <AssetItem data={asset} isFullWidth key={asset.id} />
+          {assets.map((asset) => (
+            <AssetItem
+              data={asset}
+              key={asset.id}
+              onClick={onBuy}
+              onMore={() => history.push(`/assets/${asset.id}`)}
+            />
           ))}
         </AssetsContainer>
       </div>

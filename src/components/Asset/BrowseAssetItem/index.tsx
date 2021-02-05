@@ -1,20 +1,15 @@
 import { Button, Grid, Typography, makeStyles } from "@material-ui/core";
 import { IconAssetPlaceholder } from "assets/icons";
 import clsx from "classnames";
-import { useConnectedWeb3Context, useGlobal, useTrade } from "contexts";
-import { useAssetDetailsFromInventoryItem } from "helpers";
+import { useConnectedWeb3Context, useGlobal } from "contexts";
+import { useAssetDetailsFromId } from "helpers";
 import { transparentize } from "polished";
 import React from "react";
 import useCommonStyles from "styles/common";
-import { IAssetDetails } from "types";
-import { getLogger } from "utils/logger";
-import { getAssetObjectWithPrices } from "utils/tools";
-import { IAssetItem } from "utils/types";
+import { getAssetObjectWithPrices, getObjectIdFromHex } from "utils/tools";
+import { IAssetItem, ITradeAssetItem } from "utils/types";
 
 import { AssetPhoto } from "../AssetPhoto";
-
-// eslint-disable-next-line
-const logger = getLogger("BrowseAssetItem::");
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -60,8 +55,23 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1),
     willChange: "background",
   },
+  cartWrapper: {
+    top: theme.spacing(1),
+    left: theme.spacing(1),
+    bottom: theme.spacing(1),
+    right: theme.spacing(1),
+    position: "absolute",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
   img: {
     height: "80%",
+  },
+  bottom: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   usd: {
     color: theme.colors.text.default,
@@ -77,10 +87,20 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 15,
     lineHeight: "20px",
   },
-  bottom: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
+  percentWrapper: {
+    position: "absolute",
+    top: theme.spacing(1),
+    right: theme.spacing(1),
+    borderRadius: theme.spacing(0.5),
+    padding: "2px 6px",
+    "&.positive": {
+      backgroundColor: transparentize(0.73, theme.colors.text.positive),
+      color: theme.colors.text.positive,
+    },
+    "&.negative": {
+      backgroundColor: transparentize(0.73, theme.colors.text.negative),
+      color: theme.colors.text.negative,
+    },
   },
   moreWrapper: {
     opacity: 0,
@@ -98,37 +118,36 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface IProps {
-  data: IAssetDetails;
+  data: ITradeAssetItem;
   className?: string;
-  isFullWidth?: boolean;
   onClick?: (_: IAssetItem) => void;
   onMore?: () => void;
+  isOnCart?: boolean;
 }
 
 const BrowseAssetItem = (props: IProps) => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
-  const { openBuyModal } = useTrade();
-
-  const { data, isFullWidth = false, onMore } = props;
+  const { data, onClick, onMore } = props;
   const {
     data: { price },
   } = useGlobal();
-  const { account, networkId } = useConnectedWeb3Context();
-  const { asset, loaded } = useAssetDetailsFromInventoryItem(data);
+  const { networkId } = useConnectedWeb3Context();
 
-  const responsive = isFullWidth
-    ? { xl: 2, lg: 2, md: 4, xs: 6 }
-    : { xl: 3, lg: 4, md: 6, xs: 6 };
+  const objectId = getObjectIdFromHex(data.id);
+  const { data: assetDetails, loading } = useAssetDetailsFromId(objectId);
+
+  const assetDataLoaded =
+    assetDetails && !loading && assetDetails.id === objectId;
+
+  const responsive = { xl: 2, lg: 2, md: 4, xs: 6 };
 
   const assetDataWithPriceInfo = getAssetObjectWithPrices(
-    asset,
-    data.orders || [],
+    assetDetails,
+    data.orders,
     price,
     networkId || 1
   );
-
-  const isInSale = (data.orders || []).length > 0;
 
   return (
     <Grid
@@ -137,7 +156,7 @@ const BrowseAssetItem = (props: IProps) => {
       {...(responsive as any)}
     >
       <div className={classes.contentContainer}>
-        {!loaded && (
+        {loading && (
           <div className={classes.placeholder}>
             <IconAssetPlaceholder />
           </div>
@@ -147,47 +166,37 @@ const BrowseAssetItem = (props: IProps) => {
             classes.content,
             "asset_item__content",
             commonClasses.fadeAnimation,
-            loaded ? "visible" : ""
+            !loading ? "visible" : ""
           )}
           onClick={() => {
-            if (asset) {
-              if (
-                isInSale &&
-                data.currentOwner.toLowerCase() !==
-                  (account || "").toLowerCase() &&
-                assetDataWithPriceInfo.asset
-              ) {
-                openBuyModal({
-                  ...assetDataWithPriceInfo.asset,
-                  orders: data.orders,
-                });
-              }
+            if (assetDataWithPriceInfo.asset && onClick) {
+              onClick({ ...assetDataWithPriceInfo.asset, orders: data.orders });
             }
           }}
         >
-          {asset && asset.image && (
-            <AssetPhoto
-              className={classes.img}
-              type={asset.imageType}
-              uri={asset.image}
-            />
-          )}
-          {isInSale && (
-            <div className={classes.bottom}>
-              <Typography className={classes.usd} component="div">
-                ${assetDataWithPriceInfo.minUSDPrice}
-              </Typography>
-              {assetDataWithPriceInfo.asset && (
-                <div className={classes.token}>
-                  <Typography className={classes.tokenAmount} component="div">
-                    {assetDataWithPriceInfo.minTokenAmountString}
-                  </Typography>
-                </div>
-              )}
-            </div>
+          {assetDataLoaded && assetDetails && (
+            <>
+              <AssetPhoto
+                className={classes.img}
+                type={assetDetails.imageType}
+                uri={assetDetails.image}
+              />
+              <div className={classes.bottom}>
+                <Typography className={classes.usd} component="div">
+                  ${assetDataWithPriceInfo.minUSDPrice}
+                </Typography>
+                {assetDataWithPriceInfo.asset && (
+                  <div className={classes.token}>
+                    <Typography className={classes.tokenAmount} component="div">
+                      {assetDataWithPriceInfo.minTokenAmountString}
+                    </Typography>
+                  </div>
+                )}
+              </div>
+            </>
           )}
         </div>
-        {loaded && (
+        {!loading && (
           <div
             className={clsx(classes.moreWrapper, "asset_item__more_wrapper")}
           >

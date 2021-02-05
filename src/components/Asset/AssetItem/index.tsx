@@ -1,11 +1,15 @@
 import { Button, Grid, Typography, makeStyles } from "@material-ui/core";
-import { IconAssetPlaceholder, IconCartInCircle } from "assets/icons";
-import { ReactComponent as GswapIcon } from "assets/svgs/gameswap_token.svg";
+import { IconAssetPlaceholder } from "assets/icons";
 import clsx from "classnames";
+import { useConnectedWeb3Context, useGlobal } from "contexts";
+import { useAssetDetailsFromId } from "helpers";
 import { transparentize } from "polished";
-import React, { useState } from "react";
+import React from "react";
 import useCommonStyles from "styles/common";
-import { IAssetItem } from "utils/types";
+import { getAssetObjectWithPrices, getObjectIdFromHex } from "utils/tools";
+import { IAssetItem, ITradeAssetItem } from "utils/types";
+
+import { AssetPhoto } from "../AssetPhoto";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -35,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     bottom: 0,
     right: 0,
     position: "absolute",
-    zIndex: 99,
+    zIndex: 10,
     padding: theme.spacing(1),
   },
   content: {
@@ -74,12 +78,12 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 17,
     lineHeight: "23px",
   },
-  gswap: {
+  token: {
     display: "flex",
     alignItems: "center",
-    color: theme.colors.text.secondary,
+    color: theme.colors.text.default,
   },
-  gswapValue: {
+  tokenAmount: {
     fontSize: 15,
     lineHeight: "20px",
   },
@@ -101,7 +105,7 @@ const useStyles = makeStyles((theme) => ({
   moreWrapper: {
     opacity: 0,
     position: "absolute",
-    zIndex: 1,
+    zIndex: 11,
     outlineOffset: -1,
     width: "100%",
     transform: "translate3d(0, -110%, 0)",
@@ -114,45 +118,45 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface IProps {
-  data: IAssetItem;
+  data: ITradeAssetItem;
   className?: string;
-  isFullWidth?: boolean;
-  onClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
-  onToggleCart?: () => void;
+  onClick?: (_: IAssetItem) => void;
+  onMore?: () => void;
   isOnCart?: boolean;
-}
-
-interface IState {
-  loaded: boolean;
 }
 
 const AssetItem = (props: IProps) => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
+  const { data, onClick, onMore } = props;
   const {
-    data,
-    isFullWidth = false,
-    isOnCart = false,
-    onClick,
-    onToggleCart,
-  } = props;
+    data: { price },
+  } = useGlobal();
+  const { networkId } = useConnectedWeb3Context();
 
-  const [state, setState] = useState<IState>({ loaded: false });
-  const setLoaded = (loaded: boolean) =>
-    setState((prevState) => ({ ...prevState, loaded }));
+  const objectId = getObjectIdFromHex(data.id);
+  const { data: assetDetails, loading } = useAssetDetailsFromId(objectId);
 
-  const respnsive = isFullWidth
-    ? { xl: 2, lg: 2, md: 4, xs: 6 }
-    : { xl: 3, lg: 4, md: 6, xs: 6 };
+  const assetDataLoaded =
+    assetDetails && !loading && assetDetails.id === objectId;
+
+  const responsive = { xl: 2, lg: 2, md: 4, xs: 6 };
+
+  const assetDataWithPriceInfo = getAssetObjectWithPrices(
+    assetDetails,
+    data.orders,
+    price,
+    networkId || 1
+  );
 
   return (
     <Grid
       className={clsx(classes.root, props.className)}
       item
-      {...(respnsive as any)}
+      {...(responsive as any)}
     >
       <div className={classes.contentContainer}>
-        {!state.loaded && (
+        {loading && (
           <div className={classes.placeholder}>
             <IconAssetPlaceholder />
           </div>
@@ -162,42 +166,37 @@ const AssetItem = (props: IProps) => {
             classes.content,
             "asset_item__content",
             commonClasses.fadeAnimation,
-            state.loaded ? "visible" : ""
+            !loading ? "visible" : ""
           )}
-          onClick={onToggleCart}
+          onClick={() => {
+            if (assetDataWithPriceInfo.asset && onClick) {
+              onClick({ ...assetDataWithPriceInfo.asset, orders: data.orders });
+            }
+          }}
         >
-          {state.loaded && isOnCart && (
-            <div className={classes.cartWrapper}>
-              <IconCartInCircle />
-            </div>
+          {assetDataLoaded && assetDetails && (
+            <>
+              <AssetPhoto
+                className={classes.img}
+                type={assetDetails.imageType}
+                uri={assetDetails.image}
+              />
+              <div className={classes.bottom}>
+                <Typography className={classes.usd} component="div">
+                  ${assetDataWithPriceInfo.minUSDPrice}
+                </Typography>
+                {assetDataWithPriceInfo.asset && (
+                  <div className={classes.token}>
+                    <Typography className={classes.tokenAmount} component="div">
+                      {assetDataWithPriceInfo.minTokenAmountString}
+                    </Typography>
+                  </div>
+                )}
+              </div>
+            </>
           )}
-          <img
-            alt="asset_img"
-            className={classes.img}
-            onLoad={() => setLoaded(true)}
-            src={data.image}
-          />
-          <div className={classes.bottom}>
-            <Typography className={classes.usd} component="div">
-              $356
-            </Typography>
-            <div className={classes.gswap}>
-              <GswapIcon />
-              <Typography className={classes.gswapValue} component="div">
-                0
-              </Typography>
-            </div>
-          </div>
-          <div
-            className={clsx(
-              classes.percentWrapper,
-              data.priceChange < 0 ? "positive" : "negative"
-            )}
-          >
-            {data.priceChange}
-          </div>
         </div>
-        {state.loaded && (
+        {!loading && (
           <div
             className={clsx(classes.moreWrapper, "asset_item__more_wrapper")}
           >
@@ -205,7 +204,7 @@ const AssetItem = (props: IProps) => {
               className={classes.moreButton}
               color="secondary"
               fullWidth
-              onClick={onClick as any}
+              onClick={onMore as any}
               variant="contained"
             >
               More Info
