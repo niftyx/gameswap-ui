@@ -9,6 +9,7 @@ import { MetamaskSubprovider } from "@0x/subproviders";
 import { OrderConfigRequest, ZeroExTransaction } from "@0x/types";
 import { BigNumber } from "@0x/utils";
 import {
+  DEFAULT_NETWORK_ID,
   FEE_RECIPIENT_ADDRESS,
   ORDERS_PAGE_COUNT,
   PROTOCOL_FEE_MULTIPLIER,
@@ -107,7 +108,9 @@ export const buildOrdersQuery = (
     perPage?: number;
   }
 ): string => {
-  const endPoint = `${RELAYER_URL[(networkId || 1) as NetworkId]}/orders`;
+  const endPoint = `${
+    RELAYER_URL[(networkId || DEFAULT_NETWORK_ID) as NetworkId]
+  }/orders`;
   const {
     makerAssetProxyId = "0x02571792",
     page = 1,

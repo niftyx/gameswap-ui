@@ -8,7 +8,7 @@ import {
   TradeAssetItem,
 } from "components";
 import { CartContentWrapper, CartEmpty } from "components/Cart";
-import { useGlobal, useTrade } from "contexts";
+import { useConnectedWeb3Context, useGlobal, useTrade } from "contexts";
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { IAssetItem, ISignedOrder, ITradeAssetItem } from "utils/types";
@@ -34,6 +34,7 @@ const AssetItemsSection = (props: IProps) => {
     data: { itemCartIds },
     isInItemCart,
   } = useGlobal();
+  const { account, setWalletConnectModalOpened } = useConnectedWeb3Context();
   const history = useHistory();
   const { loading, onScrollEnd, orders } = props;
   const { openBuyModal } = useTrade();
@@ -62,6 +63,10 @@ const AssetItemsSection = (props: IProps) => {
   totalPrice = 1;
 
   const onBuy = (asset: IAssetItem) => {
+    if (!account) {
+      setWalletConnectModalOpened(true);
+      return;
+    }
     openBuyModal(asset);
   };
 

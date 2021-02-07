@@ -1,4 +1,5 @@
 import { TradeBuyModal, TradeSellModal } from "components";
+import { DEFAULT_NETWORK_ID } from "config/constants";
 import { getToken } from "config/networks";
 import { useConnectedWeb3Context } from "contexts/connectedWeb3";
 import { BigNumber } from "ethers";
@@ -51,7 +52,7 @@ export const TradeProvider = ({ children }: IProps) => {
         ...asset,
         price: {
           amount: BigNumber.from(0),
-          token: getToken(networkId || 1, "weth"),
+          token: getToken(networkId || DEFAULT_NETWORK_ID, "weth"),
         },
       },
     }));

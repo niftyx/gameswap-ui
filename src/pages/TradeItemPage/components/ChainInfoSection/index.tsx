@@ -1,5 +1,6 @@
 import { Typography, makeStyles } from "@material-ui/core";
 import clsx from "classnames";
+import { DEFAULT_NETWORK_ID } from "config/constants";
 import { getContractAddress, getEtherscanUri } from "config/networks";
 import { useConnectedWeb3Context } from "contexts";
 import { transparentize } from "polished";
@@ -46,8 +47,8 @@ export const ChainInfoSection = (props: IProps) => {
   const { networkId } = useConnectedWeb3Context();
   const { data } = props;
 
-  const etherUri = getEtherscanUri(networkId || 1);
-  const erc721 = getContractAddress(networkId || 1, "erc721");
+  const etherUri = getEtherscanUri(networkId || DEFAULT_NETWORK_ID);
+  const erc721 = getContractAddress(networkId || DEFAULT_NETWORK_ID, "erc721");
 
   return (
     <div className={clsx(classes.root, props.className)}>

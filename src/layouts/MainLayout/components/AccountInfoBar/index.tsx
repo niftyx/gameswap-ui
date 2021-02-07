@@ -13,9 +13,13 @@ import SendIcon from "@material-ui/icons/Send";
 import { ReactComponent as MetaMaskIcon } from "assets/svgs/metamask.svg";
 import clsx from "classnames";
 import { ConnectWalletModal } from "components";
-import { STORAGE_KEY_CONNECTOR, TokenEthereum } from "config/constants";
+import {
+  DEFAULT_NETWORK_ID,
+  STORAGE_KEY_CONNECTOR,
+  TokenEthereum,
+} from "config/constants";
 import { getToken } from "config/networks";
-import { useConnectedWeb3Context } from "contexts";
+import { useConnectedWeb3Context, useGlobal } from "contexts";
 import { useEthBalance, useGSwapBalance } from "helpers";
 import { transparentize } from "polished";
 import React, { useState } from "react";
@@ -113,15 +117,20 @@ const AccountInfoBar = (props: IProps) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const history = useHistory();
-  const [isModalOpen, setModalState] = useState<boolean>(false);
   const context = useConnectedWeb3Context();
-  const { account, library: provider, networkId, rawWeb3Context } = context;
+  const {
+    account,
+    library: provider,
+    networkId,
+    rawWeb3Context,
+    setWalletConnectModalOpened,
+  } = context;
   const { balance: ethBalance } = useEthBalance(provider, account || "");
   const formattedEthBalance = formatBigNumber(
     ethBalance,
     TokenEthereum.decimals
   );
-  const gSwapToken = getToken(networkId || 1, "gswap");
+  const gSwapToken = getToken(networkId || DEFAULT_NETWORK_ID, "gswap");
   const { balance: gswapBalance } = useGSwapBalance(context);
   const formattedGswapBalance = formatToShortNumber(
     formatBigNumber(gswapBalance, gSwapToken.decimals)
@@ -144,13 +153,13 @@ const AccountInfoBar = (props: IProps) => {
   const isConnected = !!account;
 
   const onConnect = () => {
-    setModalState(true);
+    setWalletConnectModalOpened(true);
   };
   const onDisconnect = () => {
     handleClose();
     rawWeb3Context.deactivate();
     localStorage.removeItem(STORAGE_KEY_CONNECTOR);
-    setModalState(false);
+    setWalletConnectModalOpened(false);
   };
 
   return (
@@ -213,10 +222,6 @@ const AccountInfoBar = (props: IProps) => {
           <span className="button_connect__label">CONNECT WALLET</span>
         </Button>
       )}
-      <ConnectWalletModal
-        onClose={() => setModalState(false)}
-        visible={isModalOpen}
-      />
     </div>
   );
 };

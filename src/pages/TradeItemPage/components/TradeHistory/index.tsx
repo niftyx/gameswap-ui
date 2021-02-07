@@ -9,6 +9,7 @@ import {
 import LaunchIcon from "@material-ui/icons/Launch";
 import clsx from "classnames";
 import { TradingHistoryItemTypeTag } from "components";
+import { DEFAULT_NETWORK_ID } from "config/constants";
 import { getEtherscanUri, getTokenFromAddress } from "config/networks";
 import { useConnectedWeb3Context } from "contexts";
 import { ethers } from "ethers";
@@ -112,12 +113,12 @@ export const TradeHistory = (props: IProps) => {
                   ? `${formatBigNumber(
                       item.price.amount,
                       getTokenFromAddress(
-                        networkId || 1,
+                        networkId || DEFAULT_NETWORK_ID,
                         item.price.tokenAddress
                       ).decimals
                     )} ${
                       getTokenFromAddress(
-                        networkId || 1,
+                        networkId || DEFAULT_NETWORK_ID,
                         item.price.tokenAddress
                       ).symbol
                     }`
@@ -129,7 +130,9 @@ export const TradeHistory = (props: IProps) => {
                 {item.txHash ? (
                   <a
                     className={classes.hashA}
-                    href={`${getEtherscanUri(networkId || 1)}tx/${item.txHash}`}
+                    href={`${getEtherscanUri(
+                      networkId || DEFAULT_NETWORK_ID
+                    )}tx/${item.txHash}`}
                     rel="noreferrer"
                     target="_blank"
                   >

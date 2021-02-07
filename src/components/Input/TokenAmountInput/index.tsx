@@ -6,6 +6,7 @@ import {
 } from "@material-ui/core";
 import clsx from "classnames";
 import { FormTextField } from "components";
+import { DEFAULT_NETWORK_ID } from "config/constants";
 import { getToken, knownTokens } from "config/networks";
 import { useConnectedWeb3Context } from "contexts";
 import { BigNumber, ethers } from "ethers";
@@ -46,7 +47,7 @@ export const TokenAmountInput = (props: IProps) => {
   }, [value.amount, value.token.decimals, currentValue]);
 
   const SALE_TOKENS: IToken[] = Object.keys(knownTokens).map((key) =>
-    getToken(context.networkId || 1, key as KnownToken)
+    getToken(context.networkId || DEFAULT_NETWORK_ID, key as KnownToken)
   );
 
   const onChangeAmount = (

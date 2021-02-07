@@ -1,5 +1,6 @@
 import { Avatar, Button, Typography, makeStyles } from "@material-ui/core";
 import clsx from "classnames";
+import { DEFAULT_NETWORK_ID } from "config/constants";
 import { useConnectedWeb3Context, useGlobal, useTrade } from "contexts";
 import { transparentize } from "polished";
 import React from "react";
@@ -145,18 +146,26 @@ export const InfoSection = (props: IProps) => {
   const {
     data: { price },
   } = useGlobal();
-  const { account, networkId } = useConnectedWeb3Context();
+  const {
+    account,
+    networkId,
+    setWalletConnectModalOpened,
+  } = useConnectedWeb3Context();
   const { data } = props;
   const assetDataWithPriceInfo = getAssetObjectWithPrices(
     data,
     data.orders || [],
     price,
-    networkId || 1
+    networkId || DEFAULT_NETWORK_ID
   );
   const isInSale = (data.orders || []).length > 0;
   const isMine = data.owner?.toLowerCase() === account?.toLowerCase();
   const { openBuyModal } = useTrade();
   const onBuy = () => {
+    if (!account) {
+      setWalletConnectModalOpened(true);
+      return;
+    }
     if (data && isInSale) {
       openBuyModal({
         ...data,

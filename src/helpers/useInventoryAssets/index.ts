@@ -1,5 +1,8 @@
 import axios from "axios";
-import { INVENTORY_PAGE_ASSET_COUNT } from "config/constants";
+import {
+  DEFAULT_NETWORK_ID,
+  INVENTORY_PAGE_ASSET_COUNT,
+} from "config/constants";
 import { getGraphUris } from "config/networks";
 import { useConnectedWeb3Context } from "contexts";
 import { BigNumber } from "ethers";
@@ -71,7 +74,7 @@ export const useInventoryAssets = (
   loading: boolean;
 } => {
   const { networkId } = useConnectedWeb3Context();
-  const { httpUri } = getGraphUris(networkId || 1);
+  const { httpUri } = getGraphUris(networkId || DEFAULT_NETWORK_ID);
   const isRefMounted = useIsMountedRef();
   const [state, setState] = useState<IState>({
     hasMore: false,

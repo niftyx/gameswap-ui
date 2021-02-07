@@ -1,6 +1,6 @@
 import { SignedOrder, assetDataUtils } from "@0x/order-utils";
 import axios from "axios";
-import { BROWSE_PAGE_ASSET_COUNT } from "config/constants";
+import { BROWSE_PAGE_ASSET_COUNT, DEFAULT_NETWORK_ID } from "config/constants";
 import { getContractAddress, getGraphUris } from "config/networks";
 import { useConnectedWeb3Context } from "contexts";
 import { BigNumber } from "ethers";
@@ -92,9 +92,12 @@ export const useBrowseAssets = (): {
   loading: boolean;
 } => {
   const { networkId } = useConnectedWeb3Context();
-  const { httpUri } = getGraphUris(networkId || 1);
+  const { httpUri } = getGraphUris(networkId || DEFAULT_NETWORK_ID);
   const isRefMounted = useIsMountedRef();
-  const erc721TokenAddress = getContractAddress(networkId || 1, "erc721");
+  const erc721TokenAddress = getContractAddress(
+    networkId || DEFAULT_NETWORK_ID,
+    "erc721"
+  );
 
   const [state, setState] = useState<IState>({
     hasMore: false,
@@ -113,13 +116,16 @@ export const useBrowseAssets = (): {
       const getOrderPromises: Promise<ISignedOrder[]>[] = info.assets.map(
         (e) => {
           const asset = wrangleAsset(e as any);
-          const endPoint = buildOrdersQuery((networkId || 1) as NetworkId, {
-            perPage: 1,
-            makerAssetData: assetDataUtils.encodeERC721AssetData(
-              erc721TokenAddress,
-              EthersBigNumberTo0xBigNumber(asset.assetId)
-            ),
-          });
+          const endPoint = buildOrdersQuery(
+            (networkId || DEFAULT_NETWORK_ID) as NetworkId,
+            {
+              perPage: 1,
+              makerAssetData: assetDataUtils.encodeERC721AssetData(
+                erc721TokenAddress,
+                EthersBigNumberTo0xBigNumber(asset.assetId)
+              ),
+            }
+          );
           return new Promise((resolve, reject) => {
             axios
               .get(endPoint)

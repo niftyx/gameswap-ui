@@ -17,6 +17,7 @@ import {
   FormTextField,
 } from "components";
 import {
+  DEFAULT_NETWORK_ID,
   GAMES,
   GSWAP_COLLECTION,
   SERVICE_FEE,
@@ -107,7 +108,7 @@ export const ERC721CreateForm = (props: IProps) => {
   };
 
   const SALE_TOKENS: IToken[] = Object.keys(knownTokens).map((key) =>
-    getToken(context.networkId || 1, key as KnownToken)
+    getToken(context.networkId || DEFAULT_NETWORK_ID, key as KnownToken)
   );
 
   const isWalletConnected = !!context.account;

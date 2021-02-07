@@ -212,6 +212,13 @@ export const GlobalProvider = ({ children }: IProps) => {
     }));
   };
 
+  const closeWalletConnectModal = () => {
+    setCurrentData((prev) => ({
+      ...prev,
+      walletConnectModalOpened: false,
+    }));
+  };
+
   return (
     <GlobalContext.Provider
       value={{

@@ -1,6 +1,7 @@
 import { Button, Grid, Typography, makeStyles } from "@material-ui/core";
 import { IconAssetPlaceholder } from "assets/icons";
 import clsx from "classnames";
+import { DEFAULT_NETWORK_ID } from "config/constants";
 import { useConnectedWeb3Context, useGlobal } from "contexts";
 import { useAssetDetailsFromId } from "helpers";
 import { transparentize } from "polished";
@@ -155,7 +156,7 @@ const TradeAssetItem = (props: IProps) => {
     assetDetails,
     data.orders,
     price,
-    networkId || 1
+    networkId || DEFAULT_NETWORK_ID
   );
 
   return (

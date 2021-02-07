@@ -1,5 +1,6 @@
 import { assetDataUtils } from "@0x/order-utils";
 import { Button, Typography, makeStyles } from "@material-ui/core";
+import { DEFAULT_NETWORK_ID } from "config/constants";
 import { getTokenFromAddress } from "config/networks";
 import { useConnectedWeb3Context } from "contexts";
 import React from "react";
@@ -39,7 +40,7 @@ export const TradeCancelOrderRow = (props: IProps) => {
   const { networkId } = useConnectedWeb3Context();
 
   const token = getTokenFromAddress(
-    networkId || 1,
+    networkId || DEFAULT_NETWORK_ID,
     (takerInfo as any).tokenAddress
   );
 

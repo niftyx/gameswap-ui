@@ -1,5 +1,6 @@
 import { SignedOrder, assetDataUtils } from "@0x/order-utils";
 import { useQuery } from "@apollo/react-hooks";
+import { DEFAULT_NETWORK_ID } from "config/constants";
 import { getContractAddress } from "config/networks";
 import { useConnectedWeb3Context } from "contexts";
 import { BigNumber } from "ethers";
@@ -76,7 +77,10 @@ export const useAssetDetailsWithOrderFromId = (id: string): IResponse => {
     asset: null,
     loading: false,
   });
-  const erc721TokenAddress = getContractAddress(networkId || 1, "erc721");
+  const erc721TokenAddress = getContractAddress(
+    networkId || DEFAULT_NETWORK_ID,
+    "erc721"
+  );
   const { data, refetch } = useQuery<IGraphResponse>(query, {
     notifyOnNetworkStatusChange: true,
     skip: false,
@@ -129,13 +133,16 @@ export const useAssetDetailsWithOrderFromId = (id: string): IResponse => {
         const details: IIpfsMainData = (
           await getIPFSService().getData(state.asset.tokenURL)
         ).data;
-        const orderEndPoint = buildOrdersQuery((networkId || 1) as NetworkId, {
-          perPage: 1,
-          makerAssetData: assetDataUtils.encodeERC721AssetData(
-            erc721TokenAddress,
-            EthersBigNumberTo0xBigNumber(state.asset.tokenId)
-          ),
-        });
+        const orderEndPoint = buildOrdersQuery(
+          (networkId || DEFAULT_NETWORK_ID) as NetworkId,
+          {
+            perPage: 1,
+            makerAssetData: assetDataUtils.encodeERC721AssetData(
+              erc721TokenAddress,
+              EthersBigNumberTo0xBigNumber(state.asset.tokenId)
+            ),
+          }
+        );
         const zeroXService = getZEROXService();
         const ordersResponse = (await zeroXService.getData(orderEndPoint)).data;
         const ordersResult: ISignedOrder[] = ordersResponse.records

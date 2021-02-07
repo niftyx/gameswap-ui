@@ -1,6 +1,6 @@
 import { assetDataUtils } from "@0x/order-utils";
 import { SignedOrder } from "@0x/types";
-import { ORDERS_PAGE_COUNT } from "config/constants";
+import { DEFAULT_NETWORK_ID, ORDERS_PAGE_COUNT } from "config/constants";
 import { getContractAddress } from "config/networks";
 import { useConnectedWeb3Context } from "contexts";
 import { useIsMountedRef } from "hooks";
@@ -21,7 +21,10 @@ interface IState {
 
 export const useMyOrders = (): IState & { loadMore: () => Promise<void> } => {
   const { account, networkId } = useConnectedWeb3Context();
-  const erc721Address = getContractAddress(networkId || 1, "erc721");
+  const erc721Address = getContractAddress(
+    networkId || DEFAULT_NETWORK_ID,
+    "erc721"
+  );
   const isRefMounted = useIsMountedRef();
   const [state, setState] = useState<IState>({
     allLoaded: false,
@@ -30,12 +33,15 @@ export const useMyOrders = (): IState & { loadMore: () => Promise<void> } => {
   });
 
   const loadOrders = async (page = 1) => {
-    const endPoint = buildOrdersQuery((networkId || 1) as NetworkId, {
-      makerAddress: account || "",
-      makerAssetAddress: erc721Address,
-      perPage: ORDERS_PAGE_COUNT,
-      page,
-    });
+    const endPoint = buildOrdersQuery(
+      (networkId || DEFAULT_NETWORK_ID) as NetworkId,
+      {
+        makerAddress: account || "",
+        makerAssetAddress: erc721Address,
+        perPage: ORDERS_PAGE_COUNT,
+        page,
+      }
+    );
 
     setState((prevState) => ({ ...prevState, loading: true }));
 

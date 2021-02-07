@@ -2,11 +2,13 @@ import { ContractWrappers } from "@0x/contract-wrappers";
 import { Web3Wrapper } from "@0x/web3-wrapper";
 import { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
+import { ConnectWalletModal } from "components";
 import { STORAGE_KEY_CONNECTOR } from "config/constants";
 import React, { useEffect, useMemo, useState } from "react";
 import connectors from "utils/connectors";
 import { ConnectorNames } from "utils/enums";
 import { Maybe } from "utils/types";
+import { boolean } from "yup/lib/locale";
 export interface ConnectedWeb3Context {
   account: Maybe<string> | null;
   library: Web3Provider | undefined;
@@ -15,6 +17,8 @@ export interface ConnectedWeb3Context {
   initialized: boolean;
   web3Wrapper: Web3Wrapper | null;
   contractWrappers: ContractWrappers | null;
+  walletConnectModalOpened: boolean;
+  setWalletConnectModalOpened: (_: boolean) => void;
 }
 
 let web3Wrapper: Web3Wrapper | null = null;
@@ -52,10 +56,22 @@ export const ConnectedWeb3: React.FC = (props) => {
     error,
     library,
   } = context;
-  const [initialized, setInitialized] = useState<boolean>(false);
+  const [state, setState] = useState<{
+    initialized: boolean;
+    walletConnectModalOpened: boolean;
+  }>({
+    initialized: false,
+    walletConnectModalOpened: false,
+  });
+
+  const setInitialized = (initialized: boolean) => {
+    setState((prev) => ({ ...prev, initialized }));
+  };
+  const setWalletConnectModalOpened = (walletConnectModalOpened: boolean) =>
+    setState((prev) => ({ ...prev, walletConnectModalOpened }));
 
   const updateInitialized = () => {
-    if (!initialized) setInitialized(true);
+    if (!state.initialized) setInitialized(true);
   };
 
   useEffect(() => {
@@ -98,13 +114,19 @@ export const ConnectedWeb3: React.FC = (props) => {
     library,
     networkId: chainId,
     rawWeb3Context: context,
-    initialized,
+    initialized: state.initialized,
+    walletConnectModalOpened: state.walletConnectModalOpened,
     ...xWrappers,
+    setWalletConnectModalOpened,
   };
 
   return (
     <ConnectedWeb3Context.Provider value={value}>
       {props.children}
+      <ConnectWalletModal
+        onClose={() => setWalletConnectModalOpened(false)}
+        visible={state.walletConnectModalOpened}
+      />
     </ConnectedWeb3Context.Provider>
   );
 };

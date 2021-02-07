@@ -67,6 +67,8 @@ export const RELAYER_WS_URL: { [key in NetworkId]: string } = {
   42: process.env.REACT_APP_RELAYER_WS_URL_KOVAN || "",
 };
 
+export const DEFAULT_NETWORK_ID = 42;
+
 export const RELAYER_RPS = Number(process.env.REACT_APP_RELAYER_RPS);
 
 export const TokenEthereum = {

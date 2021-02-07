@@ -8,7 +8,7 @@ import {
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import clsx from "classnames";
 import { ProfileMarker } from "components/Marker";
-import { PRICE_DECIMALS } from "config/constants";
+import { DEFAULT_NETWORK_ID, PRICE_DECIMALS } from "config/constants";
 import { getToken } from "config/networks";
 import { useConnectedWeb3Context, useGlobal } from "contexts";
 import { BigNumber } from "ethers";
@@ -106,7 +106,7 @@ export const HeroSection = (props: IProps) => {
   const commonClasses = useCommonStyles();
   const context = useConnectedWeb3Context();
   const { account, networkId } = context;
-  const gSwapToken = getToken(networkId || 1, "gswap");
+  const gSwapToken = getToken(networkId || DEFAULT_NETWORK_ID, "gswap");
   const { balance: gswapBalance } = useGSwapBalance(context);
   const {
     data: {

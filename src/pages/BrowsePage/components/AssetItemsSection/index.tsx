@@ -7,7 +7,7 @@ import {
   ScrollContainer,
   SimpleLoader,
 } from "components";
-import { useTrade } from "contexts";
+import { useConnectedWeb3Context, useTrade } from "contexts";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { IAssetItem, ISignedOrder, ITradeAssetItem } from "utils/types";
@@ -38,6 +38,7 @@ const AssetItemsSection = (props: IProps) => {
   const { loading, onScrollEnd, orders } = props;
   const history = useHistory();
   const { openBuyModal } = useTrade();
+  const { account, setWalletConnectModalOpened } = useConnectedWeb3Context();
 
   const [state, setState] = useState<IState>({
     isAuctionActive: false,
@@ -66,6 +67,10 @@ const AssetItemsSection = (props: IProps) => {
   };
 
   const onBuy = (asset: IAssetItem) => {
+    if (!account) {
+      setWalletConnectModalOpened(true);
+      return;
+    }
     openBuyModal(asset);
   };
 
