@@ -4,12 +4,7 @@ import { getAddress } from "ethers/lib/utils";
 import { formatBigNumber } from "utils";
 
 import { xBigNumberToEthersBigNumber } from "./token";
-import {
-  IAssetItem,
-  ISignedOrder,
-  ITokenAmount,
-  IUSDPriceTokenSymbol,
-} from "./types";
+import { IAssetItem, ISignedOrder, ITokenAmount, KnownToken } from "./types";
 
 export const isAddress = (address: string): boolean => {
   try {
@@ -53,6 +48,11 @@ export const getAssetObjectWithPrices = (
       price: BigNumber;
       decimals: number;
     };
+    shroom: {
+      usd: number;
+      price: BigNumber;
+      decimals: number;
+    };
   },
   networkId: number
 ): IResponse => {
@@ -70,8 +70,7 @@ export const getAssetObjectWithPrices = (
 
   const prices: ITokenAmount[] = orders.map((order, orderIndex) => {
     const token = getTokenFromAddress(networkId, order.erc20Address);
-    const loadedUSDPrice =
-      price[token.symbol.toLowerCase() as IUSDPriceTokenSymbol];
+    const loadedUSDPrice = price[token.symbol.toLowerCase() as KnownToken];
     const USDPrice = xBigNumberToEthersBigNumber(order.takerAssetAmount).mul(
       loadedUSDPrice.price
     );

@@ -20,7 +20,7 @@ import {
 } from "config/constants";
 import { getToken } from "config/networks";
 import { useConnectedWeb3Context, useGlobal } from "contexts";
-import { useEthBalance, useGSwapBalance } from "helpers";
+import { useBalances } from "helpers";
 import { transparentize } from "polished";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
@@ -125,13 +125,17 @@ const AccountInfoBar = (props: IProps) => {
     rawWeb3Context,
     setWalletConnectModalOpened,
   } = context;
-  const { balance: ethBalance } = useEthBalance(provider, account || "");
+  const {
+    balances: {
+      erc20Balances: { gswap: gswapBalance },
+      eth: ethBalance,
+    },
+  } = useBalances(context);
   const formattedEthBalance = formatBigNumber(
     ethBalance,
     TokenEthereum.decimals
   );
   const gSwapToken = getToken(networkId || DEFAULT_NETWORK_ID, "gswap");
-  const { balance: gswapBalance } = useGSwapBalance(context);
   const formattedGswapBalance = formatToShortNumber(
     formatBigNumber(gswapBalance, gSwapToken.decimals)
   );

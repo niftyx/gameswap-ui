@@ -12,7 +12,7 @@ import { DEFAULT_NETWORK_ID, PRICE_DECIMALS } from "config/constants";
 import { getToken } from "config/networks";
 import { useConnectedWeb3Context, useGlobal } from "contexts";
 import { BigNumber } from "ethers";
-import { useGSwapBalance } from "helpers";
+import { useBalances } from "helpers";
 import { transparentize } from "polished";
 import React from "react";
 import useCommonStyles from "styles/common";
@@ -107,7 +107,11 @@ export const HeroSection = (props: IProps) => {
   const context = useConnectedWeb3Context();
   const { account, networkId } = context;
   const gSwapToken = getToken(networkId || DEFAULT_NETWORK_ID, "gswap");
-  const { balance: gswapBalance } = useGSwapBalance(context);
+  const {
+    balances: {
+      erc20Balances: { gswap: gswapBalance },
+    },
+  } = useBalances(context);
   const {
     data: {
       price: {

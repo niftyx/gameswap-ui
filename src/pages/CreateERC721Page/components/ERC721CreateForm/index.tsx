@@ -97,6 +97,7 @@ export const ERC721CreateForm = (props: IProps) => {
     data: {
       price: {
         gswap: { usd: gswapPrice },
+        shroom: { usd: shroomPrice },
         weth: { usd: wethPrice },
       },
     },
@@ -105,6 +106,7 @@ export const ERC721CreateForm = (props: IProps) => {
   const usdPrices = {
     weth: wethPrice,
     gswap: gswapPrice,
+    shroom: shroomPrice,
   };
 
   const SALE_TOKENS: IToken[] = Object.keys(knownTokens).map((key) =>

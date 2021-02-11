@@ -143,6 +143,7 @@ class ERC20Service {
       address: this.contract.address,
       decimals,
       symbol,
+      coingeckoTokenId: "",
     };
   };
 

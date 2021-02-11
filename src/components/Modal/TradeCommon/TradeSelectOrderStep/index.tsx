@@ -6,7 +6,7 @@ import { useConnectedWeb3Context, useGlobal } from "contexts";
 import React from "react";
 import useCommonStyles from "styles/common";
 import { formatBigNumber } from "utils";
-import { IAssetItem, ITokenAmount, IUSDPriceTokenSymbol } from "utils/types";
+import { IAssetItem, ITokenAmount, KnownToken } from "utils/types";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -75,7 +75,7 @@ export const TradeSelectOrderStep = (props: IProps) => {
       <div className={clsx(classes.prices, commonClasses.scroll)}>
         {asset.prices.map((tPrice: ITokenAmount, priceIndex: number) => {
           const loadedUSDPrice =
-            price[tPrice.token.symbol.toLowerCase() as IUSDPriceTokenSymbol];
+            price[tPrice.token.symbol.toLowerCase() as KnownToken];
 
           return (
             <div className={classes.item} key={priceIndex}>

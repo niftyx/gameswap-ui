@@ -266,6 +266,7 @@ export interface IToken {
   symbol: string;
   image?: string;
   volume?: string;
+  coingeckoTokenId: string;
 }
 
 export interface IERC721Token {
@@ -278,7 +279,7 @@ export interface IERC721Token {
 
 export type Maybe<T> = T | null;
 
-export type KnownToken = "gswap" | "weth";
+export type KnownToken = "gswap" | "weth" | "shroom";
 
 export interface INetwork {
   label: string;
@@ -303,6 +304,7 @@ export interface IKnownTokenData {
   addresses: {
     [K in NetworkId]?: string;
   };
+  coingeckoTokenId: string;
 }
 
 export interface I0xContractAddresses {
@@ -325,18 +327,11 @@ export interface IFaqNavBarItem {
   children?: IFaqNavBarItem[];
 }
 
-export type IUSDPriceTokenSymbol = "gswap" | "weth";
-
 export interface IGlobalData {
   itemCartIds: string[];
   inventoryCartIds: string[];
   price: {
-    gswap: {
-      usd: number;
-      price: BigNumber;
-      decimals: number;
-    };
-    weth: {
+    [key in KnownToken]: {
       usd: number;
       price: BigNumber;
       decimals: number;
@@ -418,4 +413,10 @@ export interface ICollection {
   description?: string;
   imageUrl: string;
   shortUrl?: string;
+}
+export interface IBalances {
+  eth: BigNumber;
+  erc20Balances: {
+    [key in KnownToken]: BigNumber;
+  };
 }

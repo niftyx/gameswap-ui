@@ -62,6 +62,7 @@ export const knownTokens: { [name in KnownToken]: IKnownTokenData } = {
       [networkIds.MAINNET]: "0xaac41ec512808d64625576eddd580e7ea40ef8b2",
       [networkIds.KOVAN]: "0xb2c7d27f78bec818391498dc4108ab782d65cd76",
     },
+    coingeckoTokenId: "gameswap-org",
   },
   weth: {
     symbol: "WETH",
@@ -70,6 +71,16 @@ export const knownTokens: { [name in KnownToken]: IKnownTokenData } = {
       [networkIds.MAINNET]: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
       [networkIds.KOVAN]: "0xd0a1e359811322d97991e03f863a0c30c2cf029c",
     },
+    coingeckoTokenId: "weth",
+  },
+  shroom: {
+    symbol: "SHROOM",
+    decimals: 18,
+    addresses: {
+      [networkIds.MAINNET]: "0xed0439eacf4c4965ae4613d77a5c2efe10e5f183",
+      [networkIds.KOVAN]: "0x60508ceea2bae1eeaa0f192dedbec8a8b0ca3605",
+    },
+    coingeckoTokenId: "shroom-finance",
   },
 };
 
@@ -118,6 +129,7 @@ export const getToken = (networkId: number, tokenId: KnownToken): IToken => {
     decimals: token.decimals,
     symbol: token.symbol,
     image: getImageUrl(address),
+    coingeckoTokenId: token.coingeckoTokenId,
   };
 };
 
@@ -142,6 +154,7 @@ export const getTokenFromAddress = (
         address: tokenAddress,
         decimals: token.decimals,
         symbol: token.symbol,
+        coingeckoTokenId: token.coingeckoTokenId,
       };
     }
   }

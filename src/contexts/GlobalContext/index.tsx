@@ -6,30 +6,39 @@ import {
   GSWAP_COLLECTION,
   PRICE_DECIMALS,
 } from "config/constants";
-import { getToken } from "config/networks";
+import { getToken, knownTokens } from "config/networks";
 import { BigNumber, ethers } from "ethers";
+import { parseEther } from "ethers/lib/utils";
+import { useIsMountedRef } from "hooks";
 import _ from "lodash";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { getLogger } from "utils/logger";
-import { IGlobalData } from "utils/types.d";
+import { IGlobalData, KnownToken } from "utils/types.d";
 
 const logger = getLogger("GlobalContext::");
+
+const defaultTokenPrices = {
+  gswap: {
+    usd: DEFAULT_USD,
+    price: DEFAULT_PRICE,
+    decimals: PRICE_DECIMALS,
+  },
+  weth: {
+    usd: DEFAULT_USD,
+    price: DEFAULT_PRICE,
+    decimals: PRICE_DECIMALS,
+  },
+  shroom: {
+    usd: DEFAULT_USD,
+    price: DEFAULT_PRICE,
+    decimals: PRICE_DECIMALS,
+  },
+};
 
 const defaultData: IGlobalData = {
   itemCartIds: [],
   inventoryCartIds: [],
-  price: {
-    gswap: {
-      usd: DEFAULT_USD,
-      price: DEFAULT_PRICE,
-      decimals: PRICE_DECIMALS,
-    },
-    weth: {
-      usd: DEFAULT_USD,
-      price: DEFAULT_PRICE,
-      decimals: PRICE_DECIMALS,
-    },
-  },
+  price: defaultTokenPrices,
   collections: [GSWAP_COLLECTION],
 };
 
@@ -57,58 +66,6 @@ export const useGlobal = () => {
   return context;
 };
 
-const fetchGSwapPrice = async (): Promise<{
-  usd: number;
-  price: BigNumber;
-  decimals: number;
-}> => {
-  try {
-    const token = getToken(1, "gswap");
-    const response = (
-      await axios.get(
-        `https://api.coingecko.com/api/v3/coins/ethereum/contract/${token.address}`
-      )
-    ).data;
-
-    const usdPrice = response["market_data"]["current_price"]["usd"];
-
-    return {
-      usd: Number(usdPrice),
-      price: ethers.utils.parseUnits(String(usdPrice), PRICE_DECIMALS),
-      decimals: PRICE_DECIMALS,
-    };
-  } catch (error) {
-    logger.error("fetchGSwapPrice::", error);
-    return { usd: DEFAULT_USD, price: DEFAULT_PRICE, decimals: PRICE_DECIMALS };
-  }
-};
-
-const fetchWEthPrice = async (): Promise<{
-  usd: number;
-  price: BigNumber;
-  decimals: number;
-}> => {
-  try {
-    const token = getToken(1, "weth");
-    const response = (
-      await axios.get(
-        `https://api.coingecko.com/api/v3/coins/ethereum/contract/${token.address}`
-      )
-    ).data;
-
-    const usdPrice = response["market_data"]["current_price"]["usd"];
-
-    return {
-      usd: Number(usdPrice),
-      price: ethers.utils.parseUnits(String(usdPrice), PRICE_DECIMALS),
-      decimals: PRICE_DECIMALS,
-    };
-  } catch (error) {
-    logger.error("fetchGSwapPrice::", error);
-    return { usd: DEFAULT_USD, price: DEFAULT_PRICE, decimals: PRICE_DECIMALS };
-  }
-};
-
 interface IProps {
   children: React.ReactNode;
 }
@@ -116,41 +73,60 @@ interface IProps {
 export const GlobalProvider = ({ children }: IProps) => {
   const [currentData, setCurrentData] = useState<IGlobalData>(defaultData);
 
+  const isRefMounted = useIsMountedRef();
+
   const fetchPrices = async (): Promise<void> => {
     try {
-      const [gswapResult, wethResult] = await Promise.all([
-        fetchGSwapPrice(),
-        fetchWEthPrice(),
-      ]);
-      setCurrentData((prevCurrentData) => ({
-        ...prevCurrentData,
-        price: {
-          gswap: gswapResult,
-          weth: wethResult,
-        },
-      }));
+      const tokenIds = Object.values(knownTokens).map(
+        (e) => e.coingeckoTokenId
+      );
+      const prices = (
+        await axios.get(
+          `https://api.coingecko.com/api/v3/simple/price?ids=${encodeURIComponent(
+            Object.values(tokenIds).join(",")
+          )}&vs_currencies=usd`
+        )
+      ).data;
+
+      const tokenPrices = { ...defaultTokenPrices };
+
+      Object.keys(prices).map((coingeckoId) => {
+        Object.keys(knownTokens).map((tokenId) => {
+          if (
+            knownTokens[tokenId as KnownToken].coingeckoTokenId === coingeckoId
+          ) {
+            tokenPrices[tokenId as KnownToken] = {
+              decimals: knownTokens[tokenId as KnownToken].decimals,
+              usd: prices[coingeckoId].usd,
+              price: parseEther(String(prices[coingeckoId].usd)),
+            };
+          }
+        });
+      });
+      if (isRefMounted.current === true) {
+        setCurrentData((prevCurrentData) => ({
+          ...prevCurrentData,
+          price: tokenPrices,
+        }));
+      }
     } catch (error) {
-      setCurrentData((prevCurrentData) => ({
-        ...prevCurrentData,
-        price: {
-          gswap: {
-            usd: DEFAULT_USD,
-            price: DEFAULT_PRICE,
-            decimals: PRICE_DECIMALS,
-          },
-          weth: {
-            usd: DEFAULT_USD,
-            price: DEFAULT_PRICE,
-            decimals: PRICE_DECIMALS,
-          },
-        },
-      }));
+      if (isRefMounted.current === true) {
+        setCurrentData((prevCurrentData) => ({
+          ...prevCurrentData,
+          price: defaultTokenPrices,
+        }));
+      }
     }
   };
 
   useEffect(() => {
-    fetchPrices();
-    return () => {};
+    const interval = setInterval(() => {
+      fetchPrices();
+    }, 100000);
+
+    return () => {
+      clearInterval(interval);
+    };
   }, []);
 
   const handleUpdateData = (update = {}) => {
