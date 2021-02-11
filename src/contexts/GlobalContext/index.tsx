@@ -120,6 +120,7 @@ export const GlobalProvider = ({ children }: IProps) => {
   };
 
   useEffect(() => {
+    fetchPrices();
     const interval = setInterval(() => {
       fetchPrices();
     }, 100000);
