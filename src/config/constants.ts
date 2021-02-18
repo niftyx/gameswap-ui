@@ -61,13 +61,17 @@ export const FEE_RECIPIENT_ADDRESS =
 export const RELAYER_URL: { [key in NetworkId]: string } = {
   1: process.env.REACT_APP_RELAYER_URL_MAINNET || "",
   42: process.env.REACT_APP_RELAYER_URL_KOVAN || "",
+  43113: process.env.REACT_APP_RELAYER_URL_AVAXTEST || "",
+  43114: process.env.REACT_APP_RELAYER_URL_AVAXMAIN || "",
 };
 export const RELAYER_WS_URL: { [key in NetworkId]: string } = {
   1: process.env.REACT_APP_RELAYER_WS_URL_MAINNET || "",
   42: process.env.REACT_APP_RELAYER_WS_URL_KOVAN || "",
+  43113: process.env.REACT_APP_RELAYER_WS_URL_AVAXTEST || "",
+  43114: process.env.REACT_APP_RELAYER_WS_URL_AVAXMAIN || "",
 };
 
-export const DEFAULT_NETWORK_ID = 42;
+export const DEFAULT_NETWORK_ID = 43113;
 
 export const RELAYER_RPS = Number(process.env.REACT_APP_RELAYER_RPS);
 
@@ -453,6 +457,7 @@ export const GSWAP_COLLECTION: ICollection = {
   id: "1",
   displayName: "Gameswap721",
   description: "GameSwap Collection",
+  symbol: "GSP71",
   imageUrl:
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnH4_d12NJiVZLkPeU0DcPuVNRWisZPWTFWg&usqp=CAU",
 };

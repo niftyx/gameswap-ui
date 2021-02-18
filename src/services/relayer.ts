@@ -89,21 +89,6 @@ export class Relayer {
     return null;
   }
 
-  public async getSellCollectibleOrdersAsync(
-    collectibleAddress: string,
-    wethAddress: string
-  ): Promise<SignedOrder[]> {
-    await this._rateLimit();
-    const result = await this._client.getOrdersAsync({
-      makerAssetProxyId: AssetProxyId.ERC721,
-      takerAssetProxyId: AssetProxyId.ERC20,
-      makerAssetAddress: collectibleAddress,
-      takerAssetAddress: wethAddress,
-    });
-
-    return result.records.map((record) => record.order);
-  }
-
   public async submitOrderAsync(order: SignedOrder): Promise<void> {
     await this._rateLimit();
     return this._client.submitOrderAsync(order);
@@ -130,6 +115,8 @@ export class Relayer {
 const relayers: { [key in NetworkId]: Relayer } = {
   [networkIds.MAINNET]: new Relayer({ networkId: networkIds.MAINNET }),
   [networkIds.KOVAN]: new Relayer({ networkId: networkIds.KOVAN }),
+  [networkIds.AVAXTEST]: new Relayer({ networkId: networkIds.AVAXTEST }),
+  [networkIds.AVAXMAIN]: new Relayer({ networkId: networkIds.AVAXMAIN }),
 };
 
 export const getRelayer = ({

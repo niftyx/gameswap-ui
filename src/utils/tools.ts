@@ -43,11 +43,6 @@ export const getAssetObjectWithPrices = (
       price: BigNumber;
       decimals: number;
     };
-    weth: {
-      usd: number;
-      price: BigNumber;
-      decimals: number;
-    };
     shroom: {
       usd: number;
       price: BigNumber;

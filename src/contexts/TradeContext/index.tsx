@@ -52,7 +52,7 @@ export const TradeProvider = ({ children }: IProps) => {
         ...asset,
         price: {
           amount: BigNumber.from(0),
-          token: getToken(networkId || DEFAULT_NETWORK_ID, "weth"),
+          token: getToken(networkId || DEFAULT_NETWORK_ID, "gswap"),
         },
       },
     }));

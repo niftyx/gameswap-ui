@@ -15,14 +15,9 @@ export interface ConnectedWeb3Context {
   networkId: number | undefined;
   rawWeb3Context: any;
   initialized: boolean;
-  web3Wrapper: Web3Wrapper | null;
-  contractWrappers: ContractWrappers | null;
   walletConnectModalOpened: boolean;
   setWalletConnectModalOpened: (_: boolean) => void;
 }
-
-let web3Wrapper: Web3Wrapper | null = null;
-let contractWrappers: ContractWrappers | null = null;
 
 const ConnectedWeb3Context = React.createContext<Maybe<ConnectedWeb3Context>>(
   null
@@ -92,23 +87,6 @@ export const ConnectedWeb3: React.FC = (props) => {
     // eslint-disable-next-line
   }, [context, library, active, error]);
 
-  const xWrappers: {
-    web3Wrapper: Web3Wrapper | null;
-    contractWrappers: ContractWrappers | null;
-  } = useMemo(() => {
-    if (!library) {
-      web3Wrapper = null;
-      contractWrappers = null;
-    } else {
-      web3Wrapper = new Web3Wrapper(library);
-      contractWrappers = new ContractWrappers(web3Wrapper.getProvider(), {
-        chainId: chainId || 1,
-      });
-    }
-    return { web3Wrapper, contractWrappers };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [library]);
-
   const value = {
     account: account || null,
     library,
@@ -116,7 +94,6 @@ export const ConnectedWeb3: React.FC = (props) => {
     rawWeb3Context: context,
     initialized: state.initialized,
     walletConnectModalOpened: state.walletConnectModalOpened,
-    ...xWrappers,
     setWalletConnectModalOpened,
   };
 

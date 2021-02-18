@@ -23,11 +23,6 @@ const defaultTokenPrices = {
     price: DEFAULT_PRICE,
     decimals: PRICE_DECIMALS,
   },
-  weth: {
-    usd: DEFAULT_USD,
-    price: DEFAULT_PRICE,
-    decimals: PRICE_DECIMALS,
-  },
   shroom: {
     usd: DEFAULT_USD,
     price: DEFAULT_PRICE,
