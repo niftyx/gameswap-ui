@@ -279,7 +279,7 @@ export interface IERC721Token {
 
 export type Maybe<T> = T | null;
 
-export type KnownToken = "gswap" | "weth" | "shroom";
+export type KnownToken = "gswap" | "shroom";
 
 export interface INetwork {
   label: string;
@@ -287,14 +287,13 @@ export interface INetwork {
   graphHttpUri: string;
   graphWsUri: string;
   contracts: {
-    gswap: string;
     erc721: string;
-    weth: string;
+    erc721Factory: string;
   };
   etherscanUri: string;
 }
 
-export type NetworkId = 1 | 42;
+export type NetworkId = 1 | 42 | 43113 | 43114;
 
 export type KnownContracts = keyof INetwork["contracts"];
 
@@ -413,6 +412,7 @@ export interface ICollection {
   description?: string;
   imageUrl: string;
   shortUrl?: string;
+  symbol: string;
 }
 export interface IBalances {
   eth: BigNumber;

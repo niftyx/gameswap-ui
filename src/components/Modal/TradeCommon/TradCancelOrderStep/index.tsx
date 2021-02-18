@@ -47,8 +47,7 @@ export const TradCancelOrderStep = (props: IProps) => {
 
   const sellAsset = async () => {
     const { account, networkId } = context;
-    if (!account || !networkId || !context.library || !context.contractWrappers)
-      return;
+    if (!account || !networkId || !context.library) return;
     setState((prevState) => ({
       ...prevState,
       error: "",

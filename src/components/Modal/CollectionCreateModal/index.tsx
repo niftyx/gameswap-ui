@@ -2,13 +2,20 @@ import { Button, InputAdornment, makeStyles } from "@material-ui/core";
 import clsx from "classnames";
 import { FormTextField } from "components";
 import { FormCollectionImageUpload } from "components/Form";
+import { DEFAULT_NETWORK_ID } from "config/constants";
+import { getContractAddress } from "config/networks";
+import { useConnectedWeb3Context } from "contexts";
 import { Form, Formik } from "formik";
 import React from "react";
+import { ERC721FactoryService } from "services";
 import { getIPFSService } from "services/ipfs";
+import { getLogger } from "utils/logger";
 import { ICollection } from "utils/types";
 import * as Yup from "yup";
 
 import { BasicModal } from "../Common";
+
+const logger = getLogger("CollectionCreationModal::");
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -38,16 +45,27 @@ export const CollectionCreateModal = (props: IProps) => {
   const classes = useStyles();
   const { onClose, visible } = props;
   const ipfsService = getIPFSService();
+  const { account, library: provider, networkId } = useConnectedWeb3Context();
+  const gswap721FactoryAddress = getContractAddress(
+    networkId || DEFAULT_NETWORK_ID,
+    "erc721Factory"
+  );
+  const factoryContract = new ERC721FactoryService(
+    provider,
+    account,
+    gswap721FactoryAddress
+  );
 
   const initialFormValues: ICollectionFormValues = {
     id: "",
     image: null,
     imageUrl:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvWXdHqLkVmn4KVm0F3pdcY2YF9WvhkXjdNA&usqp=CAU",
+      "https://ipfs.infura.io:5001/api/v0/cat/QmYVmy51YoGTzP2hAcH2EWziXAZPm8cKjDxADvWPGFYN2f",
     displayName: "",
     shortUrl: "",
     description: "",
     uploading: false,
+    symbol: "",
   };
 
   return (
@@ -56,11 +74,25 @@ export const CollectionCreateModal = (props: IProps) => {
         initialValues={initialFormValues}
         onSubmit={async (values, { setErrors }) => {
           // create a new collection
+          console.log(values);
+          try {
+            const txResult = await factoryContract.createGswap721(
+              values.displayName,
+              values.symbol,
+              values.imageUrl,
+              values.description || "",
+              values.shortUrl || ""
+            );
+            logger.log(txResult);
+          } catch (error) {
+            logger.error(error);
+          }
         }}
         validationSchema={Yup.object().shape({
           id: Yup.string(),
           displayName: Yup.string().required(),
           description: Yup.string(),
+          symbol: Yup.string().required(),
         })}
       >
         {({
@@ -118,6 +150,24 @@ export const CollectionCreateModal = (props: IProps) => {
               }}
               helperText={touched.displayName && errors.displayName}
               label="Display name"
+            />
+            <FormTextField
+              FormControlProps={{ fullWidth: true }}
+              FormHelperTextProps={{
+                error: Boolean(touched.symbol && errors.symbol),
+              }}
+              InputLabelProps={{ htmlFor: "symbol", shrink: true }}
+              InputProps={{
+                id: "symbol",
+                name: "symbol",
+                onBlur: handleBlur,
+                onChange: handleChange,
+                placeholder: "Enter token symbol",
+                value: values.symbol,
+                required: true,
+              }}
+              helperText={touched.symbol && errors.symbol}
+              label="Symbol"
             />
             <FormTextField
               FormControlProps={{ fullWidth: true }}

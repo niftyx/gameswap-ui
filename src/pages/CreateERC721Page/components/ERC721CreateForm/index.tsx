@@ -98,13 +98,11 @@ export const ERC721CreateForm = (props: IProps) => {
       price: {
         gswap: { usd: gswapPrice },
         shroom: { usd: shroomPrice },
-        weth: { usd: wethPrice },
       },
     },
   } = useGlobal();
 
   const usdPrices = {
-    weth: wethPrice,
     gswap: gswapPrice,
     shroom: shroomPrice,
   };

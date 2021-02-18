@@ -49,14 +49,7 @@ export const TradeBuyAssetStep = (props: IProps) => {
 
   const buyAsset = async () => {
     const { account, networkId } = context;
-    if (
-      !account ||
-      !networkId ||
-      !context.library ||
-      !context.contractWrappers ||
-      !context.web3Wrapper
-    )
-      return;
+    if (!account || !networkId || !context.library) return;
     setState((prevState) => ({
       ...prevState,
       error: "",

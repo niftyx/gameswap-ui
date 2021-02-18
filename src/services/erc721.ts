@@ -17,7 +17,7 @@ const erc721Abi = [
   "function tokenURI(uint256 tokenId) external view returns (string memory)",
   "function transferFrom(address from, address to, uint256 tokenId) external",
   "function safeTransferFrom(address from, address to, uint256 tokenId) public",
-  "function mintItem(address player, string memory tokenURI) public returns (uint256)",
+  "function mintItem(address player, string memory tokenURI,string memory gameId, string memory categoryId, string memory contentId) public returns (uint256)",
   "function burnItem(uint256 _itemId) public",
 ];
 
@@ -142,7 +142,13 @@ class ERC721Service {
     player: string,
     tokenURI: string
   ): Promise<TransactionReceipt> => {
-    const transactionObject = await this.contract.mintItem(player, tokenURI);
+    const transactionObject = await this.contract.mintItem(
+      player,
+      tokenURI,
+      "",
+      "",
+      ""
+    );
     logger.log(`mintItem hash: ${transactionObject.hash}`);
     return this.provider.waitForTransaction(transactionObject.hash);
   };

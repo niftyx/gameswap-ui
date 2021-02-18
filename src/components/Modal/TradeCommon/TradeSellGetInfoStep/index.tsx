@@ -45,8 +45,8 @@ export const TradeSellGetInfoStep = (props: IProps) => {
   const { onConfirm } = props;
 
   const getInfo = async () => {
-    const { account, contractWrappers, networkId } = context;
-    if (!account || !networkId || !contractWrappers) return;
+    const { account, networkId } = context;
+    if (!account || !networkId) return;
     setState((prevState) => ({
       ...prevState,
       error: "",

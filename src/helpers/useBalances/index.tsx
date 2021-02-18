@@ -10,7 +10,6 @@ import { IBalances, KnownToken } from "utils/types";
 const defaultBalances: IBalances = {
   eth: ZERO_NUMBER,
   erc20Balances: {
-    weth: ZERO_NUMBER,
     gswap: ZERO_NUMBER,
     shroom: ZERO_NUMBER,
   },
@@ -57,7 +56,6 @@ export const useBalances = (
       const balances: IBalances = {
         eth: await fetchEthBalance(),
         erc20Balances: {
-          weth: await fetchERC20Balance("weth"),
           gswap: await fetchERC20Balance("gswap"),
           shroom: await fetchERC20Balance("shroom"),
         },

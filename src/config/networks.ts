@@ -21,6 +21,8 @@ import {
 export const networkIds = {
   MAINNET: 1,
   KOVAN: 42,
+  AVAXTEST: 43113,
+  AVAXMAIN: 43114,
 } as const;
 
 const networks: { [K in NetworkId]: INetwork } = {
@@ -30,9 +32,8 @@ const networks: { [K in NetworkId]: INetwork } = {
     graphHttpUri: GRAPH_MAINNET_HTTP,
     graphWsUri: GRAPH_MAINNET_WS,
     contracts: {
-      gswap: "0xaac41ec512808d64625576eddd580e7ea40ef8b2",
       erc721: "0x254D5259539b3ec85Cd76A1931899ec7E8851dD4",
-      weth: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+      erc721Factory: "0x6e50D56d8F67A6acA10D5F0cF69e7eA9518E8181",
     },
     etherscanUri: "https://etherscan.io/",
   },
@@ -42,11 +43,32 @@ const networks: { [K in NetworkId]: INetwork } = {
     graphHttpUri: GRAPH_KOVAN_HTTP,
     graphWsUri: GRAPH_KOVAN_WS,
     contracts: {
-      gswap: "0xb2c7d27f78bec818391498dc4108ab782d65cd76",
       erc721: "0xb917795f6b1107f2635df03df1f4a97c29959dd9",
-      weth: "0xd0a1e359811322d97991e03f863a0c30c2cf029c",
+      erc721Factory: "",
     },
     etherscanUri: "https://kovan.etherscan.io/",
+  },
+  [networkIds.AVAXTEST]: {
+    label: "Kovan",
+    url: "https://api.avax-test.network/ext/bc/C/rpc",
+    graphHttpUri: GRAPH_KOVAN_HTTP,
+    graphWsUri: GRAPH_KOVAN_WS,
+    contracts: {
+      erc721: "0x3c563b93cf3cc1ad687f117a19c33cf4bb69ca8f",
+      erc721Factory: "0x5915A56d8Ec547624b09d8271ad2672003b33c44",
+    },
+    etherscanUri: "https://cchain.explorer.avax-test.network/",
+  },
+  [networkIds.AVAXMAIN]: {
+    label: "Kovan",
+    url: "https://api.avax.network/ext/bc/C/rpc",
+    graphHttpUri: GRAPH_KOVAN_HTTP,
+    graphWsUri: GRAPH_KOVAN_WS,
+    contracts: {
+      erc721: "0xb917795f6b1107f2635df03df1f4a97c29959dd9",
+      erc721Factory: "0x4eB6F07F24f311143cAAd5D698D99e06dfCFd91f",
+    },
+    etherscanUri: "https://cchain.explorer.avax.network/",
   },
 };
 
@@ -61,17 +83,10 @@ export const knownTokens: { [name in KnownToken]: IKnownTokenData } = {
     addresses: {
       [networkIds.MAINNET]: "0xaac41ec512808d64625576eddd580e7ea40ef8b2",
       [networkIds.KOVAN]: "0xb2c7d27f78bec818391498dc4108ab782d65cd76",
+      [networkIds.AVAXTEST]: "0x444806D2C0856c12dD8DB239b809Fc4641FCbB5E",
+      [networkIds.AVAXMAIN]: "0xb2c7d27f78bec818391498dc4108ab782d65cd76",
     },
     coingeckoTokenId: "gameswap-org",
-  },
-  weth: {
-    symbol: "WETH",
-    decimals: 18,
-    addresses: {
-      [networkIds.MAINNET]: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
-      [networkIds.KOVAN]: "0xd0a1e359811322d97991e03f863a0c30c2cf029c",
-    },
-    coingeckoTokenId: "weth",
   },
   shroom: {
     symbol: "SHROOM",
@@ -79,6 +94,8 @@ export const knownTokens: { [name in KnownToken]: IKnownTokenData } = {
     addresses: {
       [networkIds.MAINNET]: "0xed0439eacf4c4965ae4613d77a5c2efe10e5f183",
       [networkIds.KOVAN]: "0x60508ceea2bae1eeaa0f192dedbec8a8b0ca3605",
+      [networkIds.AVAXTEST]: "0xbE0382B9cbD516527431beADad01A683641956c4",
+      [networkIds.AVAXMAIN]: "0xb2c7d27f78bec818391498dc4108ab782d65cd76",
     },
     coingeckoTokenId: "shroom-finance",
   },
@@ -203,6 +220,18 @@ const OxContractAddresses: { [key in NetworkId]: I0xContractAddresses } = {
     devUtils: "0x161793cdca4ff9e766a706c2c49c36ac1340bbcd",
   },
   [networkIds.KOVAN]: {
+    exchange: "0x4eacd0af335451709e1e7b570b8ea68edec8bc97",
+    erc20Proxy: "0xf1ec01d6236d3cd881a0bf0130ea25fe4234003e",
+    erc721proxy: "0x2a9127c745688a165106c11cd4d647d2220af821",
+    devUtils: "0x161793cdca4ff9e766a706c2c49c36ac1340bbcd",
+  },
+  [networkIds.AVAXTEST]: {
+    exchange: "0xb74c1db81f26e3e545757328f8f208e314af9f49",
+    erc20Proxy: "0x607935e692a7470cc6c68a3cb21ad72d59776f58",
+    erc721proxy: "0x570a7bd05516774f4ea0163a77ce1d70ffc21454",
+    devUtils: "0x3fe255415a82ce3f3907a624d936ba99c915928a",
+  },
+  [networkIds.AVAXMAIN]: {
     exchange: "0x4eacd0af335451709e1e7b570b8ea68edec8bc97",
     erc20Proxy: "0xf1ec01d6236d3cd881a0bf0130ea25fe4234003e",
     erc721proxy: "0x2a9127c745688a165106c11cd4d647d2220af821",

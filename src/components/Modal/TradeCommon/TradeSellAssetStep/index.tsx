@@ -56,8 +56,7 @@ export const TradeSellAssetStep = (props: IProps) => {
       !networkId ||
       !asset.price ||
       !asset.tokenId ||
-      !context.library ||
-      !context.contractWrappers
+      !context.library
     )
       return;
     setState((prevState) => ({
