@@ -1,7 +1,7 @@
 import { SignedOrder, assetDataUtils } from "@0x/order-utils";
 import axios from "axios";
 import { BROWSE_PAGE_ASSET_COUNT, DEFAULT_NETWORK_ID } from "config/constants";
-import { getContractAddress, getGraphUris } from "config/networks";
+import { getContractAddress } from "config/networks";
 import { useConnectedWeb3Context } from "contexts";
 import { BigNumber } from "ethers";
 import { useIsMountedRef } from "hooks";
@@ -92,7 +92,7 @@ export const useBrowseAssets = (): {
   loading: boolean;
 } => {
   const { networkId } = useConnectedWeb3Context();
-  const { httpUri } = getGraphUris(networkId || DEFAULT_NETWORK_ID);
+  const httpUri = "";
   const isRefMounted = useIsMountedRef();
   const erc721TokenAddress = getContractAddress(
     networkId || DEFAULT_NETWORK_ID,

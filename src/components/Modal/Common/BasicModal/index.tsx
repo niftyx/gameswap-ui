@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
     outline: "none",
     maxHeight: "80vh",
     userSelect: "none",
+    overflowY: "auto",
   },
   header: {
     display: "flex",
@@ -56,16 +57,16 @@ export const BasicModal = (props: IProps) => {
 
   return (
     <Modal disableBackdropClick onClose={onClose} open={visible}>
-      <div className={clsx(classes.root, props.className)}>
+      <div
+        className={clsx(classes.root, commonClasses.scroll, props.className)}
+      >
         <div className={classes.header}>
           <Typography className={classes.title}>{title}</Typography>
           <IconButton className={classes.closeButton} onClick={() => onClose()}>
             <CloseIcon />
           </IconButton>
         </div>
-        <div className={clsx(classes.content, commonClasses.scroll)}>
-          {props.children}
-        </div>
+        <div className={classes.content}>{props.children}</div>
       </div>
     </Modal>
   );

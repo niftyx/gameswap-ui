@@ -11,6 +11,7 @@ import {
   FormAttributesField,
   FormCollectionChoose,
   FormFileUpload,
+  FormGameChoose,
   FormImageUpload,
   FormSelectField,
   FormSwitchField,
@@ -88,6 +89,7 @@ interface IProps {
   className?: string;
   onSubmit: (values: IERC721FormValues) => void;
   onNewCollection: () => void;
+  onNewGame: () => void;
 }
 
 export const ERC721CreateForm = (props: IProps) => {
@@ -98,6 +100,7 @@ export const ERC721CreateForm = (props: IProps) => {
       price: {
         gswap: { usd: gswapPrice },
         shroom: { usd: shroomPrice },
+        weth: { usd: wethPrice },
       },
     },
   } = useGlobal();
@@ -105,6 +108,7 @@ export const ERC721CreateForm = (props: IProps) => {
   const usdPrices = {
     gswap: gswapPrice,
     shroom: shroomPrice,
+    weth: wethPrice,
   };
 
   const SALE_TOKENS: IToken[] = Object.keys(knownTokens).map((key) =>
@@ -398,7 +402,16 @@ export const ERC721CreateForm = (props: IProps) => {
                 onNewCollection={props.onNewCollection}
               />
 
-              <FormSelectField
+              <FormGameChoose
+                comment="Choose game"
+                gameId={values.gameId}
+                onChange={(value) => {
+                  setFieldValue("gameId", value);
+                }}
+                onNewGame={props.onNewGame}
+              />
+
+              {/* <FormSelectField
                 FormControlProps={{ fullWidth: true }}
                 InputLabelProps={{ htmlFor: "gameId", shrink: true }}
                 SelectProps={{
@@ -413,7 +426,7 @@ export const ERC721CreateForm = (props: IProps) => {
                   label: game.title,
                 }))}
                 label="Game"
-              />
+              /> */}
 
               <FormTextField
                 FormControlProps={{ fullWidth: true }}

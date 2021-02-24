@@ -113,8 +113,6 @@ export class Relayer {
 }
 
 const relayers: { [key in NetworkId]: Relayer } = {
-  [networkIds.MAINNET]: new Relayer({ networkId: networkIds.MAINNET }),
-  [networkIds.KOVAN]: new Relayer({ networkId: networkIds.KOVAN }),
   [networkIds.AVAXTEST]: new Relayer({ networkId: networkIds.AVAXTEST }),
   [networkIds.AVAXMAIN]: new Relayer({ networkId: networkIds.AVAXMAIN }),
 };

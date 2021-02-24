@@ -5,7 +5,7 @@ import { useGlobal } from "contexts";
 import React from "react";
 import useCommonStyles from "styles/common";
 
-import { FormCollectionChooseItem } from "../FormCollectionChooseItem";
+import { FormGameChooseItem } from "../FormGameChooseItem";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -19,7 +19,6 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     overflowX: "auto",
     overflowY: "hidden",
-    flexWrap: "wrap",
   },
   icon: {
     fontSize: 40,
@@ -34,17 +33,17 @@ const useStyles = makeStyles((theme) => ({
 
 interface IProps {
   comment: string;
-  collectionId: string;
+  gameId: string;
   onChange: (_: string) => void;
-  onNewCollection: () => void;
+  onNewGame: () => void;
 }
 
-export const FormCollectionChoose = (props: IProps) => {
+export const FormGameChoose = (props: IProps) => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
-  const { collectionId, comment, onChange, onNewCollection } = props;
+  const { comment, gameId, onChange, onNewGame } = props;
   const {
-    data: { collections },
+    data: { games },
   } = useGlobal();
 
   return (
@@ -53,31 +52,27 @@ export const FormCollectionChoose = (props: IProps) => {
         {comment}
       </Typography>
       <div className={clsx(classes.content, commonClasses.scrollHorizontal)}>
-        <FormCollectionChooseItem
+        <FormGameChooseItem
           active={false}
-          onClick={onNewCollection}
+          onClick={onNewGame}
           renderIcon={() => <AddCircleIcon className={classes.icon} />}
-          subTitle="Collection"
+          subTitle="Game"
           title="Create"
         />
-        {collections.map((collection) => (
-          <FormCollectionChooseItem
-            active={collectionId === collection.id}
-            key={collection.id}
+        {games.map((game) => (
+          <FormGameChooseItem
+            active={gameId === game.id}
+            key={game.id}
             onClick={() => {
-              if (collectionId !== collection.id) {
-                onChange(collection.id);
+              if (gameId !== game.id) {
+                onChange(game.id);
               }
             }}
             renderIcon={() => (
-              <img
-                alt="img"
-                className={classes.img}
-                src={collection.imageUrl}
-              />
+              <img alt="img" className={classes.img} src={game.imageUrl} />
             )}
             subTitle={" "}
-            title={collection.displayName}
+            title={game.title}
           />
         ))}
       </div>

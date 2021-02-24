@@ -2,12 +2,7 @@ import { Web3Provider } from "@ethersproject/providers";
 import { ThemeProvider } from "@material-ui/styles";
 import { Web3ReactProvider } from "@web3-react/core";
 import { LoadingScreen } from "components";
-import {
-  ApolloProviderWrapper,
-  ConnectedWeb3,
-  GlobalProvider,
-  TradeProvider,
-} from "contexts";
+import { ConnectedWeb3, GlobalProvider, TradeProvider } from "contexts";
 import GlobalStyle from "global-styles";
 import { useSettings } from "hooks";
 import { MainLayout } from "layouts";
@@ -48,14 +43,12 @@ function App() {
             >
               <Web3ReactProvider getLibrary={getLibrary}>
                 <ConnectedWeb3>
-                  <ApolloProviderWrapper>
-                    <BrowserRouter>
-                      <MainLayout>
-                        <TradeProvider>{renderRoutes()}</TradeProvider>
-                      </MainLayout>
-                      <GlobalStyle />
-                    </BrowserRouter>
-                  </ApolloProviderWrapper>
+                  <BrowserRouter>
+                    <MainLayout>
+                      <TradeProvider>{renderRoutes()}</TradeProvider>
+                    </MainLayout>
+                    <GlobalStyle />
+                  </BrowserRouter>
                 </ConnectedWeb3>
               </Web3ReactProvider>
             </SnackbarProvider>

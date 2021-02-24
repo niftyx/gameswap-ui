@@ -3,7 +3,6 @@ import {
   DEFAULT_NETWORK_ID,
   INVENTORY_PAGE_ASSET_COUNT,
 } from "config/constants";
-import { getGraphUris } from "config/networks";
 import { useConnectedWeb3Context } from "contexts";
 import { BigNumber } from "ethers";
 import { useIsMountedRef } from "hooks";
@@ -73,8 +72,7 @@ export const useInventoryAssets = (
   removeItem: (_: string) => void;
   loading: boolean;
 } => {
-  const { networkId } = useConnectedWeb3Context();
-  const { httpUri } = getGraphUris(networkId || DEFAULT_NETWORK_ID);
+  const httpUri = "";
   const isRefMounted = useIsMountedRef();
   const [state, setState] = useState<IState>({
     hasMore: false,

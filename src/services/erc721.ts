@@ -1,6 +1,9 @@
 import { TransactionReceipt } from "@ethersproject/abstract-provider/lib/index";
 import { BigNumber, Contract, Wallet, ethers, utils } from "ethers";
+import { Interface, id } from "ethers/lib/utils";
 import { getLogger } from "utils/logger";
+import { ZERO_NUMBER } from "utils/number";
+import { ZERO_ADDRESS } from "utils/token";
 import { isAddress, isContract } from "utils/tools";
 import { IERC721Token, Maybe } from "utils/types";
 
@@ -19,7 +22,12 @@ const erc721Abi = [
   "function safeTransferFrom(address from, address to, uint256 tokenId) public",
   "function mintItem(address player, string memory tokenURI,string memory gameId, string memory categoryId, string memory contentId) public returns (uint256)",
   "function burnItem(uint256 _itemId) public",
+  "event Transfer(address indexed from,address indexed to,uint256 indexed tokenId)",
 ];
+
+const SET_TOKEN_DATA_ID = id(
+  "SetTokenData(uint256,string,string,string,string)"
+);
 
 class ERC721Service {
   provider: any;
@@ -140,17 +148,31 @@ class ERC721Service {
 
   mintItem = async (
     player: string,
-    tokenURI: string
+    tokenURI: string,
+    gameId: string,
+    categoryId: string,
+    contentId: string
   ): Promise<TransactionReceipt> => {
     const transactionObject = await this.contract.mintItem(
       player,
       tokenURI,
-      "",
-      "",
-      ""
+      gameId,
+      categoryId,
+      contentId
     );
     logger.log(`mintItem hash: ${transactionObject.hash}`);
     return this.provider.waitForTransaction(transactionObject.hash);
+  };
+
+  getCreatedAssetId = (txReceipt: TransactionReceipt): BigNumber => {
+    const iface = new Interface(erc721Abi);
+    const { logs } = txReceipt;
+    const log = logs.find((log) => log.topics.includes(SET_TOKEN_DATA_ID));
+    if (log) {
+      const parsedLog = iface.parseLog(log);
+      return parsedLog.args[0];
+    }
+    return ZERO_NUMBER;
   };
 
   burnItem = async (tokenId: BigNumber): Promise<TransactionReceipt> => {

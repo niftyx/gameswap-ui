@@ -1,6 +1,5 @@
 import { getToken } from "config/networks";
 import { ConnectedWeb3Context } from "contexts/connectedWeb3";
-import { BigNumber } from "ethers";
 import { useIsMountedRef } from "hooks";
 import { useEffect, useState } from "react";
 import { ERC20Service } from "services";
@@ -12,6 +11,7 @@ const defaultBalances: IBalances = {
   erc20Balances: {
     gswap: ZERO_NUMBER,
     shroom: ZERO_NUMBER,
+    weth: ZERO_NUMBER,
   },
 };
 
@@ -58,6 +58,7 @@ export const useBalances = (
         erc20Balances: {
           gswap: await fetchERC20Balance("gswap"),
           shroom: await fetchERC20Balance("shroom"),
+          weth: await fetchERC20Balance("weth"),
         },
       };
       if (isRefMounted.current === true) {

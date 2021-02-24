@@ -279,21 +279,19 @@ export interface IERC721Token {
 
 export type Maybe<T> = T | null;
 
-export type KnownToken = "gswap" | "shroom";
+export type KnownToken = "gswap" | "shroom" | "weth";
 
 export interface INetwork {
   label: string;
   url: string;
-  graphHttpUri: string;
-  graphWsUri: string;
   contracts: {
-    erc721: string;
     erc721Factory: string;
+    erc721: string;
   };
   etherscanUri: string;
 }
 
-export type NetworkId = 1 | 42 | 43113 | 43114;
+export type NetworkId = 43113 | 43114;
 
 export type KnownContracts = keyof INetwork["contracts"];
 
@@ -337,6 +335,7 @@ export interface IGlobalData {
     };
   };
   collections: ICollection[];
+  games: IGame[];
 }
 
 export interface IIPFSConfig {
@@ -401,7 +400,7 @@ export interface IGame {
   title: string;
   version: string;
   imageUrl: string;
-  category: IGameCategory;
+  categoryId: string;
   description: string;
   platform: IPlatform[];
 }

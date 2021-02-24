@@ -48,6 +48,11 @@ export const getAssetObjectWithPrices = (
       price: BigNumber;
       decimals: number;
     };
+    weth: {
+      usd: number;
+      price: BigNumber;
+      decimals: number;
+    };
   },
   networkId: number
 ): IResponse => {

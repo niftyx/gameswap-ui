@@ -1,6 +1,7 @@
 import { makeStyles } from "@material-ui/core";
 import {
   CollectionCreateModal,
+  GameCreateModal,
   PageBackButton,
   PageContainer,
   PageTitle,
@@ -36,6 +37,7 @@ interface IState {
   formValues?: IERC721FormValues;
   visible: boolean;
   collectionModalVisible: boolean;
+  gameModalVisible: boolean;
 }
 
 const CreateERC721Page = () => {
@@ -45,6 +47,7 @@ const CreateERC721Page = () => {
   const [state, setState] = useState<IState>({
     visible: false,
     collectionModalVisible: false,
+    gameModalVisible: false,
   });
 
   const onBack = () => {
@@ -74,6 +77,13 @@ const CreateERC721Page = () => {
     }));
   };
 
+  const toggleGameModal = () => {
+    setState((prevState) => ({
+      ...prevState,
+      gameModalVisible: !prevState.gameModalVisible,
+    }));
+  };
+
   return (
     <PageContainer className={classes.root}>
       <div className={classes.content}>
@@ -81,6 +91,7 @@ const CreateERC721Page = () => {
         <PageTitle title="Create single asset" />
         <ERC721CreateForm
           onNewCollection={toggleCollectionModal}
+          onNewGame={toggleGameModal}
           onSubmit={onSubmit}
         />
         {state.visible && state.formValues && (
@@ -90,11 +101,7 @@ const CreateERC721Page = () => {
             steps={
               state.formValues.instantSale
                 ? (Object.values(ECreateStep) as Array<ECreateStep>)
-                : [
-                    ECreateStep.ApproveAll,
-                    ECreateStep.UploadFiles,
-                    ECreateStep.MintToken,
-                  ]
+                : [ECreateStep.UploadFiles, ECreateStep.MintToken]
             }
             visible={state.visible}
           />
@@ -104,6 +111,12 @@ const CreateERC721Page = () => {
         <CollectionCreateModal
           onClose={toggleCollectionModal}
           visible={state.collectionModalVisible}
+        />
+      )}
+      {state.gameModalVisible && (
+        <GameCreateModal
+          onClose={toggleGameModal}
+          visible={state.gameModalVisible}
         />
       )}
     </PageContainer>

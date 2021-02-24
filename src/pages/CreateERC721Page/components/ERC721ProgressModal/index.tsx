@@ -2,11 +2,14 @@ import { IconButton, Modal, Typography, makeStyles } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import clsx from "classnames";
 import { CommentLoader } from "components";
-import { useConnectedWeb3Context } from "contexts";
+import { DEFAULT_NETWORK_ID } from "config/constants";
+import { get0xContractAddresses } from "config/networks";
+import { useConnectedWeb3Context, useGlobal } from "contexts";
 import { BigNumber } from "ethers";
-import { useContracts } from "helpers";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
+import { ERC721Service } from "services";
+import { getAPIService } from "services/api";
 import { getIPFSService } from "services/ipfs";
 import useCommonStyles from "styles/common";
 import { getFileType } from "utils/asset";
@@ -78,18 +81,28 @@ interface IState {
   tokenMint: boolean;
   tokenURI: string;
   tokenId: BigNumber;
+  contentId: string;
 }
 
 export const ERC721ProgressModal = (props: IProps) => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
   const context = useConnectedWeb3Context();
-  const { account } = context;
-  const { erc721 } = useContracts(context);
-  const erc721ProxyAddress = "0x2a9127c745688a165106c11cd4d647d2220af821";
+  const { account, library: provider, networkId } = context;
+  const {
+    data: { games },
+  } = useGlobal();
+  const erc721ProxyAddress = get0xContractAddresses(
+    networkId || DEFAULT_NETWORK_ID
+  ).erc721proxy;
   const ipfsService = getIPFSService();
   const { formValues, onClose, visible } = props;
   const history = useHistory();
+  const erc721 = new ERC721Service(
+    provider,
+    account || "",
+    formValues.collectionId
+  );
   const [state, setState] = useState<IState>({
     isLoading: false,
     currentStep: ECurrentStep.Loading,
@@ -102,7 +115,9 @@ export const ERC721ProgressModal = (props: IProps) => {
     tokenURI: "",
     tokenId: BigNumber.from(0),
     filesUploadPercent: "0",
+    contentId: "",
   });
+  const apiService = getAPIService();
 
   const loadInitialData = async () => {
     try {
@@ -183,6 +198,21 @@ export const ERC721ProgressModal = (props: IProps) => {
         filesUploadPercent: "0",
       }));
 
+      let encryptedContent: { lockedData: string; contentId: string } = {
+        lockedData: "",
+        contentId: "",
+      };
+
+      if (formValues.lockedContent) {
+        encryptedContent = await apiService.getEncryptedContentData(
+          formValues.lockedContent
+        );
+        setState((prev) => ({
+          ...prev,
+          contentId: encryptedContent.contentId,
+        }));
+      }
+
       const totalFileSize =
         formValues.image.size + (formValues.rar ? formValues.rar.size : 0);
 
@@ -223,13 +253,13 @@ export const ERC721ProgressModal = (props: IProps) => {
           0,
           formValues.attributes.length - 1
         ),
+        lockedData: formValues.lockedContent ? encryptedContent.lockedData : "",
       };
       const tokenURI = await ipfsService.uploadData(JSON.stringify(payload));
       setState((prevState) => ({
         ...prevState,
         filesUploadPercent: "100",
       }));
-      logger.log(tokenURI);
       setState((prevState) => ({
         ...prevState,
         error: "",
@@ -252,7 +282,21 @@ export const ERC721ProgressModal = (props: IProps) => {
     try {
       logger.log("mintToken");
       setState((prevState) => ({ ...prevState, error: "", isLoading: true }));
-      await erc721.mintItem(account || "", state.tokenURI);
+
+      const selectedGame = games.find((e) => e.id === formValues.gameId);
+
+      const txReceipt = await erc721.mintItem(
+        account || "",
+        state.tokenURI,
+        formValues.gameId,
+        selectedGame ? selectedGame.categoryId : "",
+        state.contentId
+      );
+
+      logger.log(txReceipt);
+
+      const tokenId = erc721.getCreatedAssetId(txReceipt);
+      logger.log(tokenId);
 
       if (formValues.instantSale) {
         // get TokenId from subgraph
@@ -268,7 +312,7 @@ export const ERC721ProgressModal = (props: IProps) => {
         }));
       } else {
         onClose();
-        history.push("/trade");
+        // history.push("/trade");
       }
     } catch (error) {
       setState((prevState) => ({
@@ -307,7 +351,7 @@ export const ERC721ProgressModal = (props: IProps) => {
               </IconButton>
             </div>
             <div className={classes.content}>
-              {!state.initialApprovedAll && (
+              {!state.initialApprovedAll && formValues.instantSale && (
                 <ERC721ProgressButton
                   approved={state.approvedAll}
                   buttonDisabled={state.followStep !== ECreateStep.ApproveAll}

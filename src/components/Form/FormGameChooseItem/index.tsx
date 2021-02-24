@@ -19,13 +19,11 @@ const useStyles = makeStyles((theme) => ({
     "&.active": {
       borderColor: theme.colors.text.default,
     },
-
     marginRight: 16,
     marginBottom: 16,
     "&:last-child": {
       marginRight: 0,
     },
-
     "&:hover": {
       opacity: 0.6,
     },
@@ -49,7 +47,7 @@ interface IProps {
   active: boolean;
 }
 
-export const FormCollectionChooseItem = (props: IProps) => {
+export const FormGameChooseItem = (props: IProps) => {
   const classes = useStyles();
   const { active, onClick, renderIcon, subTitle, title } = props;
 

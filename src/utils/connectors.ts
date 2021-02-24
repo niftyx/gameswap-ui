@@ -10,14 +10,14 @@ const injected = new InjectedConnector({
 });
 
 const walletconnect = new WalletConnectConnector({
-  rpc: { 1: supportedNetworkURLs[1] },
+  rpc: { 4113: supportedNetworkURLs[4113] },
   bridge: "https://bridge.walletconnect.org",
   qrcode: true,
   pollingInterval: POLLING_INTERVAL,
 });
 
 export const walletlink = new WalletLinkConnector({
-  url: supportedNetworkURLs[1],
+  url: supportedNetworkURLs[4113],
   appName: "gameswap",
 });
 

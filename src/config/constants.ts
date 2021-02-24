@@ -47,47 +47,29 @@ export const IPFS_CONFIG: IIPFSConfig = {
   protocol: process.env.REACT_APP_IPFS_PROTOCOL || "",
 };
 
-export const GRAPH_MAINNET_HTTP =
-  process.env.REACT_APP_GRAPH_MAINNET_HTTP || "";
-export const GRAPH_MAINNET_WS = process.env.REACT_APP_GRAPH_MAINNET_WS || "";
-export const GRAPH_KOVAN_HTTP = process.env.REACT_APP_GRAPH_KOVAN_HTTP || "";
-export const GRAPH_KOVAN_WS = process.env.REACT_APP_GRAPH_KOVAN_WS || "";
-
-export const INFURA_PROJECT_ID = process.env.REACT_APP_INFURA_PROJECT_ID || "";
-
 export const FEE_RECIPIENT_ADDRESS =
   process.env.REACT_APP_FEE_RECIPIENT_ADDRESS || "";
 
 export const RELAYER_URL: { [key in NetworkId]: string } = {
-  1: process.env.REACT_APP_RELAYER_URL_MAINNET || "",
-  42: process.env.REACT_APP_RELAYER_URL_KOVAN || "",
   43113: process.env.REACT_APP_RELAYER_URL_AVAXTEST || "",
   43114: process.env.REACT_APP_RELAYER_URL_AVAXMAIN || "",
 };
 export const RELAYER_WS_URL: { [key in NetworkId]: string } = {
-  1: process.env.REACT_APP_RELAYER_WS_URL_MAINNET || "",
-  42: process.env.REACT_APP_RELAYER_WS_URL_KOVAN || "",
   43113: process.env.REACT_APP_RELAYER_WS_URL_AVAXTEST || "",
   43114: process.env.REACT_APP_RELAYER_WS_URL_AVAXMAIN || "",
 };
+
+export const API_BASE_URL = process.env.REACT_APP_API || "";
 
 export const DEFAULT_NETWORK_ID = 43113;
 
 export const RELAYER_RPS = Number(process.env.REACT_APP_RELAYER_RPS);
 
-export const TokenEthereum = {
+export const TokenAvax = {
   decimals: 18,
-  symbol: "ETH",
-  name: "Ethereum",
+  symbol: "AVAX",
+  name: "Avalanche",
 };
-
-export const TokenGswap = {
-  decimals: 18,
-  symbol: "GSWAP",
-  name: "Gameswap",
-};
-
-export const SALE_TOKENS = [TokenEthereum, TokenGswap];
 
 export const INVENTORY_PAGE_ASSET_COUNT = 20;
 export const BROWSE_PAGE_ASSET_COUNT = 20;
@@ -408,8 +390,8 @@ export const GAMES: IGame[] = [
     title: "Skyfall",
     version: "3",
     imageUrl: "...",
-    category: GAME_CATEGORIES[2],
-    description: "test des",
+    categoryId: GAME_CATEGORIES[2].value,
+    description: "SkyFall Game",
     platform: [
       { os: "windows", version: "10" },
       { os: "mac", version: "10.13.6" },
@@ -420,8 +402,8 @@ export const GAMES: IGame[] = [
     title: "Cyberpunk Assault",
     version: "1.1",
     imageUrl: "...",
-    category: GAME_CATEGORIES[3],
-    description: "test des",
+    categoryId: GAME_CATEGORIES[3].value,
+    description: "Cyberpunk Assault Game",
     platform: [
       { os: "windows", version: "10" },
       { os: "mac", version: "10.13.6" },
@@ -432,8 +414,8 @@ export const GAMES: IGame[] = [
     title: `No Man's Sky`,
     version: "1.2",
     imageUrl: "...",
-    category: GAME_CATEGORIES[4],
-    description: "test nnn",
+    categoryId: GAME_CATEGORIES[4].value,
+    description: `No Man's Sky Game`,
     platform: [
       { os: "windows", version: "10" },
       { os: "mac", version: "10.13.6" },
@@ -444,8 +426,8 @@ export const GAMES: IGame[] = [
     title: "Horizon Zero Dawn",
     version: "1.2",
     imageUrl: "...",
-    category: GAME_CATEGORIES[5],
-    description: "test horizon",
+    categoryId: GAME_CATEGORIES[5].value,
+    description: "Horizon Zero Dawn Game",
     platform: [
       { os: "windows", version: "10" },
       { os: "mac", version: "10.13.6" },

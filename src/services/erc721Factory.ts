@@ -1,8 +1,7 @@
 import { TransactionReceipt } from "@ethersproject/abstract-provider/lib/index";
-import { BigNumber, Contract, Wallet, ethers, utils } from "ethers";
+import { Contract, Wallet, ethers } from "ethers";
 import { getLogger } from "utils/logger";
-import { isAddress, isContract } from "utils/tools";
-import { IToken, Maybe } from "utils/types";
+import { Maybe } from "utils/types";
 
 const logger = getLogger("Services::Erc20");
 

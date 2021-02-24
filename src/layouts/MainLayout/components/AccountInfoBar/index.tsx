@@ -16,7 +16,7 @@ import { ConnectWalletModal } from "components";
 import {
   DEFAULT_NETWORK_ID,
   STORAGE_KEY_CONNECTOR,
-  TokenEthereum,
+  TokenAvax,
 } from "config/constants";
 import { getToken } from "config/networks";
 import { useConnectedWeb3Context, useGlobal } from "contexts";
@@ -131,11 +131,9 @@ const AccountInfoBar = (props: IProps) => {
       eth: ethBalance,
     },
   } = useBalances(context);
-  const formattedEthBalance = formatBigNumber(
-    ethBalance,
-    TokenEthereum.decimals
-  );
+  const formattedEthBalance = formatBigNumber(ethBalance, TokenAvax.decimals);
   const gSwapToken = getToken(networkId || DEFAULT_NETWORK_ID, "gswap");
+
   const formattedGswapBalance = formatToShortNumber(
     formatBigNumber(gswapBalance, gSwapToken.decimals)
   );
@@ -181,7 +179,7 @@ const AccountInfoBar = (props: IProps) => {
           <div className={classes.eth}>
             <div className={classes.ethBalance}>
               <Typography className={classes.label} component="div">
-                {TokenEthereum.symbol}
+                {TokenAvax.symbol}
               </Typography>
               <Typography className={classes.ethValue} component="div">
                 {formattedEthBalance}

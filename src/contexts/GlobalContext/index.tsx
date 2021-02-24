@@ -12,6 +12,7 @@ import { parseEther } from "ethers/lib/utils";
 import { useIsMountedRef } from "hooks";
 import _ from "lodash";
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { getAPIService } from "services/api";
 import { getLogger } from "utils/logger";
 import { IGlobalData, KnownToken } from "utils/types.d";
 
@@ -28,6 +29,11 @@ const defaultTokenPrices = {
     price: DEFAULT_PRICE,
     decimals: PRICE_DECIMALS,
   },
+  weth: {
+    usd: DEFAULT_USD,
+    price: DEFAULT_PRICE,
+    decimals: PRICE_DECIMALS,
+  },
 };
 
 const defaultData: IGlobalData = {
@@ -35,6 +41,7 @@ const defaultData: IGlobalData = {
   inventoryCartIds: [],
   price: defaultTokenPrices,
   collections: [GSWAP_COLLECTION],
+  games: [],
 };
 
 const GlobalContext = createContext({
@@ -46,6 +53,8 @@ const GlobalContext = createContext({
   isInInventoryCart: (_: string) => {},
   clearItemCart: () => {},
   clearInventoryCart: () => {},
+  loadGames: () => {},
+  loadCollections: () => {},
 });
 
 /**
@@ -69,6 +78,8 @@ export const GlobalProvider = ({ children }: IProps) => {
   const [currentData, setCurrentData] = useState<IGlobalData>(defaultData);
 
   const isRefMounted = useIsMountedRef();
+
+  const apiService = getAPIService();
 
   const fetchPrices = async (): Promise<void> => {
     try {
@@ -114,8 +125,39 @@ export const GlobalProvider = ({ children }: IProps) => {
     }
   };
 
+  const loadGames = async (): Promise<void> => {
+    try {
+      const gameResponse = await apiService.getGames();
+      setCurrentData((prev) => ({ ...prev, games: gameResponse.records }));
+    } catch (error) {
+      logger.error(error);
+    }
+  };
+
+  const loadCollections = async (): Promise<void> => {
+    try {
+      const collectionResponse = await apiService.getCollections();
+      setCurrentData((prev) => ({
+        ...prev,
+        collections: collectionResponse.records,
+      }));
+    } catch (error) {
+      logger.error(error);
+    }
+  };
+
+  const loadBasicData = async () => {
+    try {
+      await loadGames();
+      await loadCollections();
+    } catch (error) {
+      logger.error(error);
+    }
+  };
+
   useEffect(() => {
     fetchPrices();
+    loadBasicData();
     const interval = setInterval(() => {
       fetchPrices();
     }, 100000);
@@ -184,13 +226,6 @@ export const GlobalProvider = ({ children }: IProps) => {
     }));
   };
 
-  const closeWalletConnectModal = () => {
-    setCurrentData((prev) => ({
-      ...prev,
-      walletConnectModalOpened: false,
-    }));
-  };
-
   return (
     <GlobalContext.Provider
       value={{
@@ -202,6 +237,8 @@ export const GlobalProvider = ({ children }: IProps) => {
         isInItemCart,
         clearInventoryCart,
         clearItemCart,
+        loadCollections,
+        loadGames,
       }}
     >
       {children}
