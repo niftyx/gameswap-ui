@@ -191,6 +191,8 @@ export interface IAssetItem {
   orders?: ISignedOrder[];
   owner: string;
   contentId?: string;
+  gameId?: string;
+  lockedData?: string;
 }
 
 export interface ISideMenuGroupHeaderItem {

@@ -137,7 +137,7 @@ const InventoryAssetItem = (props: IProps) => {
               uri={asset.image}
             />
           )}
-          {asset && asset.isInSale && (
+          {asset && data.isInSale && (
             <AttachMoneyIcon className={classes.inSaleIcon} />
           )}
         </div>

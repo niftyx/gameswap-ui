@@ -1,16 +1,12 @@
 import { SignedOrder, assetDataUtils } from "@0x/order-utils";
-import { useQuery } from "@apollo/react-hooks";
 import { DEFAULT_NETWORK_ID } from "config/constants";
 import { useConnectedWeb3Context } from "contexts";
 import { BigNumber } from "ethers";
-import gql from "graphql-tag";
 import { useIsMountedRef } from "hooks";
 import { useEffect, useState } from "react";
 import { getAPIService } from "services/api";
 import { getIPFSService } from "services/ipfs";
 import { getZEROXService } from "services/zeroX";
-import { IAssetDetails } from "types";
-import { EFileType } from "utils/enums";
 import { getLogger } from "utils/logger";
 import { buildOrdersQuery, wrangeOrderResponse } from "utils/order";
 import {
@@ -21,7 +17,6 @@ import {
   IAssetItem,
   IIpfsMainData,
   ISignedOrder,
-  Maybe,
   NetworkId,
 } from "utils/types";
 
@@ -52,7 +47,6 @@ export const useAssetDetailsWithOrderFromId = (id: string): IResponse => {
     const response = await apiService.getAssetDetails(assetId);
     if (isRefMounted.current === false) return;
     if (response) {
-      logger.log(response);
       setState((prev) => ({
         ...prev,
         loading: false,
@@ -107,7 +101,7 @@ export const useAssetDetailsWithOrderFromId = (id: string): IResponse => {
             return {
               ...wrangeOrderResponse(order),
               assetId: xBigNumberToEthersBigNumber(erc721.tokenId),
-              erc721Address: erc721.tokenAddress,
+              erc721Address: erc721.tokenAddress.toLowerCase(),
               erc20Address: erc20.tokenAddress,
             };
           });

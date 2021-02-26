@@ -5,6 +5,7 @@ import { CommentLoader } from "components/Loader";
 import { ErrorText } from "components/Text";
 import { useConnectedWeb3Context } from "contexts";
 import React, { useEffect, useState } from "react";
+import { waitSeconds } from "utils";
 import { getLogger } from "utils/logger";
 import { submitBuyCollectible } from "utils/order";
 import { EthersBigNumberTo0xBigNumber } from "utils/token";
@@ -68,6 +69,8 @@ export const TradeBuyAssetStep = (props: IProps) => {
 
       await context.library.waitForTransaction(txHash);
       logger.log("buy Asset::Success");
+
+      await waitSeconds(5);
 
       onConfirm();
 

@@ -1,9 +1,17 @@
-import { Avatar, Button, Typography, makeStyles } from "@material-ui/core";
+import {
+  Avatar,
+  Button,
+  CircularProgress,
+  Typography,
+  makeStyles,
+} from "@material-ui/core";
 import clsx from "classnames";
+import { BasicModal } from "components";
 import { DEFAULT_NETWORK_ID } from "config/constants";
 import { useConnectedWeb3Context, useGlobal, useTrade } from "contexts";
 import { transparentize } from "polished";
-import React from "react";
+import React, { useState } from "react";
+import { getAPIService } from "services/api";
 import useCommonStyles from "styles/common";
 import { getAssetObjectWithPrices } from "utils/tools";
 import { IAssetAttribute, IAssetItem } from "utils/types";
@@ -13,17 +21,17 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     position: "relative",
     "& > * + *": {
-      marginTop: theme.spacing(7),
+      marginTop: theme.spacing(4),
     },
   },
   title: {
     left: theme.spacing(2),
     top: theme.spacing(4),
     color: theme.colors.text.default,
-    fontSize: theme.spacing(3.75),
+    fontSize: theme.spacing(3.25),
   },
   gameType: {
-    fontSize: theme.spacing(2.5),
+    fontSize: theme.spacing(2.25),
     color: theme.colors.text.sixth,
   },
   priceRow: {
@@ -64,8 +72,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   buyNow: {
-    minWidth: theme.spacing(45),
-    height: theme.spacing(10),
+    height: theme.spacing(6),
     fontSize: theme.spacing(2.5),
     [theme.breakpoints.down("xs")]: {
       minWidth: theme.spacing(25),
@@ -86,6 +93,7 @@ const useStyles = makeStyles((theme) => ({
   address: {
     fontSize: theme.spacing(2),
     color: theme.colors.text.default,
+    wordBreak: "break-all",
   },
   description: {
     fontSize: theme.spacing(2),
@@ -133,6 +141,12 @@ const useStyles = makeStyles((theme) => ({
       padding: "10px 20px",
     },
   },
+  unlockData: {
+    fontSize: theme.spacing(2),
+    color: theme.colors.text.default,
+    whiteSpace: "pre-line",
+    userSelect: "text",
+  },
 }));
 
 interface IProps {
@@ -140,18 +154,31 @@ interface IProps {
   data: IAssetItem;
 }
 
+interface IState {
+  unlocking: boolean;
+  decryptedContent: string;
+}
+
 export const InfoSection = (props: IProps) => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
   const {
-    data: { price },
+    data: { games, price },
   } = useGlobal();
   const {
     account,
+    library: provider,
     networkId,
     setWalletConnectModalOpened,
   } = useConnectedWeb3Context();
   const { data } = props;
+  const [state, setState] = useState<IState>({
+    unlocking: false,
+    decryptedContent: "",
+  });
+
+  const apiService = getAPIService();
+
   const assetDataWithPriceInfo = getAssetObjectWithPrices(
     data,
     data.orders || [],
@@ -175,15 +202,54 @@ export const InfoSection = (props: IProps) => {
     }
   };
 
+  const onUnlockData = async () => {
+    if (!data.lockedData || !provider) {
+      return;
+    }
+    setState((prev) => ({ ...prev, unlocking: true }));
+    try {
+      const hashedStr = await provider.getSigner().signMessage(data.lockedData);
+      const decryptedStr = await apiService.getDecryptedContentData(
+        data.lockedData,
+        hashedStr
+      );
+      setState((prev) => ({
+        ...prev,
+        unlocking: false,
+        decryptedContent: decryptedStr,
+      }));
+    } catch (error) {
+      setState((prev) => ({ ...prev, unlocking: false }));
+    }
+  };
+
+  const game = games.find((e) => e.id === data.gameId);
+
   return (
     <div className={clsx(classes.root, props.className)}>
+      {state.decryptedContent && (
+        <BasicModal
+          onClose={() => {
+            setState((prev) => ({ ...prev, decryptedContent: "" }));
+          }}
+          title="Unlocked Content"
+          visible={!!state.decryptedContent}
+        >
+          <div
+            className={classes.unlockData}
+            dangerouslySetInnerHTML={{ __html: state.decryptedContent }}
+          ></div>
+        </BasicModal>
+      )}
       <div>
         <Typography className={classes.title} component="div">
           {data.name}
         </Typography>
-        {/* <Typography className={classes.gameType} component="div">
-          Cyber Assault
-        </Typography> */}
+        {game && (
+          <Typography className={classes.gameType} component="div">
+            {game.title}
+          </Typography>
+        )}
       </div>
       {isInSale && (
         <div>
@@ -208,10 +274,24 @@ export const InfoSection = (props: IProps) => {
           <Button
             className={classes.buyNow}
             color="primary"
+            fullWidth
             onClick={onBuy}
             variant="contained"
           >
             BUY NOW
+          </Button>
+        )}
+        {isMine && data.lockedData && (
+          <Button
+            className={classes.buyNow}
+            color="secondary"
+            disabled={state.unlocking}
+            fullWidth
+            onClick={onUnlockData}
+            variant="contained"
+          >
+            {state.unlocking && <CircularProgress color="primary" size={24} />}
+            {state.unlocking ? "Unlocking content ..." : "Unlock content"}
           </Button>
         )}
       </div>

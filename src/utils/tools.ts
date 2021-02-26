@@ -56,13 +56,14 @@ export const getAssetObjectWithPrices = (
   },
   networkId: number
 ): IResponse => {
-  if (!asset)
+  if (!asset) {
     return {
       asset,
       minUSDPrice: 0,
       minPriceOrderIndex: 0,
       minTokenAmountString: "",
     };
+  }
 
   let minUSDPrice = 0;
   let minPriceOrderIndex = 0;

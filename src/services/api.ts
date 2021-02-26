@@ -35,6 +35,14 @@ export class APIService {
     return response.data as { lockedData: string; contentId: string };
   }
 
+  public async getDecryptedContentData(contentStr: string, hashedStr: string) {
+    const response = await axios.post(`${this.cryptoContentPath}decrypt`, {
+      contentStr,
+      signedContentStr: hashedStr,
+    });
+    return response.data as string;
+  }
+
   public async getAssetDetails(id: string) {
     const response = await axios.get(`${this.assetPath}${id}`);
     return response.data;
