@@ -48,7 +48,7 @@ export const ChainInfoSection = (props: IProps) => {
   const { data } = props;
 
   const etherUri = getEtherscanUri(networkId || DEFAULT_NETWORK_ID);
-  const erc721 = getContractAddress(networkId || DEFAULT_NETWORK_ID, "erc721");
+  const erc721 = data.collectionId;
 
   return (
     <div className={clsx(classes.root, props.className)}>
@@ -99,7 +99,7 @@ export const ChainInfoSection = (props: IProps) => {
             className={classes.itemDetailsItemRowRight}
             component="div"
           >
-            Ethereum
+            Avalanche
           </Typography>
         </div>
       </div>

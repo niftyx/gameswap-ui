@@ -1,7 +1,6 @@
 import { SignedOrder, assetDataUtils } from "@0x/order-utils";
 import axios from "axios";
 import { BROWSE_PAGE_ASSET_COUNT, DEFAULT_NETWORK_ID } from "config/constants";
-import { getContractAddress } from "config/networks";
 import { useConnectedWeb3Context } from "contexts";
 import { BigNumber } from "ethers";
 import { useIsMountedRef } from "hooks";
@@ -9,10 +8,7 @@ import { useEffect, useState } from "react";
 import { IAssetDetails } from "types";
 import { getLogger } from "utils/logger";
 import { buildOrdersQuery, wrangeOrderResponse } from "utils/order";
-import {
-  EthersBigNumberTo0xBigNumber,
-  xBigNumberToEthersBigNumber,
-} from "utils/token";
+import { xBigNumberToEthersBigNumber } from "utils/token";
 import { ISignedOrder, NetworkId } from "utils/types";
 
 const logger = getLogger("useInventoryAssets:");
@@ -56,17 +52,19 @@ const wrangleAsset = (asset: {
   createTimeStamp: string;
   updateTimeStamp: string;
   id: string;
+  collectionId: string;
   currentOwner: { address: string };
   token: { address: string };
 }): IAssetDetails => {
   return {
     id: asset.id,
+    collectionId: asset.collectionId,
     assetURL: asset.assetURL,
     createTimeStamp: Number(asset.createTimeStamp),
     assetId: BigNumber.from(asset.assetId),
     updateTimeStamp: Number(asset.updateTimeStamp),
-    currentOwner: asset.currentOwner.address,
     tokenAddress: asset.token.address,
+    owner: asset.currentOwner.address,
   };
 };
 
@@ -94,10 +92,6 @@ export const useBrowseAssets = (): {
   const { networkId } = useConnectedWeb3Context();
   const httpUri = "";
   const isRefMounted = useIsMountedRef();
-  const erc721TokenAddress = getContractAddress(
-    networkId || DEFAULT_NETWORK_ID,
-    "erc721"
-  );
 
   const [state, setState] = useState<IState>({
     hasMore: false,
@@ -120,10 +114,6 @@ export const useBrowseAssets = (): {
             (networkId || DEFAULT_NETWORK_ID) as NetworkId,
             {
               perPage: 1,
-              makerAssetData: assetDataUtils.encodeERC721AssetData(
-                erc721TokenAddress,
-                EthersBigNumberTo0xBigNumber(asset.assetId)
-              ),
             }
           );
           return new Promise((resolve, reject) => {

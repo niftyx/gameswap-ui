@@ -3,7 +3,6 @@ import { BigNumber, Contract, Wallet, ethers, utils } from "ethers";
 import { Interface, id } from "ethers/lib/utils";
 import { getLogger } from "utils/logger";
 import { ZERO_NUMBER } from "utils/number";
-import { ZERO_ADDRESS } from "utils/token";
 import { isAddress, isContract } from "utils/tools";
 import { IERC721Token, Maybe } from "utils/types";
 
@@ -23,6 +22,7 @@ const erc721Abi = [
   "function mintItem(address player, string memory tokenURI,string memory gameId, string memory categoryId, string memory contentId) public returns (uint256)",
   "function burnItem(uint256 _itemId) public",
   "event Transfer(address indexed from,address indexed to,uint256 indexed tokenId)",
+  "event SetTokenData(uint256,string,string,string,string)",
 ];
 
 const SET_TOKEN_DATA_ID = id(

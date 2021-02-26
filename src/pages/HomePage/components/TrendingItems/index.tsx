@@ -46,13 +46,18 @@ export const TrendingItems = (props: IProps) => {
   const assets: ITradeAssetItem[] = [];
 
   orders.forEach((order) => {
-    const assetId = order.assetId.toHexString();
-    const addedElement = assets.find((asset) => asset.id === assetId);
+    const assetId = order.assetId;
+    const collectionId = order.erc721Address.toLowerCase();
+
+    const addedElement = assets.find(
+      (asset) => asset.id.eq(assetId) && asset.collectionId === collectionId
+    );
     if (addedElement) {
       addedElement.orders.push(order);
     } else {
       assets.push({
         id: assetId,
+        collectionId: collectionId,
         orders: [order],
       });
     }
@@ -80,7 +85,7 @@ export const TrendingItems = (props: IProps) => {
           {assets.map((asset) => (
             <AssetItem
               data={asset}
-              key={asset.id}
+              key={`${asset.collectionId}${asset.id.toHexString()}`}
               onClick={onBuy}
               onMore={() => history.push(`/assets/${asset.id}`)}
             />

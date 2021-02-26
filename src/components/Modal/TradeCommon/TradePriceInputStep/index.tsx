@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
   img: {
     height: theme.spacing(20),
     width: theme.spacing(20),
-    margin: theme.spacing(2),
+    margin: `${theme.spacing(2)}px auto`,
   },
   button: {
     height: theme.spacing(6),

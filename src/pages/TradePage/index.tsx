@@ -7,7 +7,6 @@ import { useAllOrders } from "helpers/useAllOrders";
 import React from "react";
 import useCommonStyles from "styles/common";
 import { IGraphInventoryAsset } from "types";
-import { getObjectIdFromHex } from "utils/tools";
 
 import { AssetItemsSection, InventorySection } from "./components";
 
@@ -61,7 +60,9 @@ const TradePage = () => {
   const finalInventoryAssets: IGraphInventoryAsset[] = inventoryAssets.map(
     (asset) => {
       const relatedOrders = myOrders.filter(
-        (order) => getObjectIdFromHex(order.assetId.toHexString()) === asset.id
+        (order) =>
+          order.assetId.eq(asset.assetId) &&
+          order.erc721Address === asset.collectionId
       );
 
       return {

@@ -20,8 +20,7 @@ const networks: { [K in NetworkId]: INetwork } = {
     label: "Kovan",
     url: "https://api.avax-test.network/ext/bc/C/rpc",
     contracts: {
-      erc721Factory: "0x5915A56d8Ec547624b09d8271ad2672003b33c44",
-      erc721: "0xd8cc8713efb058969986fcaa765608e2a5f415bd",
+      erc721Factory: process.env.REACT_APP_ERC721_FACTORY_TEST || "",
     },
     etherscanUri: "https://cchain.explorer.avax-test.network/",
   },
@@ -29,8 +28,7 @@ const networks: { [K in NetworkId]: INetwork } = {
     label: "Kovan",
     url: "https://api.avax.network/ext/bc/C/rpc",
     contracts: {
-      erc721Factory: "0x4eB6F07F24f311143cAAd5D698D99e06dfCFd91f",
-      erc721: "0xd8cc8713efb058969986fcaa765608e2a5f415bd",
+      erc721Factory: process.env.REACT_APP_ERC721_FACTORY_MAIN || "",
     },
     etherscanUri: "https://cchain.explorer.avax.network/",
   },
@@ -45,7 +43,7 @@ export const knownTokens: { [name in KnownToken]: IKnownTokenData } = {
     symbol: "GSWAP",
     decimals: 18,
     addresses: {
-      [networkIds.AVAXTEST]: "0x444806D2C0856c12dD8DB239b809Fc4641FCbB5E",
+      [networkIds.AVAXTEST]: "0x1EeBC9a0e84006efE4067eDC78f3eB7636E730D5",
       [networkIds.AVAXMAIN]: "0xb2c7d27f78bec818391498dc4108ab782d65cd76",
     },
     coingeckoTokenId: "gameswap-org",

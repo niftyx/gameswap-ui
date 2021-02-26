@@ -35,6 +35,7 @@ export const useAssetDetailsFromInventoryItem = (
             ...prevState,
             asset: {
               id: data.id,
+              collectionId: data.collectionId,
               tokenId: data.assetId,
               tokenURL: data.assetURL,
               createTimeStamp: data.createTimeStamp,
@@ -43,6 +44,7 @@ export const useAssetDetailsFromInventoryItem = (
               usdPrice: 0,
               isInSale: data.isInSale,
               orders: data.orders,
+              owner: data.owner,
             },
             loaded: true,
           }));

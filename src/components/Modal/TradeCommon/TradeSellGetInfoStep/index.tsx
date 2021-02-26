@@ -4,8 +4,8 @@ import { CommentLoader } from "components/Loader";
 import { ErrorText } from "components/Text";
 import { get0xContractAddresses } from "config/networks";
 import { useConnectedWeb3Context } from "contexts";
-import { useContracts } from "helpers";
 import React, { useEffect, useState } from "react";
+import { ERC721Service } from "services";
 import { getLogger } from "utils/logger";
 
 const logger = getLogger("TradeSellGetInfoStep::");
@@ -30,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
 interface IProps {
   onConfirm: (_: boolean) => void;
   className?: string;
+  collectionId: string;
 }
 
 interface IState {
@@ -41,7 +42,11 @@ export const TradeSellGetInfoStep = (props: IProps) => {
   const classes = useStyles();
   const [state, setState] = useState<IState>({ loading: false, error: "" });
   const context = useConnectedWeb3Context();
-  const { erc721 } = useContracts(context);
+  const erc721 = new ERC721Service(
+    context.library,
+    context.account || "",
+    props.collectionId
+  );
   const { onConfirm } = props;
 
   const getInfo = async () => {

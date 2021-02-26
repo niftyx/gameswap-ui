@@ -1,13 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import axios from "axios";
-import {
-  DEFAULT_PRICE,
-  DEFAULT_USD,
-  GSWAP_COLLECTION,
-  PRICE_DECIMALS,
-} from "config/constants";
-import { getToken, knownTokens } from "config/networks";
-import { BigNumber, ethers } from "ethers";
+import { DEFAULT_PRICE, DEFAULT_USD, PRICE_DECIMALS } from "config/constants";
+import { knownTokens } from "config/networks";
 import { parseEther } from "ethers/lib/utils";
 import { useIsMountedRef } from "hooks";
 import _ from "lodash";
@@ -40,7 +34,7 @@ const defaultData: IGlobalData = {
   itemCartIds: [],
   inventoryCartIds: [],
   price: defaultTokenPrices,
-  collections: [GSWAP_COLLECTION],
+  collections: [],
   games: [],
 };
 

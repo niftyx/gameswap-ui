@@ -2,6 +2,7 @@ import { SignedOrder } from "@0x/types";
 import { useTrade } from "contexts";
 import React, { useState } from "react";
 import { ETradeStep } from "utils/enums";
+import { getLogger } from "utils/logger";
 
 import {
   TradCancelOrderStep,
@@ -12,6 +13,8 @@ import {
   TradeSellGetInfoStep,
   TradeSuccessStep,
 } from "../TradeCommon";
+
+const logger = getLogger("TradeSellModal::");
 
 interface IProps {
   visible: boolean;
@@ -80,6 +83,7 @@ export const TradeSellModal = (props: IProps) => {
       case ETradeStep.GetSellApproveInfo:
         return (
           <TradeSellGetInfoStep
+            collectionId={asset.collectionId}
             onConfirm={(isUnlocked: boolean) => {
               if (!isUnlocked) {
                 setState((prevState) => ({
@@ -98,6 +102,7 @@ export const TradeSellModal = (props: IProps) => {
       case ETradeStep.SetSellApproval:
         return (
           <TradeSellApprovalStep
+            collectionId={asset.collectionId}
             onConfirm={() => {
               setState((prevState) => ({
                 ...prevState,

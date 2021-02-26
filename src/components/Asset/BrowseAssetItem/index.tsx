@@ -3,11 +3,11 @@ import { IconAssetPlaceholder } from "assets/icons";
 import clsx from "classnames";
 import { DEFAULT_NETWORK_ID } from "config/constants";
 import { useConnectedWeb3Context, useGlobal } from "contexts";
-import { useAssetDetailsFromId } from "helpers";
+import { useAssetDetailsFromIdCollection } from "helpers";
 import { transparentize } from "polished";
 import React from "react";
 import useCommonStyles from "styles/common";
-import { getAssetObjectWithPrices, getObjectIdFromHex } from "utils/tools";
+import { getAssetObjectWithPrices } from "utils/tools";
 import { IAssetItem, ITradeAssetItem } from "utils/types";
 
 import { AssetPhoto } from "../AssetPhoto";
@@ -122,7 +122,7 @@ interface IProps {
   data: ITradeAssetItem;
   className?: string;
   onClick?: (_: IAssetItem) => void;
-  onMore?: () => void;
+  onMore?: (_: string) => void;
   isOnCart?: boolean;
 }
 
@@ -135,11 +135,16 @@ const BrowseAssetItem = (props: IProps) => {
   } = useGlobal();
   const { networkId } = useConnectedWeb3Context();
 
-  const objectId = getObjectIdFromHex(data.id);
-  const { data: assetDetails, loading } = useAssetDetailsFromId(objectId);
+  const { data: assetDetails, loading } = useAssetDetailsFromIdCollection(
+    data.id,
+    data.collectionId
+  );
 
   const assetDataLoaded =
-    assetDetails && !loading && assetDetails.id === objectId;
+    assetDetails &&
+    !loading &&
+    assetDetails.tokenId.eq(data.id) &&
+    assetDetails.collectionId === data.collectionId;
 
   const responsive = { xl: 2, lg: 2, md: 4, xs: 6 };
 
@@ -205,7 +210,11 @@ const BrowseAssetItem = (props: IProps) => {
               className={classes.moreButton}
               color="secondary"
               fullWidth
-              onClick={onMore as any}
+              onClick={() => {
+                if (onMore) {
+                  onMore((assetDetails || {}).id || "");
+                }
+              }}
               variant="contained"
             >
               More Info

@@ -3,12 +3,14 @@ import { ISignedOrder } from "utils/types";
 
 export interface IGraphInventoryAsset {
   id: string;
+  collectionId: string;
   assetId: BigNumber;
   assetURL: string;
   createTimeStamp: number;
   updateTimeStamp: number;
   isInSale?: boolean;
   orders?: ISignedOrder[];
+  owner: string;
 }
 
 export interface IGraphAccount {
@@ -29,6 +31,5 @@ export interface IGraphInventoryResponse {
 }
 
 export interface IAssetDetails extends IGraphInventoryAsset {
-  currentOwner: string;
   tokenAddress: string;
 }

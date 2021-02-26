@@ -20,7 +20,6 @@ import {
 import {
   DEFAULT_NETWORK_ID,
   GAMES,
-  GSWAP_COLLECTION,
   SERVICE_FEE,
   SERVICE_FEE_IN_PERCENT,
 } from "config/constants";
@@ -136,7 +135,7 @@ export const ERC721CreateForm = (props: IProps) => {
     instantSale: false,
     salePrice: 3,
     saleToken: "",
-    collectionId: GSWAP_COLLECTION.id,
+    collectionId: "",
     gameId: "0",
   };
 

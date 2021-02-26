@@ -24,7 +24,7 @@ export const isContract = async (
 };
 
 export const getObjectIdFromHex = (id: string) => {
-  return `0x${id.substr(2).replace(/^0+/, "")}`;
+  return id;
 };
 
 interface IResponse {

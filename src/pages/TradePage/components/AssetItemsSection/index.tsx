@@ -9,6 +9,7 @@ import {
 } from "components";
 import { CartContentWrapper, CartEmpty } from "components/Cart";
 import { useConnectedWeb3Context, useGlobal, useTrade } from "contexts";
+import { logger } from "ethers";
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { IAssetItem, ISignedOrder, ITradeAssetItem } from "utils/types";
@@ -42,21 +43,22 @@ const AssetItemsSection = (props: IProps) => {
   const assets: ITradeAssetItem[] = [];
 
   orders.forEach((order) => {
-    const assetId = order.assetId.toHexString();
-    const addedElement = assets.find((asset) => asset.id === assetId);
+    const assetId = order.assetId;
+    const collectionId = order.erc721Address;
+
+    const addedElement = assets.find(
+      (asset) => asset.id.eq(assetId) && asset.collectionId === collectionId
+    );
     if (addedElement) {
       addedElement.orders.push(order);
     } else {
       assets.push({
         id: assetId,
+        collectionId: collectionId,
         orders: [order],
       });
     }
   });
-
-  const selectedItems: ITradeAssetItem[] = assets.filter((item) =>
-    isInItemCart(item.id)
-  );
 
   let totalPrice = 0;
 
@@ -76,7 +78,7 @@ const AssetItemsSection = (props: IProps) => {
   };
 
   const renderCartContent = ({ handleClose }: { handleClose?: () => void }) => {
-    const itemsCount = selectedItems.length;
+    const itemsCount = 0;
     return (
       <>
         {!itemsCount ? (
@@ -119,10 +121,10 @@ const AssetItemsSection = (props: IProps) => {
           {assets.map((asset) => (
             <TradeAssetItem
               data={asset}
-              isOnCart={isInItemCart(asset.id) as any}
-              key={asset.id}
+              isOnCart={false}
+              key={`${asset.collectionId}${asset.id.toHexString()}`}
               onClick={onBuy}
-              onMore={() => history.push(`/assets/${asset.id}`)}
+              onMore={(id) => history.push(`/assets/${id}`)}
             />
           ))}
         </AssetsContainer>

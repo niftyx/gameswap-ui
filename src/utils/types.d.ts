@@ -172,8 +172,9 @@ export interface ITokenAmount {
 
 export interface IAssetItem {
   id: string;
-  tokenId?: BigNumber;
-  tokenURL?: string;
+  collectionId: string;
+  tokenId: BigNumber;
+  tokenURL: string;
   name: string;
   description?: string;
   image: string;
@@ -188,7 +189,8 @@ export interface IAssetItem {
   prices?: ITokenAmount[];
   isInSale?: boolean;
   orders?: ISignedOrder[];
-  owner?: string;
+  owner: string;
+  contentId?: string;
 }
 
 export interface ISideMenuGroupHeaderItem {
@@ -286,7 +288,6 @@ export interface INetwork {
   url: string;
   contracts: {
     erc721Factory: string;
-    erc721: string;
   };
   etherscanUri: string;
 }
@@ -356,7 +357,8 @@ export interface ISignedOrder extends SignedOrder {
 }
 
 export interface ITradeAssetItem {
-  id: string;
+  id: BigNumber;
+  collectionId: string;
   orders: ISignedOrder[];
 }
 

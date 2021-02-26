@@ -1,7 +1,6 @@
 import { assetDataUtils } from "@0x/order-utils";
 import { SignedOrder } from "@0x/types";
 import { DEFAULT_NETWORK_ID, ORDERS_PAGE_COUNT } from "config/constants";
-import { getContractAddress } from "config/networks";
 import { useConnectedWeb3Context } from "contexts";
 import { useIsMountedRef } from "hooks";
 import { useEffect, useState } from "react";
@@ -21,10 +20,7 @@ interface IState {
 
 export const useAllOrders = (): IState & { loadMore: () => Promise<void> } => {
   const { networkId } = useConnectedWeb3Context();
-  const erc721Address = getContractAddress(
-    networkId || DEFAULT_NETWORK_ID,
-    "erc721"
-  );
+
   const isRefMounted = useIsMountedRef();
   const [state, setState] = useState<IState>({
     allLoaded: false,
@@ -36,7 +32,6 @@ export const useAllOrders = (): IState & { loadMore: () => Promise<void> } => {
     const endPoint = buildOrdersQuery(
       (networkId || DEFAULT_NETWORK_ID) as NetworkId,
       {
-        makerAssetAddress: erc721Address,
         page,
         perPage: ORDERS_PAGE_COUNT,
       }
@@ -63,8 +58,8 @@ export const useAllOrders = (): IState & { loadMore: () => Promise<void> } => {
           return {
             ...wrangeOrderResponse(order),
             assetId: xBigNumberToEthersBigNumber(erc721.tokenId),
-            erc721Address: erc721.tokenAddress,
-            erc20Address: erc20.tokenAddress,
+            erc721Address: erc721.tokenAddress.toLowerCase(),
+            erc20Address: erc20.tokenAddress.toLowerCase(),
           };
         });
       if (isRefMounted.current === true)

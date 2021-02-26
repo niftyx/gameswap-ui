@@ -1,11 +1,12 @@
 import { SignedOrder, assetDataUtils } from "@0x/order-utils";
 import { useQuery } from "@apollo/react-hooks";
 import { DEFAULT_NETWORK_ID } from "config/constants";
-import { getContractAddress } from "config/networks";
 import { useConnectedWeb3Context } from "contexts";
 import { BigNumber } from "ethers";
 import gql from "graphql-tag";
+import { useIsMountedRef } from "hooks";
 import { useEffect, useState } from "react";
+import { getAPIService } from "services/api";
 import { getIPFSService } from "services/ipfs";
 import { getZEROXService } from "services/zeroX";
 import { IAssetDetails } from "types";
@@ -26,41 +27,6 @@ import {
 
 const logger = getLogger("useAssetDetailsWithOrderFromId");
 
-const query = gql`
-  query GetAsset($id: ID!) {
-    asset(id: $id) {
-      id
-      assetId
-      assetURL
-      currentOwner {
-        address
-      }
-      token {
-        address
-        name
-        symbol
-      }
-      createTimeStamp
-      updateTimeStamp
-    }
-  }
-`;
-
-interface IGraphResponse {
-  asset: Maybe<
-    IAssetDetails & {
-      currentOwner: {
-        address: string;
-      };
-      token: {
-        address: string;
-        name: string;
-        symbol: string;
-      };
-    }
-  >;
-}
-
 interface IResponse {
   data: IAssetItem | null;
   loading: boolean;
@@ -77,53 +43,36 @@ export const useAssetDetailsWithOrderFromId = (id: string): IResponse => {
     asset: null,
     loading: false,
   });
-  const erc721TokenAddress = getContractAddress(
-    networkId || DEFAULT_NETWORK_ID,
-    "erc721"
-  );
-  const { data, refetch } = useQuery<IGraphResponse>(query, {
-    notifyOnNetworkStatusChange: true,
-    skip: false,
-    variables: { id },
-  });
+  const isRefMounted = useIsMountedRef();
+
+  const apiService = getAPIService();
+
+  const loadAssetInfo = async (assetId: string) => {
+    setState((prev) => ({ ...prev, loading: true }));
+    const response = await apiService.getAssetDetails(assetId);
+    if (isRefMounted.current === false) return;
+    if (response) {
+      logger.log(response);
+      setState((prev) => ({
+        ...prev,
+        loading: false,
+        asset: {
+          ...(response as any),
+          owner: response.currentOwner.id,
+          collectionId: response.collection.id,
+          tokenId: BigNumber.from(response.assetId.hex),
+          tokenURL: response.assetURL,
+        },
+      }));
+    } else {
+      setState((prev) => ({ ...prev, loading: false, asset: null }));
+    }
+  };
 
   useEffect(() => {
-    refetch();
+    loadAssetInfo(id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [networkId]);
-
-  useEffect(() => {
-    let isMounted = true;
-    if (data && data.asset && id === data.asset.id) {
-      if (!state.asset || state.asset.id !== id) {
-        const { asset } = data;
-        if (isMounted)
-          setState((prevState) => ({
-            ...prevState,
-            asset: {
-              id: asset?.id,
-              tokenId: BigNumber.from(asset?.assetId),
-              tokenURL: asset.assetURL,
-              name: "",
-              description: "",
-              image: "",
-              imageType: EFileType.Unknown,
-              createTimeStamp: asset.createTimeStamp,
-              usdPrice: 0,
-              priceChange: 0,
-              owner: asset.currentOwner.address,
-            },
-          }));
-      }
-    } else {
-      setState((prevState) => ({ ...prevState, asset: null, loading: false }));
-    }
-
-    return () => {
-      isMounted = false;
-    };
-    // eslint-disable-next-line
-  }, [data]);
 
   useEffect(() => {
     let isMounted = true;
@@ -138,7 +87,7 @@ export const useAssetDetailsWithOrderFromId = (id: string): IResponse => {
           {
             perPage: 1,
             makerAssetData: assetDataUtils.encodeERC721AssetData(
-              erc721TokenAddress,
+              state.asset.collectionId,
               EthersBigNumberTo0xBigNumber(state.asset.tokenId)
             ),
           }

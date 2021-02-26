@@ -47,13 +47,18 @@ const AssetItemsSection = (props: IProps) => {
   const assets: ITradeAssetItem[] = [];
 
   orders.forEach((order) => {
-    const assetId = order.assetId.toHexString();
-    const addedElement = assets.find((asset) => asset.id === assetId);
+    const assetId = order.assetId;
+    const collectionId = order.erc721Address.toLowerCase();
+
+    const addedElement = assets.find(
+      (asset) => asset.id.eq(assetId) && asset.collectionId === collectionId
+    );
     if (addedElement) {
       addedElement.orders.push(order);
     } else {
       assets.push({
         id: assetId,
+        collectionId: collectionId,
         orders: [order],
       });
     }
@@ -92,7 +97,7 @@ const AssetItemsSection = (props: IProps) => {
               <BrowseAssetItem
                 data={asset}
                 isOnCart={false}
-                key={asset.id}
+                key={asset.id.toHexString()}
                 onClick={onBuy}
                 onMore={() => history.push(`/assets/${asset.id}`)}
               />

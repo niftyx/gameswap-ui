@@ -3,7 +3,7 @@ import { IconAssetPlaceholder } from "assets/icons";
 import clsx from "classnames";
 import { DEFAULT_NETWORK_ID } from "config/constants";
 import { useConnectedWeb3Context, useGlobal } from "contexts";
-import { useAssetDetailsFromId } from "helpers";
+import { useAssetDetailsFromIdCollection } from "helpers";
 import { transparentize } from "polished";
 import React from "react";
 import useCommonStyles from "styles/common";
@@ -123,7 +123,7 @@ interface IProps {
   className?: string;
   isFullWidth?: boolean;
   onClick?: (_: IAssetItem) => void;
-  onMore?: () => void;
+  onMore?: (_: string) => void;
   isOnCart?: boolean;
 }
 
@@ -142,12 +142,16 @@ const TradeAssetItem = (props: IProps) => {
   } = useGlobal();
   const { networkId } = useConnectedWeb3Context();
 
-  const objectId = getObjectIdFromHex(data.id);
-  const { data: assetDetails, loading } = useAssetDetailsFromId(objectId);
+  const { data: assetDetails, loading } = useAssetDetailsFromIdCollection(
+    data.id,
+    data.collectionId
+  );
 
   const assetDataLoaded =
-    assetDetails && !loading && assetDetails.id === objectId;
-
+    assetDetails &&
+    !loading &&
+    assetDetails.tokenId.eq(data.id) &&
+    assetDetails.collectionId === data.collectionId;
   const responsive = isFullWidth
     ? { xl: 2, lg: 2, md: 4, xs: 6 }
     : { xl: 3, lg: 4, md: 6, xs: 6 };
@@ -228,7 +232,11 @@ const TradeAssetItem = (props: IProps) => {
               className={classes.moreButton}
               color="secondary"
               fullWidth
-              onClick={onMore as any}
+              onClick={() => {
+                if (onMore) {
+                  onMore((assetDetails || {}).id || "");
+                }
+              }}
               variant="contained"
             >
               More Info

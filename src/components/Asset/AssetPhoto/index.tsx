@@ -7,6 +7,7 @@ const useStyles = makeStyles(() => ({
   root: {
     width: "auto",
     outline: "none",
+    backgroundPosition: "center",
   },
   img: {
     display: "none",

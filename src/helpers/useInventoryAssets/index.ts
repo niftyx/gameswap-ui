@@ -1,32 +1,21 @@
-import axios from "axios";
-import {
-  DEFAULT_NETWORK_ID,
-  INVENTORY_PAGE_ASSET_COUNT,
-} from "config/constants";
-import { useConnectedWeb3Context } from "contexts";
+import { INVENTORY_PAGE_ASSET_COUNT } from "config/constants";
 import { BigNumber } from "ethers";
 import { useIsMountedRef } from "hooks";
 import { useEffect, useState } from "react";
-import { IGraphInventoryAsset, IGraphInventoryResponse } from "types";
+import { getAPIService } from "services/api";
+import { IGraphInventoryAsset } from "types";
 import { getLogger } from "utils/logger";
 
 const logger = getLogger("useInventoryAssets:");
 
-const query = `query GetInventoryAssets($id: ID!, $skip: Int!, $first: Int!) {
-    account(id: $id) {
-      address
-      assetCount
-      assets(first: $first, skip: $skip) {
-        id
-        assetId
-        assetURL
-        createTimeStamp
-        updateTimeStamp
-      }
-    }
-  }
-`;
-
+const wrangleAsset = (e: any) => {
+  return {
+    ...e,
+    assetId: BigNumber.from(e.assetId.hex),
+    collectionId: e.collection.id,
+    owner: e.currentOwner.id,
+  } as IGraphInventoryAsset;
+};
 interface IOptions {
   id: string;
 }
@@ -37,32 +26,6 @@ interface IState {
   loading: boolean;
 }
 
-type GraphVariables = { [key: string]: string | number };
-
-const fetchQuery = (
-  query: string,
-  variables: GraphVariables,
-  endpoint: string
-) => {
-  return axios.post(endpoint, { query, variables });
-};
-
-const wrangleAsset = (asset: {
-  assetId: string;
-  assetURL: string;
-  createTimeStamp: string;
-  updateTimeStamp: string;
-  id: string;
-}): IGraphInventoryAsset => {
-  return {
-    id: asset.id,
-    assetURL: asset.assetURL,
-    createTimeStamp: Number(asset.createTimeStamp),
-    assetId: BigNumber.from(asset.assetId),
-    updateTimeStamp: Number(asset.updateTimeStamp),
-  };
-};
-
 export const useInventoryAssets = (
   options: IOptions
 ): {
@@ -72,7 +35,6 @@ export const useInventoryAssets = (
   removeItem: (_: string) => void;
   loading: boolean;
 } => {
-  const httpUri = "";
   const isRefMounted = useIsMountedRef();
   const [state, setState] = useState<IState>({
     hasMore: false,
@@ -80,31 +42,29 @@ export const useInventoryAssets = (
     loading: false,
   });
 
+  const apiService = getAPIService();
+
   const fetchData = async (variables: {
-    first: number;
-    skip: number;
+    perPage: number;
+    page: number;
     id: string;
   }) => {
     try {
       setState((prevState) => ({ ...prevState, loading: true }));
-      const response: { data: IGraphInventoryResponse } = (
-        await fetchQuery(
-          query,
-          { ...variables, id: variables.id.toLowerCase() },
-          httpUri
-        )
-      ).data;
-      const info = response.data.account;
+
+      const info = await apiService.getAssetsByAddress(
+        variables.id,
+        variables.perPage,
+        variables.page
+      );
       if (isRefMounted.current === false) return;
       if (info)
         setState((prevState) => ({
           ...prevState,
-          hasMore:
-            info.assetCount >
-            prevState.assets.length + INVENTORY_PAGE_ASSET_COUNT,
+          hasMore: info.records.length === info.perPage,
           assets: [
             ...prevState.assets,
-            ...info.assets.map((e) => wrangleAsset(e as any)),
+            ...info.records.map((e) => wrangleAsset(e as any)),
           ],
           loading: false,
         }));
@@ -117,8 +77,8 @@ export const useInventoryAssets = (
 
   const loadMore = async () => {
     await fetchData({
-      first: INVENTORY_PAGE_ASSET_COUNT,
-      skip: state.assets.length,
+      perPage: INVENTORY_PAGE_ASSET_COUNT,
+      page: Math.floor(state.assets.length / INVENTORY_PAGE_ASSET_COUNT) + 1,
       id: options.id,
     });
   };
@@ -138,14 +98,14 @@ export const useInventoryAssets = (
     }));
     if (options.id) {
       fetchData({
-        first: INVENTORY_PAGE_ASSET_COUNT,
-        skip: 0,
+        perPage: INVENTORY_PAGE_ASSET_COUNT,
+        page: 1,
         id: options.id,
       });
     }
 
     // eslint-disable-next-line
-  }, [options.id, httpUri]);
+  }, [options.id]);
 
   return {
     assets: state.assets,

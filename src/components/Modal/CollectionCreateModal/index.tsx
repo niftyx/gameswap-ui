@@ -1,14 +1,20 @@
-import { Button, InputAdornment, makeStyles } from "@material-ui/core";
+import {
+  Button,
+  CircularProgress,
+  InputAdornment,
+  makeStyles,
+} from "@material-ui/core";
 import clsx from "classnames";
 import { FormTextField } from "components";
 import { FormCollectionImageUpload } from "components/Form";
 import { DEFAULT_NETWORK_ID } from "config/constants";
 import { getContractAddress } from "config/networks";
-import { useConnectedWeb3Context } from "contexts";
+import { useConnectedWeb3Context, useGlobal } from "contexts";
 import { Form, Formik } from "formik";
 import React from "react";
 import { ERC721FactoryService } from "services";
 import { getIPFSService } from "services/ipfs";
+import { waitSeconds } from "utils";
 import { getLogger } from "utils/logger";
 import { ICollection } from "utils/types";
 import * as Yup from "yup";
@@ -45,6 +51,8 @@ export const CollectionCreateModal = (props: IProps) => {
   const classes = useStyles();
   const { onClose, visible } = props;
   const ipfsService = getIPFSService();
+  const { loadCollections } = useGlobal();
+
   const { account, library: provider, networkId } = useConnectedWeb3Context();
   const gswap721FactoryAddress = getContractAddress(
     networkId || DEFAULT_NETWORK_ID,
@@ -72,10 +80,10 @@ export const CollectionCreateModal = (props: IProps) => {
     <BasicModal onClose={onClose} title="Collection" visible={visible}>
       <Formik
         initialValues={initialFormValues}
-        onSubmit={async (values, { setErrors }) => {
+        onSubmit={async (values, { setSubmitting }) => {
           // create a new collection
-          console.log(values);
           try {
+            setSubmitting(true);
             const txResult = await factoryContract.createGswap721(
               values.displayName,
               values.symbol,
@@ -83,9 +91,13 @@ export const CollectionCreateModal = (props: IProps) => {
               values.description || "",
               values.shortUrl || ""
             );
-            logger.log(txResult);
+            await waitSeconds(5);
+            await loadCollections();
+            setSubmitting(false);
+            onClose();
           } catch (error) {
             logger.error(error);
+            setSubmitting(false);
           }
         }}
         validationSchema={Yup.object().shape({
@@ -210,6 +222,7 @@ export const CollectionCreateModal = (props: IProps) => {
               type="submit"
               variant="contained"
             >
+              {isSubmitting && <CircularProgress color="primary" size={32} />}
               Create collection
             </Button>
           </Form>

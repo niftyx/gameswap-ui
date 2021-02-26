@@ -12,6 +12,7 @@ import { ERC721Service } from "services";
 import { getAPIService } from "services/api";
 import { getIPFSService } from "services/ipfs";
 import useCommonStyles from "styles/common";
+import { waitSeconds } from "utils";
 import { getFileType } from "utils/asset";
 import { getLogger } from "utils/logger";
 
@@ -284,7 +285,13 @@ export const ERC721ProgressModal = (props: IProps) => {
       setState((prevState) => ({ ...prevState, error: "", isLoading: true }));
 
       const selectedGame = games.find((e) => e.id === formValues.gameId);
-
+      logger.log(
+        account || "",
+        state.tokenURI,
+        formValues.gameId,
+        selectedGame && selectedGame.categoryId,
+        state.contentId
+      );
       const txReceipt = await erc721.mintItem(
         account || "",
         state.tokenURI,
@@ -293,15 +300,9 @@ export const ERC721ProgressModal = (props: IProps) => {
         state.contentId
       );
 
-      logger.log(txReceipt);
-
       const tokenId = erc721.getCreatedAssetId(txReceipt);
-      logger.log(tokenId);
 
       if (formValues.instantSale) {
-        // get TokenId from subgraph
-        const tokenId = BigNumber.from(0);
-        logger.log("tokenId", tokenId);
         setState((prevState) => ({
           ...prevState,
           error: "",
@@ -311,8 +312,9 @@ export const ERC721ProgressModal = (props: IProps) => {
           tokenMint: true,
         }));
       } else {
+        await waitSeconds(5);
+        history.push("/trade");
         onClose();
-        // history.push("/trade");
       }
     } catch (error) {
       setState((prevState) => ({
