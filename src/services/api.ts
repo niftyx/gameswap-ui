@@ -4,6 +4,15 @@ import { BigNumber } from "ethers";
 
 axios.defaults.baseURL = API_BASE_URL;
 
+interface IAPIResponseRecord {
+  erc20: string;
+  erc20Amount: any;
+  id: string;
+  owner: string;
+  timestamp: number;
+  txHash: string;
+}
+
 export class APIService {
   private readonly cryptoContentPath = "/lock-content/v1/";
   private readonly gamePath = "/games/v1/";
@@ -60,13 +69,13 @@ export class APIService {
     return response.data;
   }
 
-  public async getAssetsByAddress(
-    address: string,
+  public async getAssetsOfUser(
+    ownerAddress: string,
     perPage?: number,
     page?: number
   ) {
     const response = await axios.get(
-      `${this.assetPath}address/${address}?perPage=${perPage || 100}&page=${
+      `${this.assetPath}user/${ownerAddress}?perPage=${perPage || 100}&page=${
         page || 1
       }`
     );
@@ -74,6 +83,23 @@ export class APIService {
       page: number;
       perPage: number;
       records: Record<string, unknown>[];
+    };
+  }
+
+  public async getAssetHistory(
+    assetId: string,
+    perPage?: number,
+    page?: number
+  ) {
+    const response = await axios.get(
+      `${this.assetPath}${assetId}/history?perPage=${perPage || 100}&page=${
+        page || 1
+      }`
+    );
+    return response.data as {
+      page: number;
+      perPage: number;
+      records: IAPIResponseRecord[];
     };
   }
 }

@@ -61,7 +61,7 @@ export const knownTokens: { [name in KnownToken]: IKnownTokenData } = {
     symbol: "WETH",
     decimals: 18,
     addresses: {
-      [networkIds.AVAXTEST]: "0xc126c54E0f85cFe907D8444D740fF5e071C9CAD5",
+      [networkIds.AVAXTEST]: "0x444806d2c0856c12dd8db239b809fc4641fcbb5e",
       [networkIds.AVAXMAIN]: "0xf20d962a6c8f70c731bd838a3a388d7d48fa6e15",
     },
     coingeckoTokenId: "weth",

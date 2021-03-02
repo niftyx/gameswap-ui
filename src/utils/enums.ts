@@ -53,9 +53,10 @@ export enum ETradeStep {
 }
 
 export enum EHistoryItemType {
-  Created,
-  List,
-  Sale,
+  Created = "Created",
+  // List = "List",
+  Sale = "Sale",
+  Transfer = "Transfer",
 }
 
 export enum EFileType {

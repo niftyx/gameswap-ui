@@ -1,17 +1,17 @@
 import { Typography, makeStyles } from "@material-ui/core";
-import LocalOfferIcon from "@material-ui/icons/LocalOffer";
+// import LocalOfferIcon from "@material-ui/icons/LocalOffer";
 import NewReleasesIcon from "@material-ui/icons/NewReleases";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
-// import SwapHorizIcon from "@material-ui/icons/SwapHoriz";
+import SwapHorizIcon from "@material-ui/icons/SwapHoriz";
 import clsx from "classnames";
 import React from "react";
 import { EHistoryItemType } from "utils/enums";
 
 const icons = {
   [EHistoryItemType.Created]: NewReleasesIcon,
-  [EHistoryItemType.List]: LocalOfferIcon,
+  // [EHistoryItemType.List]: LocalOfferIcon,
   [EHistoryItemType.Sale]: ShoppingCartIcon,
-  // [EHistoryItemType.Transfer]: SwapHorizIcon,
+  [EHistoryItemType.Transfer]: SwapHorizIcon,
 };
 
 const useStyles = makeStyles(() => ({

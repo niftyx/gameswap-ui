@@ -1,6 +1,7 @@
 import { makeStyles } from "@material-ui/core";
 import clsx from "classnames";
 import React, { useState } from "react";
+import { IHistoryItem } from "utils/types";
 
 import { PriceHistory } from "../PriceHistory";
 import { TradeHistory } from "../TradeHistory";
@@ -32,6 +33,10 @@ const useStyles = makeStyles((theme) => ({
 
 interface IProps {
   className?: string;
+  tradeHistoryData: {
+    history: IHistoryItem[];
+    loading: boolean;
+  };
 }
 
 enum EHistoryMode {
@@ -70,7 +75,7 @@ export const HistorySection = (props: IProps) => {
       {state.mode === EHistoryMode.priceHistory ? (
         <PriceHistory />
       ) : (
-        <TradeHistory />
+        <TradeHistory tradeHistoryData={props.tradeHistoryData} />
       )}
     </div>
   );

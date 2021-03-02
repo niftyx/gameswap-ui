@@ -52,7 +52,7 @@ export const useInventoryAssets = (
     try {
       setState((prevState) => ({ ...prevState, loading: true }));
 
-      const info = await apiService.getAssetsByAddress(
+      const info = await apiService.getAssetsOfUser(
         variables.id,
         variables.perPage,
         variables.page

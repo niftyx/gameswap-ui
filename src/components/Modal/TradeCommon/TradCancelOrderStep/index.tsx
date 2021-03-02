@@ -5,6 +5,7 @@ import { CommentLoader } from "components/Loader";
 import { ErrorText } from "components/Text";
 import { useConnectedWeb3Context } from "contexts";
 import React, { useEffect, useState } from "react";
+import { waitSeconds } from "utils";
 import { getLogger } from "utils/logger";
 import { cancelOrder } from "utils/order";
 import { EthersBigNumberTo0xBigNumber } from "utils/token";
@@ -65,6 +66,8 @@ export const TradCancelOrderStep = (props: IProps) => {
       );
       await context.library.waitForTransaction(txHash);
       logger.log("submitResult::Success");
+
+      await waitSeconds(3);
 
       onConfirm();
 
