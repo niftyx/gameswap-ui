@@ -45,6 +45,9 @@ const useStyles = makeStyles((theme) => ({
   },
   searchBar: {
     marginLeft: theme.spacing(5),
+    [theme.breakpoints.down(1620)]: {
+      display: "none",
+    },
   },
   link: {
     color: theme.colors.link.default,
@@ -70,10 +73,15 @@ const useStyles = makeStyles((theme) => ({
   },
   launchPad: { marginRight: theme.spacing(2) },
   menuItems: {
+    margin: `0 ${theme.spacing(2)}px`,
+  },
+  menuItemsContent: {
+    maxWidth: 450,
+    margin: "auto",
+
     display: "flex",
     justifyContent: "space-around",
     alignItems: "center",
-    margin: `0 ${theme.spacing(2)}px`,
   },
 }));
 
@@ -97,50 +105,52 @@ const Header = ({ className, ...rest }: AppBarProps) => {
           <Hidden mdDown>
             <BackNextGroup onBack={onBack} onNext={onNext} />
           </Hidden>
-          <Hidden mdDown>
-            <SearchBar className={classes.searchBar} />
-          </Hidden>
+
+          <SearchBar className={classes.searchBar} />
+
           <Box className={classes.menuItems} flexGrow={1}>
-            <Link
-              className={classes.link}
-              color="textSecondary"
-              component={NavLink}
-              to="/trade"
-              underline="none"
-              variant="body2"
-            >
-              TRADE
-            </Link>
-            <Link
-              className={classes.link}
-              color="textSecondary"
-              component={NavLink}
-              to="/browse"
-              underline="none"
-              variant="body2"
-            >
-              BROWSE
-            </Link>
-            <Link
-              className={classes.link}
-              color="textSecondary"
-              component={NavLink}
-              to="/launch-pad"
-              underline="none"
-              variant="body2"
-            >
-              LAUNCHPAD
-            </Link>
-            <Link
-              className={classes.link}
-              color="textSecondary"
-              component={NavLink}
-              to="/faq"
-              underline="none"
-              variant="body2"
-            >
-              FAQ
-            </Link>
+            <div className={classes.menuItemsContent}>
+              <Link
+                className={classes.link}
+                color="textSecondary"
+                component={NavLink}
+                to="/trade"
+                underline="none"
+                variant="body2"
+              >
+                TRADE
+              </Link>
+              <Link
+                className={classes.link}
+                color="textSecondary"
+                component={NavLink}
+                to="/browse"
+                underline="none"
+                variant="body2"
+              >
+                BROWSE
+              </Link>
+              <Link
+                className={classes.link}
+                color="textSecondary"
+                component={NavLink}
+                to="/launch-pad"
+                underline="none"
+                variant="body2"
+              >
+                LAUNCHPAD
+              </Link>
+              <Link
+                className={classes.link}
+                color="textSecondary"
+                component={NavLink}
+                to="/faq"
+                underline="none"
+                variant="body2"
+              >
+                FAQ
+              </Link>
+            </div>
           </Box>
           <Hidden mdDown>
             <Notifications className={classes.notifications} />

@@ -1,5 +1,6 @@
 import {
   Button,
+  Hidden,
   IconButton,
   ListItemIcon,
   ListItemText,
@@ -42,6 +43,9 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
+    [theme.breakpoints.down(1350)]: {
+      display: "none",
+    },
   },
   label: {
     fontSize: theme.spacing(1.25),
@@ -176,6 +180,7 @@ const AccountInfoBar = (props: IProps) => {
               {formattedGswapBalance}
             </Typography>
           </div>
+
           <div className={classes.eth}>
             <div className={classes.ethBalance}>
               <Typography className={classes.label} component="div">

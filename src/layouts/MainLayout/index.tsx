@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     overflowY: "auto",
   },
   containerWithMenuLeft: {
-    paddingLeft: Number(theme.custom.appNavbarWidth) + theme.spacing(1.5),
+    paddingLeft: Number(theme.custom.appNavbarWidth) + 2,
   },
 }));
 

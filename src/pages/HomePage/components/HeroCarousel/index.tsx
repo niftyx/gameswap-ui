@@ -74,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     left: 0,
     right: 0,
-    padding: `0 ${theme.spacing(2)}px`,
+    padding: `0 ${theme.spacing(3)}px`,
     top: 0,
     bottom: 0,
     display: "flex",
@@ -96,6 +96,14 @@ const useStyles = makeStyles((theme) => ({
     lineHeight: "85px",
     color: theme.colors.text.default,
     fontWeight: "bold",
+    [theme.breakpoints.down(1200)]: {
+      fontSize: 60,
+      lineHeight: "75px",
+    },
+    [theme.breakpoints.down(1050)]: {
+      fontSize: 40,
+      lineHeight: "55px",
+    },
   },
   bottomRow: {
     display: "flex",
@@ -104,6 +112,9 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
     marginTop: theme.spacing(6),
     marginBottom: theme.spacing(3),
+    [theme.breakpoints.down(1100)]: {
+      flexDirection: "column",
+    },
   },
   row: {
     display: "flex",
@@ -120,6 +131,13 @@ const useStyles = makeStyles((theme) => ({
   },
   slick: {
     width: 440,
+    [theme.breakpoints.down(1100)]: {
+      marginTop: 20,
+      alignSelf: "flex-end",
+    },
+    [theme.breakpoints.down(1024)]: {
+      width: 330,
+    },
     "& .slick-slider": {
       "& .slick-arrow": {
         width: 24,

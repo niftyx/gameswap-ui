@@ -11,6 +11,7 @@ import { HeroCarousel, TrendingGames, TrendingItems } from "./components";
 const useStyles = makeStyles((theme) => ({
   root: {
     height: "auto",
+    padding: 0,
   },
   content: {
     height: "100%",
@@ -18,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
   heroCarousel: {
     minHeight: "50%",
   },
+  restContent: { padding: "16px 24px" },
   trendingGames: {
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2),
@@ -46,16 +48,20 @@ const HomePage = () => {
     <PageContainer className={classes.root}>
       <div className={clsx(classes.content, commonClasses.scroll)}>
         <HeroCarousel className={classes.heroCarousel} />
-        <TrendingGames className={classes.trendingGames} />
-        <Divider className={classes.divider} />
-        <TrendingItems
-          className={classes.trendingItems}
-          loading={allOrdersLoading}
-          onScrollEnd={
-            !allOrdersLoading && !allOrdersLoaded ? loadMoreAllOrders : () => {}
-          }
-          orders={allOrders}
-        />
+        <div className={classes.restContent}>
+          <TrendingGames className={classes.trendingGames} />
+          <Divider className={classes.divider} />
+          <TrendingItems
+            className={classes.trendingItems}
+            loading={allOrdersLoading}
+            onScrollEnd={
+              !allOrdersLoading && !allOrdersLoaded
+                ? loadMoreAllOrders
+                : () => {}
+            }
+            orders={allOrders}
+          />
+        </div>
       </div>
     </PageContainer>
   );
