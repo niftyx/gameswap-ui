@@ -17,7 +17,6 @@ const useStyles = makeStyles((theme) => ({
   },
   heroCarousel: {
     minHeight: "50%",
-    marginLeft: -theme.spacing(2),
   },
   trendingGames: {
     marginTop: theme.spacing(2),
