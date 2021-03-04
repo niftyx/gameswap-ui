@@ -7,10 +7,9 @@ import {
   ScrollContainer,
   SimpleLoader,
 } from "components";
-import { useConnectedWeb3Context, useTrade } from "contexts";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { IAssetItem, ISignedOrder, ITradeAssetItem } from "utils/types";
+import { ISignedOrder, ITradeAssetItem } from "utils/types";
 
 import AuctionItemsSection from "../AuctionItemsSection";
 
@@ -37,8 +36,6 @@ const AssetItemsSection = (props: IProps) => {
 
   const { loading, onScrollEnd, orders } = props;
   const history = useHistory();
-  const { openBuyModal } = useTrade();
-  const { account, setWalletConnectModalOpened } = useConnectedWeb3Context();
 
   const [state, setState] = useState<IState>({
     isAuctionActive: false,
@@ -71,14 +68,6 @@ const AssetItemsSection = (props: IProps) => {
     }));
   };
 
-  const onBuy = (asset: IAssetItem) => {
-    if (!account) {
-      setWalletConnectModalOpened(true);
-      return;
-    }
-    openBuyModal(asset);
-  };
-
   return (
     <ScrollContainer
       className={clsx(classes.root, props.className)}
@@ -98,7 +87,6 @@ const AssetItemsSection = (props: IProps) => {
                 data={asset}
                 isOnCart={false}
                 key={asset.id.toHexString()}
-                onClick={onBuy}
                 onMore={(id) => history.push(`/assets/${id}`)}
               />
             ))}

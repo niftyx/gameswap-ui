@@ -2,6 +2,7 @@ import { Button, Typography, makeStyles } from "@material-ui/core";
 import KeyboardArrowLeftIcon from "@material-ui/icons/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@material-ui/icons/KeyboardArrowRight";
 import clsx from "classnames";
+import { transparentize } from "polished";
 import React, { useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 import Slider from "react-slick";
@@ -83,7 +84,7 @@ const useStyles = makeStyles((theme) => ({
     "&:before": {
       content: `" "`,
       backgroundImage:
-        "linear-gradient(180deg, rgba(58, 62, 69, 0) 31%, rgba(27, 29, 33, 0.9) 82%)",
+        "linear-gradient(180deg, rgba(58, 62, 69, 0) 31%, black 82%)",
       position: "absolute",
       left: 0,
       right: 0,
@@ -92,6 +93,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   comment: {
+    zIndex: 2,
     fontSize: 70,
     lineHeight: "85px",
     color: theme.colors.text.default,
@@ -177,12 +179,18 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 12,
     transition: "box-shadow .25s, -webkit-box-shadow .25s",
     "&:hover": {
-      "-webkit-box-shadow": "0 0 6px 1px rgb(255 255 255 / 80%)",
-      boxShadow: "0 0 6px 1px rgb(255 255 255 / 80%)",
+      "-webkit-box-shadow": `0 0 6px 1px ${transparentize(
+        0.2,
+        theme.colors.background.fourth
+      )}`,
+      boxShadow: `0 0 6px 1px ${transparentize(
+        0.2,
+        theme.colors.background.fourth
+      )}`,
     },
     "&.selected": {
-      "-webkit-box-shadow": "0 0 6px 2px #ffffff",
-      boxShadow: "0 0 6px 2px #ffffff",
+      "-webkit-box-shadow": `0 0 6px 2px ${theme.colors.background.fourth}`,
+      boxShadow: `0 0 6px 2px ${theme.colors.background.fourth}`,
     },
   },
   empty: { flex: 1 },

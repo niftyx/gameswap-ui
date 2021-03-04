@@ -1,10 +1,9 @@
 import { Typography, makeStyles } from "@material-ui/core";
 import clsx from "classnames";
 import { AssetItem, AssetsContainer, TrendingToolbar } from "components";
-import { useConnectedWeb3Context, useTrade } from "contexts";
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { IAssetItem, ISignedOrder, ITradeAssetItem } from "utils/types";
+import { ISignedOrder, ITradeAssetItem } from "utils/types";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -40,8 +39,6 @@ export const TrendingItems = (props: IProps) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { loading, onScrollEnd, orders } = props;
   const history = useHistory();
-  const { openBuyModal } = useTrade();
-  const { account, setWalletConnectModalOpened } = useConnectedWeb3Context();
 
   const assets: ITradeAssetItem[] = [];
 
@@ -63,14 +60,6 @@ export const TrendingItems = (props: IProps) => {
     }
   });
 
-  const onBuy = (asset: IAssetItem) => {
-    if (!account) {
-      setWalletConnectModalOpened(true);
-      return;
-    }
-    openBuyModal(asset);
-  };
-
   return (
     <div className={clsx(classes.root, props.className)}>
       <div className={classes.header}>
@@ -86,7 +75,6 @@ export const TrendingItems = (props: IProps) => {
             <AssetItem
               data={asset}
               key={`${asset.collectionId}${asset.id.toHexString()}`}
-              onClick={onBuy}
               onMore={(id) => history.push(`/assets/${id}`)}
             />
           ))}

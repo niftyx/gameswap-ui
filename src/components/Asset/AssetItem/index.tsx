@@ -175,8 +175,8 @@ const AssetItem = (props: IProps) => {
             !loading ? "visible" : ""
           )}
           onClick={() => {
-            if (assetDataWithPriceInfo.asset && onClick) {
-              onClick({ ...assetDataWithPriceInfo.asset, orders: data.orders });
+            if (assetDataWithPriceInfo.asset && onMore) {
+              onMore((assetDetails || {}).id || "");
             }
           }}
         >

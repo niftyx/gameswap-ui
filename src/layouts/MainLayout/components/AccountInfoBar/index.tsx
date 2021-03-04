@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
   gswap: {
     padding: `0 10.5px`,
     borderRadius: theme.spacing(0.75),
-    backgroundColor: theme.colors.background.third,
+    backgroundColor: theme.colors.background.fourth,
     height: theme.custom.appHeaderItemHeight,
     display: "flex",
     flexDirection: "column",
@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
   label: {
     fontSize: theme.spacing(1.25),
     lineHeight: `${theme.spacing(1.75)}px`,
-    color: transparentize(0.63, theme.colors.text.default),
+    color: transparentize(0.3, theme.colors.text.default),
   },
   gswapValue: {
     fontSize: theme.spacing(2.5),
