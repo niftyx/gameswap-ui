@@ -65,10 +65,7 @@ export const TradeBuyApprovalStep = (props: IProps) => {
         context.account,
         (assetTakerInfo as any).tokenAddress
       );
-      await erc20Service.approve(
-        operator,
-        xBigNumberToEthersBigNumber(order.takerAssetAmount.plus(order.takerFee))
-      );
+      await erc20Service.approveUnlimited(operator);
 
       onConfirm();
 

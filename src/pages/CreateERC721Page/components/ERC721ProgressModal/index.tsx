@@ -6,6 +6,7 @@ import { DEFAULT_NETWORK_ID } from "config/constants";
 import { get0xContractAddresses } from "config/networks";
 import { useConnectedWeb3Context, useGlobal } from "contexts";
 import { BigNumber } from "ethers";
+import { parseEther } from "ethers/lib/utils";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { ERC721Service } from "services";
@@ -15,6 +16,9 @@ import useCommonStyles from "styles/common";
 import { waitSeconds } from "utils";
 import { getFileType } from "utils/asset";
 import { getLogger } from "utils/logger";
+import { buildSellCollectibleOrder, submitCollectibleOrder } from "utils/order";
+import { EthersBigNumberTo0xBigNumber } from "utils/token";
+import { NetworkId } from "utils/types";
 
 import { ECreateStep } from "../../index";
 import { IERC721FormValues } from "../ERC721CreateForm";
@@ -327,15 +331,48 @@ export const ERC721ProgressModal = (props: IProps) => {
   };
 
   const signSellOrder = async () => {
+    logger.log("signSellOrder");
     try {
-      logger.log("signSellOrder");
+      if (!networkId || !context.library) return;
+      setState((prevState) => ({
+        ...prevState,
+        error: "",
+        isLoading: true,
+      }));
+      const signedOrder = await buildSellCollectibleOrder(
+        {
+          erc721: erc721.address,
+          tokenId: EthersBigNumberTo0xBigNumber(state.tokenId),
+          account: context.account || "",
+          amount: EthersBigNumberTo0xBigNumber(BigNumber.from(1)),
+          exchangeAddress: get0xContractAddresses(networkId).exchange,
+          erc20Address: formValues.saleToken,
+          price: EthersBigNumberTo0xBigNumber(
+            parseEther(formValues.salePrice.toString())
+          ),
+        },
+        networkId as NetworkId,
+        context.library.provider
+      );
+      await submitCollectibleOrder(signedOrder, networkId as NetworkId);
+
+      logger.log("submitResult::Success");
+
+      await waitSeconds(5);
+      setState((prevState) => ({
+        ...prevState,
+        isLoading: false,
+      }));
+
+      history.push("/trade");
+      onClose();
     } catch (error) {
       setState((prevState) => ({
         ...prevState,
         error: error.message,
         isLoading: false,
       }));
-      logger.error(error);
+      logger.error("signSellOrder::", error);
     }
   };
 

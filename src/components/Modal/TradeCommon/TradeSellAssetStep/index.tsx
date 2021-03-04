@@ -83,7 +83,6 @@ export const TradeSellAssetStep = (props: IProps) => {
         networkId as NetworkId,
         context.library.provider
       );
-      logger.log("signedOrder::", signedOrder);
       await submitCollectibleOrder(signedOrder, networkId as NetworkId);
 
       logger.log("submitResult::Success");
