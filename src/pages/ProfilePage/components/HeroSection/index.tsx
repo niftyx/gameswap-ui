@@ -6,22 +6,24 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
+import { ReactComponent as CopyIcon } from "assets/svgs/content-copy.svg";
 import clsx from "classnames";
 import { ProfileMarker } from "components/Marker";
 import { DEFAULT_NETWORK_ID, PRICE_DECIMALS } from "config/constants";
 import { getToken } from "config/networks";
 import { useConnectedWeb3Context, useGlobal } from "contexts";
+import copy from "copy-to-clipboard";
 import { BigNumber } from "ethers";
 import { useBalances } from "helpers";
+import { useSnackbar } from "notistack";
 import { transparentize } from "polished";
 import React from "react";
 import useCommonStyles from "styles/common";
-import { formatBigNumber, numberWithCommas } from "utils";
+import { formatBigNumber, numberWithCommas, shortenAddress } from "utils";
 import { EProfileMarker } from "utils/enums";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: "100%",
     position: "relative",
   },
   imgItem: {
@@ -31,6 +33,17 @@ const useStyles = makeStyles((theme) => ({
     backgroundRepeat: "no-repeat",
     backgroundPositionX: "center",
     opacity: 0.3,
+    position: "relative",
+    "&:before": {
+      content: `" "`,
+      backgroundImage:
+        "linear-gradient(160deg, rgba(58, 62, 69, 0) 11%, black 82%)",
+      position: "absolute",
+      left: 0,
+      right: 0,
+      top: 0,
+      bottom: 0,
+    },
   },
   title: {
     position: "absolute",
@@ -43,21 +56,20 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     left: theme.spacing(2),
     right: theme.spacing(2),
-    top: 0,
-    bottom: 0,
+    bottom: theme.spacing(2),
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
   },
   name: {
-    fontSize: 70,
+    fontSize: 32,
     color: theme.colors.text.default,
     fontWeight: "bold",
     marginRight: theme.spacing(3.5),
   },
   description: {
     fontSize: theme.spacing(2),
-    lineHeight: "36px",
+    lineHeight: 1.5,
     color: transparentize(0.4, theme.colors.text.default),
     maxWidth: 500,
   },
@@ -67,8 +79,8 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
   },
   avatar: {
-    width: theme.spacing(13),
-    height: theme.spacing(13),
+    width: theme.spacing(10),
+    height: theme.spacing(10),
     marginRight: theme.spacing(3),
   },
   button: {
@@ -95,6 +107,15 @@ const useStyles = makeStyles((theme) => ({
     width: theme.spacing(3.5),
     color: theme.colors.text.arrowUp,
   },
+  copyButton: {
+    marginLeft: 8,
+    cursor: "pointer",
+    color: transparentize(0.4, theme.colors.text.default),
+    transition: "all 0.4s",
+    "&:hover": {
+      color: theme.colors.text.default,
+    },
+  },
 }));
 
 interface IProps {
@@ -105,6 +126,7 @@ export const HeroSection = (props: IProps) => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
   const context = useConnectedWeb3Context();
+  const { enqueueSnackbar } = useSnackbar();
   const { account, networkId } = context;
   const gSwapToken = getToken(networkId || DEFAULT_NETWORK_ID, "gswap");
   const {
@@ -128,6 +150,11 @@ export const HeroSection = (props: IProps) => {
     formatBigNumber(usdBalance, gSwapToken.decimals + PRICE_DECIMALS)
   );
 
+  const onCopy = () => {
+    copy(account || "");
+    enqueueSnackbar("Address is copied");
+  };
+
   return (
     <div className={clsx(classes.root, props.className)}>
       <div
@@ -149,13 +176,24 @@ export const HeroSection = (props: IProps) => {
                   <Typography className={classes.name} component="div">
                     Elon Must
                   </Typography>
-                  <ProfileMarker marker={EProfileMarker.ProTrader} />
+                  <ProfileMarker marker={EProfileMarker.Verified} />
                 </div>
-                <Typography className={classes.description} component="div">
-                  {account || ""}
-                </Typography>
+                <div className={classes.row}>
+                  <Typography className={classes.description} component="div">
+                    {shortenAddress(account || "")}
+                  </Typography>
+                  <span className={classes.copyButton} onClick={onCopy}>
+                    <CopyIcon />
+                  </span>
+                </div>
               </div>
             </div>
+            <Button
+              className={clsx(commonClasses.transparentButton, classes.button)}
+              variant="contained"
+            >
+              EDIT PROFILE
+            </Button>
           </Grid>
           <Grid item md={4} xs={12}>
             <div>
@@ -171,7 +209,7 @@ export const HeroSection = (props: IProps) => {
               <Typography className={classes.balanceGSWAP} component="div">
                 {formattedGswapBalance} {gSwapToken.symbol}
               </Typography>
-              <Button
+              {/* <Button
                 className={clsx(
                   commonClasses.transparentButton,
                   classes.button
@@ -179,7 +217,7 @@ export const HeroSection = (props: IProps) => {
                 variant="contained"
               >
                 BUY GSWAP
-              </Button>
+              </Button> */}
             </div>
           </Grid>
         </Grid>

@@ -17,7 +17,9 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: theme.spacing(1),
     height: theme.custom.appHeaderItemHeight,
     width: theme.custom.appHeaderItemHeight,
+    minWidth: theme.custom.appHeaderItemHeight,
     border: "none !important",
+    padding: 5,
     "& svg": {
       height: Number(theme.custom.appHeaderItemHeight) / 2,
       width: Number(theme.custom.appHeaderItemHeight) / 2,

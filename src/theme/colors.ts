@@ -70,6 +70,7 @@ const colors = [
         third: "#5F6171",
         fourth: "#626B78",
         fifth: "#24283E",
+        sixth: transparentize(0.75, "#FFF"),
       },
       icon: {
         active: "#FFF",

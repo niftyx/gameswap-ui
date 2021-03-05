@@ -68,17 +68,21 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(2),
     marginRight: theme.spacing(2),
   },
-  notifications: {
+  notiLaunchWrapper: {
+    display: "flex",
+    alignItems: "center",
     marginRight: theme.spacing(2),
   },
-  launchPad: { marginRight: theme.spacing(2) },
+  notifications: {
+    marginRight: theme.spacing(1),
+  },
+  launchPad: { marginRight: theme.spacing(1) },
   menuItems: {
     margin: `0 ${theme.spacing(2)}px`,
   },
   menuItemsContent: {
-    maxWidth: 450,
+    maxWidth: 400,
     margin: "auto",
-
     display: "flex",
     justifyContent: "space-around",
     alignItems: "center",
@@ -134,30 +138,21 @@ const Header = ({ className, ...rest }: AppBarProps) => {
                 className={classes.link}
                 color="textSecondary"
                 component={NavLink}
-                to="/launch-pad"
-                underline="none"
-                variant="body2"
-              >
-                LAUNCHPAD
-              </Link>
-              <Link
-                className={classes.link}
-                color="textSecondary"
-                component={NavLink}
                 to="/faq"
                 underline="none"
                 variant="body2"
               >
-                FAQ
+                HOW IT WORKS
               </Link>
             </div>
           </Box>
           <Hidden mdDown>
-            <Notifications className={classes.notifications} />
-            <LaunchPad className={classes.launchPad} />
+            <div className={classes.notiLaunchWrapper}>
+              <Notifications className={classes.notifications} />
+              <LaunchPad className={classes.launchPad} />
+            </div>
           </Hidden>
 
-          <Divider className={classes.divider} />
           <AccountInfoBar />
         </div>
       </Toolbar>

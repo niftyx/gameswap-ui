@@ -30,7 +30,7 @@ export const storeSettings = (settings: ISettings) => {
 
 const SettingsContext = createContext({
   settings: defaultSettings,
-  saveSettings: () => {},
+  saveSettings: (_: ISettings) => {},
 });
 
 interface IProps {

@@ -9,6 +9,7 @@ import {
   Typography,
   makeStyles,
 } from "@material-ui/core";
+import AddIcon from "@material-ui/icons/Add";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import SendIcon from "@material-ui/icons/Send";
 import { ReactComponent as MetaMaskIcon } from "assets/svgs/metamask.svg";
@@ -24,7 +25,7 @@ import { useConnectedWeb3Context, useGlobal } from "contexts";
 import { useBalances } from "helpers";
 import { transparentize } from "polished";
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import { formatBigNumber, formatToShortNumber, shortenAddress } from "utils";
 
 const useStyles = makeStyles((theme) => ({
@@ -35,14 +36,16 @@ const useStyles = makeStyles((theme) => ({
       marginLeft: theme.spacing(1.5),
     },
   },
-  gswap: {
-    padding: `0 10.5px`,
+  create: {
+    padding: `0 10px 0 6px`,
     borderRadius: theme.spacing(0.75),
     backgroundColor: theme.colors.background.fourth,
     height: theme.custom.appHeaderItemHeight,
     display: "flex",
-    flexDirection: "column",
     justifyContent: "center",
+    textDecoration: "none",
+    alignItems: "center",
+    color: theme.colors.text.default,
     [theme.breakpoints.down(1350)]: {
       display: "none",
     },
@@ -51,11 +54,6 @@ const useStyles = makeStyles((theme) => ({
     fontSize: theme.spacing(1.25),
     lineHeight: `${theme.spacing(1.75)}px`,
     color: transparentize(0.3, theme.colors.text.default),
-  },
-  gswapValue: {
-    fontSize: theme.spacing(2.5),
-    lineHeight: `${theme.spacing(3.375)}px`,
-    color: theme.colors.text.default,
   },
   eth: {
     padding: 3,
@@ -69,15 +67,15 @@ const useStyles = makeStyles((theme) => ({
     padding: "4px 10px",
   },
   ethValue: {
-    fontSize: theme.spacing(2.5),
-    lineHeight: `${theme.spacing(3.375)}px`,
+    fontSize: theme.spacing(2),
+    lineHeight: `${theme.spacing(3)}px`,
     color: transparentize(0.18, theme.colors.text.default),
   },
   ethAddress: {
     borderRadius: theme.spacing(0.75),
     backgroundColor: theme.colors.background.secondary,
     height: "100%",
-    padding: `0 ${theme.spacing(2)}px`,
+    padding: `0 ${theme.spacing(1.5)}px`,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -100,12 +98,12 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   connectButton: {
-    height: theme.spacing(6.5),
+    height: theme.spacing(5),
     borderRadius: theme.spacing(0.5),
     "& svg": {
-      height: theme.spacing(3.25),
-      width: theme.spacing(3.65),
-      marginRight: theme.spacing(2),
+      height: theme.spacing(3),
+      width: theme.spacing(3),
+      marginRight: theme.spacing(1),
     },
     "& .button_connect__label": {
       marginTop: 1,
@@ -172,22 +170,18 @@ const AccountInfoBar = (props: IProps) => {
     <div className={clsx(classes.root, props.className)}>
       {isConnected ? (
         <>
-          <div className={classes.gswap}>
-            <Typography className={classes.label} component="div">
-              {gSwapToken.symbol}
-            </Typography>
-            <Typography className={classes.gswapValue} component="div">
-              {formattedGswapBalance}
-            </Typography>
-          </div>
+          <NavLink className={classes.create} to="/create">
+            <AddIcon />
+            &nbsp;CREATE
+          </NavLink>
 
           <div className={classes.eth}>
             <div className={classes.ethBalance}>
               <Typography className={classes.label} component="div">
-                {TokenAvax.symbol}
+                {gSwapToken.symbol}
               </Typography>
               <Typography className={classes.ethValue} component="div">
-                {formattedEthBalance}
+                {formattedGswapBalance}
               </Typography>
             </div>
             <div className={classes.ethAddress} onClick={toProfile}>

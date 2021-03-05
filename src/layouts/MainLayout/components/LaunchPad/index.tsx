@@ -14,9 +14,11 @@ import React from "react";
 const useStyles = makeStyles((theme) => ({
   root: {},
   moreButton: {
+    padding: 5,
     borderRadius: theme.spacing(1),
     height: theme.custom.appHeaderItemHeight,
     width: theme.custom.appHeaderItemHeight,
+    minWidth: theme.custom.appHeaderItemHeight,
     border: "none !important",
     "& svg": {
       height: Number(theme.custom.appHeaderItemHeight) / 2,

@@ -11,6 +11,7 @@ export enum EPlatform {
 
 export enum EProfileMarker {
   ProTrader = "PRO TRADER",
+  Verified = "VERIFIED",
 }
 
 export enum EActivityType {
@@ -64,4 +65,11 @@ export enum EFileType {
   Audio = "Audio",
   Video = "Video",
   Unknown = "Unknown",
+}
+
+export enum EProfileTab {
+  Assets = "Assets",
+  OnSale = "OnSale",
+  Created = "Created",
+  Liked = "Liked",
 }

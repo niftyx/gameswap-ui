@@ -4,7 +4,7 @@ const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;
     * {
-      font-family: 'Catamaran', sans-serif;
+      font-family: 'Poppins', sans-serif;
       box-sizing: border-box;
     }
 

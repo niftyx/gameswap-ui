@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     margin: "auto",
-    maxWidth: 815,
+    maxWidth: 982,
     padding: `0px ${theme.spacing(2.5)}px`,
   },
 }));

@@ -30,9 +30,8 @@ export const ProfileMarker = (props: IProps) => {
 
   return (
     <div className={clsx(classes.root, className)}>
-      {marker === EProfileMarker.ProTrader && (
-        <ProTraderIcon className={classes.icon} />
-      )}
+      <ProTraderIcon className={classes.icon} />
+
       {showLabel && (
         <Typography className={classes.text} component="div">
           {marker}

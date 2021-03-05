@@ -43,7 +43,7 @@ const themesOptions = [
       },
       MuiButton: {
         root: {
-          padding: "16px 25px 14px 25px",
+          padding: "14px 16px",
           borderRadius: "6px",
         },
       },
@@ -89,7 +89,7 @@ const themesOptions = [
       },
       MuiButton: {
         root: {
-          padding: "16px 25px 14px 25px",
+          padding: "14px 16px",
           borderRadius: "6px",
         },
       },
@@ -97,22 +97,27 @@ const themesOptions = [
     palette: {
       type: "light",
       action: {
-        active: colors.blueGrey[600],
+        active: "rgba(255, 255, 255, 0.54)",
+        hover: "rgba(255, 255, 255, 0.04)",
+        selected: "rgba(255, 255, 255, 0.08)",
+        disabled: "rgba(255, 255, 255, 0.26)",
+        disabledBackground: "rgba(255, 255, 255, 0.12)",
+        focus: "rgba(255, 255, 255, 0.12)",
       },
       background: {
-        default: colors.common.white,
-        dark: "#f4f6f8",
-        paper: colors.common.white,
+        default: "#030616",
+        dark: "#1c2025",
+        paper: "#282C34",
       },
       primary: {
-        main: colors.indigo[600],
+        main: "#5F6BDD",
       },
       secondary: {
-        main: "#5850EC",
+        main: "#8a85ff",
       },
       text: {
-        primary: colors.blueGrey[900],
-        secondary: colors.blueGrey[600],
+        primary: "#e6e5e8",
+        secondary: "#adb0bb",
       },
     },
     shadows: softShadows,
