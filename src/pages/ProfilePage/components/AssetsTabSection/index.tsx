@@ -1,8 +1,8 @@
-import { Grid, Typography, makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 import clsx from "classnames";
 import { transparentize } from "polished";
-import React, { useState } from "react";
-import { EProfileTab } from "utils/enums";
+import React from "react";
+import { NavLink, matchPath, useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -10,13 +10,14 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
   },
   item: {
+    textDecoration: "none",
     userSelect: "none",
     margin: "4px 12px",
     color: transparentize(0.4, theme.colors.text.default),
-    padding: "4px 0",
+    padding: "2px 0",
     cursor: "pointer",
     transition: "all 0.5s",
-    borderBottom: `3px solid ${transparentize(0.4, theme.colors.text.default)}`,
+    borderBottom: `3px solid ${theme.colors.transparent}`,
     "&:hover": {
       color: transparentize(0.2, theme.colors.text.default),
       borderBottomColor: transparentize(0.2, theme.colors.text.default),
@@ -30,26 +31,47 @@ const useStyles = makeStyles((theme) => ({
 
 interface IProps {
   className?: string;
-  tab: EProfileTab;
-  onChange: (tab: EProfileTab) => void;
 }
 
 export const AssetsTabSection = (props: IProps) => {
   const classes = useStyles();
+  const history = useHistory();
+
+  const Tabs = [
+    { id: "assets", title: "Assets", href: "/profile/assets" },
+    { id: "on-sale", title: "OnSale", href: "/profile/on-sale" },
+    { id: "created", title: "Created", href: "/profile/created" },
+    { id: "liked", title: "Liked", href: "/profile/liked" },
+  ];
+
+  const isIncludeAny = Tabs.map(
+    (tab) =>
+      !!matchPath(history.location.pathname, { exact: true, path: tab.href })
+  ).reduce((e1, e2) => e1 || e2);
+
+  if (!isIncludeAny) {
+    history.push(Tabs[0].href);
+  }
 
   return (
     <div className={clsx(classes.root, props.className)}>
-      {Object.keys(EProfileTab).map((tab) => (
-        <div
-          className={clsx(classes.item, tab === props.tab ? "active" : "")}
-          key={tab}
-          onClick={() => {
-            props.onChange(tab as EProfileTab);
-          }}
-        >
-          {tab}
-        </div>
-      ))}
+      {Tabs.map((tab) => {
+        const isActive = () =>
+          !!matchPath(history.location.pathname, {
+            exact: true,
+            path: tab.href,
+          });
+        return (
+          <NavLink
+            className={classes.item}
+            isActive={isActive}
+            key={tab.id}
+            to={tab.href}
+          >
+            {tab.title}
+          </NavLink>
+        );
+      })}
     </div>
   );
 };

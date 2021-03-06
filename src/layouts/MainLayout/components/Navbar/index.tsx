@@ -74,12 +74,12 @@ const Navbar = (props: IProps & RouteComponentProps) => {
         },
         {
           title: "Favorites",
-          href: "/favorites",
+          href: "/profile/liked",
           Icon: HeartIcon,
         },
         {
           title: "My Items",
-          href: "/my-items",
+          href: "/profile/assets",
           Icon: ShoppingBagIcon,
         },
         {

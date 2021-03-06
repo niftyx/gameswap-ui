@@ -30,7 +30,7 @@ interface IProps {
   className?: string;
 }
 
-const AssetsSection = (props: IProps) => {
+const CreatedAssetsSection = (props: IProps) => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
   const { account } = useConnectedWeb3Context();
@@ -63,4 +63,4 @@ const AssetsSection = (props: IProps) => {
   );
 };
 
-export default AssetsSection;
+export default CreatedAssetsSection;

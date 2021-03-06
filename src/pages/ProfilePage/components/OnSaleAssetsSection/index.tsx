@@ -2,7 +2,7 @@ import { Grid, Typography, makeStyles } from "@material-ui/core";
 import clsx from "classnames";
 import { AssetsContainer, InventoryAssetItem, SimpleLoader } from "components";
 import { useConnectedWeb3Context } from "contexts";
-import { useInventoryAssets } from "helpers";
+import { useInventoryAssets, useMyOrders } from "helpers";
 import { transparentize } from "polished";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
@@ -30,7 +30,7 @@ interface IProps {
   className?: string;
 }
 
-const AssetsSection = (props: IProps) => {
+const OnSaleAssetsSection = (props: IProps) => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
   const { account } = useConnectedWeb3Context();
@@ -43,19 +43,29 @@ const AssetsSection = (props: IProps) => {
     id: account || "",
   });
   const history = useHistory();
+  const { orders: myOrders } = useMyOrders();
 
   return (
     <div className={clsx(classes.root, props.className)}>
       <div>
         <AssetsContainer>
-          {inventoryAssets.map((asset) => (
-            <InventoryAssetItem
-              data={asset}
-              isFullWidth
-              key={asset.id}
-              onMore={() => history.push(`/assets/${asset.id}`)}
-            />
-          ))}
+          {inventoryAssets
+            .filter((asset) => {
+              const matchedOrder = myOrders.find(
+                (order) =>
+                  order.erc721Address === asset.collectionId &&
+                  order.assetId.eq(asset.assetId)
+              );
+              return !!matchedOrder;
+            })
+            .map((asset) => (
+              <InventoryAssetItem
+                data={asset}
+                isFullWidth
+                key={asset.id}
+                onMore={() => history.push(`/assets/${asset.id}`)}
+              />
+            ))}
         </AssetsContainer>
       </div>
       {inventoryLoading && <SimpleLoader />}
@@ -63,4 +73,4 @@ const AssetsSection = (props: IProps) => {
   );
 };
 
-export default AssetsSection;
+export default OnSaleAssetsSection;

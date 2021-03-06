@@ -1,12 +1,12 @@
 import { makeStyles } from "@material-ui/core";
 import clsx from "classnames";
-import { PageContainer } from "components";
-import React, { useState } from "react";
+import { LoadingScreen, PageContainer } from "components";
+import React, { Suspense, lazy, useState } from "react";
+import { Route, Switch } from "react-router-dom";
 import useCommonStyles from "styles/common";
 import { EProfileTab } from "utils/enums";
 
 import {
-  AssetsSection,
   AssetsTabSection,
   HeroSection,
   LatestActivitySection,
@@ -36,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
   // },
   section: {
     marginTop: 8,
+    marginBottom: 16,
   },
 }));
 
@@ -56,12 +57,41 @@ const ProfilePage = () => {
     <PageContainer className={classes.root}>
       <div className={clsx(classes.content, commonClasses.scroll)}>
         <HeroSection className={classes.heroSection} />
-        <AssetsTabSection
-          className={classes.section}
-          onChange={setTab}
-          tab={state.tab}
-        />
-        <AssetsSection className={classes.section} tab={state.tab} />
+        <AssetsTabSection className={classes.section} />
+        <Suspense fallback={<LoadingScreen />}>
+          <Switch>
+            <Route
+              component={lazy(
+                () => import("pages/ProfilePage/components/AssetsSection")
+              )}
+              exact
+              path="/profile/assets"
+            />
+            <Route
+              component={lazy(
+                () => import("pages/ProfilePage/components/OnSaleAssetsSection")
+              )}
+              exact
+              path="/profile/on-sale"
+            />
+            <Route
+              component={lazy(
+                () =>
+                  import("pages/ProfilePage/components/CreatedAssetsSection")
+              )}
+              exact
+              path="/profile/created"
+            />
+            <Route
+              component={lazy(
+                () => import("pages/ProfilePage/components/LikedAssetsSection")
+              )}
+              exact
+              path="/profile/liked"
+            />
+          </Switch>
+        </Suspense>
+
         {/* <NoticeSection className={classes.noticeSection} />
         <LatestActivitySection className={classes.latestActivitySection} /> */}
       </div>

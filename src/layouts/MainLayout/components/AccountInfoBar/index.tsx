@@ -74,6 +74,7 @@ const useStyles = makeStyles((theme) => ({
   ethAddress: {
     borderRadius: theme.spacing(0.75),
     backgroundColor: theme.colors.background.secondary,
+    color: theme.colors.text.default,
     height: "100%",
     padding: `0 ${theme.spacing(1.5)}px`,
     display: "flex",

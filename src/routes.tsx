@@ -53,7 +53,7 @@ const routes = [
 
 const authRoutes = [
   {
-    exact: true,
+    exact: false,
     path: "/profile",
     component: lazy(() => import("pages/ProfilePage")),
   },
