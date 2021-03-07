@@ -77,7 +77,7 @@ export const FormCollectionChoose = (props: IProps) => {
               />
             )}
             subTitle={" "}
-            title={collection.displayName}
+            title={collection.name || ""}
           />
         ))}
       </div>

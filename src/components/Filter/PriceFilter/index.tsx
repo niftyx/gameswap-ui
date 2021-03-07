@@ -76,6 +76,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(0.5),
   },
   slider: {
+    userSelect: "none",
     padding: `0 8px`,
     marginBottom: theme.spacing(2),
   },

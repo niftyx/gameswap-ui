@@ -69,12 +69,12 @@ export const TradCancelOrderStep = (props: IProps) => {
 
       await waitSeconds(3);
 
-      onConfirm();
-
       setState((prevState) => ({
         ...prevState,
         loading: false,
       }));
+
+      onConfirm();
     } catch (error) {
       logger.error("sellAsset", error);
       setState((prevState) => ({

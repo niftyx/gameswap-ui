@@ -73,3 +73,10 @@ export enum EProfileTab {
   Created = "Created",
   Liked = "Liked",
 }
+
+export enum EOrderStatus {
+  BuyNow = "Buy Now",
+  Auction = "Auction",
+  New = "New",
+  HasOffers = "Has Offers",
+}

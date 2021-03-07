@@ -412,6 +412,7 @@ export interface IGame {
 export interface ICollection {
   id: string;
   displayName: string;
+  name?: string;
   description?: string;
   imageUrl: string;
   shortUrl?: string;

@@ -86,7 +86,7 @@ const AssetItemsSection = (props: IProps) => {
               <BrowseAssetItem
                 data={asset}
                 isOnCart={false}
-                key={asset.id.toHexString()}
+                key={`${asset.collectionId}${asset.id.toHexString()}`}
                 onMore={(id) => history.push(`/assets/${id}`)}
               />
             ))}

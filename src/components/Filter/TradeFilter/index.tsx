@@ -8,14 +8,22 @@ import {
 } from "@material-ui/core";
 import clsx from "classnames";
 import { MOCK_PRICE_FILTER_ITEMS } from "config/constants";
+import { transparentize } from "polished";
 import React, { useState } from "react";
+import useCommonStyles from "styles/common";
+import { EOrderStatus } from "utils/enums";
+import { KnownToken } from "utils/types";
 
+import { CollectionFilter } from "../CollectionFilter";
 import FilterItemWrapper from "../FilterItemWrapper";
+import { OrderStatusFilter } from "../OrderStatusFilter";
 import PriceFilter from "../PriceFilter";
+import { SaleCurrencyFilter } from "../SaleCurrencyFilter";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    padding: `${theme.spacing(1)}px 0`,
+    padding: `${theme.spacing(1)}px ${theme.spacing(0.5)}px`,
+    overflowY: "auto",
   },
   buy: {
     borderRadius: theme.spacing(0.5),
@@ -34,15 +42,11 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(3.5),
   },
   reset: {
-    borderRadius: theme.spacing(0.5),
-    backgroundColor: theme.colors.background.primary,
-    height: theme.spacing(5),
-    fontSize: theme.spacing(2),
-    color: theme.colors.text.default,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: theme.spacing(4),
+    marginTop: 16,
+    height: theme.spacing(4.5),
+    minWidth: "auto",
+    fontSize: 14,
+    color: transparentize(0.3, theme.colors.text.default),
   },
   mode: { backgroundColor: theme.colors.background.primary, marginBottom: 24 },
   modeSelect: {
@@ -79,25 +83,26 @@ interface IState {
     priceEnabled: boolean;
     priceMin?: number;
     priceMax?: number;
-    typeEnabled: boolean;
-    standardEnabled: boolean;
-    colorEnabled: boolean;
     statusEnabled: boolean;
+    statuses?: EOrderStatus[];
     collectionEnabled: boolean;
+    collectionIds?: string[];
+    saleCurrencyEnabled: boolean;
+    currencies?: KnownToken[];
     membership: EMembership;
   };
 }
 
 const TradeFilter = (props: IProps) => {
   const classes = useStyles();
+  const commonClasses = useCommonStyles();
+
   const [state, setState] = useState<IState>({
     filter: {
       priceEnabled: false,
-      typeEnabled: false,
-      standardEnabled: false,
-      colorEnabled: false,
       statusEnabled: false,
       collectionEnabled: false,
+      saleCurrencyEnabled: false,
       membership: EMembership.Basic,
     },
   });
@@ -112,7 +117,7 @@ const TradeFilter = (props: IProps) => {
     }));
 
   return (
-    <div className={clsx(classes.root, props.className)}>
+    <div className={clsx(classes.root, props.className, commonClasses.scroll)}>
       <Button
         className={classes.buy}
         color="primary"
@@ -190,40 +195,21 @@ const TradeFilter = (props: IProps) => {
         <Divider className={classes.divider} />
       </FilterItemWrapper>
       <FilterItemWrapper
-        enabled={state.filter.typeEnabled}
-        onToggle={() => {
-          updateFilter({ typeEnabled: !state.filter.typeEnabled });
-        }}
-        title="Type"
-      >
-        <div>Type</div>
-      </FilterItemWrapper>
-      <FilterItemWrapper
-        enabled={state.filter.standardEnabled}
-        onToggle={() => {
-          updateFilter({ standardEnabled: !state.filter.standardEnabled });
-        }}
-        title="Standard"
-      >
-        <div>Standard</div>
-      </FilterItemWrapper>
-      <FilterItemWrapper
-        enabled={state.filter.colorEnabled}
-        onToggle={() => {
-          updateFilter({ colorEnabled: !state.filter.colorEnabled });
-        }}
-        title="Color"
-      >
-        <div>Color</div>
-      </FilterItemWrapper>
-      <FilterItemWrapper
         enabled={state.filter.statusEnabled}
         onToggle={() => {
           updateFilter({ statusEnabled: !state.filter.statusEnabled });
         }}
         title="Status"
       >
-        <div>Status</div>
+        <OrderStatusFilter
+          onChange={(statuses) => {
+            setState((prev) => ({
+              ...prev,
+              filter: { ...prev.filter, statuses },
+            }));
+          }}
+          statuses={state.filter.statuses || []}
+        />
       </FilterItemWrapper>
       <FilterItemWrapper
         enabled={state.filter.collectionEnabled}
@@ -232,21 +218,50 @@ const TradeFilter = (props: IProps) => {
         }}
         title="Collection"
       >
-        <div>Collection</div>
+        <CollectionFilter
+          collectionIds={state.filter.collectionIds || []}
+          onChange={(collectionIds) => {
+            setState((prev) => ({
+              ...prev,
+              filter: { ...prev.filter, collectionIds },
+            }));
+          }}
+        />
       </FilterItemWrapper>
       <FilterItemWrapper
-        enabled={false}
+        enabled={state.filter.saleCurrencyEnabled}
         onToggle={() => {
-          //
+          updateFilter({
+            saleCurrencyEnabled: !state.filter.saleCurrencyEnabled,
+          });
         }}
-        title="Price"
+        title="Sale Currency"
       >
-        <div>Price</div>
+        <SaleCurrencyFilter
+          currencies={state.filter.currencies || []}
+          onChange={(currencies) => {
+            setState((prev) => ({
+              ...prev,
+              filter: { ...prev.filter, currencies },
+            }));
+          }}
+        />
       </FilterItemWrapper>
       <Button
-        className={classes.reset}
+        className={clsx(commonClasses.transparentButton, classes.reset)}
         color="secondary"
         fullWidth
+        onClick={() => {
+          setState({
+            filter: {
+              priceEnabled: false,
+              statusEnabled: false,
+              collectionEnabled: false,
+              saleCurrencyEnabled: false,
+              membership: EMembership.Basic,
+            },
+          });
+        }}
         variant="contained"
       >
         RESET FILTERS
