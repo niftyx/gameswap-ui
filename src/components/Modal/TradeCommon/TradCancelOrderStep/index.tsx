@@ -46,7 +46,7 @@ export const TradCancelOrderStep = (props: IProps) => {
   const context = useConnectedWeb3Context();
   const { onConfirm, order } = props;
 
-  const sellAsset = async () => {
+  const cancelOrderAsync = async () => {
     const { account, networkId } = context;
     if (!account || !networkId || !context.library) return;
     setState((prevState) => ({
@@ -86,7 +86,7 @@ export const TradCancelOrderStep = (props: IProps) => {
   };
 
   useEffect(() => {
-    sellAsset();
+    cancelOrderAsync();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -105,7 +105,7 @@ export const TradCancelOrderStep = (props: IProps) => {
           className={classes.button}
           color="primary"
           fullWidth
-          onClick={sellAsset}
+          onClick={cancelOrderAsync}
           variant="contained"
         >
           Try again

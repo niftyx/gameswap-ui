@@ -3,6 +3,7 @@ import {
   Order,
   SignedOrder,
   assetDataUtils,
+  generatePseudoRandomSalt,
   signatureUtils,
 } from "@0x/order-utils";
 import { MetamaskSubprovider } from "@0x/subproviders";
@@ -190,7 +191,7 @@ export const wrangeOrderResponse = (order: SignedOrder): SignedOrder => ({
 
 export const cancelOrder = async (
   provider: any,
-  order: SignedOrder,
+  order: Order,
   account: string,
   gasPriceInWei: BigNumber,
   networkId: number
@@ -203,6 +204,7 @@ export const cancelOrder = async (
     .cancelOrder(order)
     .getABIEncodedTransactionData();
   const makerCancelOrderTransactionSalt = new BigNumber(Date.now());
+  // const makerCancelOrderTransactionSalt = generatePseudoRandomSalt();
   // The maker signs the operation data (cancelOrder) with the salt
   const zeroExTransaction: ZeroExTransaction = {
     data: cancelData,
