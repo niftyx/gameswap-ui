@@ -1,5 +1,5 @@
 import { makeStyles } from "@material-ui/core";
-import clsx from "classnames";
+import clsx from "clsx";
 import chartMockData from "config/chartMockData.json";
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";

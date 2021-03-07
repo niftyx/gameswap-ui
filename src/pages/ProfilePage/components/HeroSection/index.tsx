@@ -7,7 +7,7 @@ import {
 } from "@material-ui/core";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import { ReactComponent as CopyIcon } from "assets/svgs/content-copy.svg";
-import clsx from "classnames";
+import clsx from "clsx";
 import { ProfileMarker } from "components/Marker";
 import { DEFAULT_NETWORK_ID, PRICE_DECIMALS } from "config/constants";
 import { getToken } from "config/networks";

@@ -17,3 +17,5 @@ export * from "./Guard";
 export * from "./Text";
 export * from "./Form";
 export * from "./Loader";
+export * from "./Popover";
+export * from "./Avatar";

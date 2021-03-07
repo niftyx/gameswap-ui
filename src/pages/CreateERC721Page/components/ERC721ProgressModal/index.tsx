@@ -1,6 +1,6 @@
 import { IconButton, Modal, Typography, makeStyles } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
-import clsx from "classnames";
+import clsx from "clsx";
 import { CommentLoader } from "components";
 import { DEFAULT_NETWORK_ID } from "config/constants";
 import { get0xContractAddresses } from "config/networks";

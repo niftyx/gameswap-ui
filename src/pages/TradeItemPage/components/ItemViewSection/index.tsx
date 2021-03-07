@@ -1,5 +1,5 @@
 import { makeStyles } from "@material-ui/core";
-import clsx from "classnames";
+import clsx from "clsx";
 import { AssetPhoto } from "components";
 import React from "react";
 import { IAssetItem } from "utils/types";

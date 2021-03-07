@@ -1,6 +1,6 @@
 import { Button, Grid, Typography, makeStyles } from "@material-ui/core";
 import { IconAssetPlaceholder } from "assets/icons";
-import clsx from "classnames";
+import clsx from "clsx";
 import { DEFAULT_NETWORK_ID } from "config/constants";
 import { useConnectedWeb3Context, useGlobal } from "contexts";
 import { useAssetDetailsFromIdCollection } from "helpers";
@@ -92,7 +92,7 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     top: theme.spacing(1),
     right: theme.spacing(1),
-    borderRadius: theme.spacing(0.5),
+    borderRadius: 6,
     padding: "2px 6px",
     "&.positive": {
       backgroundColor: transparentize(0.73, theme.colors.text.positive),

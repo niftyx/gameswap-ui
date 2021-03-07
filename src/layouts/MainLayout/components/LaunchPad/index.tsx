@@ -8,14 +8,14 @@ import {
 } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
 import { ReactComponent as AppsIcon } from "assets/svgs/apps.svg";
-import clsx from "classnames";
+import clsx from "clsx";
 import React from "react";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
   moreButton: {
     padding: 5,
-    borderRadius: theme.spacing(1),
+    borderRadius: 6,
     height: theme.custom.appHeaderItemHeight,
     width: theme.custom.appHeaderItemHeight,
     minWidth: theme.custom.appHeaderItemHeight,

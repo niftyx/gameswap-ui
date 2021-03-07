@@ -1,5 +1,5 @@
 import { makeStyles } from "@material-ui/core";
-import clsx from "classnames";
+import clsx from "clsx";
 import { BrowsedFeaturedItem } from "components";
 import React, { useState } from "react";
 import Slider from "react-slick";

@@ -6,7 +6,7 @@ import {
 } from "@material-ui/core";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import SortIcon from "@material-ui/icons/Sort";
-import clsx from "classnames";
+import clsx from "clsx";
 import React from "react";
 
 const useStyles = makeStyles((theme) => ({

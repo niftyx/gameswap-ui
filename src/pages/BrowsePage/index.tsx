@@ -1,5 +1,5 @@
 import { makeStyles } from "@material-ui/core";
-import clsx from "classnames";
+import clsx from "clsx";
 import { BrowseFilter, PageContainer } from "components";
 import { useBrowseAssets } from "helpers";
 import { useAllOrders } from "helpers/useAllOrders";

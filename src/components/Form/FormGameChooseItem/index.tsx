@@ -1,5 +1,5 @@
 import { Typography, makeStyles } from "@material-ui/core";
-import clsx from "classnames";
+import clsx from "clsx";
 import { transparentize } from "polished";
 import React from "react";
 
@@ -7,7 +7,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: 120,
     height: 120,
-    borderRadius: 8,
+    borderRadius: 6,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",

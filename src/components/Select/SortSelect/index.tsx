@@ -1,6 +1,6 @@
 import { MenuItem, Select, makeStyles } from "@material-ui/core";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
-import clsx from "classnames";
+import clsx from "clsx";
 import React from "react";
 
 const useStyles = makeStyles((theme) => ({

@@ -7,7 +7,7 @@ import {
   Typography,
   makeStyles,
 } from "@material-ui/core";
-import clsx from "classnames";
+import clsx from "clsx";
 import { ASSET_IMAGE_FILE_SIZE_LIMIT } from "config/constants";
 import { useSnackbar } from "notistack";
 import { transparentize } from "polished";
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
     height: theme.spacing(5),
-    borderRadius: theme.spacing(2.5),
+    borderRadius: 6,
     marginTop: theme.spacing(2),
     backgroundColor: theme.colors.background.fourth,
     color: theme.colors.text.default,

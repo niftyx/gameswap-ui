@@ -1,6 +1,6 @@
 import { Typography, makeStyles } from "@material-ui/core";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-import clsx from "classnames";
+import clsx from "clsx";
 import React from "react";
 import { NavLink, RouteComponentProps, withRouter } from "react-router-dom";
 import useCommonStyles from "styles/common";

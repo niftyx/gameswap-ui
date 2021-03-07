@@ -2,7 +2,7 @@ import { makeStyles } from "@material-ui/core";
 import AudiotrackIcon from "@material-ui/icons/Audiotrack";
 import { ReactComponent as AudioSvg } from "assets/svgs/sword.svg";
 import { ReactComponent as VideoSvg } from "assets/svgs/video.svg";
-import clsx from "classnames";
+import clsx from "clsx";
 import React from "react";
 import { EFileType } from "utils/enums";
 const useStyles = makeStyles((theme) => ({

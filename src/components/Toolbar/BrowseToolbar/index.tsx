@@ -1,6 +1,6 @@
 import { Box, Hidden, Typography, makeStyles } from "@material-ui/core";
 import { ReactComponent as CartIcon } from "assets/svgs/cart-arrow-down.svg";
-import clsx from "classnames";
+import clsx from "clsx";
 import {
   AuctionsButton,
   GamesSelect,

@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import SendIcon from "@material-ui/icons/Send";
-import clsx from "classnames";
+import clsx from "clsx";
 import { FarmingTag } from "components/Tag";
 import { PLATFORM_ICONS } from "config/constants";
 import { transparentize } from "polished";
@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
   },
   moreButton: {
     border: "none !important",
-    borderRadius: 2,
+    borderRadius: 6,
     height: theme.spacing(3),
     width: theme.spacing(3),
     "& svg": {

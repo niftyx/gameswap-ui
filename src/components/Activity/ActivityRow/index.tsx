@@ -1,5 +1,5 @@
 import { Button, Grid, Typography, makeStyles } from "@material-ui/core";
-import clsx from "classnames";
+import clsx from "clsx";
 import { ActivityTypeTag, TrustPoint } from "components";
 import { transparentize } from "polished";
 import React from "react";

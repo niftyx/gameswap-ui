@@ -1,6 +1,6 @@
 import { SignedOrder } from "@0x/types";
 import { Button, makeStyles } from "@material-ui/core";
-import clsx from "classnames";
+import clsx from "clsx";
 import { AssetPhoto } from "components/Asset";
 import { TokenAmountInput } from "components/Input";
 import React from "react";

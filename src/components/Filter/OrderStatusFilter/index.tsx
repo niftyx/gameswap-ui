@@ -1,5 +1,5 @@
 import { Button, makeStyles } from "@material-ui/core";
-import clsx from "classnames";
+import clsx from "clsx";
 import { transparentize } from "polished";
 import React from "react";
 import { EOrderStatus } from "utils/enums";
@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
     height: 36,
-    borderRadius: 4,
+    borderRadius: 6,
     backgroundColor: theme.colors.background.fifth,
     color: transparentize(0.3, theme.colors.text.default),
     transition: "all 0.5s",

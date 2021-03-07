@@ -1,7 +1,7 @@
 import { Button, Grid, makeStyles } from "@material-ui/core";
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import { IconAssetPlaceholder } from "assets/icons";
-import clsx from "classnames";
+import clsx from "clsx";
 import { useAssetDetailsFromInventoryItem } from "helpers";
 import { transparentize } from "polished";
 import React from "react";

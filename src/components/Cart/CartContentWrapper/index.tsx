@@ -1,5 +1,5 @@
 import { Button, Typography, makeStyles } from "@material-ui/core";
-import clsx from "classnames";
+import clsx from "clsx";
 import { useConnectedWeb3Context } from "contexts";
 import { transparentize } from "polished";
 import React from "react";
@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   bottom: {},
   bottomNotice: {
     padding: `${theme.spacing(1.5)}px ${theme.spacing(1)}px`,
-    borderRadius: theme.spacing(0.5),
+    borderRadius: 6,
     backgroundColor: transparentize(0.9, theme.colors.text.default),
     "& > * + *": {
       marginTop: theme.spacing(1),

@@ -2,7 +2,7 @@ import { Button, Typography, makeStyles } from "@material-ui/core";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import { IconFeaturedFarmPreview } from "assets/icons";
-import clsx from "classnames";
+import clsx from "clsx";
 import { transparentize } from "polished";
 import React, { useState } from "react";
 import useCommonStyles from "styles/common";

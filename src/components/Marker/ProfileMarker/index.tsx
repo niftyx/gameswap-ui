@@ -1,6 +1,6 @@
 import { Typography, makeStyles } from "@material-ui/core";
 import { ReactComponent as ProTraderIcon } from "assets/svgs/medal.svg";
-import clsx from "classnames";
+import clsx from "clsx";
 import React from "react";
 import { EProfileMarker } from "utils/enums";
 

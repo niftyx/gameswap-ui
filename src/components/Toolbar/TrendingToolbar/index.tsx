@@ -1,5 +1,5 @@
 import { Box, makeStyles } from "@material-ui/core";
-import clsx from "classnames";
+import clsx from "clsx";
 import { AuctionsButton, SyncButton } from "components/Button";
 import { VerticalDivider } from "components/Divider";
 import { GamesSelect, PriceSelect, SortSelect } from "components/Select";

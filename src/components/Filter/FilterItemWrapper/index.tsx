@@ -1,7 +1,7 @@
 import { Typography, makeStyles } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
-import clsx from "classnames";
+import clsx from "clsx";
 import React from "react";
 
 const useStyles = makeStyles((theme) => ({

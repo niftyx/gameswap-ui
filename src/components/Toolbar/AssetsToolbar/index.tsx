@@ -1,5 +1,5 @@
 import { Box, Hidden, Popover, makeStyles } from "@material-ui/core";
-import clsx from "classnames";
+import clsx from "clsx";
 import { SyncButton } from "components/Button";
 import { NoteContainer } from "components/Container";
 import { VerticalDivider } from "components/Divider";

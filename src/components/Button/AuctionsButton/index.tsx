@@ -1,6 +1,6 @@
 import { Typography, makeStyles } from "@material-ui/core";
 import { ReactComponent as AutionsIcon } from "assets/svgs/gavel.svg";
-import clsx from "classnames";
+import clsx from "clsx";
 import React from "react";
 
 const useStyles = makeStyles((theme) => ({

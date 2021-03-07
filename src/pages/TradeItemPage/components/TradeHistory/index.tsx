@@ -8,7 +8,7 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import LaunchIcon from "@material-ui/icons/Launch";
-import clsx from "classnames";
+import clsx from "clsx";
 import { TradingHistoryItemTypeTag } from "components";
 import { DEFAULT_NETWORK_ID } from "config/constants";
 import { getEtherscanUri, getTokenFromAddress } from "config/networks";

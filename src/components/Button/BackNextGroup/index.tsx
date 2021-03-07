@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     borderWidth: 1,
     width: theme.spacing(5.5),
     height: theme.spacing(5.5),
-    borderRadius: theme.spacing(0.5),
+    borderRadius: 6,
     "& svg": {
       color: theme.colors.icon.active,
     },

@@ -1,5 +1,5 @@
 import { Hidden, makeStyles } from "@material-ui/core";
-import clsx from "classnames";
+import clsx from "clsx";
 import { PageContainer, TradeFilter } from "components";
 import { useConnectedWeb3Context } from "contexts";
 import { useInventoryAssets, useMyOrders } from "helpers";

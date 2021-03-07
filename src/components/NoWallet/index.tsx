@@ -1,7 +1,7 @@
 import { Typography, makeStyles } from "@material-ui/core";
 import ErrorIcon from "@material-ui/icons/Error";
 import { ReactComponent as MetaMaskIcon } from "assets/svgs/metamask.svg";
-import clsx from "classnames";
+import clsx from "clsx";
 import React from "react";
 
 const useStyles = makeStyles((theme) => ({

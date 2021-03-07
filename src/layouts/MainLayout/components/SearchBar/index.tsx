@@ -1,6 +1,6 @@
 import { Input, InputAdornment, makeStyles } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
-import clsx from "classnames";
+import clsx from "clsx";
 import React, { ChangeEvent, useState } from "react";
 
 const useStyles = makeStyles((theme) => ({

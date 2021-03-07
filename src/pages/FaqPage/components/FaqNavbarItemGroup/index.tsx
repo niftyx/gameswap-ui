@@ -1,6 +1,6 @@
 import { Typography, makeStyles } from "@material-ui/core";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
-import clsx from "classnames";
+import clsx from "clsx";
 import { transparentize } from "polished";
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";

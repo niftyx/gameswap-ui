@@ -13,7 +13,7 @@ import AddIcon from "@material-ui/icons/Add";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import SendIcon from "@material-ui/icons/Send";
 import { ReactComponent as MetaMaskIcon } from "assets/svgs/metamask.svg";
-import clsx from "classnames";
+import clsx from "clsx";
 import { ConnectWalletModal } from "components";
 import {
   DEFAULT_NETWORK_ID,
@@ -88,7 +88,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   moreButton: {
-    borderRadius: theme.spacing(1),
+    borderRadius: 6,
     backgroundColor: theme.colors.background.primary,
     height: theme.custom.appHeaderItemHeight,
     width: theme.custom.appHeaderItemHeight,

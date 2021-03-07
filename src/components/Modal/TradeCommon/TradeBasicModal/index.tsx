@@ -1,6 +1,6 @@
 import { IconButton, Modal, Typography, makeStyles } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
-import clsx from "classnames";
+import clsx from "clsx";
 import React from "react";
 import useCommonStyles from "styles/common";
 

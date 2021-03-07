@@ -4,7 +4,7 @@ import {
   InputAdornment,
   makeStyles,
 } from "@material-ui/core";
-import clsx from "classnames";
+import clsx from "clsx";
 import { FormTextField } from "components";
 import { FormCollectionImageUpload } from "components/Form";
 import { DEFAULT_NETWORK_ID } from "config/constants";
@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
     height: theme.spacing(6),
-    borderRadius: theme.spacing(3),
+    borderRadius: 6,
     marginTop: theme.spacing(5),
   },
 }));

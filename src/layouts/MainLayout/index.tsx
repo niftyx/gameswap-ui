@@ -1,5 +1,5 @@
 import { makeStyles } from "@material-ui/core";
-import clsx from "classnames";
+import clsx from "clsx";
 import { LoadingScreen } from "components";
 import { useConnectedWeb3Context } from "contexts";
 import React from "react";

@@ -1,5 +1,5 @@
 import { Divider, makeStyles } from "@material-ui/core";
-import clsx from "classnames";
+import clsx from "clsx";
 import { PageContainer } from "components";
 import { useAllOrders } from "helpers/useAllOrders";
 import { transparentize } from "polished";

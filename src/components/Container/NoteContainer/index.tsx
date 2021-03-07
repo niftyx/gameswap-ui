@@ -1,6 +1,6 @@
 import { Typography, makeStyles } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
-import clsx from "classnames";
+import clsx from "clsx";
 import { transparentize } from "polished";
 import React from "react";
 const useStyles = makeStyles((theme) => ({

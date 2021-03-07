@@ -1,5 +1,5 @@
 import { Button, CircularProgress, makeStyles } from "@material-ui/core";
-import clsx from "classnames";
+import clsx from "clsx";
 import { FormTextField } from "components";
 import {
   FormCollectionImageUpload,
@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
     height: theme.spacing(6),
-    borderRadius: theme.spacing(3),
+    borderRadius: 6,
     marginTop: theme.spacing(5),
   },
 }));

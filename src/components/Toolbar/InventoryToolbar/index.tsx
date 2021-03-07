@@ -1,6 +1,6 @@
 import { Hidden, Typography, makeStyles } from "@material-ui/core";
 import { ReactComponent as CartIcon } from "assets/svgs/cart-arrow-up.svg";
-import clsx from "classnames";
+import clsx from "clsx";
 import { SyncButton } from "components/Button";
 import { VerticalDivider } from "components/Divider";
 import { SearchInput } from "components/Input";

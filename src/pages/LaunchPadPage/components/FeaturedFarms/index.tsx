@@ -5,7 +5,7 @@ import {
   Typography,
   makeStyles,
 } from "@material-ui/core";
-import clsx from "classnames";
+import clsx from "clsx";
 import { FeaturedFarmPreview } from "components";
 import { MockFeaturedFarms } from "config/constants";
 import React, { useState } from "react";

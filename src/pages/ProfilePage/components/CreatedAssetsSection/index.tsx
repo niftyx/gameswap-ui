@@ -1,5 +1,5 @@
 import { Grid, Typography, makeStyles } from "@material-ui/core";
-import clsx from "classnames";
+import clsx from "clsx";
 import { AssetsContainer, InventoryAssetItem, SimpleLoader } from "components";
 import { useConnectedWeb3Context } from "contexts";
 import { useInventoryAssets } from "helpers";

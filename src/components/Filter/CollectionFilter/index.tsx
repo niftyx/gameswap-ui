@@ -1,7 +1,7 @@
 import { InputAdornment, TextField, makeStyles } from "@material-ui/core";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import SearchIcon from "@material-ui/icons/Search";
-import clsx from "classnames";
+import clsx from "clsx";
 import { useGlobal } from "contexts";
 import { transparentize } from "polished";
 import React, { useState } from "react";

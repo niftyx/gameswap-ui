@@ -1,5 +1,5 @@
 import { Button, makeStyles } from "@material-ui/core";
-import clsx from "classnames";
+import clsx from "clsx";
 import { CommentLoader } from "components/Loader";
 import { ErrorText } from "components/Text";
 import { get0xContractAddresses } from "config/networks";

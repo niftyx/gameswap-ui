@@ -1,6 +1,6 @@
 import { Typography, makeStyles } from "@material-ui/core";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
-import clsx from "classnames";
+import clsx from "clsx";
 import { useGlobal } from "contexts";
 import React from "react";
 import useCommonStyles from "styles/common";

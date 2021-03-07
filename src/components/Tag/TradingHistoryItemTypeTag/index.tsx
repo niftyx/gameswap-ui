@@ -3,7 +3,7 @@ import { Typography, makeStyles } from "@material-ui/core";
 import NewReleasesIcon from "@material-ui/icons/NewReleases";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import SwapHorizIcon from "@material-ui/icons/SwapHoriz";
-import clsx from "classnames";
+import clsx from "clsx";
 import React from "react";
 import { EHistoryItemType } from "utils/enums";
 

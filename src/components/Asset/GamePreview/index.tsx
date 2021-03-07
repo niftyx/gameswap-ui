@@ -3,7 +3,7 @@ import {
   IconTrendingGameImagePlaceholder,
   IconTrendingGameTitlePlaceholder,
 } from "assets/icons";
-import clsx from "classnames";
+import clsx from "clsx";
 import React, { useState } from "react";
 import useCommonStyles from "styles/common";
 import { IGameItem } from "utils/types";

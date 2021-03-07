@@ -1,5 +1,5 @@
 import { makeStyles } from "@material-ui/core";
-import clsx from "classnames";
+import clsx from "clsx";
 import { LoadingScreen, PageContainer } from "components";
 import React, { Suspense, lazy, useState } from "react";
 import { Route, Switch } from "react-router-dom";

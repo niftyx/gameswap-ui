@@ -5,7 +5,7 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import DoneIcon from "@material-ui/icons/Done";
-import clsx from "classnames";
+import clsx from "clsx";
 import { ErrorText } from "components";
 import { transparentize } from "polished";
 import React from "react";
@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
   button: {
     marginTop: theme.spacing(1),
     height: theme.spacing(6),
-    borderRadius: theme.spacing(3),
+    borderRadius: 6,
   },
 }));
 

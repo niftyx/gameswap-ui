@@ -6,7 +6,7 @@ import { ReactComponent as HeartIcon } from "assets/svgs/heart-outline.svg";
 import { ReactComponent as GlobeIcon } from "assets/svgs/lightning-bolt-outline.svg";
 import { ReactComponent as FlagIcon } from "assets/svgs/star-outline.svg";
 import { ReactComponent as FlashIcon } from "assets/svgs/trending-up.svg";
-import clsx from "classnames";
+import clsx from "clsx";
 import { SideMenuGroupHeader, SideMenuItem } from "components";
 import { useSettings } from "hooks";
 import React from "react";

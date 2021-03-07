@@ -6,7 +6,7 @@ import {
   Select,
   makeStyles,
 } from "@material-ui/core";
-import clsx from "classnames";
+import clsx from "clsx";
 import { MOCK_PRICE_FILTER_ITEMS } from "config/constants";
 import { transparentize } from "polished";
 import React, { useState } from "react";
@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     overflowY: "auto",
   },
   buy: {
-    borderRadius: theme.spacing(0.5),
+    borderRadius: 6,
     backgroundColor: theme.colors.background.fourth,
     height: theme.spacing(5),
     fontSize: theme.spacing(2),

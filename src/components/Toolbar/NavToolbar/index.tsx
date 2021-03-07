@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import clsx from "classnames";
+import clsx from "clsx";
 import { transparentize } from "polished";
 import React from "react";
 import { NavLink } from "react-router-dom";

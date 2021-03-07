@@ -6,7 +6,7 @@ import {
   Typography,
   makeStyles,
 } from "@material-ui/core";
-import clsx from "classnames";
+import clsx from "clsx";
 import {
   FormAttributesField,
   FormCollectionChoose,
@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
   button: {
     width: theme.spacing(30),
     height: theme.spacing(6),
-    borderRadius: theme.spacing(3),
+    borderRadius: 6,
     marginTop: theme.spacing(5),
   },
 }));

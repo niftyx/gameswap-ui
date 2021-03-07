@@ -1,6 +1,6 @@
 import { Typography, makeStyles } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
-import clsx from "classnames";
+import clsx from "clsx";
 import { transparentize } from "polished";
 import React from "react";
 import { numberWithCommas } from "utils";

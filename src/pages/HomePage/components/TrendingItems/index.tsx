@@ -1,5 +1,5 @@
 import { Typography, makeStyles } from "@material-ui/core";
-import clsx from "classnames";
+import clsx from "clsx";
 import { AssetItem, AssetsContainer, TrendingToolbar } from "components";
 import React from "react";
 import { useHistory } from "react-router-dom";

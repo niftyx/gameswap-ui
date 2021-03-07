@@ -4,7 +4,7 @@ import {
   Select,
   makeStyles,
 } from "@material-ui/core";
-import clsx from "classnames";
+import clsx from "clsx";
 import { FormTextField } from "components";
 import { DEFAULT_NETWORK_ID } from "config/constants";
 import { getToken, knownTokens } from "config/networks";

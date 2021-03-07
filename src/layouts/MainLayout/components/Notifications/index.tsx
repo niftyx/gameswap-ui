@@ -8,13 +8,13 @@ import {
 } from "@material-ui/core";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import SendIcon from "@material-ui/icons/Send";
-import clsx from "classnames";
+import clsx from "clsx";
 import React from "react";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
   moreButton: {
-    borderRadius: theme.spacing(1),
+    borderRadius: 6,
     height: theme.custom.appHeaderItemHeight,
     width: theme.custom.appHeaderItemHeight,
     minWidth: theme.custom.appHeaderItemHeight,

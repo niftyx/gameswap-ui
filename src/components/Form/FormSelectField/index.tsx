@@ -9,7 +9,7 @@ import {
   SelectProps,
   makeStyles,
 } from "@material-ui/core";
-import clsx from "classnames";
+import clsx from "clsx";
 import React from "react";
 
 import { FormInputLabel } from "../FormInputLabel";

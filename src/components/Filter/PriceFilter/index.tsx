@@ -7,7 +7,7 @@ import {
 } from "@material-ui/core";
 import RemoveIcon from "@material-ui/icons/Remove";
 import { ReactComponent as SliderTagIcon } from "assets/svgs/thumb-tag.svg";
-import clsx from "classnames";
+import clsx from "clsx";
 import { PRICE_FILTER_COLUMN_COUNT } from "config/constants";
 import React from "react";
 import { IPriceFilterItem } from "utils/types";
@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
   inputItem: {
     minWidth: "auto",
     flex: 1,
-    borderRadius: theme.spacing(0.5),
+    borderRadius: 6,
     backgroundColor: theme.colors.background.fifth,
     "& input": {
       padding: theme.spacing(1),

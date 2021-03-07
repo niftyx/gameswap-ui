@@ -1,5 +1,5 @@
 import { Typography, makeStyles } from "@material-ui/core";
-import clsx from "classnames";
+import clsx from "clsx";
 import { UpcomingFarmRow } from "components";
 import { MockUpcomingFarms } from "config/constants";
 import React, { useState } from "react";

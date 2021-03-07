@@ -1,5 +1,5 @@
 import { Typography, makeStyles } from "@material-ui/core";
-import clsx from "classnames";
+import clsx from "clsx";
 import { BackNextGroup, GamePreview } from "components";
 import React, { useRef } from "react";
 import Slider from "react-slick";

@@ -1,5 +1,5 @@
 import { Grid, Typography, makeStyles } from "@material-ui/core";
-import clsx from "classnames";
+import clsx from "clsx";
 import { transparentize } from "polished";
 import React, { useState } from "react";
 

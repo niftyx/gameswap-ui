@@ -1,7 +1,7 @@
 import { Button, Typography, makeStyles } from "@material-ui/core";
 import KeyboardArrowLeftIcon from "@material-ui/icons/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@material-ui/icons/KeyboardArrowRight";
-import clsx from "classnames";
+import clsx from "clsx";
 import { transparentize } from "polished";
 import React, { useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
@@ -173,7 +173,6 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: "58%",
     position: "relative",
     width: "100%",
-    backgroundColor: "red",
     backgroundRepeat: "no-repeat",
     backgroundPosition: "50% 50%",
     borderRadius: 12,

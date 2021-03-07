@@ -80,3 +80,11 @@ export enum EOrderStatus {
   New = "New",
   HasOffers = "Has Offers",
 }
+
+export enum EAssetDetailTab {
+  Info = "Info",
+  Owners = "Owners",
+  History = "History",
+  Details = "Details",
+  Bids = "Bids",
+}

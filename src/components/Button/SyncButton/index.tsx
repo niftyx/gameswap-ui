@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core";
 import SyncIcon from "@material-ui/icons/Sync";
-import clsx from "classnames";
+import clsx from "clsx";
 import React from "react";
 
 const useStyles = makeStyles((theme) => ({

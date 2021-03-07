@@ -9,7 +9,7 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
-import clsx from "classnames";
+import clsx from "clsx";
 import { ASSET_ZIP_FILE_SIZE_LIMIT } from "config/constants";
 import { useSnackbar } from "notistack";
 import { transparentize } from "polished";
@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: transparentize(0.6, theme.colors.background.fourth),
-    borderRadius: theme.spacing(2),
+    borderRadius: 6,
     color: theme.colors.text.default,
     cursor: "pointer",
     userSelect: "none",

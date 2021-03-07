@@ -1,5 +1,5 @@
 import { makeStyles } from "@material-ui/core";
-import clsx from "classnames";
+import clsx from "clsx";
 import { BrowseBidItem } from "components";
 import { MOCK_AUCTIONS_ITEMS } from "config/constants";
 import React, { useState } from "react";
