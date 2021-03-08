@@ -5,21 +5,23 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import clsx from "clsx";
-import { AssetMorePopover, AssetSharePopover, BasicModal } from "components";
+import { BasicModal } from "components";
 import { DEFAULT_NETWORK_ID } from "config/constants";
 import { useConnectedWeb3Context, useGlobal, useTrade } from "contexts";
 import { useAssetHistoryFromId } from "helpers";
 import { transparentize } from "polished";
 import React, { useState } from "react";
-import { useHistory, useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { getAPIService } from "services/api";
 import useCommonStyles from "styles/common";
 import { EAssetDetailTab } from "utils/enums";
 import { capitalizeStr, getAssetObjectWithPrices } from "utils/tools";
 import { IAssetItem } from "utils/types";
 
+import { BidsSectionTab } from "../BidsSectionTab";
 import { BuySection } from "../BuySection";
 import { DetailsSectionTab } from "../DetailsSectionTab";
+import { HeaderSection } from "../HeaderSection";
 import { InfoSectionTab } from "../InfoSectionTab";
 import { PriceHistory } from "../PriceHistory";
 import { TabSection } from "../TabSection";
@@ -32,56 +34,17 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
     display: "flex",
     flexDirection: "column",
-    "& > * + *": {
-      marginTop: theme.spacing(4),
-    },
+    overflowY: "auto",
   },
   mainContent: {
     flex: 1,
-    overflowY: "auto",
+    padding: "0 16px",
   },
-  header: {
-    display: "flex",
-  },
-  headerLeft: {
-    flex: 1,
-    marginRight: 24,
-  },
-  headerRight: { display: "flex", "& > * + *": { marginLeft: 8 } },
-  title: {
-    left: theme.spacing(2),
-    top: theme.spacing(4),
-    color: theme.colors.text.default,
-    fontSize: theme.spacing(3.25),
-  },
-  gameType: {
-    fontSize: theme.spacing(2.25),
-    color: theme.colors.text.sixth,
-  },
-  priceRow: {
-    "& > * + *": {
-      marginLeft: theme.spacing(2),
-    },
-  },
-  priceUsd: {
-    fontSize: theme.spacing(2.5),
-    color: transparentize(0.3, theme.colors.text.default),
-    maxWidth: 500,
-    [theme.breakpoints.down("xs")]: {
-      fontSize: theme.spacing(2),
-    },
-  },
+
   goLabel: {
     marginTop: 16,
     fontSize: theme.spacing(2.5),
     color: theme.colors.text.default,
-  },
-  tokenPrice: {
-    fontSize: theme.spacing(2.5),
-    color: theme.colors.text.default,
-    [theme.breakpoints.down("xs")]: {
-      fontSize: theme.spacing(2),
-    },
   },
   buyNow: {
     height: theme.spacing(6),
@@ -91,16 +54,20 @@ const useStyles = makeStyles((theme) => ({
       height: theme.spacing(6),
     },
   },
-  description: {
-    fontSize: theme.spacing(2),
-    color: theme.colors.text.sixth,
-    maxWidth: 500,
-  },
+
   unlockData: {
     fontSize: theme.spacing(2),
     color: theme.colors.text.default,
     whiteSpace: "pre-line",
     userSelect: "text",
+  },
+  headerSticky: {
+    position: "sticky",
+    top: 0,
+    backgroundColor: transparentize(0.9, theme.colors.text.secondary),
+    boxShadow: "rgb(18 18 18 / 90%) 0px 14px 40px",
+    transition: "opacity 0.18s ease-in-out 0s",
+    "&.visible": { backdropFilter: "blur(20px)" },
   },
 }));
 
@@ -112,17 +79,17 @@ interface IProps {
 interface IState {
   unlocking: boolean;
   decryptedContent: string;
+  scroll: number;
 }
 
 export const InfoContainer = (props: IProps) => {
   const classes = useStyles();
-  const history = useHistory();
   const location = useLocation();
   const params = useParams();
   const assetId = ((params || {}) as any).id as string;
   const commonClasses = useCommonStyles();
   const {
-    data: { games, price },
+    data: { price },
   } = useGlobal();
   const {
     account,
@@ -134,7 +101,12 @@ export const InfoContainer = (props: IProps) => {
   const [state, setState] = useState<IState>({
     unlocking: false,
     decryptedContent: "",
+    scroll: 0,
   });
+
+  const setScroll = (scroll: number) =>
+    setState((prev) => ({ ...prev, scroll }));
+
   const historyData = useAssetHistoryFromId(assetId || "");
 
   const query = new URLSearchParams(location.search.toLowerCase());
@@ -186,10 +158,14 @@ export const InfoContainer = (props: IProps) => {
     }
   };
 
-  const game = games.find((e) => e.id === data.gameId);
-
   return (
-    <div className={clsx(classes.root, props.className)}>
+    <div
+      className={clsx(classes.root, props.className, commonClasses.scroll)}
+      onScroll={(e) => {
+        const scroll = (e.target as HTMLDivElement).scrollTop;
+        setScroll(scroll);
+      }}
+    >
       {state.decryptedContent && (
         <BasicModal
           onClose={() => {
@@ -204,44 +180,19 @@ export const InfoContainer = (props: IProps) => {
           ></div>
         </BasicModal>
       )}
+      <HeaderSection
+        className={clsx(
+          classes.headerSticky,
+          state.scroll > 5 ? "visible" : ""
+        )}
+        data={data}
+      />
+      <div className={clsx(classes.mainContent)}>
+        {/* <HeaderSection className={classes.header} data={data} /> */}
 
-      <div className={clsx(classes.mainContent, commonClasses.scroll)}>
-        <div className={classes.header}>
-          <div className={classes.headerLeft}>
-            <Typography className={classes.title} component="div">
-              {data.name}
-            </Typography>
-            {game && (
-              <Typography className={classes.gameType} component="div">
-                {game.title}
-              </Typography>
-            )}
-            {data.description && (
-              <Typography className={classes.description} component="div">
-                {data.description}
-              </Typography>
-            )}
-            {isInSale && (
-              <div>
-                <div className={clsx(commonClasses.row, classes.priceRow)}>
-                  <Typography className={classes.tokenPrice} component="div">
-                    {assetDataWithPriceInfo.minTokenAmountString}
-                  </Typography>
-                  <Typography className={classes.priceUsd} component="div">
-                    ${assetDataWithPriceInfo.minUSDPrice} 1 of 1
-                  </Typography>
-                </div>
-                <Typography className={classes.goLabel} component="div">
-                  1... 2... 3... Go
-                </Typography>
-              </div>
-            )}
-          </div>
-          <div className={classes.headerRight}>
-            <AssetMorePopover />
-            <AssetSharePopover />
-          </div>
-        </div>
+        <Typography className={classes.goLabel} component="div">
+          1... 2... 3... Go
+        </Typography>
 
         <TabSection />
 
@@ -262,6 +213,7 @@ export const InfoContainer = (props: IProps) => {
         {tabName === EAssetDetailTab.Details && (
           <DetailsSectionTab data={data} />
         )}
+        {tabName === EAssetDetailTab.Bids && <BidsSectionTab data={data} />}
       </div>
 
       {isInSale && !isMine && <BuySection data={data} onBuy={onBuy} />}

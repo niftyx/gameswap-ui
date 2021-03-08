@@ -28,7 +28,6 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
     width: "35%",
     overflowY: "auto",
-    padding: 16,
   },
   infoSection: {
     minHeight: "50%",
@@ -40,7 +39,6 @@ const useStyles = makeStyles((theme) => ({
 
 const TradeItemPage = () => {
   const classes = useStyles();
-  const commonClasses = useCommonStyles();
   const params = useParams();
   const assetId = ((params || {}) as any).id as string;
   const { data: assetData } = useAssetDetailsWithOrderFromId(assetId || "");
