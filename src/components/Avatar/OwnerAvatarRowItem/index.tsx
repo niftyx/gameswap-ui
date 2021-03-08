@@ -7,7 +7,7 @@ import { shortenAddress } from "utils";
 
 const IdenticonComponent = Identicon as any;
 
-const avatarSize = 50;
+const AVATAR_SIZE = 50;
 const tickerWidth = 16;
 
 const useStyles = makeStyles((theme) => ({
@@ -17,13 +17,13 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     position: "relative",
   },
-  avatar: { width: avatarSize, height: avatarSize },
+  avatar: { width: AVATAR_SIZE, height: AVATAR_SIZE },
   left: {
     marginRight: 16,
     borderRadius: "50%",
     overflow: "hidden",
-    width: avatarSize,
-    height: avatarSize,
+    width: AVATAR_SIZE,
+    height: AVATAR_SIZE,
   },
   content: {
     flex: 1,
@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     zIndex: 1,
     bottom: 16,
-    left: avatarSize - tickerWidth,
+    left: AVATAR_SIZE - tickerWidth,
   },
 }));
 
@@ -67,7 +67,11 @@ export const OwnerAvatarRowItem = (props: IProps) => {
           <Avatar alt="avatar" className={classes.avatar} src={image} />
         )}
         {!image && (
-          <IdenticonComponent bg="#02D290" size={avatarSize} string={address} />
+          <IdenticonComponent
+            bg="#02D290"
+            size={AVATAR_SIZE}
+            string={address}
+          />
         )}
       </div>
       {showTick && <TickIcon className={classes.tick} />}

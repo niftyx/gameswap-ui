@@ -163,6 +163,7 @@ export enum THEME {
 export interface ISettings {
   theme: THEME;
   responsiveFontSizes: boolean;
+  autoplay: boolean;
 }
 
 export interface ITokenAmount {
@@ -423,4 +424,13 @@ export interface IBalances {
   erc20Balances: {
     [key in KnownToken]: BigNumber;
   };
+}
+
+export interface IUserInfo {
+  displayName: string;
+  customUrl: string;
+  bio: string;
+  twitterUsername: string;
+  personalSite: string;
+  imageUrl: string;
 }

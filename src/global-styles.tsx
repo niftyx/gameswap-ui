@@ -2,11 +2,8 @@ import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
   body {
-    margin: 0;
-    * {
-      font-family: 'Poppins', sans-serif;
-      box-sizing: border-box;
-    }
+    
+    
 
     @-moz-keyframes spin { 
       100% { 

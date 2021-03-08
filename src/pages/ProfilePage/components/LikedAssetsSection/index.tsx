@@ -1,19 +1,18 @@
-import { Grid, Typography, makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 import clsx from "clsx";
 import { AssetsContainer, InventoryAssetItem, SimpleLoader } from "components";
 import { useConnectedWeb3Context } from "contexts";
 import { useInventoryAssets } from "helpers";
 import { transparentize } from "polished";
-import React, { useState } from "react";
+import React from "react";
 import { useHistory } from "react-router-dom";
 import useCommonStyles from "styles/common";
-import { EProfileTab } from "utils/enums";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     position: "relative",
-    overflow: "hidden",
+    paddingBottom: 40,
   },
   comment: {
     fontSize: theme.spacing(1.6125),

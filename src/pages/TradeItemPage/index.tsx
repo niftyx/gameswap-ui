@@ -1,10 +1,8 @@
-import { Grid, makeStyles } from "@material-ui/core";
-import clsx from "clsx";
+import { makeStyles } from "@material-ui/core";
 import { PageContainer, SimpleLoader } from "components";
 import { useAssetDetailsWithOrderFromId } from "helpers";
 import React from "react";
 import { Redirect, useParams } from "react-router-dom";
-import useCommonStyles from "styles/common";
 
 import { InfoContainer, ItemViewSection } from "./components";
 

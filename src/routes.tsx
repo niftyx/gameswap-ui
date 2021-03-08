@@ -57,6 +57,11 @@ const authRoutes = [
     path: "/profile",
     component: lazy(() => import("pages/ProfilePage")),
   },
+  {
+    exact: true,
+    path: "/settings",
+    component: lazy(() => import("pages/ProfileSettingsPage")),
+  },
 ];
 
 const renderRoutes = () => {

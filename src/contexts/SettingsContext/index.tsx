@@ -6,6 +6,7 @@ import { ISettings, THEME } from "utils/types.d";
 const defaultSettings: ISettings = {
   theme: THEME.Black,
   responsiveFontSizes: true,
+  autoplay: false,
 };
 
 export const restoreSettings = () => {

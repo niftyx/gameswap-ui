@@ -17,6 +17,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 import i18n from "./i18n";
+import "./App.css";
 
 function getLibrary(provider: any): Web3Provider {
   const library = new Web3Provider(provider);

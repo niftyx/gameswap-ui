@@ -19,3 +19,6 @@ export * from "./Form";
 export * from "./Loader";
 export * from "./Popover";
 export * from "./Avatar";
+export * from "./Progress";
+export * from "./Switch";
+export * from "./Account";

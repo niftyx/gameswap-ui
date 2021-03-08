@@ -2,9 +2,10 @@ import { ContractWrappers } from "@0x/contract-wrappers";
 import { Web3Wrapper } from "@0x/web3-wrapper";
 import { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
-import { ConnectWalletModal } from "components";
+import { ConnectWalletModal, LoadingScreen } from "components";
 import { STORAGE_KEY_CONNECTOR } from "config/constants";
 import React, { useEffect, useMemo, useState } from "react";
+import { waitSeconds } from "utils";
 import connectors from "utils/connectors";
 import { ConnectorNames } from "utils/enums";
 import { Maybe } from "utils/types";
@@ -58,7 +59,6 @@ export const ConnectedWeb3: React.FC = (props) => {
     initialized: false,
     walletConnectModalOpened: false,
   });
-
   const setInitialized = (initialized: boolean) => {
     setState((prev) => ({ ...prev, initialized }));
   };
@@ -78,8 +78,13 @@ export const ConnectedWeb3: React.FC = (props) => {
     } else if (connector && Object.keys(connectors).includes(connector)) {
       if (!active) {
         activate(connectors[connector as ConnectorNames])
-          .then(() => updateInitialized())
-          .catch(() => updateInitialized());
+          .then(async () => {
+            await waitSeconds(0.1);
+            updateInitialized();
+          })
+          .catch(() => {
+            updateInitialized();
+          });
       }
     } else {
       updateInitialized();
@@ -99,7 +104,7 @@ export const ConnectedWeb3: React.FC = (props) => {
 
   return (
     <ConnectedWeb3Context.Provider value={value}>
-      {props.children}
+      {state.initialized ? props.children : <LoadingScreen fullScreen />}
       <ConnectWalletModal
         onClose={() => setWalletConnectModalOpened(false)}
         visible={state.walletConnectModalOpened}

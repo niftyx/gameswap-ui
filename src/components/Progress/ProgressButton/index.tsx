@@ -55,7 +55,7 @@ interface IProps {
   onClick: () => void;
 }
 
-export const ERC721ProgressButton = (props: IProps) => {
+export const ProgressButton = (props: IProps) => {
   const classes = useStyles();
   const {
     approved,

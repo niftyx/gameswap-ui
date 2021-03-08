@@ -1,17 +1,11 @@
 import { makeStyles } from "@material-ui/core";
 import clsx from "clsx";
 import { LoadingScreen, PageContainer } from "components";
-import React, { Suspense, lazy, useState } from "react";
+import React, { Suspense, lazy } from "react";
 import { Route, Switch } from "react-router-dom";
 import useCommonStyles from "styles/common";
-import { EProfileTab } from "utils/enums";
 
-import {
-  AssetsTabSection,
-  HeroSection,
-  LatestActivitySection,
-  NoticeSection,
-} from "./components";
+import { AssetsTabSection, HeroSection } from "./components";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,32 +20,15 @@ const useStyles = makeStyles((theme) => ({
     marginRight: -theme.spacing(2),
     marginTop: -theme.spacing(2),
   },
-  // noticeSection: {
-  //   marginTop: -theme.spacing(5),
-  //   padding: theme.spacing(2),
-  // },
-  // latestActivitySection: {
-  //   marginTop: theme.spacing(5),
-  //   marginBottom: theme.spacing(2),
-  // },
   section: {
     marginTop: 8,
     marginBottom: 16,
   },
 }));
 
-interface IState {
-  tab: EProfileTab;
-}
-
 const ProfilePage = () => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
-  const [state, setState] = useState<IState>({
-    tab: EProfileTab.Assets,
-  });
-
-  const setTab = (tab: EProfileTab) => setState((prev) => ({ ...prev, tab }));
 
   return (
     <PageContainer className={classes.root}>
@@ -91,9 +68,6 @@ const ProfilePage = () => {
             />
           </Switch>
         </Suspense>
-
-        {/* <NoticeSection className={classes.noticeSection} />
-        <LatestActivitySection className={classes.latestActivitySection} /> */}
       </div>
     </PageContainer>
   );

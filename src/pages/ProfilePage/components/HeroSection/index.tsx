@@ -1,10 +1,4 @@
-import {
-  Avatar,
-  Button,
-  Grid,
-  Typography,
-  makeStyles,
-} from "@material-ui/core";
+import { Avatar, Grid, Typography, makeStyles } from "@material-ui/core";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import { ReactComponent as CopyIcon } from "assets/svgs/content-copy.svg";
 import clsx from "clsx";
@@ -18,6 +12,7 @@ import { useBalances } from "helpers";
 import { useSnackbar } from "notistack";
 import { transparentize } from "polished";
 import React from "react";
+import { NavLink } from "react-router-dom";
 import useCommonStyles from "styles/common";
 import { formatBigNumber, numberWithCommas, shortenAddress } from "utils";
 import { EProfileMarker } from "utils/enums";
@@ -83,10 +78,15 @@ const useStyles = makeStyles((theme) => ({
     height: theme.spacing(10),
     marginRight: theme.spacing(3),
   },
-  button: {
+  editProfileNav: {
+    display: "inline-flex",
     height: theme.spacing(5.5),
     minWidth: "auto",
     marginTop: theme.spacing(3),
+    textDecoration: "none",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: "0 16px",
   },
   balanceLabel: {
     fontSize: theme.spacing(2),
@@ -188,12 +188,15 @@ export const HeroSection = (props: IProps) => {
                 </div>
               </div>
             </div>
-            <Button
-              className={clsx(commonClasses.transparentButton, classes.button)}
-              variant="contained"
+            <NavLink
+              className={clsx(
+                commonClasses.transparentButton,
+                classes.editProfileNav
+              )}
+              to="/settings"
             >
               EDIT PROFILE
-            </Button>
+            </NavLink>
           </Grid>
           <Grid item md={4} xs={12}>
             <div>
@@ -209,15 +212,6 @@ export const HeroSection = (props: IProps) => {
               <Typography className={classes.balanceGSWAP} component="div">
                 {formattedGswapBalance} {gSwapToken.symbol}
               </Typography>
-              {/* <Button
-                className={clsx(
-                  commonClasses.transparentButton,
-                  classes.button
-                )}
-                variant="contained"
-              >
-                BUY GSWAP
-              </Button> */}
             </div>
           </Grid>
         </Grid>

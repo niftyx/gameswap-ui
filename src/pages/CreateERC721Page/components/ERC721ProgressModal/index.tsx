@@ -1,7 +1,5 @@
-import { IconButton, Modal, Typography, makeStyles } from "@material-ui/core";
-import CloseIcon from "@material-ui/icons/Close";
-import clsx from "clsx";
-import { CommentLoader } from "components";
+import { makeStyles } from "@material-ui/core";
+import { ProgressBasicModal, ProgressButton } from "components";
 import { DEFAULT_NETWORK_ID } from "config/constants";
 import { get0xContractAddresses } from "config/networks";
 import { useConnectedWeb3Context, useGlobal } from "contexts";
@@ -22,7 +20,6 @@ import { NetworkId } from "utils/types";
 
 import { ECreateStep } from "../../index";
 import { IERC721FormValues } from "../ERC721CreateForm";
-import { ERC721ProgressButton } from "../ERC721ProgressButton";
 
 const logger = getLogger("CreateERC721Page::Modal");
 
@@ -377,103 +374,79 @@ export const ERC721ProgressModal = (props: IProps) => {
   };
 
   return (
-    <Modal disableBackdropClick onClose={onClose} open={visible}>
-      <div className={clsx(classes.root, commonClasses.scroll)}>
-        {state.currentStep === ECurrentStep.Loading ? (
-          <CommentLoader />
-        ) : (
-          <>
-            <div className={classes.header}>
-              <Typography className={classes.title}>Follow steps</Typography>
-              <IconButton className={classes.closeButton} onClick={onClose}>
-                <CloseIcon />
-              </IconButton>
-            </div>
-            <div className={classes.content}>
-              {!state.initialApprovedAll && formValues.instantSale && (
-                <ERC721ProgressButton
-                  approved={state.approvedAll}
-                  buttonDisabled={state.followStep !== ECreateStep.ApproveAll}
-                  buttonLoadingText="Follow wallet instructions"
-                  buttonTitle="Approve"
-                  description="Approve perfoming transactions with your wallet"
-                  errorText={
-                    state.followStep === ECreateStep.ApproveAll
-                      ? state.error
-                      : ""
-                  }
-                  isLoading={
-                    state.followStep === ECreateStep.ApproveAll
-                      ? state.isLoading
-                      : false
-                  }
-                  onClick={approveAll}
-                  title="Approve"
-                />
-              )}
-              <ERC721ProgressButton
-                approved={state.filesUploaded}
-                buttonDisabled={state.followStep !== ECreateStep.UploadFiles}
-                buttonLoadingText="Follow wallet instructions"
-                buttonTitle="Upload Files"
-                description="Prepare files for minting"
-                errorText={
-                  state.followStep === ECreateStep.UploadFiles
-                    ? state.error
-                    : ""
-                }
-                isLoading={
-                  state.followStep === ECreateStep.UploadFiles
-                    ? state.isLoading
-                    : false
-                }
-                onClick={uploadFiles}
-                title={`Upload files ... ${state.filesUploadPercent}%`}
-              />
-              <ERC721ProgressButton
-                approved={state.tokenMint}
-                buttonDisabled={state.followStep !== ECreateStep.MintToken}
-                buttonLoadingText="Follow wallet instructions"
-                buttonTitle="Mint token"
-                description="Call contract method"
-                errorText={
-                  state.followStep === ECreateStep.MintToken ? state.error : ""
-                }
-                isLoading={
-                  state.followStep === ECreateStep.MintToken
-                    ? state.isLoading
-                    : false
-                }
-                onClick={mintToken}
-                title="Mint token"
-              />
-              {formValues.instantSale && (
-                <ERC721ProgressButton
-                  approved={false}
-                  buttonDisabled={
-                    state.followStep !== ECreateStep.SignSellOrder
-                  }
-                  buttonLoadingText="Follow wallet instructions"
-                  buttonTitle="Sign sell order"
-                  description="Sign sell order using your wallet"
-                  errorText={
-                    state.followStep === ECreateStep.SignSellOrder
-                      ? state.error
-                      : ""
-                  }
-                  isLoading={
-                    state.followStep === ECreateStep.SignSellOrder
-                      ? state.isLoading
-                      : false
-                  }
-                  onClick={signSellOrder}
-                  title="Sign sell order"
-                />
-              )}
-            </div>
-          </>
-        )}
-      </div>
-    </Modal>
+    <ProgressBasicModal
+      isStepLoading={state.currentStep === ECurrentStep.Loading}
+      onClose={onClose}
+      visible={visible}
+    >
+      {!state.initialApprovedAll && formValues.instantSale && (
+        <ProgressButton
+          approved={state.approvedAll}
+          buttonDisabled={state.followStep !== ECreateStep.ApproveAll}
+          buttonLoadingText="Follow wallet instructions"
+          buttonTitle="Approve"
+          description="Approve perfoming transactions with your wallet"
+          errorText={
+            state.followStep === ECreateStep.ApproveAll ? state.error : ""
+          }
+          isLoading={
+            state.followStep === ECreateStep.ApproveAll
+              ? state.isLoading
+              : false
+          }
+          onClick={approveAll}
+          title="Approve"
+        />
+      )}
+      <ProgressButton
+        approved={state.filesUploaded}
+        buttonDisabled={state.followStep !== ECreateStep.UploadFiles}
+        buttonLoadingText="Follow wallet instructions"
+        buttonTitle="Upload Files"
+        description="Prepare files for minting"
+        errorText={
+          state.followStep === ECreateStep.UploadFiles ? state.error : ""
+        }
+        isLoading={
+          state.followStep === ECreateStep.UploadFiles ? state.isLoading : false
+        }
+        onClick={uploadFiles}
+        title={`Upload files ... ${state.filesUploadPercent}%`}
+      />
+      <ProgressButton
+        approved={state.tokenMint}
+        buttonDisabled={state.followStep !== ECreateStep.MintToken}
+        buttonLoadingText="Follow wallet instructions"
+        buttonTitle="Mint token"
+        description="Call contract method"
+        errorText={
+          state.followStep === ECreateStep.MintToken ? state.error : ""
+        }
+        isLoading={
+          state.followStep === ECreateStep.MintToken ? state.isLoading : false
+        }
+        onClick={mintToken}
+        title="Mint token"
+      />
+      {formValues.instantSale && (
+        <ProgressButton
+          approved={false}
+          buttonDisabled={state.followStep !== ECreateStep.SignSellOrder}
+          buttonLoadingText="Follow wallet instructions"
+          buttonTitle="Sign sell order"
+          description="Sign sell order using your wallet"
+          errorText={
+            state.followStep === ECreateStep.SignSellOrder ? state.error : ""
+          }
+          isLoading={
+            state.followStep === ECreateStep.SignSellOrder
+              ? state.isLoading
+              : false
+          }
+          onClick={signSellOrder}
+          title="Sign sell order"
+        />
+      )}
+    </ProgressBasicModal>
   );
 };

@@ -6,6 +6,7 @@ import {
   ListItemText,
   Menu,
   MenuItem,
+  Popover,
   Typography,
   makeStyles,
 } from "@material-ui/core";
@@ -27,6 +28,8 @@ import { transparentize } from "polished";
 import React, { useState } from "react";
 import { NavLink, useHistory } from "react-router-dom";
 import { formatBigNumber, formatToShortNumber, shortenAddress } from "utils";
+
+import { AccountPopoverContent } from "../AccountPopoverContent";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -110,6 +113,13 @@ const useStyles = makeStyles((theme) => ({
       marginTop: 1,
     },
   },
+  popover: {
+    marginTop: 8,
+  },
+  popoverContent: {
+    borderRadius: 8,
+    border: `1px solid ${transparentize(0.8, theme.colors.text.default)}`,
+  },
 }));
 
 interface IProps {
@@ -160,12 +170,9 @@ const AccountInfoBar = (props: IProps) => {
   const onConnect = () => {
     setWalletConnectModalOpened(true);
   };
-  const onDisconnect = () => {
-    handleClose();
-    rawWeb3Context.deactivate();
-    localStorage.removeItem(STORAGE_KEY_CONNECTOR);
-    setWalletConnectModalOpened(false);
-  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? "account-info-popover" : undefined;
 
   return (
     <div className={clsx(classes.root, props.className)}>
@@ -194,24 +201,26 @@ const AccountInfoBar = (props: IProps) => {
           <IconButton className={classes.moreButton} onClick={handleClick}>
             <MoreHorizIcon />
           </IconButton>
-          <Menu
+          <Popover
             anchorEl={anchorEl}
-            anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-            elevation={0}
-            getContentAnchorEl={null}
-            id="more-menu"
-            keepMounted
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "right",
+            }}
+            className={classes.popover}
+            classes={{
+              paper: classes.popoverContent,
+            }}
+            id={id}
             onClose={handleClose}
-            open={Boolean(anchorEl)}
-            transformOrigin={{ vertical: "top", horizontal: "center" }}
+            open={open}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
           >
-            <MenuItem onClick={onDisconnect}>
-              <ListItemIcon>
-                <SendIcon />
-              </ListItemIcon>
-              <ListItemText primary="Disconnect" />
-            </MenuItem>
-          </Menu>
+            <AccountPopoverContent onClose={handleClose} />
+          </Popover>
         </>
       ) : (
         <Button

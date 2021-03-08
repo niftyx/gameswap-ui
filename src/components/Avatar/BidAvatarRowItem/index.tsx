@@ -6,7 +6,7 @@ import { shortenAddress } from "utils";
 
 const IdenticonComponent = Identicon as any;
 
-const avatarSize = 50;
+const AVATAR_SIZE = 50;
 const tickerWidth = 16;
 
 const useStyles = makeStyles((theme) => ({
@@ -16,13 +16,13 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     position: "relative",
   },
-  avatar: { width: avatarSize, height: avatarSize },
+  avatar: { width: AVATAR_SIZE, height: AVATAR_SIZE },
   left: {
     marginRight: 16,
     borderRadius: "50%",
     overflow: "hidden",
-    width: avatarSize,
-    height: avatarSize,
+    width: AVATAR_SIZE,
+    height: AVATAR_SIZE,
   },
   content: {
     flex: 1,
@@ -60,7 +60,7 @@ export const BidAvatarRowItem = (props: IProps) => {
           <Avatar alt="avatar" className={classes.avatar} src={image} />
         )}
         {!image && (
-          <IdenticonComponent bg="#fff" size={avatarSize} string={address} />
+          <IdenticonComponent bg="#fff" size={AVATAR_SIZE} string={address} />
         )}
       </div>
 
