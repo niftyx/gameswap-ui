@@ -136,7 +136,7 @@ export const ERC721CreateForm = (props: IProps) => {
     salePrice: 3,
     saleToken: "",
     collectionId: "",
-    gameId: "0",
+    gameId: "",
   };
 
   return (
@@ -148,6 +148,7 @@ export const ERC721CreateForm = (props: IProps) => {
           image,
           instantSale,
           lockedContent,
+          putOnSale,
           saleToken,
           unlockOncePurchased,
         } = values;
@@ -166,7 +167,7 @@ export const ERC721CreateForm = (props: IProps) => {
             return;
           }
         }
-        if (instantSale) {
+        if (putOnSale && instantSale) {
           if (!SALE_TOKENS.find((token) => token.address === saleToken)) {
             return setErrors({ saleToken: "Please select token!" });
           }
@@ -185,6 +186,7 @@ export const ERC721CreateForm = (props: IProps) => {
       }}
       validationSchema={Yup.object().shape({
         name: Yup.string().required(),
+        collectionId: Yup.string().required(),
         description: Yup.string(),
         royalties: Yup.number().required(),
         attributes: Yup.array(
