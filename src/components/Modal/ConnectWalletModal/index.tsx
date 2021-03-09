@@ -138,7 +138,7 @@ export const ConnectWalletModal = (props: IProps) => {
       >
         <div className={classes.content}>
           <Typography align="center" className={classes.title} component="h3">
-            {connectingToMetamask ? "Connecting..." : "Connect a wallet"}
+            {connectingToMetamask ? "Connecting..." : "Connect your wallet"}
           </Typography>
           <div className={classes.bottom}>
             {isConnectingToWallet ? (

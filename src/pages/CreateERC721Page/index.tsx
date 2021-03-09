@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     margin: "auto",
-    maxWidth: 900,
+    maxWidth: 1300,
     padding: `0px ${theme.spacing(2.5)}px`,
   },
 }));
@@ -87,8 +87,8 @@ const CreateERC721Page = () => {
   return (
     <PageContainer className={classes.root}>
       <div className={classes.content}>
-        <PageBackButton onBack={onBack} title="Manage Asset Type" />
-        <PageTitle title="Create single asset" />
+        <PageBackButton onBack={onBack} title="Back" />
+        <PageTitle title="Create asset" />
         <ERC721CreateForm
           onNewCollection={toggleCollectionModal}
           onNewGame={toggleGameModal}

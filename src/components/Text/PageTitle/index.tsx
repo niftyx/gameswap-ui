@@ -5,7 +5,10 @@ import React from "react";
 const useStyles = makeStyles((theme) => ({
   root: {
     height: "auto",
-    fontSize: theme.spacing(3.5),
+    fontSize: "48px",
+    lineHeight: "1.3",
+    fontWeight: 600,
+    letterSpacing: "-1px",
     color: theme.colors.text.default,
     margin: `${theme.spacing(1.5)}px 0`,
   },

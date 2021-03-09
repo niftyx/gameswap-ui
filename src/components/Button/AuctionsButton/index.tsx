@@ -39,7 +39,7 @@ export const AuctionsButton = (props: IProps) => {
       onClick={props.onClick}
     >
       <Typography className={classes.label} component="div">
-        Autions
+        Auctions
       </Typography>
       <AutionsIcon className={classes.icon} />
     </div>

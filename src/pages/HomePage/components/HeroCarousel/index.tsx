@@ -94,12 +94,12 @@ const useStyles = makeStyles((theme) => ({
   },
   comment: {
     zIndex: 2,
-    fontSize: 70,
+    fontSize: 50,
     lineHeight: "85px",
     color: theme.colors.text.default,
     fontWeight: "bold",
     [theme.breakpoints.down(1200)]: {
-      fontSize: 60,
+      fontSize: 50,
       lineHeight: "75px",
     },
     [theme.breakpoints.down(1050)]: {
@@ -269,9 +269,9 @@ export const HeroCarousel = (props: IProps) => {
       <div className={classes.comments}>
         <div className={classes.empty} />
         <Typography className={classes.comment} component="div">
-          Trade, mint and cash out
+          Create and trade in-game
           <br />
-          your in-game assets
+          NFT assets
         </Typography>
         <div className={classes.bottomRow}>
           <div className={classes.row}>

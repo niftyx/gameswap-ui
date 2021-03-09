@@ -53,7 +53,7 @@ const BrowseToolbar = (props: IProps) => {
         <SearchInput className={classes.search} />
       </Hidden>
       <Box flex={1} />
-      <AuctionsButton active={isAuctionActive} onClick={onAuction} />
+      {/* <AuctionsButton active={isAuctionActive} onClick={onAuction} /> */}
       <SortSelect />
       <PriceSelect />
       <VerticalDivider />
