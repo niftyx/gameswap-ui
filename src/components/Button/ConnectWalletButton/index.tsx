@@ -1,19 +1,29 @@
 import { Button, makeStyles } from "@material-ui/core";
 import clsx from "clsx";
+import { transparentize } from "polished";
 import React from "react";
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    display: "flex",
+    flex: 1,
+    backgroundColor: theme.colors.text.fourth,
+    "&:hover": {
+      backgroundColor: transparentize(0.6, theme.colors.text.fourth),
+    },
     "& svg": {
-      height: theme.spacing(3),
-      width: theme.spacing(3),
-      marginRight: theme.spacing(1),
+      height: theme.spacing(6),
+      width: theme.spacing(6),
+      marginBottom: theme.spacing(1),
     },
   },
   label: {
+    margin: "16px 0",
     display: "flex",
     alignItems: "center",
-    justifyContent: "flex-start",
+    flexDirection: "column",
+    color: transparentize(0.2, theme.colors.text.default),
+    fontSize: 12,
   },
 }));
 
@@ -33,7 +43,6 @@ export const ConnectWalletButton = (props: IProps) => {
       className={clsx(classes.root, props.className)}
       classes={{ label: classes.label }}
       disabled={disabled}
-      fullWidth
       onClick={onClick}
       variant="contained"
     >

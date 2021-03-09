@@ -27,27 +27,31 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     outline: "none",
-    backgroundColor: theme.colors.text.default,
-    minWidth: 350,
+    backgroundColor: transparentize(0.1, theme.colors.text.fourth),
+    minWidth: 480,
     borderRadius: theme.spacing(1),
     padding: `${theme.spacing(2)}px 0`,
     userSelect: `none`,
   },
   title: {
-    color: theme.colors.text.secondary,
+    color: theme.colors.text.default,
     padding: `0 ${theme.spacing(2)}px`,
-    fontWeight: "bold",
     fontSize: theme.spacing(2.5),
+    marginBottom: 32,
   },
-  divider: {
-    backgroundColor: transparentize(0.6, theme.colors.text.secondary),
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(2),
+  comment: {
+    color: transparentize(0.2, theme.colors.text.default),
   },
   bottom: {
     padding: `0 ${theme.spacing(2)}px`,
     textAlign: "center",
     "& > * + *": { marginTop: theme.spacing(1.5) },
+  },
+  connectButtons: {
+    display: "flex",
+    "& > * + *": {
+      marginLeft: 16,
+    },
   },
 }));
 
@@ -133,18 +137,19 @@ export const ConnectWalletModal = (props: IProps) => {
         open={!context.account && props.visible}
       >
         <div className={classes.content}>
-          <Typography className={classes.title} component="h3">
+          <Typography align="center" className={classes.title} component="h3">
             {connectingToMetamask ? "Connecting..." : "Connect a wallet"}
           </Typography>
-          <Divider className={classes.divider} />
           <div className={classes.bottom}>
             {isConnectingToWallet ? (
               <>
                 <CircularProgress />
-                <Typography>{connectingText}</Typography>
+                <Typography className={classes.comment}>
+                  {connectingText}
+                </Typography>
               </>
             ) : (
-              <>
+              <div className={classes.connectButtons}>
                 <ConnectWalletButton
                   disabled={disableMetamask}
                   icon={<MetaMaskIcon />}
@@ -169,7 +174,7 @@ export const ConnectWalletModal = (props: IProps) => {
                   }}
                   text="Wallet Link"
                 />
-              </>
+              </div>
             )}
           </div>
         </div>

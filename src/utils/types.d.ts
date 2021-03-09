@@ -194,6 +194,7 @@ export interface IAssetItem {
   contentId?: string;
   gameId?: string;
   lockedData?: string;
+  creator?: string;
 }
 
 export interface ISideMenuGroupHeaderItem {
@@ -340,6 +341,7 @@ export interface IGlobalData {
   };
   collections: ICollection[];
   games: IGame[];
+  userInfo?: IUserInfo;
 }
 
 export interface IIPFSConfig {
@@ -412,7 +414,7 @@ export interface IGame {
 
 export interface ICollection {
   id: string;
-  displayName: string;
+  name: string;
   name?: string;
   description?: string;
   imageUrl: string;
@@ -427,7 +429,7 @@ export interface IBalances {
 }
 
 export interface IUserInfo {
-  displayName: string;
+  name: string;
   customUrl: string;
   bio: string;
   twitterUsername: string;

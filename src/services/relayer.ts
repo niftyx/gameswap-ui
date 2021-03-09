@@ -6,7 +6,6 @@ import {
 } from "@0x/connect";
 import { assetDataUtils } from "@0x/order-utils";
 import { Orderbook } from "@0x/orderbook";
-import { AssetProxyId } from "@0x/types";
 import { BigNumber } from "@0x/utils";
 import { RateLimit } from "async-sema";
 import { RELAYER_RPS, RELAYER_URL, RELAYER_WS_URL } from "config/constants";

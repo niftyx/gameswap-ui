@@ -1,7 +1,7 @@
 import { Typography, makeStyles } from "@material-ui/core";
 import clsx from "clsx";
 import { DEFAULT_NETWORK_ID } from "config/constants";
-import { getContractAddress, getEtherscanUri } from "config/networks";
+import { getEtherscanUri } from "config/networks";
 import { useConnectedWeb3Context } from "contexts";
 import { transparentize } from "polished";
 import React from "react";

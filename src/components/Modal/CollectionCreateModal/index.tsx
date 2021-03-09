@@ -69,7 +69,7 @@ export const CollectionCreateModal = (props: IProps) => {
     image: null,
     imageUrl:
       "https://ipfs.infura.io:5001/api/v0/cat/QmYVmy51YoGTzP2hAcH2EWziXAZPm8cKjDxADvWPGFYN2f",
-    displayName: "",
+    name: "",
     shortUrl: "",
     description: "",
     uploading: false,
@@ -85,7 +85,7 @@ export const CollectionCreateModal = (props: IProps) => {
           try {
             setSubmitting(true);
             const txResult = await factoryContract.createGswap721(
-              values.displayName,
+              values.name,
               values.symbol,
               values.imageUrl,
               values.description || "",
@@ -102,7 +102,7 @@ export const CollectionCreateModal = (props: IProps) => {
         }}
         validationSchema={Yup.object().shape({
           id: Yup.string(),
-          displayName: Yup.string().required(),
+          name: Yup.string().required(),
           description: Yup.string(),
           symbol: Yup.string().required(),
         })}
@@ -148,19 +148,19 @@ export const CollectionCreateModal = (props: IProps) => {
             <FormTextField
               FormControlProps={{ fullWidth: true }}
               FormHelperTextProps={{
-                error: Boolean(touched.displayName && errors.displayName),
+                error: Boolean(touched.name && errors.name),
               }}
-              InputLabelProps={{ htmlFor: "displayName", shrink: true }}
+              InputLabelProps={{ htmlFor: "name", shrink: true }}
               InputProps={{
-                id: "displayName",
-                name: "displayName",
+                id: "name",
+                name: "name",
                 onBlur: handleBlur,
                 onChange: handleChange,
                 placeholder: "Enter token name",
-                value: values.displayName,
+                value: values.name,
                 required: true,
               }}
-              helperText={touched.displayName && errors.displayName}
+              helperText={touched.name && errors.name}
               label="Display name"
             />
             <FormTextField

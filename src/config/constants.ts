@@ -5,14 +5,11 @@ import {
   EActivityType,
   EBrowseGameBidItemStatus,
   EFarmingTag,
-  EFileType,
   EPlatform,
 } from "utils/enums";
 import {
   IActivityItem,
-  IAssetItem,
   IBrowseGameBidItem,
-  ICollection,
   IFeaturedFarmItem,
   IGame,
   IGameCategory,

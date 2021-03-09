@@ -4,7 +4,9 @@ import { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
 import { ConnectWalletModal, LoadingScreen } from "components";
 import { STORAGE_KEY_CONNECTOR } from "config/constants";
+import { useGlobal } from "contexts/GlobalContext";
 import React, { useEffect, useMemo, useState } from "react";
+import { getAPIService } from "services/api";
 import { waitSeconds } from "utils";
 import connectors from "utils/connectors";
 import { ConnectorNames } from "utils/enums";
@@ -52,6 +54,7 @@ export const ConnectedWeb3: React.FC = (props) => {
     error,
     library,
   } = context;
+  const { updateUserInfo } = useGlobal();
   const [state, setState] = useState<{
     initialized: boolean;
     walletConnectModalOpened: boolean;
@@ -59,6 +62,9 @@ export const ConnectedWeb3: React.FC = (props) => {
     initialized: false,
     walletConnectModalOpened: false,
   });
+
+  const apiService = getAPIService();
+
   const setInitialized = (initialized: boolean) => {
     setState((prev) => ({ ...prev, initialized }));
   };
@@ -91,6 +97,22 @@ export const ConnectedWeb3: React.FC = (props) => {
     }
     // eslint-disable-next-line
   }, [context, library, active, error]);
+
+  useEffect(() => {
+    let isMounted = true;
+    const loadUserInfo = async () => {
+      if (!account) {
+        updateUserInfo();
+        return;
+      }
+      const userInfo = await apiService.getAccountInfo(account);
+      updateUserInfo(userInfo);
+    };
+    loadUserInfo();
+    return () => {
+      isMounted = false;
+    };
+  }, [account]);
 
   const value = {
     account: account || null,

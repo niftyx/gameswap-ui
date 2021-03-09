@@ -7,7 +7,6 @@ import { shortenAddress } from "utils";
 const IdenticonComponent = Identicon as any;
 
 const AVATAR_SIZE = 50;
-const tickerWidth = 16;
 
 const useStyles = makeStyles((theme) => ({
   root: {

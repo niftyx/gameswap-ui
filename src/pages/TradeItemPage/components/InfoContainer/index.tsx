@@ -197,14 +197,7 @@ export const InfoContainer = (props: IProps) => {
         <TabSection />
 
         {(!tabName || tabName === EAssetDetailTab.Info) && (
-          <InfoSectionTab
-            creator={
-              historyData.history.length > 0
-                ? historyData.history[historyData.history.length - 1].to || ""
-                : ""
-            }
-            data={data}
-          />
+          <InfoSectionTab creator={data.creator || ""} data={data} />
         )}
         {tabName === EAssetDetailTab.Owners && (
           <TradeHistory tradeHistoryData={historyData} />

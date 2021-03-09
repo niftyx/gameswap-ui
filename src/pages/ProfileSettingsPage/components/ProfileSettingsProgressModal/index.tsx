@@ -1,7 +1,8 @@
 import { makeStyles } from "@material-ui/core";
 import { ProgressBasicModal, ProgressButton } from "components";
-import { useConnectedWeb3Context } from "contexts";
+import { useConnectedWeb3Context, useGlobal } from "contexts";
 import React, { useEffect, useState } from "react";
+import { getAPIService } from "services/api";
 import { waitSeconds } from "utils";
 import { IUserInfo } from "utils/types";
 
@@ -33,7 +34,9 @@ export const ProfileSettingsProgressModal = (props: IProps) => {
     error: "",
     signedMessage: "",
   });
-  const { library: provider } = useConnectedWeb3Context();
+  const { account, library: provider } = useConnectedWeb3Context();
+  const { updateUserInfo } = useGlobal();
+  const apiService = getAPIService();
 
   useEffect(() => {
     if (state.step === EProfileSettingsProgressStep.Signing) {
@@ -50,9 +53,7 @@ export const ProfileSettingsProgressModal = (props: IProps) => {
     }
     setState((prev) => ({ ...prev, loading: true }));
     try {
-      const signedMessage = await provider
-        .getSigner()
-        .signMessage(values.displayName);
+      const signedMessage = await provider.getSigner().signMessage(values.name);
       setState((prev) => ({
         ...prev,
         loading: false,
@@ -66,11 +67,14 @@ export const ProfileSettingsProgressModal = (props: IProps) => {
   };
 
   const updateProfile = async () => {
-    const payload = { ...values, signedMessage: state.signedMessage };
-    console.log(payload);
     setState((prev) => ({ ...prev, loading: true }));
     try {
-      await waitSeconds(3);
+      const response = await apiService.updateAccountInfo(
+        account || "",
+        values,
+        state.signedMessage
+      );
+      updateUserInfo(response);
       setState((prev) => ({ ...prev, loading: false, error: "" }));
       onClose();
     } catch (error) {

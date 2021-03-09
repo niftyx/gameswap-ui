@@ -12,10 +12,14 @@ import { useBalances } from "helpers";
 import { useSnackbar } from "notistack";
 import { transparentize } from "polished";
 import React from "react";
+import Identicon from "react-identicons";
 import { NavLink } from "react-router-dom";
 import useCommonStyles from "styles/common";
 import { formatBigNumber, numberWithCommas, shortenAddress } from "utils";
 import { EProfileMarker } from "utils/enums";
+
+const IdenticonComponent = Identicon as any;
+const AVATAR_SIZE = 80;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     left: theme.spacing(2),
     right: theme.spacing(2),
-    bottom: theme.spacing(2),
+    bottom: theme.spacing(4),
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
@@ -74,9 +78,12 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
   },
   avatar: {
-    width: theme.spacing(10),
-    height: theme.spacing(10),
+    width: AVATAR_SIZE,
+    height: AVATAR_SIZE,
     marginRight: theme.spacing(3),
+    borderRadius: "50%",
+    overflow: "hidden",
+    border: `1px solid ${transparentize(0.8, theme.colors.text.default)}`,
   },
   editProfileNav: {
     display: "inline-flex",
@@ -94,7 +101,7 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: 500,
   },
   balanceUSD: {
-    fontSize: theme.spacing(5.5),
+    fontSize: theme.spacing(4.5),
     color: theme.colors.text.default,
     maxWidth: 500,
   },
@@ -139,6 +146,7 @@ export const HeroSection = (props: IProps) => {
       price: {
         gswap: { price },
       },
+      userInfo,
     },
   } = useGlobal();
   const formattedGswapBalance = numberWithCommas(
@@ -170,13 +178,26 @@ export const HeroSection = (props: IProps) => {
         <Grid container spacing={3}>
           <Grid item md={8} xs={12}>
             <div className={classes.row}>
-              <Avatar className={classes.avatar} src="/svgs/mock/avatar.svg" />
+              {userInfo && userInfo.imageUrl ? (
+                <Avatar className={classes.avatar} src={userInfo.imageUrl} />
+              ) : (
+                <div className={classes.avatar}>
+                  <IdenticonComponent
+                    bg="#fff"
+                    size={AVATAR_SIZE}
+                    string={account || ""}
+                  />
+                </div>
+              )}
+
               <div>
                 <div className={classes.row}>
                   <Typography className={classes.name} component="div">
-                    Elon Must
+                    {userInfo && userInfo.name ? userInfo.name : "    "}
                   </Typography>
-                  <ProfileMarker marker={EProfileMarker.Verified} />
+                  {userInfo && userInfo.twitterUsername && (
+                    <ProfileMarker marker={EProfileMarker.Verified} />
+                  )}
                 </div>
                 <div className={classes.row}>
                   <Typography className={classes.description} component="div">

@@ -8,7 +8,7 @@ import _ from "lodash";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { getAPIService } from "services/api";
 import { getLogger } from "utils/logger";
-import { IGlobalData, KnownToken } from "utils/types.d";
+import { IGlobalData, IUserInfo, KnownToken } from "utils/types.d";
 
 const logger = getLogger("GlobalContext::");
 
@@ -49,6 +49,7 @@ const GlobalContext = createContext({
   clearInventoryCart: () => {},
   loadGames: () => {},
   loadCollections: () => {},
+  updateUserInfo: (_?: IUserInfo) => {},
 });
 
 /**
@@ -220,6 +221,10 @@ export const GlobalProvider = ({ children }: IProps) => {
     }));
   };
 
+  const updateUserInfo = (userInfo?: IUserInfo) => {
+    setCurrentData((prevData) => ({ ...prevData, userInfo }));
+  };
+
   return (
     <GlobalContext.Provider
       value={{
@@ -233,6 +238,7 @@ export const GlobalProvider = ({ children }: IProps) => {
         clearItemCart,
         loadCollections,
         loadGames,
+        updateUserInfo,
       }}
     >
       {children}

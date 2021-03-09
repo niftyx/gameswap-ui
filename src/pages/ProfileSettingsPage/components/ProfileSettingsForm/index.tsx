@@ -6,7 +6,7 @@ import {
 } from "@material-ui/core";
 import clsx from "clsx";
 import { FormSettingsAvatarUpload, FormTextField } from "components";
-import { useConnectedWeb3Context } from "contexts";
+import { useConnectedWeb3Context, useGlobal } from "contexts";
 import { Form, Formik } from "formik";
 import { transparentize } from "polished";
 import React from "react";
@@ -81,7 +81,7 @@ export interface ISettingsFormValues extends IUserInfo {
 
 interface IProps {
   className?: string;
-  onSubmit: (payload: ISettingsFormValues) => void;
+  onSubmit: (payload: IUserInfo) => void;
 }
 
 export const ProfileSettingsForm = (props: IProps) => {
@@ -90,13 +90,14 @@ export const ProfileSettingsForm = (props: IProps) => {
   const { onSubmit } = props;
   const { account } = useConnectedWeb3Context();
   const ipfsService = getIPFSService();
+  const {
+    data: { userInfo },
+  } = useGlobal();
+
+  if (!userInfo) return null;
+
   const initialValues: ISettingsFormValues = {
-    displayName: "",
-    customUrl: "",
-    bio: "",
-    twitterUsername: "",
-    personalSite: "",
-    imageUrl: "",
+    ...userInfo,
     uploading: false,
     image: null,
   };
@@ -105,10 +106,11 @@ export const ProfileSettingsForm = (props: IProps) => {
     <Formik
       initialValues={initialValues}
       onSubmit={(values, { setErrors }) => {
-        onSubmit(values);
+        const { image, uploading, ...payload } = values;
+        onSubmit(payload);
       }}
       validationSchema={Yup.object().shape({
-        displayName: Yup.string().required(),
+        name: Yup.string().required(),
         customUrl: Yup.string(),
         bio: Yup.string(),
         twitterUsername: Yup.string(),
@@ -177,23 +179,23 @@ export const ProfileSettingsForm = (props: IProps) => {
                 className: classes.formControl,
               }}
               FormHelperTextProps={{
-                error: Boolean(touched.displayName && errors.displayName),
+                error: Boolean(touched.name && errors.name),
               }}
               InputLabelProps={{
-                htmlFor: "displayName",
+                htmlFor: "name",
                 shrink: true,
                 className: classes.inputLabel,
               }}
               InputProps={{
-                id: "displayName",
-                name: "displayName",
+                id: "name",
+                name: "name",
                 onBlur: handleBlur,
                 onChange: handleChange,
                 placeholder: "Enter your display name",
-                value: values.displayName,
+                value: values.name,
               }}
               helperText={
-                (touched.displayName && errors.displayName) ||
+                (touched.name && errors.name) ||
                 "Only letters, numbers, underscores and emojis"
               }
               label="Display name"

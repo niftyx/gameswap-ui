@@ -1,17 +1,11 @@
-import { Typography, makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 import clsx from "clsx";
 import { BidAvatarRowItem, HorizonDivider } from "components";
 import { DEFAULT_NETWORK_ID } from "config/constants";
-import {
-  getContractAddress,
-  getEtherscanUri,
-  getTokenFromAddress,
-} from "config/networks";
+import { getTokenFromAddress } from "config/networks";
 import { useConnectedWeb3Context } from "contexts";
-import { transparentize } from "polished";
 import React from "react";
-import { formatBigNumber, shortenAddress } from "utils";
-import { ZERO_NUMBER } from "utils/number";
+import { formatBigNumber } from "utils";
 import { xBigNumberToEthersBigNumber } from "utils/token";
 import { IAssetItem } from "utils/types";
 

@@ -62,7 +62,10 @@ export const formatToShortNumber = (number: string, decimals = 2): string => {
 };
 
 export const numberWithCommas = (x: number | string) => {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  const splits = x.toString().split(".");
+  const first = splits[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  if (splits.length === 1) return first;
+  return [first, splits[1]].join(".");
 };
 
 export const waitSeconds = (sec = 2): Promise<void> =>

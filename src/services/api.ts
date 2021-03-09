@@ -1,6 +1,7 @@
 import axios from "axios";
 import { API_BASE_URL } from "config/constants";
 import { BigNumber } from "ethers";
+import { IUserInfo } from "utils/types";
 
 axios.defaults.baseURL = API_BASE_URL;
 
@@ -101,6 +102,25 @@ export class APIService {
       perPage: number;
       records: IAPIResponseRecord[];
     };
+  }
+
+  // get account info
+  public async getAccountInfo(account: string) {
+    const response = await axios.get(`${this.accountPath}${account}`);
+    return response.data as IUserInfo;
+  }
+
+  // get account info
+  public async updateAccountInfo(
+    account: string,
+    payload: IUserInfo,
+    signedMessage: string
+  ) {
+    const response = await axios.post(`${this.accountPath}${account}`, {
+      ...payload,
+      signedMessage,
+    });
+    return response.data as IUserInfo;
   }
 }
 

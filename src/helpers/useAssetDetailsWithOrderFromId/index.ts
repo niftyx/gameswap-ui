@@ -53,6 +53,7 @@ export const useAssetDetailsWithOrderFromId = (id: string): IResponse => {
         asset: {
           ...(response as any),
           owner: response.currentOwner.id,
+          creator: response.creator.id,
           collectionId: response.collection.id,
           tokenId: BigNumber.from(response.assetId.hex),
           tokenURL: response.assetURL,
