@@ -9,7 +9,7 @@ import { WalletConnectConnector } from "@web3-react/walletconnect-connector";
 import { ReactComponent as MetaMaskIcon } from "assets/svgs/metamask-color.svg";
 import { ReactComponent as WalletConnectIcon } from "assets/svgs/wallet-connect.svg";
 import { ConnectWalletButton } from "components/Button";
-import { AVAX_NETWORK_CONFIG, STORAGE_KEY_CONNECTOR } from "config/constants";
+import { NETWORK_CONFIG, STORAGE_KEY_CONNECTOR } from "config/constants";
 import { transparentize } from "polished";
 import React, { useCallback, useEffect } from "react";
 import { waitSeconds } from "utils";
@@ -104,7 +104,7 @@ export const ConnectWalletModal = (props: IProps) => {
       try {
         if (wallet === ConnectorNames.Injected) {
           // window.ethereum.request({ method: "eth_requestAccounts" });
-          await window.ethereum.request(AVAX_NETWORK_CONFIG);
+          await window.ethereum.request(NETWORK_CONFIG);
           await waitSeconds(2);
         }
         context.activate(currentConnector);

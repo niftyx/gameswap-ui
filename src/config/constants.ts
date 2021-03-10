@@ -422,7 +422,7 @@ export const GAMES: IGame[] = [
 
 export const TEST_MODE = process.env.REACT_APP_TEST || true;
 
-export const AVAX_NETWORK_CONFIG = TEST_MODE
+export const NETWORK_CONFIG = TEST_MODE
   ? {
       method: "wallet_addEthereumChain",
       params: [
