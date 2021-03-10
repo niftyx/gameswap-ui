@@ -7,7 +7,7 @@ import { useAssetDetailsFromIdCollection } from "helpers";
 import { transparentize } from "polished";
 import React from "react";
 import useCommonStyles from "styles/common";
-import { getAssetObjectWithPrices, getObjectIdFromHex } from "utils/tools";
+import { getAssetObjectWithPrices } from "utils/tools";
 import { IAssetItem, ITradeAssetItem } from "utils/types";
 
 import { AssetPhoto } from "../AssetPhoto";

@@ -397,19 +397,15 @@ export interface IGameCategory {
   name: string;
 }
 
-export interface IPlatform {
-  os: string;
-  version: string;
-}
-
 export interface IGame {
   id: string;
-  title: string;
+  name: string;
   version: string;
   imageUrl: string;
+  headerImageUrl?: string;
   categoryId: string;
   description: string;
-  platform: IPlatform[];
+  platform: EPlatform;
 }
 
 export interface ICollection {
@@ -418,7 +414,6 @@ export interface ICollection {
   name?: string;
   description?: string;
   imageUrl: string;
-  shortUrl?: string;
   symbol: string;
 }
 export interface IBalances {
@@ -430,9 +425,25 @@ export interface IBalances {
 
 export interface IUserInfo {
   name: string;
+  address: string;
+  id: string;
   customUrl: string;
   bio: string;
   twitterUsername: string;
   personalSite: string;
   imageUrl: string;
+}
+
+// game create
+export interface IGameFormValues extends IGame {
+  image: File | null;
+  imageUploading: boolean;
+  headerImage: File | null;
+  headerImageUploading: boolean;
+}
+
+// collection create
+interface ICollectionFormValues extends ICollection {
+  image: File | null;
+  uploading: boolean;
 }

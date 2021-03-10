@@ -5,8 +5,12 @@ export enum EFarmingTag {
 }
 
 export enum EPlatform {
-  Mac = "MAC",
-  Windows = "WINDOWS",
+  Mac = "Mac",
+  Windows = "Windows",
+  Linux = "Linux",
+  Android = "Android",
+  iOS = "iOS",
+  Web = "Web",
 }
 
 export enum EProfileMarker {

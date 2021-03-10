@@ -9,6 +9,7 @@ const useCommonStyles = makeStyles((theme) => ({
         0.3,
         theme.colors.background.fourth
       )}`,
+      borderRadius: 2,
     },
     "&::-webkit-scrollbar-track": {},
     "&::-webkit-scrollbar-thumb": {

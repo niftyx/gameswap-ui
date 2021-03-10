@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme) => ({
     height: theme.spacing(3),
     width: 1,
     backgroundColor: theme.colors.transparent,
-    minWidth: theme.spacing(13),
+    minWidth: theme.spacing(18),
   },
   input: {
     color: theme.colors.text.third,

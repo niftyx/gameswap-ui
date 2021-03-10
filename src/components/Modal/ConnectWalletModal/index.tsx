@@ -1,6 +1,5 @@
 import {
   CircularProgress,
-  Divider,
   Modal,
   Typography,
   makeStyles,
@@ -10,9 +9,10 @@ import { WalletConnectConnector } from "@web3-react/walletconnect-connector";
 import { ReactComponent as MetaMaskIcon } from "assets/svgs/metamask-color.svg";
 import { ReactComponent as WalletConnectIcon } from "assets/svgs/wallet-connect.svg";
 import { ConnectWalletButton } from "components/Button";
-import { STORAGE_KEY_CONNECTOR } from "config/constants";
+import { AVAX_NETWORK_CONFIG, STORAGE_KEY_CONNECTOR } from "config/constants";
 import { transparentize } from "polished";
 import React, { useCallback, useEffect } from "react";
+import { waitSeconds } from "utils";
 import connectors from "utils/connectors";
 import { ConnectorNames } from "utils/enums";
 import { getLogger } from "utils/logger";
@@ -84,7 +84,7 @@ export const ConnectWalletModal = (props: IProps) => {
   }
 
   const isMetamaskEnabled = "ethereum" in window || "web3" in window;
-  const onClickWallet = (wallet: ConnectorNames) => {
+  const onClickWallet = async (wallet: ConnectorNames) => {
     const currentConnector = connectors[wallet];
     if (wallet === ConnectorNames.Injected) {
       setActivatingConnector(currentConnector);
@@ -100,8 +100,19 @@ export const ConnectWalletModal = (props: IProps) => {
       ) {
         currentConnector.walletConnectProvider = undefined;
       }
-      context.activate(currentConnector);
-      localStorage.setItem(STORAGE_KEY_CONNECTOR, wallet);
+
+      try {
+        if (wallet === ConnectorNames.Injected) {
+          // window.ethereum.request({ method: "eth_requestAccounts" });
+          await window.ethereum.request(AVAX_NETWORK_CONFIG);
+          await waitSeconds(2);
+        }
+        context.activate(currentConnector);
+        localStorage.setItem(STORAGE_KEY_CONNECTOR, wallet);
+      } catch (error) {
+        logger.error("connect::", error);
+        onClickCloseButton();
+      }
     }
   };
 

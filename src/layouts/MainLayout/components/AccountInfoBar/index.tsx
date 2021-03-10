@@ -1,31 +1,20 @@
 import {
   Button,
-  Hidden,
   IconButton,
-  ListItemIcon,
-  ListItemText,
-  Menu,
-  MenuItem,
   Popover,
   Typography,
   makeStyles,
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
-import SendIcon from "@material-ui/icons/Send";
 import { ReactComponent as MetaMaskIcon } from "assets/svgs/metamask.svg";
 import clsx from "clsx";
-import { ConnectWalletModal } from "components";
-import {
-  DEFAULT_NETWORK_ID,
-  STORAGE_KEY_CONNECTOR,
-  TokenAvax,
-} from "config/constants";
+import { DEFAULT_NETWORK_ID, TokenAvax } from "config/constants";
 import { getToken } from "config/networks";
-import { useConnectedWeb3Context, useGlobal } from "contexts";
+import { useConnectedWeb3Context } from "contexts";
 import { useBalances } from "helpers";
 import { transparentize } from "polished";
-import React, { useState } from "react";
+import React from "react";
 import { NavLink, useHistory } from "react-router-dom";
 import { formatBigNumber, formatToShortNumber, shortenAddress } from "utils";
 
@@ -131,20 +120,12 @@ const AccountInfoBar = (props: IProps) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const history = useHistory();
   const context = useConnectedWeb3Context();
-  const {
-    account,
-    library: provider,
-    networkId,
-    rawWeb3Context,
-    setWalletConnectModalOpened,
-  } = context;
+  const { account, networkId, setWalletConnectModalOpened } = context;
   const {
     balances: {
       erc20Balances: { gswap: gswapBalance },
-      eth: ethBalance,
     },
   } = useBalances(context);
-  const formattedEthBalance = formatBigNumber(ethBalance, TokenAvax.decimals);
   const gSwapToken = getToken(networkId || DEFAULT_NETWORK_ID, "gswap");
 
   const formattedGswapBalance = formatToShortNumber(

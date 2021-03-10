@@ -30,8 +30,6 @@ export const BidsSectionTab = (props: IProps) => {
 
   if (!data.orders) return null;
 
-  console.log(data);
-
   return (
     <div className={clsx(classes.root, props.className)}>
       {data.orders.map((order, index) => {

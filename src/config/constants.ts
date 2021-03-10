@@ -384,50 +384,74 @@ export const GAME_CATEGORIES: IGameCategory[] = [
 export const GAMES: IGame[] = [
   {
     id: "1",
-    title: "Skyfall",
+    name: "Skyfall",
     version: "3",
     imageUrl: "...",
     categoryId: GAME_CATEGORIES[2].value,
     description: "SkyFall Game",
-    platform: [
-      { os: "windows", version: "10" },
-      { os: "mac", version: "10.13.6" },
-    ],
+    platform: EPlatform.Mac,
   },
   {
     id: "2",
-    title: "Cyberpunk Assault",
+    name: "Cyberpunk Assault",
     version: "1.1",
     imageUrl: "...",
     categoryId: GAME_CATEGORIES[3].value,
     description: "Cyberpunk Assault Game",
-    platform: [
-      { os: "windows", version: "10" },
-      { os: "mac", version: "10.13.6" },
-    ],
+    platform: EPlatform.Mac,
   },
   {
     id: "3",
-    title: `No Man's Sky`,
+    name: `No Man's Sky`,
     version: "1.2",
     imageUrl: "...",
     categoryId: GAME_CATEGORIES[4].value,
     description: `No Man's Sky Game`,
-    platform: [
-      { os: "windows", version: "10" },
-      { os: "mac", version: "10.13.6" },
-    ],
+    platform: EPlatform.Mac,
   },
   {
     id: "4",
-    title: "Horizon Zero Dawn",
+    name: "Horizon Zero Dawn",
     version: "1.2",
     imageUrl: "...",
     categoryId: GAME_CATEGORIES[5].value,
     description: "Horizon Zero Dawn Game",
-    platform: [
-      { os: "windows", version: "10" },
-      { os: "mac", version: "10.13.6" },
-    ],
+    platform: EPlatform.Mac,
   },
 ];
+
+export const TEST_MODE = process.env.REACT_APP_TEST || true;
+
+export const AVAX_NETWORK_CONFIG = TEST_MODE
+  ? {
+      method: "wallet_addEthereumChain",
+      params: [
+        {
+          chainId: "0xa869",
+          chainName: "Fuji Testnet",
+          nativeCurrency: {
+            name: "AVAX",
+            symbol: "AVAX",
+            decimals: 18,
+          },
+          rpcUrls: ["https://api.avax-test.network/ext/bc/C/rpc"],
+          blockExplorerUrls: ["https://cchain.explorer.avax-test.network/"],
+        },
+      ],
+    }
+  : {
+      method: "wallet_addEthereumChain",
+      params: [
+        {
+          chainId: "0xa86a",
+          chainName: "Avalanche Mainnet",
+          nativeCurrency: {
+            name: "AVAX",
+            symbol: "AVAX",
+            decimals: 18,
+          },
+          rpcUrls: ["https://api.avax.network/ext/bc/C/rpc"],
+          blockExplorerUrls: ["https://cchain.explorer.avax.network/"],
+        },
+      ],
+    };

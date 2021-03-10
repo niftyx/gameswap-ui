@@ -9,5 +9,6 @@ export * from "./FormSelectField";
 export * from "./FormCollectionImageUpload";
 export * from "./FormGameChoose";
 export * from "./FormGameChooseItem";
-export * from "./FormPlatformField";
 export * from "./FormSettingsAvatarUpload";
+export * from "./FormHeaderImageUpload";
+export * from "./FormGameImageUpload";

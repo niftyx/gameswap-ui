@@ -39,6 +39,9 @@ const routes = [
     path: "/faq",
     component: lazy(() => import("pages/FaqPage")),
   },
+];
+
+const authRoutes = [
   {
     exact: true,
     path: "/create",
@@ -49,9 +52,16 @@ const routes = [
     path: "/create/erc721",
     component: lazy(() => import("pages/CreateERC721Page")),
   },
-];
-
-const authRoutes = [
+  {
+    exact: true,
+    path: "/create/game",
+    component: lazy(() => import("pages/CreateGamePage")),
+  },
+  {
+    exact: true,
+    path: "/create/collection",
+    component: lazy(() => import("pages/CreateCollectionPage")),
+  },
   {
     exact: false,
     path: "/profile",

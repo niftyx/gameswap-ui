@@ -42,6 +42,7 @@ export const ItemViewSection = (props: IProps) => {
       <div className={classes.content}>
         <AssetPhoto
           className={classes.img}
+          preview={false}
           type={data.imageType}
           uri={data.image}
         />

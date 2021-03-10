@@ -1,31 +1,28 @@
-import { Button, CircularProgress, makeStyles } from "@material-ui/core";
+import { Button, makeStyles } from "@material-ui/core";
 import clsx from "clsx";
-import { FormTextField } from "components";
-import { FormCollectionImageUpload } from "components/Form";
-import { DEFAULT_NETWORK_ID } from "config/constants";
-import { getContractAddress } from "config/networks";
-import { useConnectedWeb3Context, useGlobal } from "contexts";
+import { FormCollectionImageUpload, FormTextField } from "components";
+import { useConnectedWeb3Context } from "contexts";
 import { Form, Formik } from "formik";
 import React from "react";
-import { ERC721FactoryService } from "services";
 import { getIPFSService } from "services/ipfs";
-import { waitSeconds } from "utils";
-import { getLogger } from "utils/logger";
-import { ICollectionFormValues } from "utils/types";
+import { ICollection, ICollectionFormValues } from "utils/types";
 import * as Yup from "yup";
 
-import { BasicModal } from "../Common";
-
-const logger = getLogger("CollectionCreationModal::");
-
 const useStyles = makeStyles((theme) => ({
-  root: {},
-  form: {
+  root: {
     "& > * + *": {
       marginTop: theme.spacing(2),
     },
   },
+  notice: {
+    color: theme.colors.text.default,
+    fontSize: theme.spacing(1.6125),
+    "& + &": {
+      marginTop: 0,
+    },
+  },
   button: {
+    width: theme.spacing(30),
     height: theme.spacing(6),
     borderRadius: 6,
     marginTop: theme.spacing(5),
@@ -33,26 +30,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface IProps {
-  visible: boolean;
-  onClose: () => void;
+  className?: string;
+  onSubmit: (values: ICollection) => void;
 }
 
-export const CollectionCreateModal = (props: IProps) => {
+export const CollectionCreateForm = (props: IProps) => {
   const classes = useStyles();
-  const { onClose, visible } = props;
+  const { account, library: provider } = useConnectedWeb3Context();
   const ipfsService = getIPFSService();
-  const { loadCollections } = useGlobal();
-
-  const { account, library: provider, networkId } = useConnectedWeb3Context();
-  const gswap721FactoryAddress = getContractAddress(
-    networkId || DEFAULT_NETWORK_ID,
-    "erc721Factory"
-  );
-  const factoryContract = new ERC721FactoryService(
-    provider,
-    account,
-    gswap721FactoryAddress
-  );
+  const isWalletConnected = !!account;
 
   const initialFormValues: ICollectionFormValues = {
     id: "",
@@ -65,48 +51,32 @@ export const CollectionCreateModal = (props: IProps) => {
   };
 
   return (
-    <BasicModal onClose={onClose} title="Collection" visible={visible}>
-      <Formik
-        initialValues={initialFormValues}
-        onSubmit={async (values, { setSubmitting }) => {
-          // create a new collection
-          try {
-            setSubmitting(true);
-            const txResult = await factoryContract.createGswap721(
-              values.name,
-              values.symbol,
-              values.imageUrl,
-              values.description || ""
-            );
-            logger.log(txResult);
-            await waitSeconds(5);
-            await loadCollections();
-            setSubmitting(false);
-            onClose();
-          } catch (error) {
-            logger.error(error);
-            setSubmitting(false);
-          }
-        }}
-        validationSchema={Yup.object().shape({
-          id: Yup.string(),
-          name: Yup.string().required(),
-          description: Yup.string(),
-          symbol: Yup.string().required(),
-        })}
-      >
-        {({
-          errors,
-          handleBlur,
-          handleChange,
-          handleSubmit,
-          isSubmitting,
-          isValid,
-          setFieldValue,
-          touched,
-          values,
-        }) => (
-          <Form className={classes.form} onSubmit={handleSubmit}>
+    <Formik
+      initialValues={initialFormValues}
+      onSubmit={async (values) => {
+        if (!provider) return;
+        props.onSubmit(values);
+      }}
+      validationSchema={Yup.object().shape({
+        id: Yup.string(),
+        name: Yup.string().required(),
+        description: Yup.string(),
+        symbol: Yup.string().required(),
+      })}
+    >
+      {({
+        errors,
+        handleBlur,
+        handleChange,
+        handleSubmit,
+        isSubmitting,
+        isValid,
+        setFieldValue,
+        touched,
+        values,
+      }) => (
+        <Form onSubmit={handleSubmit}>
+          <div className={clsx(classes.root, props.className)}>
             <FormCollectionImageUpload
               FormControlProps={{ fullWidth: true }}
               InputProps={{
@@ -123,7 +93,7 @@ export const CollectionCreateModal = (props: IProps) => {
                         setFieldValue("uploading", false);
                         setFieldValue("imageUrl", url);
                       })
-                      .catch((err) => {
+                      .catch(() => {
                         setFieldValue("uploading", false);
                       });
                   }
@@ -183,21 +153,24 @@ export const CollectionCreateModal = (props: IProps) => {
               }}
               label="Description"
             />
-
             <Button
               className={clsx(classes.button)}
               color="primary"
-              disabled={!isValid || isSubmitting || values.uploading}
+              disabled={
+                !isValid ||
+                isSubmitting ||
+                values.uploading ||
+                !isWalletConnected
+              }
               fullWidth
               type="submit"
               variant="contained"
             >
-              {isSubmitting && <CircularProgress color="primary" size={32} />}
               Create collection
             </Button>
-          </Form>
-        )}
-      </Formik>
-    </BasicModal>
+          </div>
+        </Form>
+      )}
+    </Formik>
   );
 };

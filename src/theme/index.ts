@@ -41,6 +41,13 @@ const themesOptions = [
           },
         },
       },
+      MuiInput: {
+        underline: {
+          "&::before": {
+            borderBottomColor: "#4F5562",
+          },
+        },
+      },
       MuiButton: {
         root: {
           padding: "14px 16px",
@@ -88,6 +95,13 @@ const themesOptions = [
           "&::placeholder": {
             opacity: 1,
             color: colors.blueGrey[600],
+          },
+        },
+      },
+      MuiInput: {
+        underline: {
+          "&::before": {
+            borderBottomColor: "#4F5562",
           },
         },
       },

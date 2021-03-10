@@ -72,7 +72,7 @@ export const FormGameChoose = (props: IProps) => {
               <img alt="img" className={classes.img} src={game.imageUrl} />
             )}
             subTitle={" "}
-            title={game.title}
+            title={game.name}
           />
         ))}
       </div>

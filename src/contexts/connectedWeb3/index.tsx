@@ -1,17 +1,14 @@
-import { ContractWrappers } from "@0x/contract-wrappers";
-import { Web3Wrapper } from "@0x/web3-wrapper";
 import { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
 import { ConnectWalletModal, LoadingScreen } from "components";
 import { STORAGE_KEY_CONNECTOR } from "config/constants";
 import { useGlobal } from "contexts/GlobalContext";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getAPIService } from "services/api";
 import { waitSeconds } from "utils";
 import connectors from "utils/connectors";
 import { ConnectorNames } from "utils/enums";
 import { Maybe } from "utils/types";
-import { boolean } from "yup/lib/locale";
 export interface ConnectedWeb3Context {
   account: Maybe<string> | null;
   library: Web3Provider | undefined;
@@ -106,7 +103,9 @@ export const ConnectedWeb3: React.FC = (props) => {
         return;
       }
       const userInfo = await apiService.getAccountInfo(account);
-      updateUserInfo(userInfo);
+      if (isMounted) {
+        updateUserInfo(userInfo);
+      }
     };
     loadUserInfo();
     return () => {
@@ -127,10 +126,12 @@ export const ConnectedWeb3: React.FC = (props) => {
   return (
     <ConnectedWeb3Context.Provider value={value}>
       {state.initialized ? props.children : <LoadingScreen fullScreen />}
-      <ConnectWalletModal
-        onClose={() => setWalletConnectModalOpened(false)}
-        visible={state.walletConnectModalOpened}
-      />
+      {state.walletConnectModalOpened && (
+        <ConnectWalletModal
+          onClose={() => setWalletConnectModalOpened(false)}
+          visible={state.walletConnectModalOpened}
+        />
+      )}
     </ConnectedWeb3Context.Provider>
   );
 };

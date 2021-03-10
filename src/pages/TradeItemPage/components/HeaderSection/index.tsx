@@ -88,7 +88,7 @@ export const HeaderSection = (props: IProps) => {
         </Typography>
         {game && (
           <Typography className={classes.gameType} component="div">
-            {game.title}
+            {game.name}
           </Typography>
         )}
         {data.description && (

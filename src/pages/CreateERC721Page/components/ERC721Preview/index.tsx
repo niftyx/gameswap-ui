@@ -82,6 +82,7 @@ export const ERC721Preview = (props: IProps) => {
       instantSale,
       lockedContent,
       name,
+      putOnSale,
       salePrice,
       saleToken,
       unlockOncePurchased,
@@ -117,7 +118,7 @@ export const ERC721Preview = (props: IProps) => {
       <div className={classes.content}>
         {renderImage()}
         <Typography className={classes.name}>{name}</Typography>
-        {instantSale && (
+        {instantSale && putOnSale && (
           <Typography className={classes.price}>
             {salePrice} {saleToken}
           </Typography>

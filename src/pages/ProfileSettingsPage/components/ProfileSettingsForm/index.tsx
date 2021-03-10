@@ -97,15 +97,22 @@ export const ProfileSettingsForm = (props: IProps) => {
   if (!userInfo) return null;
 
   const initialValues: ISettingsFormValues = {
-    ...userInfo,
+    name: userInfo.name,
+    customUrl: userInfo.customUrl,
+    bio: userInfo.bio,
+    twitterUsername: userInfo.twitterUsername,
+    personalSite: userInfo.personalSite,
+    imageUrl: userInfo.imageUrl,
     uploading: false,
     image: null,
+    id: userInfo.id,
+    address: userInfo.address,
   };
 
   return (
     <Formik
       initialValues={initialValues}
-      onSubmit={(values, { setErrors }) => {
+      onSubmit={(values) => {
         const { image, uploading, ...payload } = values;
         onSubmit(payload);
       }}
@@ -153,7 +160,7 @@ export const ProfileSettingsForm = (props: IProps) => {
                         setFieldValue("uploading", false);
                         setFieldValue("imageUrl", url);
                       })
-                      .catch((err) => {
+                      .catch(() => {
                         setFieldValue("uploading", false);
                       });
                   }
@@ -310,7 +317,7 @@ export const ProfileSettingsForm = (props: IProps) => {
             </Typography>
             <Button
               className={classes.button}
-              disabled={!isValid}
+              disabled={!isValid || isSubmitting}
               type="submit"
             >
               Update profile

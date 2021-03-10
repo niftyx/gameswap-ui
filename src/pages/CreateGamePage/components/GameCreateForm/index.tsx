@@ -1,36 +1,35 @@
-import { Button, CircularProgress, makeStyles } from "@material-ui/core";
+import { Button, makeStyles } from "@material-ui/core";
 import clsx from "clsx";
-import { FormTextField } from "components";
 import {
   FormGameImageUpload,
   FormHeaderImageUpload,
   FormSelectField,
-} from "components/Form";
+  FormTextField,
+} from "components";
 import { GAME_CATEGORIES } from "config/constants";
-import { useConnectedWeb3Context, useGlobal } from "contexts";
+import { useConnectedWeb3Context } from "contexts";
 import { Form, Formik } from "formik";
 import React from "react";
-import { getAPIService } from "services/api";
 import { getIPFSService } from "services/ipfs";
 import { EPlatform } from "utils/enums";
-import { getLogger } from "utils/logger";
-import { IGameFormValues } from "utils/types";
+import { IGame, IGameFormValues } from "utils/types";
 import * as Yup from "yup";
-
-import { BasicModal } from "../Common";
-
-const logger = getLogger("CollectionCreationModal::");
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    position: "relative",
-  },
-  form: {
     "& > * + *": {
       marginTop: theme.spacing(2),
     },
   },
+  notice: {
+    color: theme.colors.text.default,
+    fontSize: theme.spacing(1.6125),
+    "& + &": {
+      marginTop: 0,
+    },
+  },
   button: {
+    width: theme.spacing(30),
     height: theme.spacing(6),
     borderRadius: 6,
     marginTop: theme.spacing(5),
@@ -43,19 +42,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface IProps {
-  visible: boolean;
-  onClose: () => void;
+  className?: string;
+  onSubmit: (values: IGame) => void;
 }
 
-export const GameCreateModal = (props: IProps) => {
+export const GameCreateForm = (props: IProps) => {
   const classes = useStyles();
-  const { onClose, visible } = props;
-  const ipfsService = getIPFSService();
   const { account, library: provider } = useConnectedWeb3Context();
-  const { loadGames } = useGlobal();
-  const apiService = getAPIService();
+  const ipfsService = getIPFSService();
+  const isWalletConnected = !!account;
 
-  const initialFormValues: IGameFormValues = {
+  const initialFormValue: IGameFormValues = {
     id: "",
     image: null,
     imageUrl: "",
@@ -70,60 +67,45 @@ export const GameCreateModal = (props: IProps) => {
   };
 
   return (
-    <BasicModal onClose={onClose} title="Game" visible={visible}>
-      <Formik
-        initialValues={initialFormValues}
-        onSubmit={async (values, { setSubmitting }) => {
-          if (!provider) return;
-          // create a new game
-          setSubmitting(true);
-          try {
-            const payload = {
-              name: values.name,
-              version: values.version,
-              description: values.description,
-              categoryId: values.categoryId,
-              imageUrl: values.imageUrl,
-              headerImageUrl: values.headerImageUrl || "",
-              platform: values.platform,
-              message: "",
-            };
-            const signedMessage = await provider
-              .getSigner()
-              .signMessage(payload.name);
-            payload.message = signedMessage;
-
-            await apiService.createGame(payload);
-            await loadGames();
-            setSubmitting(false);
-            onClose();
-          } catch (error) {
-            setSubmitting(false);
-            logger.error(error);
-          }
-        }}
-        validationSchema={Yup.object().shape({
-          id: Yup.string(),
-          imageUrl: Yup.string().required(),
-          name: Yup.string().required(),
-          version: Yup.string().required(),
-          description: Yup.string(),
-          categoryId: Yup.string().required(),
-          platform: Yup.string().required(),
-        })}
-      >
-        {({
-          errors,
-          handleBlur,
-          handleChange,
-          handleSubmit,
-          isSubmitting,
-          isValid,
-          setFieldValue,
-          touched,
-          values,
-        }) => (
-          <Form className={classes.form} onSubmit={handleSubmit}>
+    <Formik
+      initialValues={initialFormValue}
+      onSubmit={async (values) => {
+        if (!provider) return;
+        const payload: IGame = {
+          id: "",
+          name: values.name,
+          version: values.version,
+          description: values.description,
+          categoryId: values.categoryId,
+          imageUrl: values.imageUrl,
+          headerImageUrl: values.headerImageUrl,
+          platform: values.platform,
+        };
+        props.onSubmit(payload);
+      }}
+      validationSchema={Yup.object().shape({
+        id: Yup.string(),
+        imageUrl: Yup.string().required(),
+        name: Yup.string().required(),
+        version: Yup.string().required(),
+        description: Yup.string(),
+        categoryId: Yup.string().required(),
+        platform: Yup.string().required(),
+      })}
+    >
+      {({
+        errors,
+        handleBlur,
+        handleChange,
+        handleSubmit,
+        isSubmitting,
+        isValid,
+        setFieldValue,
+        touched,
+        values,
+      }) => (
+        <Form onSubmit={handleSubmit}>
+          <div className={clsx(classes.root, props.className)}>
             <FormHeaderImageUpload
               FormControlProps={{ fullWidth: true }}
               InputProps={{
@@ -140,7 +122,7 @@ export const GameCreateModal = (props: IProps) => {
                         setFieldValue("headerImageUploading", false);
                         setFieldValue("headerImageUrl", url);
                       })
-                      .catch((err) => {
+                      .catch(() => {
                         setFieldValue("headerImageUploading", false);
                       });
                   } else {
@@ -270,20 +252,18 @@ export const GameCreateModal = (props: IProps) => {
               disabled={
                 !isValid ||
                 isSubmitting ||
+                !isWalletConnected ||
                 values.imageUploading ||
-                values.headerImageUploading ||
-                !account
+                values.headerImageUploading
               }
-              fullWidth
               type="submit"
               variant="contained"
             >
-              {isSubmitting && <CircularProgress color="primary" size={32} />}
-              Create game
+              {isWalletConnected ? "Create game" : "Please Connect Wallet"}
             </Button>
-          </Form>
-        )}
-      </Formik>
-    </BasicModal>
+          </div>
+        </Form>
+      )}
+    </Formik>
   );
 };

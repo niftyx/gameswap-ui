@@ -1,56 +1,50 @@
 import {
-  Avatar,
   CircularProgress,
   FormControl,
   FormControlProps,
-  Typography,
   makeStyles,
 } from "@material-ui/core";
+import CameraEnhanceOutlinedIcon from "@material-ui/icons/CameraEnhanceOutlined";
 import clsx from "clsx";
 import { ASSET_IMAGE_FILE_SIZE_LIMIT } from "config/constants";
 import { useSnackbar } from "notistack";
 import React from "react";
+
+const AVATAR_SIZE = 100;
 
 const useStyles = makeStyles((theme) => ({
   root: {},
   input: {
     display: "none",
   },
-  content: { display: "flex" },
-  avatar: {
-    width: 100,
-    height: 100,
-    marginRight: 16,
-  },
-  right: {
-    flex: 1,
+  content: {
     display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-  },
-  label: {
-    fontSize: theme.spacing(1.875),
-    color: theme.colors.text.seventh,
-  },
-  button: {
-    height: theme.spacing(5),
-    borderRadius: 6,
-    marginTop: theme.spacing(2),
-    backgroundColor: theme.colors.background.fourth,
-    color: theme.colors.text.default,
-    transition: "all 0.3s",
-    cursor: "pointer",
-    "&:hover": {
-      opacity: 0.7,
-    },
-    padding: "0 28px",
-    display: "inline-flex",
     alignItems: "center",
     justifyContent: "center",
-    maxWidth: 160,
+    width: AVATAR_SIZE,
+    height: AVATAR_SIZE,
+    borderRadius: "50%",
+    overflow: "hidden",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    border: `2px solid ${theme.colors.text.default}`,
+    backgroundColor: theme.colors.background.primary,
   },
-  circle: {
+  selectorButton: {
+    width: theme.spacing(5),
+    height: theme.spacing(5),
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: "50%",
     color: theme.colors.text.default,
+    cursor: "pointer",
+    userSelect: "none",
+    border: `1px dashed ${theme.colors.transparent}`,
+    transition: "all 0.5s",
+    "&:hover": {
+      borderColor: theme.colors.text.default,
+    },
   },
 }));
 
@@ -71,7 +65,7 @@ interface IProps {
   loading: boolean;
 }
 
-export const FormCollectionImageUpload = (props: IProps) => {
+export const FormGameImageUpload = (props: IProps) => {
   const {
     InputProps: { onChange, value, ...restInputProps },
     className,
@@ -105,23 +99,17 @@ export const FormCollectionImageUpload = (props: IProps) => {
         type="file"
         {...restInputProps}
       />
-      <div className={classes.content}>
-        <Avatar className={classes.avatar} src={imageUrl} />
-        <div className={classes.right}>
-          <Typography className={classes.label} component="div">
-            We recommend an image of at least 400x400.
-          </Typography>
-          <label
-            className={classes.button}
-            htmlFor={loading ? "" : props.InputProps.id}
-          >
-            {loading ? (
-              <CircularProgress className={classes.circle} size={20} />
-            ) : (
-              "Choose File"
-            )}
+      <div
+        className={classes.content}
+        style={{ backgroundImage: imageUrl ? `url(${imageUrl})` : "" }}
+      >
+        {loading ? (
+          <CircularProgress size={20} />
+        ) : (
+          <label className={classes.selectorButton} htmlFor={restInputProps.id}>
+            <CameraEnhanceOutlinedIcon />
           </label>
-        </div>
+        )}
       </div>
     </FormControl>
   );

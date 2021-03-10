@@ -113,7 +113,7 @@ export class APIService {
   // get account info
   public async updateAccountInfo(
     account: string,
-    payload: IUserInfo,
+    payload: any,
     signedMessage: string
   ) {
     const response = await axios.post(`${this.accountPath}${account}`, {

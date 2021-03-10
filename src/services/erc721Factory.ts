@@ -43,15 +43,14 @@ class ERC721FactoryService {
     name: string,
     symbol: string,
     imageURL: string,
-    description: string,
-    shortUrl: string
+    description: string
   ): Promise<TransactionReceipt> => {
     const transactionObject = await this.contract.createGswap721(
       name,
       symbol,
       imageURL,
       description,
-      shortUrl
+      ""
     );
     logger.log(`CreateGswap721 transaccion hash: ${transactionObject.hash}`);
     return this.provider.waitForTransaction(transactionObject.hash);

@@ -1,12 +1,8 @@
-import { makeStyles } from "@material-ui/core";
 import { ProgressBasicModal, ProgressButton } from "components";
 import { useConnectedWeb3Context, useGlobal } from "contexts";
 import React, { useEffect, useState } from "react";
 import { getAPIService } from "services/api";
-import { waitSeconds } from "utils";
 import { IUserInfo } from "utils/types";
-
-const useStyles = makeStyles((theme) => ({}));
 
 interface IProps {
   visible: boolean;
@@ -44,6 +40,7 @@ export const ProfileSettingsProgressModal = (props: IProps) => {
     } else if (state.step === EProfileSettingsProgressStep.Uploading) {
       updateProfile();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.step]);
 
   const signMessages = async () => {
@@ -69,9 +66,10 @@ export const ProfileSettingsProgressModal = (props: IProps) => {
   const updateProfile = async () => {
     setState((prev) => ({ ...prev, loading: true }));
     try {
+      const { address, id, ...payload } = values;
       const response = await apiService.updateAccountInfo(
         account || "",
-        values,
+        payload,
         state.signedMessage
       );
       updateUserInfo(response);

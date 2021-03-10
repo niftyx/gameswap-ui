@@ -1,10 +1,12 @@
 import {
+  Box,
   FormControl,
   FormControlProps,
   FormHelperText,
   FormHelperTextProps,
   IconButton,
   InputLabelProps,
+  LinearProgress,
   Typography,
   makeStyles,
 } from "@material-ui/core";
@@ -44,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: transparentize(0.6, theme.colors.background.fourth),
+    backgroundColor: theme.colors.background.fourth,
     borderRadius: 6,
     color: theme.colors.text.default,
     cursor: "pointer",
@@ -54,6 +56,7 @@ const useStyles = makeStyles((theme) => ({
   },
   result: {
     position: "relative",
+    minHeight: 70,
   },
   image: {
     width: "100%",
@@ -64,10 +67,19 @@ const useStyles = makeStyles((theme) => ({
   },
   removeButton: {
     position: "absolute",
-    right: theme.spacing(2),
-    top: theme.spacing(2),
+    right: theme.spacing(1.5),
+    top: theme.spacing(1.5),
     border: `1px solid ${theme.colors.text.default}`,
     color: theme.colors.text.default,
+    padding: 4,
+  },
+  progressWrapper: {
+    height: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "column",
+    padding: theme.spacing(4),
   },
 }));
 
@@ -91,6 +103,7 @@ interface IProps {
   FormHelperTextProps?: FormHelperTextProps;
   label: string;
   helperText?: string | false | undefined;
+  loading?: boolean;
 }
 
 export const FormImageUpload = (props: IProps) => {
@@ -98,6 +111,7 @@ export const FormImageUpload = (props: IProps) => {
     InputProps: { onChange, placeholder, value, ...restInputProps },
     className,
     helperText,
+    loading = false,
   } = props;
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
@@ -116,8 +130,21 @@ export const FormImageUpload = (props: IProps) => {
   };
 
   const renderContent = () => {
+    if (loading) {
+      return (
+        <div className={classes.result}>
+          <div className={classes.progressWrapper}>
+            <Box width={250}>
+              <LinearProgress />
+            </Box>
+          </div>
+        </div>
+      );
+    }
+
     if (!value.file || !value.fileURL) return null;
     const fileType = getFileType(value.file);
+
     return (
       <div className={classes.result}>
         {fileType === EFileType.Image && (
@@ -153,6 +180,8 @@ export const FormImageUpload = (props: IProps) => {
         });
       }
       onChange(event.target.files[0]);
+
+      (event.target as any).value = null;
     }
   };
 

@@ -10,16 +10,13 @@ import clsx from "clsx";
 import {
   FormAttributesField,
   FormCollectionChoose,
-  FormFileUpload,
   FormGameChoose,
   FormImageUpload,
-  FormSelectField,
   FormSwitchField,
   FormTextField,
 } from "components";
 import {
   DEFAULT_NETWORK_ID,
-  GAMES,
   SERVICE_FEE,
   SERVICE_FEE_IN_PERCENT,
 } from "config/constants";
