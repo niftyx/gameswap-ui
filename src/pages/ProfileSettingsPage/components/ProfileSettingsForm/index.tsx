@@ -17,26 +17,9 @@ import * as Yup from "yup";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: "flex",
-    flexBasis: "auto",
-    flexShrink: 0,
-  },
-  left: {
-    width: 220,
-    position: "sticky",
-    top: 50,
-  },
-  right: {
-    flex: 1,
-    marginLeft: 32,
     "& > * + *": {
-      marginTop: 16,
+      marginTop: theme.spacing(2),
     },
-  },
-  title: {
-    color: theme.colors.text.default,
-    fontSize: 20,
-    fontWeight: 500,
   },
   description: {
     color: transparentize(0.4, theme.colors.text.default),
@@ -46,7 +29,6 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 20,
     fontWeight: 500,
   },
-  formControl: { paddingTop: 10, marginBottom: 16 },
   verify: {
     cursor: "pointer",
     transition: "all 0.5s",
@@ -59,18 +41,10 @@ const useStyles = makeStyles((theme) => ({
     color: transparentize(0.3, theme.colors.text.seventh),
   },
   button: {
-    height: theme.spacing(5),
-    backgroundColor: theme.colors.background.fourth,
-    color: theme.colors.text.default,
-    transition: "all 0.3s",
-    cursor: "pointer",
-    "&:hover": {
-      opacity: 0.7,
-    },
-    padding: "0 28px",
-    display: "inline-flex",
-    alignItems: "center",
-    justifyContent: "center",
+    width: theme.spacing(30),
+    height: theme.spacing(6),
+    borderRadius: 6,
+    marginTop: theme.spacing(5),
   },
 }));
 
@@ -143,186 +117,174 @@ export const ProfileSettingsForm = (props: IProps) => {
           className={clsx(classes.root, commonClasses.scroll)}
           onSubmit={handleSubmit}
         >
-          <div className={classes.left}>
-            <FormSettingsAvatarUpload
-              FormControlProps={{ fullWidth: true }}
-              InputProps={{
-                id: "avatar-image",
-                name: "avatar-image",
-                onBlur: handleBlur,
-                onChange: (file: File | null) => {
-                  setFieldValue("image", file);
-                  if (file) {
-                    setFieldValue("uploading", true);
-                    ipfsService
-                      .uploadData(file)
-                      .then((url) => {
-                        setFieldValue("uploading", false);
-                        setFieldValue("imageUrl", url);
-                      })
-                      .catch(() => {
-                        setFieldValue("uploading", false);
-                      });
-                  }
-                },
-                value: values.image,
-              }}
-              address={account || ""}
-              imageUrl={values.imageUrl}
-              loading={values.uploading}
-            />
-          </div>
-          <div className={classes.right}>
-            <Typography className={classes.title} component="div">
-              Settings
-            </Typography>
-            <Typography className={classes.description} component="div">
-              You can set preferred display name, create your branded profile
-              URL and manage other personal settings
-            </Typography>
-            <FormTextField
-              FormControlProps={{
-                fullWidth: true,
-                className: classes.formControl,
-              }}
-              FormHelperTextProps={{
-                error: Boolean(touched.name && errors.name),
-              }}
-              InputLabelProps={{
-                htmlFor: "name",
-                shrink: true,
-                className: classes.inputLabel,
-              }}
-              InputProps={{
-                id: "name",
-                name: "name",
-                onBlur: handleBlur,
-                onChange: handleChange,
-                placeholder: "Enter your display name",
-                value: values.name,
-              }}
-              helperText={
-                (touched.name && errors.name) ||
-                "Only letters, numbers, underscores and emojis"
-              }
-              label="Display name"
-            />
-            <FormTextField
-              FormControlProps={{
-                fullWidth: true,
-                className: classes.formControl,
-              }}
-              InputLabelProps={{
-                htmlFor: "customUrl",
-                shrink: true,
-                className: classes.inputLabel,
-              }}
-              InputProps={{
-                id: "customUrl",
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Typography>app.rarible.com/</Typography>
-                  </InputAdornment>
-                ),
-                name: "customUrl",
-                onBlur: handleBlur,
-                onChange: handleChange,
-                placeholder: "Enter your custom URL",
-                value: values.customUrl,
-              }}
-              label="Custom URL"
-            />
-            <FormTextField
-              FormControlProps={{
-                fullWidth: true,
-                className: classes.formControl,
-              }}
-              InputLabelProps={{
-                htmlFor: "bio",
-                shrink: true,
-                className: classes.inputLabel,
-              }}
-              InputProps={{
-                id: "bio",
-                name: "bio",
-                onBlur: handleBlur,
-                onChange: handleChange,
-                placeholder: "Tell about yourself in a few words",
-                value: values.bio,
-                multiline: true,
-              }}
-              helperText="URLs are allowed"
-              label="Bio"
-            />
-            <FormTextField
-              FormControlProps={{
-                fullWidth: true,
-                className: classes.formControl,
-              }}
-              InputLabelProps={{
-                htmlFor: "twitterUsername",
-                shrink: true,
-                className: classes.inputLabel,
-              }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Typography className={classes.at}>@</Typography>
-                  </InputAdornment>
-                ),
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <span className={classes.verify}>
-                      Verify Twitter account
-                    </span>
-                  </InputAdornment>
-                ),
-                id: "twitterUsername",
-                name: "twitterUsername",
-                onBlur: handleBlur,
-                onChange: handleChange,
-                placeholder: "Enter username",
-                value: values.twitterUsername,
-              }}
-              helperText="Verify your Twitter account in order to get the verification badge"
-              label="Twitter username"
-            />
-            <FormTextField
-              FormControlProps={{
-                fullWidth: true,
-                className: classes.formControl,
-              }}
-              FormHelperTextProps={{
-                error: Boolean(touched.personalSite && errors.personalSite),
-              }}
-              InputLabelProps={{
-                htmlFor: "personalSite",
-                shrink: true,
-                className: classes.inputLabel,
-              }}
-              InputProps={{
-                id: "personalSite",
-                name: "personalSite",
-                onBlur: handleBlur,
-                onChange: handleChange,
-                placeholder: "https://",
-                value: values.personalSite,
-              }}
-              helperText={touched.personalSite && errors.personalSite}
-              label="Personal site or portfolio"
-            />
-            <Typography className={classes.description} component="div">
-              To update your settings you should sign message through your
-              wallet. Click &apos;Update profile&apos; then sign the message
-            </Typography>
-            <Button
-              className={classes.button}
-              disabled={!isValid || isSubmitting}
-              type="submit"
-            >
-              Update profile
-            </Button>
-          </div>
+          <FormSettingsAvatarUpload
+            FormControlProps={{ fullWidth: true }}
+            InputProps={{
+              id: "avatar-image",
+              name: "avatar-image",
+              onBlur: handleBlur,
+              onChange: (file: File | null) => {
+                setFieldValue("image", file);
+                if (file) {
+                  setFieldValue("uploading", true);
+                  ipfsService
+                    .uploadData(file)
+                    .then((url) => {
+                      setFieldValue("uploading", false);
+                      setFieldValue("imageUrl", url);
+                    })
+                    .catch(() => {
+                      setFieldValue("uploading", false);
+                    });
+                }
+              },
+              value: values.image,
+            }}
+            address={account || ""}
+            imageUrl={values.imageUrl}
+            loading={values.uploading}
+          />
+          <Typography className={classes.description} component="div">
+            You can set preferred display name, create your branded profile URL
+            and manage other personal settings
+          </Typography>
+          <FormTextField
+            FormControlProps={{
+              fullWidth: true,
+            }}
+            FormHelperTextProps={{
+              error: Boolean(touched.name && errors.name),
+            }}
+            InputLabelProps={{
+              htmlFor: "name",
+              shrink: true,
+              className: classes.inputLabel,
+            }}
+            InputProps={{
+              id: "name",
+              name: "name",
+              onBlur: handleBlur,
+              onChange: handleChange,
+              placeholder: "Enter your display name",
+              value: values.name,
+            }}
+            helperText={
+              (touched.name && errors.name) ||
+              "Only letters, numbers, underscores and emojis"
+            }
+            label="Display name"
+          />
+          <FormTextField
+            FormControlProps={{
+              fullWidth: true,
+            }}
+            InputLabelProps={{
+              htmlFor: "customUrl",
+              shrink: true,
+              className: classes.inputLabel,
+            }}
+            InputProps={{
+              id: "customUrl",
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Typography>app.rarible.com/</Typography>
+                </InputAdornment>
+              ),
+              name: "customUrl",
+              onBlur: handleBlur,
+              onChange: handleChange,
+              placeholder: "Enter your custom URL",
+              value: values.customUrl,
+            }}
+            label="Custom URL"
+          />
+          <FormTextField
+            FormControlProps={{
+              fullWidth: true,
+            }}
+            InputLabelProps={{
+              htmlFor: "bio",
+              shrink: true,
+              className: classes.inputLabel,
+            }}
+            InputProps={{
+              id: "bio",
+              name: "bio",
+              onBlur: handleBlur,
+              onChange: handleChange,
+              placeholder: "Tell about yourself in a few words",
+              value: values.bio,
+              multiline: true,
+            }}
+            helperText="URLs are allowed"
+            label="Bio"
+          />
+          <FormTextField
+            FormControlProps={{
+              fullWidth: true,
+            }}
+            InputLabelProps={{
+              htmlFor: "twitterUsername",
+              shrink: true,
+              className: classes.inputLabel,
+            }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Typography className={classes.at}>@</Typography>
+                </InputAdornment>
+              ),
+              endAdornment: (
+                <InputAdornment position="end">
+                  <span className={classes.verify}>Verify Twitter account</span>
+                </InputAdornment>
+              ),
+              id: "twitterUsername",
+              name: "twitterUsername",
+              onBlur: handleBlur,
+              onChange: handleChange,
+              placeholder: "Enter username",
+              value: values.twitterUsername,
+            }}
+            helperText="Verify your Twitter account in order to get the verification badge"
+            label="Twitter username"
+          />
+          <FormTextField
+            FormControlProps={{
+              fullWidth: true,
+            }}
+            FormHelperTextProps={{
+              error: Boolean(touched.personalSite && errors.personalSite),
+            }}
+            InputLabelProps={{
+              htmlFor: "personalSite",
+              shrink: true,
+              className: classes.inputLabel,
+            }}
+            InputProps={{
+              id: "personalSite",
+              name: "personalSite",
+              onBlur: handleBlur,
+              onChange: handleChange,
+              placeholder: "https://",
+              value: values.personalSite,
+            }}
+            helperText={touched.personalSite && errors.personalSite}
+            label="Personal site or portfolio"
+          />
+          <Typography className={classes.description} component="div">
+            To update your settings you should sign message through your wallet.
+            Click &apos;Update profile&apos; then sign the message
+          </Typography>
+          <Button
+            className={classes.button}
+            color="primary"
+            disabled={!isValid || isSubmitting}
+            type="submit"
+            variant="contained"
+          >
+            Update profile
+          </Button>
         </Form>
       )}
     </Formik>

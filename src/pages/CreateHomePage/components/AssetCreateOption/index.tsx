@@ -17,15 +17,16 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     width: theme.spacing(20),
-    height: theme.spacing(20),
+    height: theme.spacing(8),
     borderRadius: theme.spacing(1),
-    border: `1px solid ${theme.colors.border.fourth}`,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: transparentize(0.3, theme.colors.background.third),
   },
   text: {
-    fontSize: theme.spacing(3),
+    fontSize: theme.spacing(2.25),
+    fontWeight: 500,
   },
 }));
 

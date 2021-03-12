@@ -98,11 +98,6 @@ const CreateERC721Page = () => {
           <ERC721ProgressModal
             formValues={state.formValues}
             onClose={onCloseModal}
-            steps={
-              state.formValues.instantSale
-                ? (Object.values(ECreateStep) as Array<ECreateStep>)
-                : [ECreateStep.UploadFiles, ECreateStep.MintToken]
-            }
             visible={state.visible}
           />
         )}

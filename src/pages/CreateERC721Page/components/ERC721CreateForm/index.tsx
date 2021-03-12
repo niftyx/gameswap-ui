@@ -179,6 +179,10 @@ export const ERC721CreateForm = (props: IProps) => {
             image: `"Image" is not allowed to be empty`,
           });
         }
+        if (!isWalletConnected) {
+          context.setWalletConnectModalOpened(true);
+          return;
+        }
         props.onSubmit(values);
       }}
       validationSchema={Yup.object().shape({
@@ -476,23 +480,6 @@ export const ERC721CreateForm = (props: IProps) => {
                 helperText="Suggested: 10%, 20%, 30%"
                 label="Royalties"
               />
-              {/* <FormFileUpload
-                FormControlProps={{ fullWidth: true }}
-                InputLabelProps={{ shrink: true }}
-                InputProps={{
-                  id: "rar",
-                  name: "rar",
-                  onBlur: handleBlur,
-                  onChange: (file: File | null) => {
-                    setFieldValue("rar", file);
-                  },
-                  placeholder: "RAR, ZIP File. Max size 200mb.",
-                  value: values.rar,
-                }}
-                accept="zip,application/octet-stream,application/zip,application/x-zip,application/x-zip-compressed"
-                helperText={touched.rar && errors.rar}
-                label="Upload ZIP/RAR FILE"
-              /> */}
               <FormAttributesField
                 FormControlProps={{ fullWidth: true }}
                 InputLabelProps={{ shrink: true }}
@@ -509,11 +496,11 @@ export const ERC721CreateForm = (props: IProps) => {
               <Button
                 className={clsx(classes.button)}
                 color="primary"
-                disabled={!isValid || isSubmitting || !isWalletConnected}
+                disabled={!isValid || isSubmitting}
                 type="submit"
                 variant="contained"
               >
-                {isWalletConnected ? "Create item" : "Please Connect Wallet"}
+                {isWalletConnected ? "Create" : "Connect wallet and create"}
               </Button>
             </div>
             <div className={classes.right}>

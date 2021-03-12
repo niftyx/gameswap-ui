@@ -1,10 +1,8 @@
 import { makeStyles } from "@material-ui/core";
 import clsx from "clsx";
 import { BrowseFilter, PageContainer } from "components";
-import { useBrowseAssets } from "helpers";
 import { useAllOrders } from "helpers/useAllOrders";
 import React from "react";
-import { matchPath, useHistory } from "react-router-dom";
 import useCommonStyles from "styles/common";
 
 import { AssetItemsSection, FeaturedItemsSection } from "./components";
@@ -46,7 +44,6 @@ const useStyles = makeStyles((theme) => ({
 const BrowsePage = () => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
-  const history = useHistory();
   const {
     allLoaded: allOrdersLoaded,
     loadMore: loadMoreAllOrders,

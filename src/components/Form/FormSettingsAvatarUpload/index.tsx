@@ -3,6 +3,8 @@ import {
   CircularProgress,
   FormControl,
   FormControlProps,
+  FormHelperText,
+  FormHelperTextProps,
   Typography,
   makeStyles,
 } from "@material-ui/core";
@@ -13,6 +15,7 @@ import React from "react";
 import Identicon from "react-identicons";
 
 const IdenticonComponent = Identicon as any;
+
 const AVATAR_SIZE = 100;
 
 const useStyles = makeStyles((theme) => ({
@@ -20,22 +23,30 @@ const useStyles = makeStyles((theme) => ({
   input: {
     display: "none",
   },
-  content: { textAlign: "center" },
+  content: { display: "flex" },
   avatar: {
     width: AVATAR_SIZE,
     height: AVATAR_SIZE,
-    borderRadius: "50%",
-    margin: "auto",
     overflow: "hidden",
+    borderRadius: "50%",
+    marginRight: 16,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  right: {
+    flex: 1,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
   },
   label: {
-    marginTop: 16,
-    fontSize: 14,
+    fontSize: theme.spacing(1.875),
     color: theme.colors.text.seventh,
   },
   button: {
-    borderRadius: 6,
     height: theme.spacing(5),
+    borderRadius: 6,
     marginTop: theme.spacing(2),
     backgroundColor: theme.colors.background.fourth,
     color: theme.colors.text.default,
@@ -48,6 +59,7 @@ const useStyles = makeStyles((theme) => ({
     display: "inline-flex",
     alignItems: "center",
     justifyContent: "center",
+    maxWidth: 160,
   },
   circle: {
     color: theme.colors.text.default,
@@ -65,10 +77,12 @@ interface InputProps {
 
 interface IProps {
   className?: string;
+  FormHelperTextProps?: FormHelperTextProps;
   FormControlProps: FormControlProps;
   InputProps: InputProps;
   imageUrl: string;
   loading: boolean;
+  helperText?: string | false | undefined;
   address: string;
 }
 
@@ -77,6 +91,7 @@ export const FormSettingsAvatarUpload = (props: IProps) => {
     InputProps: { onChange, value, ...restInputProps },
     address,
     className,
+    helperText,
     imageUrl,
     loading,
   } = props;
@@ -91,6 +106,7 @@ export const FormSettingsAvatarUpload = (props: IProps) => {
         });
       }
       onChange(event.target.files[0]);
+      (event.target as any).value = null;
     }
   };
 
@@ -114,21 +130,27 @@ export const FormSettingsAvatarUpload = (props: IProps) => {
             <IdenticonComponent bg="#fff" size={AVATAR_SIZE} string={address} />
           </div>
         )}
-
-        <Typography align="center" className={classes.label} component="div">
-          We recommend an image of at least 400x400. Gifs work too.
-        </Typography>
-        <label
-          className={classes.button}
-          htmlFor={loading ? "" : props.InputProps.id}
-        >
-          {loading ? (
-            <CircularProgress className={classes.circle} size={20} />
-          ) : (
-            "Upload"
-          )}
-        </label>
+        <div className={classes.right}>
+          <Typography className={classes.label} component="div">
+            We recommend an image of at least 400x400.
+          </Typography>
+          <label
+            className={classes.button}
+            htmlFor={loading ? "" : props.InputProps.id}
+          >
+            {loading ? (
+              <CircularProgress className={classes.circle} size={20} />
+            ) : (
+              "Choose File"
+            )}
+          </label>
+        </div>
       </div>
+      {helperText && (
+        <FormHelperText {...props.FormHelperTextProps}>
+          {helperText}
+        </FormHelperText>
+      )}
     </FormControl>
   );
 };

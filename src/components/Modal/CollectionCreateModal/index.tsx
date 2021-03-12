@@ -43,7 +43,12 @@ export const CollectionCreateModal = (props: IProps) => {
   const ipfsService = getIPFSService();
   const { loadCollections } = useGlobal();
 
-  const { account, library: provider, networkId } = useConnectedWeb3Context();
+  const {
+    account,
+    library: provider,
+    networkId,
+    setWalletConnectModalOpened,
+  } = useConnectedWeb3Context();
   const gswap721FactoryAddress = getContractAddress(
     networkId || DEFAULT_NETWORK_ID,
     "erc721Factory"
@@ -53,6 +58,7 @@ export const CollectionCreateModal = (props: IProps) => {
     account,
     gswap721FactoryAddress
   );
+  const isWalletConnected = !!account;
 
   const initialFormValues: ICollectionFormValues = {
     id: "",
@@ -69,6 +75,10 @@ export const CollectionCreateModal = (props: IProps) => {
       <Formik
         initialValues={initialFormValues}
         onSubmit={async (values, { setSubmitting }) => {
+          if (!isWalletConnected) {
+            setWalletConnectModalOpened(true);
+            return;
+          }
           // create a new collection
           try {
             setSubmitting(true);
@@ -193,7 +203,7 @@ export const CollectionCreateModal = (props: IProps) => {
               variant="contained"
             >
               {isSubmitting && <CircularProgress color="primary" size={32} />}
-              Create collection
+              {isWalletConnected ? "Create" : "Connect wallet and create"}
             </Button>
           </Form>
         )}

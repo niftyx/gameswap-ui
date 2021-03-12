@@ -20,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
 
 interface IProps {
   fullScreen?: boolean;
+  className?: string;
 }
 
 export const LoadingScreen = (props: IProps) => {
@@ -27,7 +28,13 @@ export const LoadingScreen = (props: IProps) => {
   const { fullScreen = false } = props;
 
   return (
-    <div className={clsx(classes.root, fullScreen ? "full-screen" : "")}>
+    <div
+      className={clsx(
+        classes.root,
+        props.className,
+        fullScreen ? "full-screen" : ""
+      )}
+    >
       <Box width={400}>
         <LinearProgress />
       </Box>

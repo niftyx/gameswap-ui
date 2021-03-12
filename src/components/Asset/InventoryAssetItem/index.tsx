@@ -96,7 +96,7 @@ interface IProps {
   onMore?: () => void;
 }
 
-const InventoryAssetItem = (props: IProps) => {
+export const InventoryAssetItem = (props: IProps) => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
   const { data, isFullWidth = false, onClick, onMore } = props;
@@ -160,5 +160,3 @@ const InventoryAssetItem = (props: IProps) => {
     </Grid>
   );
 };
-
-export default InventoryAssetItem;

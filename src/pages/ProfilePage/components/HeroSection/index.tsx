@@ -1,4 +1,10 @@
-import { Avatar, Grid, Typography, makeStyles } from "@material-ui/core";
+import {
+  Avatar,
+  CircularProgress,
+  Grid,
+  Typography,
+  makeStyles,
+} from "@material-ui/core";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import { ReactComponent as CopyIcon } from "assets/svgs/content-copy.svg";
 import clsx from "clsx";
@@ -11,11 +17,16 @@ import { BigNumber } from "ethers";
 import { useBalances } from "helpers";
 import { useSnackbar } from "notistack";
 import { transparentize } from "polished";
-import React from "react";
+import React, { useState } from "react";
 import Identicon from "react-identicons";
 import { NavLink } from "react-router-dom";
 import useCommonStyles from "styles/common";
-import { formatBigNumber, numberWithCommas, shortenAddress } from "utils";
+import {
+  formatBigNumber,
+  numberWithCommas,
+  shortenAddress,
+  waitSeconds,
+} from "utils";
 import { EProfileMarker } from "utils/enums";
 
 const IdenticonComponent = Identicon as any;
@@ -25,13 +36,22 @@ const useStyles = makeStyles((theme) => ({
   root: {
     position: "relative",
   },
+  fakeImage: {
+    opacity: 0,
+    position: "absolute",
+    left: 0,
+    top: 0,
+    width: 100,
+    height: 100,
+  },
   imgItem: {
     height: "50vh",
     backgroundPositionY: "center",
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",
     backgroundPositionX: "center",
-    opacity: 0.3,
+    opacity: 0,
+    transition: "all 0.5s",
     position: "relative",
     "&:before": {
       content: `" "`,
@@ -43,6 +63,16 @@ const useStyles = makeStyles((theme) => ({
       top: 0,
       bottom: 0,
     },
+    "&.visible": {
+      opacity: 0.5,
+    },
+  },
+  mainContent: {
+    opacity: 0,
+    transition: "all 0.5s",
+    "&.visible": {
+      opacity: 1,
+    },
   },
   title: {
     position: "absolute",
@@ -53,9 +83,9 @@ const useStyles = makeStyles((theme) => ({
   },
   comments: {
     position: "absolute",
-    left: theme.spacing(2),
-    right: theme.spacing(2),
-    bottom: theme.spacing(4),
+    left: theme.spacing(3),
+    right: theme.spacing(3),
+    bottom: theme.spacing(3),
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
@@ -123,10 +153,24 @@ const useStyles = makeStyles((theme) => ({
       color: theme.colors.text.default,
     },
   },
+  loadWrapper: {
+    position: "absolute",
+    left: 24,
+    right: 24,
+    top: 24,
+    bottom: 24,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
 }));
 
 interface IProps {
   className?: string;
+}
+
+interface IState {
+  imageLoaded: boolean;
 }
 
 export const HeroSection = (props: IProps) => {
@@ -135,6 +179,11 @@ export const HeroSection = (props: IProps) => {
   const context = useConnectedWeb3Context();
   const { enqueueSnackbar } = useSnackbar();
   const { account, networkId } = context;
+  const [state, setState] = useState<IState>({ imageLoaded: false });
+
+  const setImageLoaded = (imageLoaded: boolean) =>
+    setState((prev) => ({ ...prev, imageLoaded }));
+
   const gSwapToken = getToken(networkId || DEFAULT_NETWORK_ID, "gswap");
   const {
     balances: {
@@ -163,79 +212,102 @@ export const HeroSection = (props: IProps) => {
     enqueueSnackbar("Address is copied");
   };
 
+  const headerImage = "/images/backgrounds/profile.png";
+
   return (
     <div className={clsx(classes.root, props.className)}>
+      {!state.imageLoaded && (
+        <div className={classes.loadWrapper}>
+          <CircularProgress size={40} />
+        </div>
+      )}
+      <img
+        alt="fake"
+        className={classes.fakeImage}
+        onLoad={async () => {
+          await waitSeconds(3);
+          setImageLoaded(true);
+        }}
+        src={headerImage}
+      />
       <div
-        className={classes.imgItem}
+        className={clsx(classes.imgItem, state.imageLoaded ? "visible" : "")}
         style={{
-          backgroundImage: `url("/images/backgrounds/profile.png")`,
+          backgroundImage: state.imageLoaded ? `url(${headerImage})` : "",
         }}
       />
-      <Typography className={classes.title} component="div">
-        MY ACCOUNT
-      </Typography>
-      <div className={classes.comments}>
-        <Grid container spacing={3}>
-          <Grid item md={8} xs={12}>
-            <div className={classes.row}>
-              {userInfo && userInfo.imageUrl ? (
-                <Avatar className={classes.avatar} src={userInfo.imageUrl} />
-              ) : (
-                <div className={classes.avatar}>
-                  <IdenticonComponent
-                    bg="#fff"
-                    size={AVATAR_SIZE}
-                    string={account || ""}
-                  />
-                </div>
-              )}
-
-              <div>
-                <div className={classes.row}>
-                  <Typography className={classes.name} component="div">
-                    {userInfo && userInfo.name ? userInfo.name : "    "}
-                  </Typography>
-                  {userInfo && userInfo.twitterUsername && (
-                    <ProfileMarker marker={EProfileMarker.Verified} />
-                  )}
-                </div>
-                <div className={classes.row}>
-                  <Typography className={classes.description} component="div">
-                    {shortenAddress(account || "")}
-                  </Typography>
-                  <span className={classes.copyButton} onClick={onCopy}>
-                    <CopyIcon />
-                  </span>
-                </div>
-              </div>
-            </div>
-            <NavLink
-              className={clsx(
-                commonClasses.transparentButton,
-                classes.editProfileNav
-              )}
-              to="/settings"
-            >
-              EDIT PROFILE
-            </NavLink>
-          </Grid>
-          <Grid item md={4} xs={12}>
-            <div>
-              <Typography className={classes.balanceLabel} component="div">
-                BALANCE
-              </Typography>
+      <div
+        className={clsx(
+          classes.mainContent,
+          state.imageLoaded ? "visible" : ""
+        )}
+      >
+        <Typography className={classes.title} component="div">
+          MY ACCOUNT
+        </Typography>
+        <div className={classes.comments}>
+          <Grid container spacing={3}>
+            <Grid item md={8} xs={12}>
               <div className={classes.row}>
-                <Typography className={classes.balanceUSD} component="div">
-                  $ {formattedUsdBalance}
-                </Typography>
-                <ArrowUpwardIcon className={classes.arrowUp} />
+                {userInfo && userInfo.imageUrl ? (
+                  <Avatar className={classes.avatar} src={userInfo.imageUrl} />
+                ) : (
+                  <div className={classes.avatar}>
+                    <IdenticonComponent
+                      bg="#fff"
+                      size={AVATAR_SIZE}
+                      string={account || ""}
+                    />
+                  </div>
+                )}
+
+                <div>
+                  <div className={classes.row}>
+                    <Typography className={classes.name} component="div">
+                      {userInfo && userInfo.name ? userInfo.name : "    "}
+                    </Typography>
+                    {userInfo && userInfo.twitterUsername && (
+                      <ProfileMarker marker={EProfileMarker.Verified} />
+                    )}
+                  </div>
+                  <div className={classes.row}>
+                    <Typography className={classes.description} component="div">
+                      {shortenAddress(account || "")}
+                    </Typography>
+                    <span className={classes.copyButton} onClick={onCopy}>
+                      <CopyIcon />
+                    </span>
+                  </div>
+                </div>
               </div>
-              <Typography className={classes.balanceGSWAP} component="div">
-                {formattedGswapBalance} {gSwapToken.symbol}
-              </Typography>
-            </div>
+              <NavLink
+                className={clsx(
+                  commonClasses.transparentButton,
+                  classes.editProfileNav
+                )}
+                to="/settings"
+              >
+                EDIT PROFILE
+              </NavLink>
+            </Grid>
+            <Grid item md={4} xs={12}>
+              <div>
+                <Typography className={classes.balanceLabel} component="div">
+                  BALANCE
+                </Typography>
+                <div className={classes.row}>
+                  <Typography className={classes.balanceUSD} component="div">
+                    $ {formattedUsdBalance}
+                  </Typography>
+                  <ArrowUpwardIcon className={classes.arrowUp} />
+                </div>
+                <Typography className={classes.balanceGSWAP} component="div">
+                  {formattedGswapBalance} {gSwapToken.symbol}
+                </Typography>
+              </div>
+            </Grid>
           </Grid>
-        </Grid>
+        </div>
       </div>
     </div>
   );

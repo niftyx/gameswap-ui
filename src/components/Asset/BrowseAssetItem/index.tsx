@@ -111,7 +111,7 @@ interface IProps {
   isOnCart?: boolean;
 }
 
-const BrowseAssetItem = (props: IProps) => {
+export const BrowseAssetItem = (props: IProps) => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
   const { data, onClick, onMore } = props;
@@ -210,5 +210,3 @@ const BrowseAssetItem = (props: IProps) => {
     </Grid>
   );
 };
-
-export default BrowseAssetItem;

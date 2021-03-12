@@ -17,9 +17,9 @@ const CreateHomePage = () => {
   const classes = useStyles();
   return (
     <PageContainer className={classes.root}>
-      <AssetCreateOption link="/create/collection" title="New Collection" />
-      <AssetCreateOption link="/create/game" title="New Game" />
-      <AssetCreateOption link="/create/erc721" title="Single" />
+      <AssetCreateOption link="/create/erc721" title="Asset" />
+      <AssetCreateOption link="/create/collection" title="Collection" />
+      <AssetCreateOption link="/create/game" title="Game" />
     </PageContainer>
   );
 };

@@ -36,7 +36,7 @@ interface IProps {
 
 export const CollectionCreateForm = (props: IProps) => {
   const classes = useStyles();
-  const { account, library: provider } = useConnectedWeb3Context();
+  const { account, setWalletConnectModalOpened } = useConnectedWeb3Context();
   const ipfsService = getIPFSService();
   const isWalletConnected = !!account;
 
@@ -54,7 +54,10 @@ export const CollectionCreateForm = (props: IProps) => {
     <Formik
       initialValues={initialFormValues}
       onSubmit={async (values) => {
-        if (!provider) return;
+        if (!isWalletConnected) {
+          setWalletConnectModalOpened(true);
+          return;
+        }
         props.onSubmit(values);
       }}
       validationSchema={Yup.object().shape({
@@ -62,6 +65,7 @@ export const CollectionCreateForm = (props: IProps) => {
         name: Yup.string().required(),
         description: Yup.string(),
         symbol: Yup.string().required(),
+        imageUrl: Yup.string().required(),
       })}
     >
       {({
@@ -79,6 +83,9 @@ export const CollectionCreateForm = (props: IProps) => {
           <div className={clsx(classes.root, props.className)}>
             <FormCollectionImageUpload
               FormControlProps={{ fullWidth: true }}
+              FormHelperTextProps={{
+                error: Boolean(touched.imageUrl && errors.imageUrl),
+              }}
               InputProps={{
                 id: "collection-image",
                 name: "collection-image",
@@ -100,6 +107,7 @@ export const CollectionCreateForm = (props: IProps) => {
                 },
                 value: values.image,
               }}
+              helperText={touched.imageUrl && errors.imageUrl}
               imageUrl={values.imageUrl}
               loading={values.uploading}
             />
@@ -156,17 +164,12 @@ export const CollectionCreateForm = (props: IProps) => {
             <Button
               className={clsx(classes.button)}
               color="primary"
-              disabled={
-                !isValid ||
-                isSubmitting ||
-                values.uploading ||
-                !isWalletConnected
-              }
+              disabled={!isValid || isSubmitting || values.uploading}
               fullWidth
               type="submit"
               variant="contained"
             >
-              Create collection
+              {isWalletConnected ? "Create" : "Connect wallet and create"}
             </Button>
           </div>
         </Form>

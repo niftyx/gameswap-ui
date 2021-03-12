@@ -1,16 +1,19 @@
-import { Button, Grid, Typography, makeStyles } from "@material-ui/core";
+import { Button, Grid, makeStyles } from "@material-ui/core";
+import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import { IconAssetPlaceholder } from "assets/icons";
 import clsx from "clsx";
-import { DEFAULT_NETWORK_ID } from "config/constants";
-import { useConnectedWeb3Context, useGlobal } from "contexts";
-import { useAssetDetailsFromIdCollection } from "helpers";
+import { useAssetDetailsFromInventoryItem } from "helpers";
 import { transparentize } from "polished";
 import React from "react";
 import useCommonStyles from "styles/common";
-import { getAssetObjectWithPrices } from "utils/tools";
-import { IAssetItem, ITradeAssetItem } from "utils/types";
+import { IGraphInventoryAsset } from "types";
+import { getLogger } from "utils/logger";
+import { IAssetItem } from "utils/types";
 
 import { AssetPhoto } from "../AssetPhoto";
+
+// eslint-disable-next-line
+const logger = getLogger("InventoryAssetItem::");
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -56,37 +59,19 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1),
     willChange: "background",
   },
-  cartWrapper: {
-    top: theme.spacing(1),
-    left: theme.spacing(1),
-    bottom: theme.spacing(1),
-    right: theme.spacing(1),
-    position: "absolute",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
   img: {
     height: "80%",
+  },
+  inSaleIcon: {
+    position: "absolute",
+    top: theme.spacing(1),
+    right: theme.spacing(1),
+    color: transparentize(0.2, theme.colors.text.default),
   },
   bottom: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-  },
-  usd: {
-    color: theme.colors.text.default,
-    fontSize: 17,
-    lineHeight: "23px",
-  },
-  token: {
-    display: "flex",
-    alignItems: "center",
-    color: theme.colors.text.default,
-  },
-  tokenAmount: {
-    fontSize: 15,
-    lineHeight: "20px",
   },
   moreWrapper: {
     opacity: 0,
@@ -104,41 +89,23 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface IProps {
-  data: ITradeAssetItem;
+  data: IGraphInventoryAsset;
   className?: string;
+  isFullWidth?: boolean;
   onClick?: (_: IAssetItem) => void;
-  onMore?: (_: string) => void;
-  isOnCart?: boolean;
+  onMore?: () => void;
 }
 
-export const AssetItem = (props: IProps) => {
+export const GameDetailsAssetItem = (props: IProps) => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
-  const { data, onClick, onMore } = props;
-  const {
-    data: { price },
-  } = useGlobal();
-  const { networkId } = useConnectedWeb3Context();
+  const { data, isFullWidth = false, onClick, onMore } = props;
 
-  const { data: assetDetails, loading } = useAssetDetailsFromIdCollection(
-    data.id,
-    data.collectionId
-  );
+  const { asset, loaded } = useAssetDetailsFromInventoryItem(data);
 
-  const assetDataLoaded =
-    assetDetails &&
-    !loading &&
-    assetDetails.tokenId.eq(data.id) &&
-    assetDetails.collectionId === data.collectionId;
-
-  const responsive = { xl: 2, lg: 2, md: 4, xs: 6 };
-
-  const assetDataWithPriceInfo = getAssetObjectWithPrices(
-    assetDetails,
-    data.orders,
-    price,
-    networkId || DEFAULT_NETWORK_ID
-  );
+  const responsive = isFullWidth
+    ? { xl: 2, lg: 2, md: 4, xs: 6 }
+    : { xl: 3, lg: 4, md: 6, xs: 6 };
 
   return (
     <Grid
@@ -147,7 +114,7 @@ export const AssetItem = (props: IProps) => {
       {...(responsive as any)}
     >
       <div className={classes.contentContainer}>
-        {loading && (
+        {!loaded && (
           <div className={classes.placeholder}>
             <IconAssetPlaceholder />
           </div>
@@ -157,37 +124,24 @@ export const AssetItem = (props: IProps) => {
             classes.content,
             "asset_item__content",
             commonClasses.fadeAnimation,
-            !loading ? "visible" : ""
+            loaded ? "visible" : ""
           )}
           onClick={() => {
-            if (assetDataWithPriceInfo.asset && onMore) {
-              onMore((assetDetails || {}).id || "");
-            }
+            if (asset && onClick) onClick(asset);
           }}
         >
-          {assetDataLoaded && assetDetails && (
-            <>
-              <AssetPhoto
-                className={classes.img}
-                type={assetDetails.imageType}
-                uri={assetDetails.image}
-              />
-              <div className={classes.bottom}>
-                <Typography className={classes.usd} component="div">
-                  ${assetDataWithPriceInfo.minUSDPrice}
-                </Typography>
-                {assetDataWithPriceInfo.asset && (
-                  <div className={classes.token}>
-                    <Typography className={classes.tokenAmount} component="div">
-                      {assetDataWithPriceInfo.minTokenAmountString}
-                    </Typography>
-                  </div>
-                )}
-              </div>
-            </>
+          {asset && asset.image && (
+            <AssetPhoto
+              className={classes.img}
+              type={asset.imageType}
+              uri={asset.image}
+            />
+          )}
+          {asset && data.isInSale && (
+            <AttachMoneyIcon className={classes.inSaleIcon} />
           )}
         </div>
-        {!loading && (
+        {loaded && (
           <div
             className={clsx(classes.moreWrapper, "asset_item__more_wrapper")}
           >
@@ -195,11 +149,7 @@ export const AssetItem = (props: IProps) => {
               className={classes.moreButton}
               color="secondary"
               fullWidth
-              onClick={() => {
-                if (onMore) {
-                  onMore((assetDetails || {}).id || "");
-                }
-              }}
+              onClick={onMore as any}
               variant="contained"
             >
               More Info

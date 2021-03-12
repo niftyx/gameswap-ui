@@ -221,8 +221,12 @@ export const MOCK_PROFILE_ACTIVITIES: IActivityItem[] = [
 ];
 
 export const PLATFORM_ICONS: { [key: string]: React.ElementType } = {
-  WINDOWS: WindowsIcon,
-  MAC: MacIcon,
+  Windows: WindowsIcon,
+  Mac: MacIcon,
+  Linux: WindowsIcon,
+  Android: MacIcon,
+  iOS: WindowsIcon,
+  Web: WindowsIcon,
 };
 
 export const MOCK_AUCTIONS_ITEMS: IBrowseGameBidItem[] = [

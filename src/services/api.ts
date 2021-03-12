@@ -1,7 +1,7 @@
 import axios from "axios";
 import { API_BASE_URL } from "config/constants";
 import { BigNumber } from "ethers";
-import { IUserInfo } from "utils/types";
+import { ICollection, IGame, IUserInfo } from "utils/types";
 
 axios.defaults.baseURL = API_BASE_URL;
 
@@ -23,21 +23,86 @@ export class APIService {
 
   constructor() {}
 
+  /**
+   * Games
+   * get all games
+   */
   public async getGames() {
     const response = await axios.get(`${this.gamePath}all`);
     return response.data;
   }
 
+  /**
+   * Games
+   * get collections related to game
+   */
+  public async getCollectionsRelatedToGame(
+    id: string,
+    perPage?: number,
+    page?: number
+  ) {
+    const response = await axios.get(
+      `${this.gamePath}${id}/collections?perPage=${perPage || 100}&page=${
+        page || 1
+      }`
+    );
+    return response.data as {
+      page: number;
+      perPage: number;
+      records: ICollection[];
+    };
+  }
+
+  /**
+   * Games
+   * get assets related to game
+   */
+  public async getAssetsRelatedToGame(
+    id: string,
+    perPage?: number,
+    page?: number
+  ) {
+    const response = await axios.get(
+      `${this.gamePath}${id}/assets?perPage=${perPage || 100}&page=${page || 1}`
+    );
+    return response.data as {
+      page: number;
+      perPage: number;
+      records: Record<string, unknown>[];
+    };
+  }
+
+  /**
+   * Games
+   * get game
+   */
+  public async getGame(id: string) {
+    const response = await axios.get(`${this.gamePath}${id}`);
+    return response.data as IGame;
+  }
+
+  /**
+   * Games
+   * create Game
+   */
   public async createGame(payload: any) {
     const response = await axios.post(this.gamePath, payload);
     return response.data;
   }
 
+  /**
+   * Collections
+   * get all collections
+   */
   public async getCollections() {
     const response = await axios.get(`${this.collectionPath}all`);
     return response.data;
   }
 
+  /**
+   * Crypto
+   * encrypt content data
+   */
   public async getEncryptedContentData(contentStr: string) {
     const response = await axios.post(`${this.cryptoContentPath}encrypt`, {
       contentStr,
@@ -45,6 +110,10 @@ export class APIService {
     return response.data as { lockedData: string; contentId: string };
   }
 
+  /**
+   * Crypto
+   * decrypt content data
+   */
   public async getDecryptedContentData(contentStr: string, hashedStr: string) {
     const response = await axios.post(`${this.cryptoContentPath}decrypt`, {
       contentStr,
@@ -53,11 +122,19 @@ export class APIService {
     return response.data as string;
   }
 
+  /**
+   * Assets
+   * get asset details from asset id
+   */
   public async getAssetDetails(id: string) {
     const response = await axios.get(`${this.assetPath}${id}`);
     return response.data;
   }
 
+  /**
+   * Assets
+   * get asset details with assetId and collection Id
+   */
   public async getAssetDetailsWithAssetIdAndCollectionId(
     assetId: BigNumber,
     collectionId: string
@@ -70,6 +147,10 @@ export class APIService {
     return response.data;
   }
 
+  /**
+   * Assets
+   * get assets of user
+   */
   public async getAssetsOfUser(
     ownerAddress: string,
     perPage?: number,
@@ -87,6 +168,10 @@ export class APIService {
     };
   }
 
+  /**
+   * Assets
+   * get history of asset
+   */
   public async getAssetHistory(
     assetId: string,
     perPage?: number,
@@ -104,13 +189,19 @@ export class APIService {
     };
   }
 
-  // get account info
+  /**
+   * Accounts
+   * get account info
+   */
   public async getAccountInfo(account: string) {
     const response = await axios.get(`${this.accountPath}${account}`);
     return response.data as IUserInfo;
   }
 
-  // get account info
+  /**
+   * Accounts
+   * update account info
+   */
   public async updateAccountInfo(
     account: string,
     payload: any,

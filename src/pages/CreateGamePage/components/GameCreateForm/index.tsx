@@ -48,7 +48,7 @@ interface IProps {
 
 export const GameCreateForm = (props: IProps) => {
   const classes = useStyles();
-  const { account, library: provider } = useConnectedWeb3Context();
+  const { account, setWalletConnectModalOpened } = useConnectedWeb3Context();
   const ipfsService = getIPFSService();
   const isWalletConnected = !!account;
 
@@ -70,7 +70,10 @@ export const GameCreateForm = (props: IProps) => {
     <Formik
       initialValues={initialFormValue}
       onSubmit={async (values) => {
-        if (!provider) return;
+        if (!isWalletConnected) {
+          setWalletConnectModalOpened(true);
+          return;
+        }
         const payload: IGame = {
           id: "",
           name: values.name,
@@ -252,14 +255,13 @@ export const GameCreateForm = (props: IProps) => {
               disabled={
                 !isValid ||
                 isSubmitting ||
-                !isWalletConnected ||
                 values.imageUploading ||
                 values.headerImageUploading
               }
               type="submit"
               variant="contained"
             >
-              {isWalletConnected ? "Create game" : "Please Connect Wallet"}
+              {isWalletConnected ? "Create" : "Connect wallet and create"}
             </Button>
           </div>
         </Form>

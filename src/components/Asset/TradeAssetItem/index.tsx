@@ -127,7 +127,7 @@ interface IProps {
   isOnCart?: boolean;
 }
 
-const TradeAssetItem = (props: IProps) => {
+export const TradeAssetItem = (props: IProps) => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
   const {
@@ -247,5 +247,3 @@ const TradeAssetItem = (props: IProps) => {
     </Grid>
   );
 };
-
-export default TradeAssetItem;

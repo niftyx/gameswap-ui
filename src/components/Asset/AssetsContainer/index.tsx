@@ -11,7 +11,7 @@ interface IProps {
   children?: React.ReactNode;
 }
 
-const AssetsContainer = (props: IProps) => {
+export const AssetsContainer = (props: IProps) => {
   const classes = useStyles();
   return (
     <Grid className={clsx(classes.root, props.className)} container spacing={1}>
@@ -19,5 +19,3 @@ const AssetsContainer = (props: IProps) => {
     </Grid>
   );
 };
-
-export default AssetsContainer;

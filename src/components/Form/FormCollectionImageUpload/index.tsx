@@ -3,6 +3,8 @@ import {
   CircularProgress,
   FormControl,
   FormControlProps,
+  FormHelperText,
+  FormHelperTextProps,
   Typography,
   makeStyles,
 } from "@material-ui/core";
@@ -65,16 +67,19 @@ interface InputProps {
 
 interface IProps {
   className?: string;
+  FormHelperTextProps?: FormHelperTextProps;
   FormControlProps: FormControlProps;
   InputProps: InputProps;
   imageUrl: string;
   loading: boolean;
+  helperText?: string | false | undefined;
 }
 
 export const FormCollectionImageUpload = (props: IProps) => {
   const {
     InputProps: { onChange, value, ...restInputProps },
     className,
+    helperText,
     imageUrl,
     loading,
   } = props;
@@ -123,6 +128,11 @@ export const FormCollectionImageUpload = (props: IProps) => {
           </label>
         </div>
       </div>
+      {helperText && (
+        <FormHelperText {...props.FormHelperTextProps}>
+          {helperText}
+        </FormHelperText>
+      )}
     </FormControl>
   );
 };

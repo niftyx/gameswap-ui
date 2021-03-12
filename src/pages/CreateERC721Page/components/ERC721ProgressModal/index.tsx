@@ -63,7 +63,6 @@ const useStyles = makeStyles((theme) => ({
 interface IProps {
   visible: boolean;
   onClose: () => void;
-  steps: Array<ECreateStep>;
   formValues: IERC721FormValues;
 }
 
@@ -125,7 +124,7 @@ export const ERC721ProgressModal = (props: IProps) => {
     try {
       let isApprovedAll: boolean;
 
-      if (formValues.instantSale) {
+      if (formValues.instantSale && formValues.putOnSale) {
         isApprovedAll = await erc721.isApprovedForAll(
           account || "",
           erc721ProxyAddress
@@ -140,7 +139,7 @@ export const ERC721ProgressModal = (props: IProps) => {
         initialApprovedAll: isApprovedAll,
         currentStep: ECurrentStep.Steps,
         followStep:
-          isApprovedAll || !formValues.instantSale
+          isApprovedAll || !formValues.instantSale || !formValues.putOnSale
             ? ECreateStep.UploadFiles
             : ECreateStep.ApproveAll,
       }));
@@ -303,7 +302,7 @@ export const ERC721ProgressModal = (props: IProps) => {
 
       const tokenId = erc721.getCreatedAssetId(txReceipt);
 
-      if (formValues.instantSale) {
+      if (formValues.instantSale && formValues.putOnSale) {
         setState((prevState) => ({
           ...prevState,
           error: "",
@@ -379,25 +378,27 @@ export const ERC721ProgressModal = (props: IProps) => {
       onClose={onClose}
       visible={visible}
     >
-      {!state.initialApprovedAll && formValues.instantSale && (
-        <ProgressButton
-          approved={state.approvedAll}
-          buttonDisabled={state.followStep !== ECreateStep.ApproveAll}
-          buttonLoadingText="Follow wallet instructions"
-          buttonTitle="Approve"
-          description="Approve perfoming transactions with your wallet"
-          errorText={
-            state.followStep === ECreateStep.ApproveAll ? state.error : ""
-          }
-          isLoading={
-            state.followStep === ECreateStep.ApproveAll
-              ? state.isLoading
-              : false
-          }
-          onClick={approveAll}
-          title="Approve"
-        />
-      )}
+      {!state.initialApprovedAll &&
+        formValues.instantSale &&
+        formValues.putOnSale && (
+          <ProgressButton
+            approved={state.approvedAll}
+            buttonDisabled={state.followStep !== ECreateStep.ApproveAll}
+            buttonLoadingText="Follow wallet instructions"
+            buttonTitle="Approve"
+            description="Approve perfoming transactions with your wallet"
+            errorText={
+              state.followStep === ECreateStep.ApproveAll ? state.error : ""
+            }
+            isLoading={
+              state.followStep === ECreateStep.ApproveAll
+                ? state.isLoading
+                : false
+            }
+            onClick={approveAll}
+            title="Approve"
+          />
+        )}
       <ProgressButton
         approved={state.filesUploaded}
         buttonDisabled={state.followStep !== ECreateStep.UploadFiles}
@@ -428,7 +429,7 @@ export const ERC721ProgressModal = (props: IProps) => {
         onClick={mintToken}
         title="Mint token"
       />
-      {formValues.instantSale && (
+      {formValues.instantSale && formValues.putOnSale && (
         <ProgressButton
           approved={false}
           buttonDisabled={state.followStep !== ECreateStep.SignSellOrder}

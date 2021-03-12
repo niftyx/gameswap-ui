@@ -51,9 +51,14 @@ export const GameCreateModal = (props: IProps) => {
   const classes = useStyles();
   const { onClose, visible } = props;
   const ipfsService = getIPFSService();
-  const { account, library: provider } = useConnectedWeb3Context();
+  const {
+    account,
+    library: provider,
+    setWalletConnectModalOpened,
+  } = useConnectedWeb3Context();
   const { loadGames } = useGlobal();
   const apiService = getAPIService();
+  const isWalletConnected = !!account;
 
   const initialFormValues: IGameFormValues = {
     id: "",
@@ -74,6 +79,10 @@ export const GameCreateModal = (props: IProps) => {
       <Formik
         initialValues={initialFormValues}
         onSubmit={async (values, { setSubmitting }) => {
+          if (!isWalletConnected) {
+            setWalletConnectModalOpened(true);
+            return;
+          }
           if (!provider) return;
           // create a new game
           setSubmitting(true);
@@ -271,15 +280,14 @@ export const GameCreateModal = (props: IProps) => {
                 !isValid ||
                 isSubmitting ||
                 values.imageUploading ||
-                values.headerImageUploading ||
-                !account
+                values.headerImageUploading
               }
               fullWidth
               type="submit"
               variant="contained"
             >
               {isSubmitting && <CircularProgress color="primary" size={32} />}
-              Create game
+              {isWalletConnected ? "Create" : "Connect wallet and create"}
             </Button>
           </Form>
         )}

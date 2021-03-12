@@ -18,7 +18,7 @@ const useCommonStyles = makeStyles((theme) => ({
   },
   scrollHorizontal: {
     "&::-webkit-scrollbar": {
-      height: theme.spacing(0.25),
+      height: theme.spacing(0.75),
       boxShadow: `inset 0 0 6px ${transparentize(
         0.3,
         theme.colors.background.fourth

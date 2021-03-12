@@ -20,6 +20,11 @@ const routes = [
   },
   {
     exact: true,
+    path: "/games/:id",
+    component: lazy(() => import("pages/GameDetailsPage")),
+  },
+  {
+    exact: true,
     path: "/launch-pad",
     component: lazy(() => import("pages/LaunchPadPage")),
   },
@@ -39,9 +44,6 @@ const routes = [
     path: "/faq",
     component: lazy(() => import("pages/FaqPage")),
   },
-];
-
-const authRoutes = [
   {
     exact: true,
     path: "/create",
@@ -62,6 +64,9 @@ const authRoutes = [
     path: "/create/collection",
     component: lazy(() => import("pages/CreateCollectionPage")),
   },
+];
+
+const authRoutes = [
   {
     exact: false,
     path: "/profile",

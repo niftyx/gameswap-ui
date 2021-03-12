@@ -1,6 +1,7 @@
-<svg id="Logo_microsoft" xmlns="http://www.w3.org/2000/svg" width="16.831" height="16.593" viewBox="0 0 16.831 16.593">
-  <path id="Path" d="M0,5.554l6.9.937V0H0Z" transform="translate(0 8.755)" fill="#fff"/>
-  <path id="Path-2" data-name="Path" d="M0,6.571H6.9V0L0,.937Z" transform="translate(0 1.346)" fill="#fff"/>
-  <path id="Path-3" data-name="Path" d="M0,6.591,9.174,7.838V0H0Z" transform="translate(7.657 8.755)" fill="#fff"/>
-  <path id="Path-4" data-name="Path" d="M0,1.246V7.918H9.174V0Z" transform="translate(7.657)" fill="#fff"/>
+<svg id="Logo_microsoft"
+  xmlns="http://www.w3.org/2000/svg" width="16.831" height="16.593" viewBox="0 0 16.831 16.593">
+  <path id="Path" d="M0,5.554l6.9.937V0H0Z" transform="translate(0 8.755)" fill="currentColor"/>
+  <path id="Path-2" data-name="Path" d="M0,6.571H6.9V0L0,.937Z" transform="translate(0 1.346)" fill="currentColor"/>
+  <path id="Path-3" data-name="Path" d="M0,6.591,9.174,7.838V0H0Z" transform="translate(7.657 8.755)" fill="currentColor"/>
+  <path id="Path-4" data-name="Path" d="M0,1.246V7.918H9.174V0Z" transform="translate(7.657)" fill="currentColor"/>
 </svg>
