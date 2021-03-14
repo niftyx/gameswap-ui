@@ -424,7 +424,7 @@ export const GAMES: IGame[] = [
   },
 ];
 
-export const TEST_MODE = process.env.REACT_APP_TEST || true;
+export const TEST_MODE = Boolean(Number(process.env.REACT_APP_TEST || "0"));
 
 export const NETWORK_CONFIG = TEST_MODE
   ? {

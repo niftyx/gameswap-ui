@@ -139,7 +139,7 @@ export const ERC721ProgressModal = (props: IProps) => {
         initialApprovedAll: isApprovedAll,
         currentStep: ECurrentStep.Steps,
         followStep:
-          isApprovedAll || !formValues.instantSale || !formValues.putOnSale
+          isApprovedAll || !formValues.putOnSale
             ? ECreateStep.UploadFiles
             : ECreateStep.ApproveAll,
       }));
