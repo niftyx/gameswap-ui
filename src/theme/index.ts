@@ -53,6 +53,7 @@ const themesOptions = [
           padding: "14px 16px",
           borderRadius: "6px",
           textTransform: "none",
+          fontWeight: 400,
         },
       },
     },
@@ -83,7 +84,7 @@ const themesOptions = [
       },
     },
     typography: {
-      fontFamily: "'Poppins',sans-serif",
+      fontFamily: "'CircularStd',sans-serif",
     },
     shadows: strongShadows,
   },
@@ -110,6 +111,7 @@ const themesOptions = [
           padding: "14px 16px",
           borderRadius: "6px",
           textTransform: "none",
+          fontWeight: 400,
         },
       },
     },
@@ -140,7 +142,7 @@ const themesOptions = [
       },
     },
     typography: {
-      fontFamily: "'Poppins',sans-serif",
+      fontFamily: "'CircularStd',sans-serif",
     },
     shadows: softShadows,
   },

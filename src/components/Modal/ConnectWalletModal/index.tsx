@@ -105,7 +105,7 @@ export const ConnectWalletModal = (props: IProps) => {
         if (wallet === ConnectorNames.Injected) {
           // window.ethereum.request({ method: "eth_requestAccounts" });
           await window.ethereum.request(NETWORK_CONFIG);
-          await waitSeconds(2);
+          await waitSeconds(1);
         }
         context.activate(currentConnector);
         localStorage.setItem(STORAGE_KEY_CONNECTOR, wallet);
