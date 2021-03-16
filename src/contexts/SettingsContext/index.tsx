@@ -1,5 +1,4 @@
 import { STORAGE_KEY_SETTINGS } from "config/constants";
-import _ from "lodash";
 import React, { createContext, useEffect, useState } from "react";
 import { ISettings, THEME } from "utils/types.d";
 
@@ -45,7 +44,7 @@ export const SettingsProvider = ({ children, settings }: IProps) => {
   );
 
   const handleSaveSettings = (update = {}) => {
-    const mergedSettings = _.merge({}, currentSettings, update);
+    const mergedSettings = Object.assign({}, currentSettings, update);
 
     setCurrentSettings(mergedSettings);
     storeSettings(mergedSettings);

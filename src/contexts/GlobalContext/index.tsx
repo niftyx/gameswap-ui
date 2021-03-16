@@ -4,7 +4,6 @@ import { DEFAULT_PRICE, DEFAULT_USD, PRICE_DECIMALS } from "config/constants";
 import { knownTokens } from "config/networks";
 import { parseEther } from "ethers/lib/utils";
 import { useIsMountedRef } from "hooks";
-import _ from "lodash";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { getAPIService } from "services/api";
 import { getLogger } from "utils/logger";
@@ -163,7 +162,7 @@ export const GlobalProvider = ({ children }: IProps) => {
   }, []);
 
   const handleUpdateData = (update = {}) => {
-    const mergedData = _.merge({}, currentData, update);
+    const mergedData = Object.assign({}, currentData, update);
     setCurrentData(mergedData);
   };
 

@@ -1,5 +1,4 @@
 import { colors, createMuiTheme, responsiveFontSizes } from "@material-ui/core";
-import _ from "lodash";
 import { ISettings, THEME } from "utils/types.d";
 
 import CustomColors from "./colors";
@@ -164,7 +163,7 @@ export const createTheme = (config: ISettings) => {
   }
 
   let theme = createMuiTheme(
-    _.merge({}, baseOptions, themeOptions, { custom }, customColor) as any
+    Object.assign({}, baseOptions, themeOptions, { custom }, customColor) as any
   );
 
   if (config.responsiveFontSizes) {
