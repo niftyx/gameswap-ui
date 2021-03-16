@@ -228,6 +228,7 @@ export const ERC721ProgressModal = (props: IProps) => {
           }));
         }
       );
+
       let rarURL = "";
       if (formValues.rar) {
         rarURL = await ipfsService.uploadData(formValues.rar, (progress) => {
