@@ -44,9 +44,6 @@ export const IPFS_CONFIG: IIPFSConfig = {
   protocol: process.env.REACT_APP_IPFS_PROTOCOL || "",
 };
 
-export const FEE_RECIPIENT_ADDRESS =
-  process.env.REACT_APP_FEE_RECIPIENT_ADDRESS || "";
-
 export const RELAYER_URL: { [key in NetworkId]: string } = {
   43113: process.env.REACT_APP_RELAYER_URL_AVAXTEST || "",
   43114: process.env.REACT_APP_RELAYER_URL_AVAXMAIN || "",

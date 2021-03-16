@@ -3,7 +3,6 @@ import {
   Order,
   SignedOrder,
   assetDataUtils,
-  generatePseudoRandomSalt,
   signatureUtils,
 } from "@0x/order-utils";
 import { MetamaskSubprovider } from "@0x/subproviders";
@@ -11,7 +10,6 @@ import { OrderConfigRequest, ZeroExTransaction } from "@0x/types";
 import { BigNumber } from "@0x/utils";
 import {
   DEFAULT_NETWORK_ID,
-  FEE_RECIPIENT_ADDRESS,
   ORDERS_PAGE_COUNT,
   PROTOCOL_FEE_MULTIPLIER,
   RELAYER_URL,
@@ -75,7 +73,6 @@ export const buildSellCollectibleOrder = async (
     ...orderResult,
     chainId: networkId,
     salt: new BigNumber(Date.now()),
-    feeRecipientAddress: FEE_RECIPIENT_ADDRESS,
     takerFeeAssetData: erc20AssetData,
     takerFee: new BigNumber(orderConfigRequest.takerAssetAmount).multipliedBy(
       new BigNumber(SERVICE_FEE)
