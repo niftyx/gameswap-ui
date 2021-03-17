@@ -77,6 +77,7 @@ interface IProps {
 
 export const FormCollectionImageUpload = (props: IProps) => {
   const {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     InputProps: { onChange, value, ...restInputProps },
     className,
     helperText,

@@ -1,4 +1,4 @@
-import { Button, makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 import clsx from "clsx";
 import { transparentize } from "polished";
 import React from "react";

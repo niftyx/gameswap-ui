@@ -111,6 +111,7 @@ export const ConnectedWeb3: React.FC = (props) => {
     return () => {
       isMounted = false;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account]);
 
   const value = {

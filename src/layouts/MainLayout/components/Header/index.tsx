@@ -2,7 +2,6 @@ import {
   AppBar,
   AppBarProps,
   Box,
-  Divider,
   Hidden,
   Link,
   Toolbar,

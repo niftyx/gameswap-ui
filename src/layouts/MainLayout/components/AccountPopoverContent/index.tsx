@@ -3,7 +3,6 @@ import { AccountPopoverItem } from "components";
 import { STORAGE_KEY_CONNECTOR } from "config/constants";
 import { useConnectedWeb3Context } from "contexts";
 import { useSettings } from "hooks";
-import { transparentize } from "polished";
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { THEME } from "utils/types.d";

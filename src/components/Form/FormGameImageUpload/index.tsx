@@ -67,6 +67,7 @@ interface IProps {
 
 export const FormGameImageUpload = (props: IProps) => {
   const {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     InputProps: { onChange, value, ...restInputProps },
     className,
     imageUrl,

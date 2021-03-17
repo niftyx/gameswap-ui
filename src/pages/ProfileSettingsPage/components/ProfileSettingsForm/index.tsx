@@ -87,6 +87,7 @@ export const ProfileSettingsForm = (props: IProps) => {
     <Formik
       initialValues={initialValues}
       onSubmit={(values) => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { image, uploading, ...payload } = values;
         onSubmit(payload);
       }}

@@ -150,6 +150,7 @@ export const GameCreateModal = (props: IProps) => {
                         setFieldValue("headerImageUrl", url);
                       })
                       .catch((err) => {
+                        logger.error(err);
                         setFieldValue("headerImageUploading", false);
                       });
                   } else {

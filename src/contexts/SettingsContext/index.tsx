@@ -30,6 +30,7 @@ export const storeSettings = (settings: ISettings) => {
 
 const SettingsContext = createContext({
   settings: defaultSettings,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   saveSettings: (_: ISettings) => {},
 });
 

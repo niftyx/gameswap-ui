@@ -11,12 +11,13 @@ import { MOCK_PRICE_FILTER_ITEMS } from "config/constants";
 import { transparentize } from "polished";
 import React, { useState } from "react";
 import useCommonStyles from "styles/common";
-import { EOrderStatus } from "utils/enums";
+import { EOrderStatus, EPlatform } from "utils/enums";
 import { KnownToken } from "utils/types";
 
 import { CollectionFilter } from "../CollectionFilter";
 import FilterItemWrapper from "../FilterItemWrapper";
 import { OrderStatusFilter } from "../OrderStatusFilter";
+import { PlatformFilter } from "../PlatformFilter";
 import PriceFilter from "../PriceFilter";
 import { SaleCurrencyFilter } from "../SaleCurrencyFilter";
 
@@ -39,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
   divider: {
     height: 3,
     backgroundColor: theme.colors.border.fifth,
-    marginTop: theme.spacing(3.5),
+    marginTop: theme.spacing(2),
   },
   reset: {
     marginTop: 16,
@@ -90,6 +91,8 @@ interface IState {
     saleCurrencyEnabled: boolean;
     currencies?: KnownToken[];
     membership: EMembership;
+    platformEnabled: boolean;
+    platforms?: EPlatform[];
   };
 }
 
@@ -103,6 +106,7 @@ const TradeFilter = (props: IProps) => {
       statusEnabled: false,
       collectionEnabled: false,
       saleCurrencyEnabled: false,
+      platformEnabled: false,
       membership: EMembership.Basic,
     },
   });
@@ -195,6 +199,24 @@ const TradeFilter = (props: IProps) => {
         <Divider className={classes.divider} />
       </FilterItemWrapper>
       <FilterItemWrapper
+        enabled={state.filter.platformEnabled}
+        onToggle={() => {
+          updateFilter({ platformEnabled: !state.filter.platformEnabled });
+        }}
+        title="Platform"
+      >
+        <PlatformFilter
+          onChange={(platforms: EPlatform[]) => {
+            setState((prevState) => ({
+              ...prevState,
+              filter: { ...prevState.filter, platforms },
+            }));
+          }}
+          platforms={state.filter.platforms || []}
+        />
+        <Divider className={classes.divider} />
+      </FilterItemWrapper>
+      <FilterItemWrapper
         enabled={state.filter.statusEnabled}
         onToggle={() => {
           updateFilter({ statusEnabled: !state.filter.statusEnabled });
@@ -258,6 +280,7 @@ const TradeFilter = (props: IProps) => {
               statusEnabled: false,
               collectionEnabled: false,
               saleCurrencyEnabled: false,
+              platformEnabled: false,
               membership: EMembership.Basic,
             },
           });

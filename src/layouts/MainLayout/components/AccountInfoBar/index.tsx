@@ -9,7 +9,7 @@ import AddIcon from "@material-ui/icons/Add";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import { ReactComponent as MetaMaskIcon } from "assets/svgs/metamask.svg";
 import clsx from "clsx";
-import { DEFAULT_NETWORK_ID, TokenAvax } from "config/constants";
+import { DEFAULT_NETWORK_ID } from "config/constants";
 import { getToken } from "config/networks";
 import { useConnectedWeb3Context } from "contexts";
 import { useBalances } from "helpers";

@@ -5,7 +5,6 @@ import {
   createStyles,
   withStyles,
 } from "@material-ui/core";
-import clsx from "clsx";
 import { transparentize } from "polished";
 import React from "react";
 

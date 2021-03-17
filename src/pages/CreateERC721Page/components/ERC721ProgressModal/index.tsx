@@ -1,4 +1,3 @@
-import { makeStyles } from "@material-ui/core";
 import { ProgressBasicModal, ProgressButton } from "components";
 import { DEFAULT_NETWORK_ID } from "config/constants";
 import { get0xContractAddresses } from "config/networks";
@@ -10,7 +9,6 @@ import { useHistory } from "react-router-dom";
 import { ERC721Service } from "services";
 import { getAPIService } from "services/api";
 import { getIPFSService } from "services/ipfs";
-import useCommonStyles from "styles/common";
 import { waitSeconds } from "utils";
 import { getFileType } from "utils/asset";
 import { getLogger } from "utils/logger";
@@ -22,43 +20,6 @@ import { ECreateStep } from "../../index";
 import { IERC721FormValues } from "../ERC721CreateForm";
 
 const logger = getLogger("CreateERC721Page::Modal");
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    position: "absolute",
-    width: 400,
-    backgroundColor: theme.palette.background.paper,
-    border: `2px solid ${theme.colors.border.primary}`,
-    boxShadow: theme.shadows[5],
-    borderRadius: theme.spacing(2),
-    padding: theme.spacing(2),
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    outline: "none",
-    maxHeight: "90vh",
-  },
-  header: {
-    display: "flex",
-    alignItems: "center",
-  },
-  title: {
-    fontSize: theme.spacing(3),
-    color: theme.colors.text.default,
-    flex: 1,
-  },
-  closeButton: {
-    border: `1px solid ${theme.colors.text.default}`,
-    color: theme.colors.text.default,
-    padding: theme.spacing(0.5),
-  },
-  content: {
-    marginTop: theme.spacing(1),
-    "& > * + *": {
-      marginTop: theme.spacing(2),
-    },
-  },
-}));
 
 interface IProps {
   visible: boolean;
@@ -86,8 +47,6 @@ interface IState {
 }
 
 export const ERC721ProgressModal = (props: IProps) => {
-  const classes = useStyles();
-  const commonClasses = useCommonStyles();
   const context = useConnectedWeb3Context();
   const { account, library: provider, networkId } = context;
   const {

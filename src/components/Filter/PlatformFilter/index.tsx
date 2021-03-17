@@ -1,9 +1,8 @@
 import { Checkbox, FormControlLabel, makeStyles } from "@material-ui/core";
 import clsx from "clsx";
-import { knownTokens } from "config/networks";
 import { transparentize } from "polished";
 import React from "react";
-import { KnownToken } from "utils/types";
+import { EPlatform } from "utils/enums";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -22,21 +21,19 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface IProps {
-  currencies: KnownToken[];
-  onChange: (_: KnownToken[]) => void;
+  platforms: EPlatform[];
+  onChange: (_: EPlatform[]) => void;
   className?: string;
 }
 
-export const SaleCurrencyFilter = (props: IProps) => {
+export const PlatformFilter = (props: IProps) => {
   const classes = useStyles();
-  const { currencies, onChange } = props;
+  const { onChange, platforms } = props;
 
   return (
     <div className={clsx(classes.root, props.className)}>
-      {Object.keys(knownTokens).map((token) => {
-        const tokenId = token as KnownToken;
-        const isSelected = currencies.includes(tokenId);
-        const tokenInfo = knownTokens[tokenId];
+      {Object.values(EPlatform).map((platform) => {
+        const isSelected = platforms.includes(platform);
 
         return (
           <FormControlLabel
@@ -45,19 +42,19 @@ export const SaleCurrencyFilter = (props: IProps) => {
               <Checkbox
                 checked={isSelected}
                 classes={{ root: classes.iconButton }}
-                name={tokenInfo.symbol}
+                name={platform}
                 onChange={(event) => {
                   const { checked } = event.target;
                   if (checked) {
-                    onChange([...currencies, tokenId]);
+                    onChange([...platforms, platform]);
                   } else {
-                    onChange(currencies.filter((c) => c !== tokenId));
+                    onChange(platforms.filter((c) => c !== platform));
                   }
                 }}
               />
             }
-            key={token}
-            label={tokenInfo.symbol}
+            key={platform}
+            label={platform}
           />
         );
       })}

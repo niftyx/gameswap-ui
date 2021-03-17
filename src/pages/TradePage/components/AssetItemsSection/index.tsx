@@ -9,7 +9,6 @@ import {
 } from "components";
 import { CartContentWrapper, CartEmpty } from "components/Cart";
 import { useConnectedWeb3Context, useGlobal, useTrade } from "contexts";
-import { logger } from "ethers";
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { IAssetItem, ISignedOrder, ITradeAssetItem } from "utils/types";

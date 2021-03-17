@@ -9,7 +9,6 @@ import { useConnectedWeb3Context } from "contexts";
 import React, { useEffect, useState } from "react";
 import { ERC20Service } from "services";
 import { getLogger } from "utils/logger";
-import { xBigNumberToEthersBigNumber } from "utils/token";
 
 const logger = getLogger("TradeBuyApprovalStep::");
 

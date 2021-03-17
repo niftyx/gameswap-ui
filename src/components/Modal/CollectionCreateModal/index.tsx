@@ -134,6 +134,7 @@ export const CollectionCreateModal = (props: IProps) => {
                         setFieldValue("imageUrl", url);
                       })
                       .catch((err) => {
+                        logger.error(err);
                         setFieldValue("uploading", false);
                       });
                   }

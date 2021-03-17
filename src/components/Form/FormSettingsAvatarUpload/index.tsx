@@ -88,6 +88,7 @@ interface IProps {
 
 export const FormSettingsAvatarUpload = (props: IProps) => {
   const {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     InputProps: { onChange, value, ...restInputProps },
     address,
     className,

@@ -77,6 +77,7 @@ export const useAssetHistoryFromId = (id: string): IResponse => {
 
   useEffect(() => {
     loadHistory(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   return state;

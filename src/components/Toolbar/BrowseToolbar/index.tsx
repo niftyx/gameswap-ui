@@ -2,7 +2,6 @@ import { Box, Hidden, Typography, makeStyles } from "@material-ui/core";
 import { ReactComponent as CartIcon } from "assets/svgs/cart-arrow-down.svg";
 import clsx from "clsx";
 import {
-  AuctionsButton,
   GamesSelect,
   PriceSelect,
   SearchInput,
@@ -43,6 +42,7 @@ interface IProps {
 
 const BrowseToolbar = (props: IProps) => {
   const classes = useStyles();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { isAuctionActive, onAuction } = props;
   return (
     <div className={clsx(classes.root, props.className)}>

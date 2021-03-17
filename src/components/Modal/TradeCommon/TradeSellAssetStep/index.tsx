@@ -7,7 +7,6 @@ import { get0xContractAddresses } from "config/networks";
 import { useConnectedWeb3Context } from "contexts";
 import React, { useEffect, useState } from "react";
 import { ERC721Service } from "services";
-import { waitSeconds } from "utils";
 import { getLogger } from "utils/logger";
 import { buildSellCollectibleOrder, submitCollectibleOrder } from "utils/order";
 import { EthersBigNumberTo0xBigNumber } from "utils/token";

@@ -2,10 +2,7 @@ import { ProgressBasicModal, ProgressButton } from "components";
 import { useConnectedWeb3Context, useGlobal } from "contexts";
 import React, { useEffect, useState } from "react";
 import { getAPIService } from "services/api";
-import { getLogger } from "utils/logger";
 import { IGame } from "utils/types";
-
-const logger = getLogger("GameProgressModal::Modal");
 
 interface IProps {
   visible: boolean;
@@ -70,6 +67,7 @@ export const GameProgressModal = (props: IProps) => {
   const createGame = async () => {
     setState((prev) => ({ ...prev, loading: true }));
     try {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { id, ...payload } = formValues;
       await apiService.createGame({
         ...payload,

@@ -1,4 +1,4 @@
-import { CircularProgress, Typography, makeStyles } from "@material-ui/core";
+import { CircularProgress, makeStyles } from "@material-ui/core";
 import clsx from "clsx";
 import { PageContainer } from "components";
 import { useGameDetailsFromId } from "helpers";

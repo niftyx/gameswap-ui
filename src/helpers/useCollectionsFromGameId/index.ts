@@ -2,10 +2,7 @@ import { useIsMountedRef } from "hooks";
 import { useEffect, useState } from "react";
 import { getAPIService } from "services/api";
 import { waitSeconds } from "utils";
-import { getLogger } from "utils/logger";
 import { ICollection } from "utils/types";
-
-const logger = getLogger("useCollectionsFromGameId::");
 
 const FakeCollections: ICollection[] = [
   {
@@ -52,6 +49,7 @@ export const useCollectionsFromGameId = (
     loading: true,
     collections: [],
   });
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const apiService = getAPIService();
   const isMounted = useIsMountedRef();
 

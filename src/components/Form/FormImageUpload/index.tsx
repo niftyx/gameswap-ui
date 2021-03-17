@@ -14,7 +14,6 @@ import CloseIcon from "@material-ui/icons/Close";
 import clsx from "clsx";
 import { ASSET_IMAGE_FILE_SIZE_LIMIT } from "config/constants";
 import { useSnackbar } from "notistack";
-import { transparentize } from "polished";
 import React from "react";
 import { getFileType } from "utils/asset";
 import { EFileType } from "utils/enums";

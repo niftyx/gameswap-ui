@@ -4,9 +4,6 @@ import clsx from "clsx";
 import { CommentLoader } from "components";
 import React from "react";
 import useCommonStyles from "styles/common";
-import { getLogger } from "utils/logger";
-
-const logger = getLogger("ProgressBasicModal::Modal");
 
 const useStyles = makeStyles((theme) => ({
   root: {

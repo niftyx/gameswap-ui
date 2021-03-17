@@ -66,6 +66,7 @@ export const ProfileSettingsProgressModal = (props: IProps) => {
   const updateProfile = async () => {
     setState((prev) => ({ ...prev, loading: true }));
     try {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { address, id, ...payload } = values;
       const response = await apiService.updateAccountInfo(
         account || "",

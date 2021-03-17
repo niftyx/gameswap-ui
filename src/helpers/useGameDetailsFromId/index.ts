@@ -1,10 +1,7 @@
 import { useIsMountedRef } from "hooks";
 import { useEffect, useState } from "react";
 import { getAPIService } from "services/api";
-import { getLogger } from "utils/logger";
 import { IGame, Maybe } from "utils/types";
-
-const logger = getLogger("useGameDetailsFromId::");
 
 interface IState {
   loading: boolean;

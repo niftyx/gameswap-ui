@@ -2,7 +2,6 @@ import { SignedOrder } from "@0x/types";
 import { useTrade } from "contexts";
 import React, { useState } from "react";
 import { ETradeStep } from "utils/enums";
-import { getLogger } from "utils/logger";
 
 import {
   TradCancelOrderStep,
@@ -13,8 +12,6 @@ import {
   TradeSellGetInfoStep,
   TradeSuccessStep,
 } from "../TradeCommon";
-
-const logger = getLogger("TradeSellModal::");
 
 interface IProps {
   visible: boolean;
