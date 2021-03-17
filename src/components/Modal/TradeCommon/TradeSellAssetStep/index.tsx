@@ -87,8 +87,6 @@ export const TradeSellAssetStep = (props: IProps) => {
 
       logger.log("submitResult::Success");
 
-      await waitSeconds(5);
-
       onConfirm();
 
       setState((prevState) => ({
