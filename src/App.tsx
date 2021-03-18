@@ -10,8 +10,8 @@ import { BrowserRouter } from "react-router-dom";
 import routes, { renderRoutes } from "routes";
 import { createTheme } from "theme";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import "packages/slick-carousel/slick/slick.css";
+import "packages/slick-carousel/slick/slick-theme.css";
 
 import "./App.scss";
 
