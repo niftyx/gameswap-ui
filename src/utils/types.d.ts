@@ -235,16 +235,6 @@ export interface IUpcomingFarmItem {
   tokenDescription: string;
 }
 
-export interface IActivityItem {
-  id: string;
-  image?: string;
-  title: string;
-  type: EActivityTag;
-  address: string;
-  trustPoints: number;
-  txHash: string;
-}
-
 export interface IBrowseGameBidItem {
   id: string;
   image?: string;

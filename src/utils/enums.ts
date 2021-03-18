@@ -18,12 +18,6 @@ export enum EProfileMarker {
   Verified = "VERIFIED",
 }
 
-export enum EActivityType {
-  Buy = "buy",
-  Bid = "bid",
-  Sale = "sale",
-}
-
 export enum EBrowseGameBidItemStatus {
   FieldTested = "Field Tested",
 }

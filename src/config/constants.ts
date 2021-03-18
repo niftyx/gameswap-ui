@@ -1,14 +1,8 @@
 import { ReactComponent as MacIcon } from "assets/svgs/mac.svg";
 import { ReactComponent as WindowsIcon } from "assets/svgs/windows.svg";
 import { BigNumber, ethers } from "packages/ethers";
+import { EBrowseGameBidItemStatus, EFarmingTag, EPlatform } from "utils/enums";
 import {
-  EActivityType,
-  EBrowseGameBidItemStatus,
-  EFarmingTag,
-  EPlatform,
-} from "utils/enums";
-import {
-  IActivityItem,
   IBrowseGameBidItem,
   IFeaturedFarmItem,
   IGame,
