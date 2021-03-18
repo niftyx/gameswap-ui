@@ -1,5 +1,5 @@
 import { BigNumber } from "@0x/utils";
-import { BigNumber as EthersBigNumber, utils } from "ethers";
+import { BigNumber as EthersBigNumber, utils } from "packages/ethers";
 
 export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 

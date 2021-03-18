@@ -1,8 +1,8 @@
 import { SignedOrder, assetDataUtils } from "@0x/order-utils";
 import { DEFAULT_NETWORK_ID } from "config/constants";
 import { useConnectedWeb3Context } from "contexts";
-import { BigNumber } from "ethers";
 import { useIsMountedRef } from "hooks";
+import { BigNumber } from "packages/ethers";
 import { useEffect, useState } from "react";
 import { getAPIService } from "services/api";
 import { getIPFSService } from "services/ipfs";

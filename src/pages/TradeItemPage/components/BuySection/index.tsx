@@ -9,7 +9,7 @@ import {
 } from "config/constants";
 import { getTokenFromAddress } from "config/networks";
 import { useConnectedWeb3Context, useGlobal } from "contexts";
-import { BigNumber } from "ethers";
+import { BigNumber } from "packages/ethers";
 import { transparentize } from "polished";
 import React from "react";
 import { formatBigNumber } from "utils";

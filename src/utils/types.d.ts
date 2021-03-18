@@ -1,7 +1,7 @@
 import { SignedOrder } from "@0x/types";
 import { Theme } from "@material-ui/core/styles/createMuiTheme";
 import { knownTokens } from "config/networks";
-import { BigNumber } from "ethers";
+import { BigNumber } from "packages/ethers";
 
 import {
   EBrowseGameBidItemStatus,

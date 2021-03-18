@@ -1,6 +1,6 @@
 import axios from "axios";
 import { API_BASE_URL } from "config/constants";
-import { BigNumber } from "ethers";
+import { BigNumber } from "packages/ethers";
 import { ICollection, IGame, IUserInfo } from "utils/types";
 
 axios.defaults.baseURL = API_BASE_URL;

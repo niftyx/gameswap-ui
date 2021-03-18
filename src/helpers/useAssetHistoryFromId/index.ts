@@ -1,5 +1,5 @@
-import { BigNumber } from "ethers";
 import { useIsMountedRef } from "hooks";
+import { BigNumber } from "packages/ethers";
 import { useEffect, useState } from "react";
 import { getAPIService } from "services/api";
 import { EHistoryItemType } from "utils/enums";

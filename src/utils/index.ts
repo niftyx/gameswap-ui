@@ -1,5 +1,5 @@
-import { BigNumber } from "ethers";
-import { formatUnits } from "ethers/lib/utils";
+import { BigNumber } from "packages/ethers";
+import { formatUnits } from "packages/ethers/utils";
 
 export const shortenAddress = (address: string) => {
   return `${address.substring(0, 6)}...${address.substring(

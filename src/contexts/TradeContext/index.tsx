@@ -2,7 +2,7 @@ import { TradeBuyModal, TradeSellModal } from "components";
 import { DEFAULT_NETWORK_ID } from "config/constants";
 import { getToken } from "config/networks";
 import { useConnectedWeb3Context } from "contexts/connectedWeb3";
-import { BigNumber } from "ethers";
+import { BigNumber } from "packages/ethers";
 import React, { createContext, useContext, useState } from "react";
 import { ESellBuy } from "utils/enums";
 import { getLogger } from "utils/logger";

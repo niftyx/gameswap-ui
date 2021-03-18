@@ -1,6 +1,6 @@
 import { ReactComponent as MacIcon } from "assets/svgs/mac.svg";
 import { ReactComponent as WindowsIcon } from "assets/svgs/windows.svg";
-import { BigNumber, ethers } from "ethers";
+import { BigNumber, ethers } from "packages/ethers";
 import {
   EActivityType,
   EBrowseGameBidItemStatus,

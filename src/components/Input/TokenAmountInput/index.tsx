@@ -9,7 +9,7 @@ import { FormTextField } from "components";
 import { DEFAULT_NETWORK_ID } from "config/constants";
 import { getToken, knownTokens } from "config/networks";
 import { useConnectedWeb3Context } from "contexts";
-import { BigNumber, ethers } from "ethers";
+import { BigNumber, ethers } from "packages/ethers";
 import React, { useEffect, useState } from "react";
 import { IToken, ITokenAmount, KnownToken } from "utils/types";
 

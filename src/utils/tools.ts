@@ -1,6 +1,6 @@
 import { getTokenFromAddress } from "config/networks";
-import { BigNumber } from "ethers";
-import { getAddress } from "ethers/lib/utils";
+import { BigNumber } from "packages/ethers";
+import { getAddress } from "packages/ethers/utils";
 import { formatBigNumber } from "utils";
 
 import { xBigNumberToEthersBigNumber } from "./token";

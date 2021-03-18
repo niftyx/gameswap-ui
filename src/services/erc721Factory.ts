@@ -1,5 +1,5 @@
 import { TransactionReceipt } from "@ethersproject/abstract-provider/lib/index";
-import { Contract, Wallet, ethers } from "ethers";
+import { Contract, Wallet, ethers } from "packages/ethers";
 import { getLogger } from "utils/logger";
 import { Maybe } from "utils/types";
 

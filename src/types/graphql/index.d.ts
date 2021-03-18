@@ -1,4 +1,4 @@
-import { BigNumber } from "ethers";
+import { BigNumber } from "packages/ethers";
 import { ISignedOrder } from "utils/types";
 
 export interface IGraphInventoryAsset {

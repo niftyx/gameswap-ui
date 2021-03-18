@@ -1,6 +1,6 @@
 import { INVENTORY_PAGE_ASSET_COUNT } from "config/constants";
-import { BigNumber } from "ethers";
 import { useIsMountedRef } from "hooks";
+import { BigNumber } from "packages/ethers";
 import { useEffect, useState } from "react";
 import { getAPIService } from "services/api";
 import { IGraphInventoryAsset } from "types";
