@@ -120,6 +120,60 @@ const TradeFilter = (props: IProps) => {
       },
     }));
 
+  const onChangePrice = ({ max, min }: { min?: number; max?: number }) => {
+    setState((prevState) => ({
+      ...prevState,
+      filter: { ...prevState.filter, priceMin: min, priceMax: max },
+    }));
+  };
+
+  const onChangePlatform = (platforms: EPlatform[]) => {
+    setState((prevState) => ({
+      ...prevState,
+      filter: { ...prevState.filter, platforms },
+    }));
+  };
+
+  const onChangeStatus = (statuses: EOrderStatus[]) => {
+    setState((prev) => ({
+      ...prev,
+      filter: { ...prev.filter, statuses },
+    }));
+  };
+
+  const onChangeCollection = (collectionIds: string[]) => {
+    setState((prev) => ({
+      ...prev,
+      filter: { ...prev.filter, collectionIds },
+    }));
+  };
+
+  const onChangeCurrencies = (currencies: KnownToken[]) => {
+    setState((prev) => ({
+      ...prev,
+      filter: { ...prev.filter, currencies },
+    }));
+  };
+
+  const onReset = () => {
+    setState(() => ({
+      filter: {
+        priceEnabled: false,
+        statusEnabled: false,
+        collectionEnabled: false,
+        saleCurrencyEnabled: false,
+        platformEnabled: false,
+        membership: EMembership.Basic,
+      },
+    }));
+  };
+
+  const onToggleFilter = (key: keyof IState["filter"]) => () => {
+    updateFilter({
+      [key]: !state.filter[key],
+    });
+  };
+
   return (
     <div className={clsx(classes.root, props.className, commonClasses.scroll)}>
       <Button
@@ -180,111 +234,63 @@ const TradeFilter = (props: IProps) => {
       </ButtonGroup>
       <FilterItemWrapper
         enabled={state.filter.priceEnabled}
-        onToggle={() => {
-          updateFilter({ priceEnabled: !state.filter.priceEnabled });
-        }}
+        onToggle={onToggleFilter("priceEnabled")}
         title="Price"
       >
         <PriceFilter
           items={MOCK_PRICE_FILTER_ITEMS}
           max={state.filter.priceMax}
           min={state.filter.priceMin}
-          onChange={({ max, min }: { min?: number; max?: number }) => {
-            setState((prevState) => ({
-              ...prevState,
-              filter: { ...prevState.filter, priceMin: min, priceMax: max },
-            }));
-          }}
+          onChange={onChangePrice}
         />
         <Divider className={classes.divider} />
       </FilterItemWrapper>
       <FilterItemWrapper
         enabled={state.filter.platformEnabled}
-        onToggle={() => {
-          updateFilter({ platformEnabled: !state.filter.platformEnabled });
-        }}
+        onToggle={onToggleFilter("platformEnabled")}
         title="Platform"
       >
         <PlatformFilter
-          onChange={(platforms: EPlatform[]) => {
-            setState((prevState) => ({
-              ...prevState,
-              filter: { ...prevState.filter, platforms },
-            }));
-          }}
+          onChange={onChangePlatform}
           platforms={state.filter.platforms || []}
         />
         <Divider className={classes.divider} />
       </FilterItemWrapper>
       <FilterItemWrapper
         enabled={state.filter.statusEnabled}
-        onToggle={() => {
-          updateFilter({ statusEnabled: !state.filter.statusEnabled });
-        }}
+        onToggle={onToggleFilter("statusEnabled")}
         title="Status"
       >
         <OrderStatusFilter
-          onChange={(statuses) => {
-            setState((prev) => ({
-              ...prev,
-              filter: { ...prev.filter, statuses },
-            }));
-          }}
+          onChange={onChangeStatus}
           statuses={state.filter.statuses || []}
         />
       </FilterItemWrapper>
       <FilterItemWrapper
         enabled={state.filter.collectionEnabled}
-        onToggle={() => {
-          updateFilter({ collectionEnabled: !state.filter.collectionEnabled });
-        }}
+        onToggle={onToggleFilter("collectionEnabled")}
         title="Collection"
       >
         <CollectionFilter
           collectionIds={state.filter.collectionIds || []}
-          onChange={(collectionIds) => {
-            setState((prev) => ({
-              ...prev,
-              filter: { ...prev.filter, collectionIds },
-            }));
-          }}
+          onChange={onChangeCollection}
         />
       </FilterItemWrapper>
       <FilterItemWrapper
         enabled={state.filter.saleCurrencyEnabled}
-        onToggle={() => {
-          updateFilter({
-            saleCurrencyEnabled: !state.filter.saleCurrencyEnabled,
-          });
-        }}
+        onToggle={onToggleFilter("saleCurrencyEnabled")}
         title="Sale Currency"
       >
         <SaleCurrencyFilter
           currencies={state.filter.currencies || []}
-          onChange={(currencies) => {
-            setState((prev) => ({
-              ...prev,
-              filter: { ...prev.filter, currencies },
-            }));
-          }}
+          onChange={onChangeCurrencies}
         />
       </FilterItemWrapper>
       <Button
         className={clsx(commonClasses.transparentButton, classes.reset)}
         color="secondary"
         fullWidth
-        onClick={() => {
-          setState({
-            filter: {
-              priceEnabled: false,
-              statusEnabled: false,
-              collectionEnabled: false,
-              saleCurrencyEnabled: false,
-              platformEnabled: false,
-              membership: EMembership.Basic,
-            },
-          });
-        }}
+        onClick={onReset}
         variant="contained"
       >
         RESET FILTERS

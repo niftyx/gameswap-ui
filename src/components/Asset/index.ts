@@ -4,8 +4,6 @@ export * from "./TradeAssetItem";
 export * from "./AssetsContainer";
 export * from "./BrowseAssetItem";
 export * from "./GamePreview";
-export * from "./FeaturedFarmPreview";
-export * from "./UpcomingFarmRow";
 export * from "./BrowsedFeaturedItem";
 export * from "./BrowseBidItem";
 export * from "./AssetPhoto";

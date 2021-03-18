@@ -163,6 +163,18 @@ export const TradeAssetItem = (props: IProps) => {
     networkId || DEFAULT_NETWORK_ID
   );
 
+  const onClickItem = () => {
+    if (assetDataWithPriceInfo.asset && onClick) {
+      onClick({ ...assetDataWithPriceInfo.asset, orders: data.orders });
+    }
+  };
+
+  const onMoreItem = () => {
+    if (onMore) {
+      onMore((assetDetails || {}).id || "");
+    }
+  };
+
   return (
     <Grid
       className={clsx(classes.root, props.className)}
@@ -182,11 +194,7 @@ export const TradeAssetItem = (props: IProps) => {
             commonClasses.fadeAnimation,
             !loading ? "visible" : ""
           )}
-          onClick={() => {
-            if (assetDataWithPriceInfo.asset && onClick) {
-              onClick({ ...assetDataWithPriceInfo.asset, orders: data.orders });
-            }
-          }}
+          onClick={onClickItem}
         >
           {/* {state.loaded && isOnCart && (
             <div className={classes.cartWrapper}>
@@ -232,11 +240,7 @@ export const TradeAssetItem = (props: IProps) => {
               className={classes.moreButton}
               color="secondary"
               fullWidth
-              onClick={() => {
-                if (onMore) {
-                  onMore((assetDetails || {}).id || "");
-                }
-              }}
+              onClick={onMoreItem}
               variant="contained"
             >
               More Info

@@ -174,49 +174,6 @@ export const MockUpcomingFarms: IUpcomingFarmItem[] = [
   },
 ];
 
-export const MOCK_PROFILE_ACTIVITIES: IActivityItem[] = [
-  {
-    id: "hjiwor24",
-    image: "/svgs/activity/cyberAssault.svg",
-    title: "Skin Weapon",
-    type: EActivityType.Buy,
-    address: "0xaac41ec512808d64625576eddd580e7ea40ef8b2",
-    trustPoints: 2,
-    txHash:
-      "0x22d2865291e1c25c430e3d555d0a5b6384a42b4314d24ba30335944d5005d15b",
-  },
-  {
-    id: "bw452",
-    image: "/svgs/activity/skyfall.svg",
-    title: "OF COURSE I HATE YOU DESTRUCTOR SHIP ",
-    type: EActivityType.Bid,
-    address: "0xaac41ec512808d64625576eddd580e7ea40ef8b2",
-    trustPoints: 2,
-    txHash:
-      "0x22d2865291e1c25c430e3d555d0a5b6384a42b4314d24ba30335944d5005d15b",
-  },
-  {
-    id: "kuylgsf",
-    image: "/svgs/activity/fortnite.svg",
-    title: "Marshemello DJ Wear",
-    type: EActivityType.Sale,
-    address: "0xaac41ec512808d64625576eddd580e7ea40ef8b2",
-    trustPoints: 2,
-    txHash:
-      "0x22d2865291e1c25c430e3d555d0a5b6384a42b4314d24ba30335944d5005d15b",
-  },
-  {
-    id: "vxzvwr",
-    image: "/svgs/activity/mars.svg",
-    title: "MARS Base",
-    type: EActivityType.Buy,
-    address: "0xaac41ec512808d64625576eddd580e7ea40ef8b2",
-    trustPoints: 2,
-    txHash:
-      "0x22d2865291e1c25c430e3d555d0a5b6384a42b4314d24ba30335944d5005d15b",
-  },
-];
-
 export const PLATFORM_ICONS: { [key: string]: React.ElementType } = {
   Windows: WindowsIcon,
   Mac: MacIcon,

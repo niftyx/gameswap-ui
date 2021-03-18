@@ -1,99 +1,115 @@
 import { AuthGuard, LoadingScreen } from "components";
-import React, { Suspense, lazy } from "react";
+import { MainLayout } from "layouts";
+import React, { Fragment, Suspense, lazy } from "react";
 import { Route, Switch } from "react-router-dom";
 
 const routes = [
   {
-    exact: true,
     path: "/",
-    component: lazy(() => import("pages/HomePage")),
-  },
-  {
-    exact: true,
-    path: "/trade",
-    component: lazy(() => import("pages/TradePage")),
-  },
-  {
-    exact: true,
-    path: "/assets/:id",
-    component: lazy(() => import("pages/TradeItemPage")),
-  },
-  {
-    exact: true,
-    path: "/games/:id",
-    component: lazy(() => import("pages/GameDetailsPage")),
-  },
-  {
-    exact: true,
-    path: "/launch-pad",
-    component: lazy(() => import("pages/LaunchPadPage")),
-  },
-
-  {
-    exact: true,
-    path: "/browse",
-    component: lazy(() => import("pages/BrowsePage")),
-  },
-  {
-    exact: true,
-    path: "/browse/featured",
-    component: lazy(() => import("pages/BrowsePage")),
-  },
-  {
-    exact: false,
-    path: "/faq",
-    component: lazy(() => import("pages/FaqPage")),
-  },
-  {
-    exact: true,
-    path: "/create",
-    component: lazy(() => import("pages/CreateHomePage")),
-  },
-  {
-    exact: true,
-    path: "/create/erc721",
-    component: lazy(() => import("pages/CreateERC721Page")),
-  },
-  {
-    exact: true,
-    path: "/create/game",
-    component: lazy(() => import("pages/CreateGamePage")),
-  },
-  {
-    exact: true,
-    path: "/create/collection",
-    component: lazy(() => import("pages/CreateCollectionPage")),
+    layout: MainLayout,
+    routes: [
+      {
+        exact: true,
+        path: "/",
+        component: lazy(() => import("pages/HomePage")),
+      },
+      {
+        exact: true,
+        path: "/trade",
+        component: lazy(() => import("pages/TradePage")),
+      },
+      {
+        exact: true,
+        path: "/assets/:id",
+        component: lazy(() => import("pages/TradeItemPage")),
+      },
+      {
+        exact: true,
+        path: "/games/:id",
+        component: lazy(() => import("pages/GameDetailsPage")),
+      },
+      {
+        exact: true,
+        path: "/browse",
+        component: lazy(() => import("pages/BrowsePage")),
+      },
+      {
+        exact: true,
+        path: "/browse/featured",
+        component: lazy(() => import("pages/BrowsePage")),
+      },
+      {
+        exact: false,
+        path: "/faq",
+        component: lazy(() => import("pages/FaqPage")),
+      },
+      {
+        exact: true,
+        path: "/create",
+        component: lazy(() => import("pages/CreateHomePage")),
+      },
+      {
+        exact: true,
+        path: "/create/erc721",
+        component: lazy(() => import("pages/CreateERC721Page")),
+      },
+      {
+        exact: true,
+        path: "/create/game",
+        component: lazy(() => import("pages/CreateGamePage")),
+      },
+      {
+        exact: true,
+        path: "/create/collection",
+        component: lazy(() => import("pages/CreateCollectionPage")),
+      },
+      {
+        exact: false,
+        path: "/profile",
+        component: lazy(() => import("pages/ProfilePage")),
+        guard: AuthGuard,
+      },
+      {
+        exact: true,
+        path: "/settings",
+        component: lazy(() => import("pages/ProfileSettingsPage")),
+        guard: AuthGuard,
+      },
+    ],
   },
 ];
 
-const authRoutes = [
-  {
-    exact: false,
-    path: "/profile",
-    component: lazy(() => import("pages/ProfilePage")),
-  },
-  {
-    exact: true,
-    path: "/settings",
-    component: lazy(() => import("pages/ProfileSettingsPage")),
-  },
-];
-
-const renderRoutes = () => {
+export const renderRoutes = (routes: any[]) => {
   return (
     <Suspense fallback={<LoadingScreen />}>
       <Switch>
         {routes.map((route, i) => {
-          return <Route key={i} {...route} />;
+          const Guard = route.guard || Fragment;
+          const Layout = route.layout || Fragment;
+          const Component = route.component;
+
+          return (
+            <Route
+              exact={route.exact}
+              key={i}
+              path={route.path}
+              render={(props) => (
+                <Guard>
+                  <Layout>
+                    {route.routes ? (
+                      renderRoutes(route.routes)
+                    ) : (
+                      <Component {...props} />
+                    )}
+                  </Layout>
+                </Guard>
+              )}
+            />
+          );
         })}
-        <AuthGuard>
-          {authRoutes.map((route, i) => {
-            return <Route key={i} {...route} />;
-          })}
-        </AuthGuard>
       </Switch>
     </Suspense>
   );
 };
 
-export default renderRoutes;
+export default routes;

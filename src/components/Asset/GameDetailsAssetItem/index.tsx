@@ -107,6 +107,10 @@ export const GameDetailsAssetItem = (props: IProps) => {
     ? { xl: 2, lg: 2, md: 4, xs: 6 }
     : { xl: 3, lg: 4, md: 6, xs: 6 };
 
+  const onClickDetails = () => {
+    if (asset && onClick) onClick(asset);
+  };
+
   return (
     <Grid
       className={clsx(classes.root, props.className)}
@@ -126,9 +130,7 @@ export const GameDetailsAssetItem = (props: IProps) => {
             commonClasses.fadeAnimation,
             loaded ? "visible" : ""
           )}
-          onClick={() => {
-            if (asset && onClick) onClick(asset);
-          }}
+          onClick={onClickDetails}
         >
           {asset && asset.image && (
             <AssetPhoto

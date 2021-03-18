@@ -4,11 +4,10 @@ import { Web3ReactProvider } from "@web3-react/core";
 import { LoadingScreen } from "components";
 import { ConnectedWeb3, GlobalProvider, TradeProvider } from "contexts";
 import { useSettings } from "hooks";
-import { MainLayout } from "layouts";
 import { SnackbarProvider } from "notistack";
 import * as React from "react";
 import { BrowserRouter } from "react-router-dom";
-import renderRoutes from "routes";
+import routes, { renderRoutes } from "routes";
 import { createTheme } from "theme";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import "slick-carousel/slick/slick.css";
@@ -41,9 +40,7 @@ function App() {
             <Web3ReactProvider getLibrary={getLibrary}>
               <ConnectedWeb3>
                 <BrowserRouter>
-                  <MainLayout>
-                    <TradeProvider>{renderRoutes()}</TradeProvider>
-                  </MainLayout>
+                  <TradeProvider>{renderRoutes(routes)}</TradeProvider>
                 </BrowserRouter>
               </ConnectedWeb3>
             </Web3ReactProvider>

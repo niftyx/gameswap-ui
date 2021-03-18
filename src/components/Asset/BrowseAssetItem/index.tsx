@@ -140,6 +140,12 @@ export const BrowseAssetItem = (props: IProps) => {
     networkId || DEFAULT_NETWORK_ID
   );
 
+  const onClickDetails = () => {
+    if (assetDataWithPriceInfo.asset && onMore) {
+      onMore((assetDetails || {}).id || "");
+    }
+  };
+
   return (
     <Grid
       className={clsx(classes.root, props.className)}
@@ -159,11 +165,7 @@ export const BrowseAssetItem = (props: IProps) => {
             commonClasses.fadeAnimation,
             !loading ? "visible" : ""
           )}
-          onClick={() => {
-            if (assetDataWithPriceInfo.asset && onMore) {
-              onMore((assetDetails || {}).id || "");
-            }
-          }}
+          onClick={onClickDetails}
         >
           {assetDataLoaded && assetDetails && (
             <>
@@ -195,11 +197,7 @@ export const BrowseAssetItem = (props: IProps) => {
               className={classes.moreButton}
               color="secondary"
               fullWidth
-              onClick={() => {
-                if (onMore) {
-                  onMore((assetDetails || {}).id || "");
-                }
-              }}
+              onClick={onClickDetails}
               variant="contained"
             >
               More Info
