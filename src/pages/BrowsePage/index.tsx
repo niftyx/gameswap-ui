@@ -22,8 +22,8 @@ const useStyles = makeStyles((theme) => ({
   assets: {
     flex: 1,
     height: "100%",
-    overflowY: "auto",
-    overflowX: "hidden",
+    display: "flex",
+    flexDirection: "column",
   },
   inventory: {
     flex: 1,
@@ -59,7 +59,7 @@ const BrowsePage = () => {
         <div className={classes.mainContent}>
           <BrowseFilter className={classes.filter} />
           <AssetItemsSection
-            className={clsx(classes.assets, commonClasses.scroll)}
+            className={clsx(classes.assets)}
             loading={allOrdersLoading}
             onScrollEnd={
               !allOrdersLoading && !allOrdersLoaded

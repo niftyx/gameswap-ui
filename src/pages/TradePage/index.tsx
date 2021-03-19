@@ -19,14 +19,14 @@ const useStyles = makeStyles((theme) => ({
   assets: {
     flex: 1,
     height: "100%",
-    overflowY: "auto",
-    overflowX: "hidden",
+    display: "flex",
+    flexDirection: "column",
   },
   inventory: {
     flex: 1,
     height: "100%",
-    overflowY: "auto",
-    overflowX: "hidden",
+    display: "flex",
+    flexDirection: "column",
   },
   filter: {
     width: theme.spacing(25),

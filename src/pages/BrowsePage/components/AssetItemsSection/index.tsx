@@ -17,6 +17,9 @@ const useStyles = makeStyles((theme) => ({
   root: {},
   assets: {
     marginTop: theme.spacing(2),
+    overflowY: "auto",
+    flex: 1,
+    padding: "0 6px",
   },
 }));
 
@@ -69,15 +72,12 @@ const AssetItemsSection = (props: IProps) => {
   };
 
   return (
-    <ScrollContainer
-      className={clsx(classes.root, props.className)}
-      onScrollEnd={onScrollEnd}
-    >
+    <div className={clsx(classes.root, props.className)}>
       <BrowseToolbar
         isAuctionActive={state.isAuctionActive}
         onAuction={onAuction}
       />
-      <div className={classes.assets}>
+      <ScrollContainer className={classes.assets} onScrollEnd={onScrollEnd}>
         {state.isAuctionActive ? (
           <AuctionItemsSection />
         ) : (
@@ -92,9 +92,9 @@ const AssetItemsSection = (props: IProps) => {
             ))}
           </AssetsContainer>
         )}
-      </div>
-      {loading && <SimpleLoader />}
-    </ScrollContainer>
+        {loading && <SimpleLoader />}
+      </ScrollContainer>
+    </div>
   );
 };
 

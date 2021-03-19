@@ -17,6 +17,9 @@ const useStyles = makeStyles((theme) => ({
   root: {},
   assets: {
     marginTop: theme.spacing(2),
+    overflowY: "auto",
+    flex: 1,
+    padding: "0 6px",
   },
 }));
 
@@ -106,16 +109,13 @@ const AssetItemsSection = (props: IProps) => {
   };
 
   return (
-    <ScrollContainer
-      className={clsx(classes.root, props.className)}
-      onScrollEnd={onScrollEnd}
-    >
+    <div className={clsx(classes.root, props.className)}>
       <AssetsToolbar
         cartItemCount={itemCartIds.length}
         renderCartContent={renderCartContent}
         totalPrice={totalPrice}
       />
-      <div className={classes.assets}>
+      <ScrollContainer className={classes.assets} onScrollEnd={onScrollEnd}>
         <AssetsContainer>
           {assets.map((asset) => (
             <TradeAssetItem
@@ -127,9 +127,9 @@ const AssetItemsSection = (props: IProps) => {
             />
           ))}
         </AssetsContainer>
-      </div>
-      {loading && <SimpleLoader />}
-    </ScrollContainer>
+        {loading && <SimpleLoader />}
+      </ScrollContainer>
+    </div>
   );
 };
 

@@ -18,9 +18,12 @@ const useStyles = makeStyles((theme) => ({
   root: {},
   assets: {
     marginTop: theme.spacing(2),
+    overflowY: "auto",
+    flex: 1,
+    padding: "0 6px",
   },
   noWallet: {
-    height: "100%",
+    flex: 1,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -47,14 +50,14 @@ const InventorySection = (props: IProps) => {
   };
 
   return (
-    <ScrollContainer
-      className={clsx(classes.root, props.className)}
-      onScrollEnd={onScrollEnd}
-    >
+    <div className={clsx(classes.root, props.className)}>
       {isConnected ? (
         <>
           <InventoryToolbar />
-          <div className={classes.assets}>
+          <ScrollContainer
+            className={clsx(classes.assets)}
+            onScrollEnd={onScrollEnd}
+          >
             <AssetsContainer>
               {assets.map((asset) => (
                 <InventoryAssetItem
@@ -65,15 +68,15 @@ const InventorySection = (props: IProps) => {
                 />
               ))}
             </AssetsContainer>
-          </div>
-          {loading && <SimpleLoader />}
+            {loading && <SimpleLoader />}
+          </ScrollContainer>
         </>
       ) : (
         <div className={classes.noWallet}>
           <NoWallet />
         </div>
       )}
-    </ScrollContainer>
+    </div>
   );
 };
 

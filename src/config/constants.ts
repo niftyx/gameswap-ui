@@ -59,10 +59,14 @@ export const TokenAvax = {
   name: "Avalanche",
 };
 
-export const INVENTORY_PAGE_ASSET_COUNT = 20;
-export const BROWSE_PAGE_ASSET_COUNT = 20;
+export const INVENTORY_PAGE_ASSET_COUNT = 50;
+export const BROWSE_PAGE_ASSET_COUNT = 50;
+export const ORDERS_PAGE_COUNT = 50;
 
-export const ORDERS_PAGE_COUNT = 20;
+export const AssetProxyIds = {
+  erc721: "0x02571792",
+  erc20: "0xf47261b0",
+};
 
 export const PROTOCOL_FEE_MULTIPLIER = 70000;
 
