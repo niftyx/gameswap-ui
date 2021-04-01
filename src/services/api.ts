@@ -5,7 +5,7 @@ import { ICollection, IGame, IUserInfo } from "utils/types";
 
 axios.defaults.baseURL = API_BASE_URL;
 
-interface IAPIResponseRecord {
+interface IAssetHistoryResponseRecord {
   erc20: string;
   erc20Amount: any;
   id: string;
@@ -185,7 +185,7 @@ export class APIService {
     return response.data as {
       page: number;
       perPage: number;
-      records: IAPIResponseRecord[];
+      records: IAssetHistoryResponseRecord[];
     };
   }
 
