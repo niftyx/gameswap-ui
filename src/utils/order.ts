@@ -1,4 +1,8 @@
-import { DevUtilsContract, ExchangeContract } from "@0x/contract-wrappers";
+import {
+  DevUtilsContract,
+  ExchangeContract,
+  ForwarderContract,
+} from "@0x/contract-wrappers";
 import {
   Order,
   SignedOrder,

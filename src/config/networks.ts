@@ -1,3 +1,4 @@
+import { NULL_ADDRESS } from "utils/address";
 import { getImageUrl } from "utils/token";
 import { entries } from "utils/type-utils";
 import {
@@ -57,14 +58,14 @@ export const knownTokens: { [name in KnownToken]: IKnownTokenData } = {
     },
     coingeckoTokenId: "shroom-finance",
   },
-  weth: {
-    symbol: "WETH",
+  wavax: {
+    symbol: "WAVAX",
     decimals: 18,
     addresses: {
-      [networkIds.AVAXTEST]: "0x444806d2c0856c12dd8db239b809fc4641fcbb5e",
-      [networkIds.AVAXMAIN]: "0xf20d962a6c8f70c731bd838a3a388d7d48fa6e15",
+      [networkIds.AVAXTEST]: "0x7f94faa738eb6326e98f2f84cae388c2913693cd",
+      [networkIds.AVAXMAIN]: "0x7f94faa738eb6326e98f2f84cae388c2913693cd",
     },
-    coingeckoTokenId: "weth",
+    coingeckoTokenId: "avalanche-2",
   },
 };
 
@@ -173,12 +174,14 @@ const OxContractAddresses: { [key in NetworkId]: I0xContractAddresses } = {
     erc20Proxy: "0x607935e692a7470cc6c68a3cb21ad72d59776f58",
     erc721proxy: "0x570a7bd05516774f4ea0163a77ce1d70ffc21454",
     devUtils: "0x3fe255415a82ce3f3907a624d936ba99c915928a",
+    forwarder: "0xa165745421610c53818f9504a45ca68fdf56b475",
   },
   [networkIds.AVAXMAIN]: {
     exchange: "0x4eacd0af335451709e1e7b570b8ea68edec8bc97",
     erc20Proxy: "0xf1ec01d6236d3cd881a0bf0130ea25fe4234003e",
     erc721proxy: "0x2a9127c745688a165106c11cd4d647d2220af821",
     devUtils: "0x161793cdca4ff9e766a706c2c49c36ac1340bbcd",
+    forwarder: "0xa165745421610c53818f9504a45ca68fdf56b475",
   },
 };
 

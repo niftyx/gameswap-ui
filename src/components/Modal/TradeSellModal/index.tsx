@@ -1,6 +1,7 @@
 import { SignedOrder } from "@0x/types";
 import { useTrade } from "contexts";
 import React, { useState } from "react";
+import { NULL_ADDRESS } from "utils/address";
 import { ETradeStep } from "utils/enums";
 
 import {
@@ -40,6 +41,8 @@ export const TradeSellModal = (props: IProps) => {
   if (!price) return null;
 
   const renderContent = () => {
+    if (!asset.price) return null;
+
     switch (state.step) {
       case ETradeStep.InputPrice:
         return (

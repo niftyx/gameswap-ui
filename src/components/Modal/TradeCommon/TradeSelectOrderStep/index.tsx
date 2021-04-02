@@ -2,10 +2,15 @@ import { SignedOrder } from "@0x/types";
 import { Button, Typography, makeStyles } from "@material-ui/core";
 import clsx from "clsx";
 import { AssetPhoto } from "components/Asset";
+import { DEFAULT_NETWORK_ID } from "config/constants";
+import { getTokenFromAddress } from "config/networks";
 import { useConnectedWeb3Context, useGlobal } from "contexts";
+import { useBalances } from "helpers";
+import { useSnackbar } from "notistack";
 import React from "react";
 import useCommonStyles from "styles/common";
 import { formatBigNumber } from "utils";
+import { xBigNumberToEthersBigNumber } from "utils/token";
 import { IAssetItem, ITokenAmount, KnownToken } from "utils/types";
 
 const useStyles = makeStyles((theme) => ({
@@ -54,7 +59,12 @@ export const TradeSelectOrderStep = (props: IProps) => {
   } = useGlobal();
   const classes = useStyles();
   const commonClasses = useCommonStyles();
-  const { account } = useConnectedWeb3Context();
+  const context = useConnectedWeb3Context();
+  const { account } = context;
+  const {
+    balances: { erc20Balances },
+  } = useBalances(context);
+  const { enqueueSnackbar } = useSnackbar();
 
   if (!asset.prices) return null;
 
@@ -97,6 +107,24 @@ export const TradeSelectOrderStep = (props: IProps) => {
                   if (orders && orders[priceIndex]) {
                     if (isMine) {
                       return onCancel(orders[priceIndex]);
+                    }
+                    const erc20Token = getTokenFromAddress(
+                      context.networkId || DEFAULT_NETWORK_ID,
+                      orders[priceIndex].erc20Address
+                    );
+                    if (
+                      xBigNumberToEthersBigNumber(
+                        orders[priceIndex].takerAssetAmount
+                      ).gt(
+                        erc20Balances[
+                          erc20Token.symbol.toLowerCase() as KnownToken
+                        ]
+                      )
+                    ) {
+                      enqueueSnackbar("Insufficient balance", {
+                        variant: "error",
+                      });
+                      return;
                     }
                     onConfirm(orders[priceIndex]);
                   }

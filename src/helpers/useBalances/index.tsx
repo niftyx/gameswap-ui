@@ -11,7 +11,7 @@ const defaultBalances: IBalances = {
   erc20Balances: {
     gswap: ZERO_NUMBER,
     shroom: ZERO_NUMBER,
-    weth: ZERO_NUMBER,
+    wavax: ZERO_NUMBER,
   },
 };
 
@@ -58,7 +58,7 @@ export const useBalances = (
         erc20Balances: {
           gswap: await fetchERC20Balance("gswap"),
           shroom: await fetchERC20Balance("shroom"),
-          weth: await fetchERC20Balance("weth"),
+          wavax: await fetchERC20Balance("wavax"),
         },
       };
       if (isRefMounted.current === true) {

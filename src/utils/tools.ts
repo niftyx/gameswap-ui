@@ -48,7 +48,7 @@ export const getAssetObjectWithPrices = (
       price: BigNumber;
       decimals: number;
     };
-    weth: {
+    wavax: {
       usd: number;
       price: BigNumber;
       decimals: number;

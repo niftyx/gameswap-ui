@@ -22,7 +22,7 @@ const defaultTokenPrices = {
     price: DEFAULT_PRICE,
     decimals: PRICE_DECIMALS,
   },
-  weth: {
+  wavax: {
     usd: DEFAULT_USD,
     price: DEFAULT_PRICE,
     decimals: PRICE_DECIMALS,

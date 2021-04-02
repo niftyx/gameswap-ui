@@ -275,7 +275,7 @@ export interface IERC721Token {
 
 export type Maybe<T> = T | null;
 
-export type KnownToken = "gswap" | "shroom" | "weth";
+export type KnownToken = "gswap" | "shroom" | "wavax";
 
 export interface INetwork {
   label: string;
@@ -304,6 +304,7 @@ export interface I0xContractAddresses {
   erc20Proxy: string;
   erc721proxy: string;
   devUtils: string;
+  forwarder: string;
 }
 
 declare global {
