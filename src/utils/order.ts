@@ -1,8 +1,4 @@
-import {
-  DevUtilsContract,
-  ExchangeContract,
-  ForwarderContract,
-} from "@0x/contract-wrappers";
+import { DevUtilsContract, ExchangeContract } from "@0x/contract-wrappers";
 import {
   Order,
   SignedOrder,
@@ -79,8 +75,10 @@ export const buildSellCollectibleOrder = async (
     chainId: networkId,
     salt: new BigNumber(Date.now()),
     takerFeeAssetData: erc20AssetData,
-    takerFee: new BigNumber(orderConfigRequest.takerAssetAmount).multipliedBy(
-      new BigNumber(SERVICE_FEE)
+    takerFee: round(
+      new BigNumber(orderConfigRequest.takerAssetAmount).multipliedBy(
+        new BigNumber(SERVICE_FEE)
+      )
     ),
   };
 

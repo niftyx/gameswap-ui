@@ -405,6 +405,7 @@ export interface ICollection {
   description?: string;
   imageUrl: string;
   symbol: string;
+  isPrivate: boolean;
 }
 export interface IBalances {
   eth: BigNumber;

@@ -11,6 +11,7 @@ const FakeCollections: ICollection[] = [
     description: "ERC-20 / ERC-721",
     imageUrl: "/images/backgrounds/daylight.png",
     symbol: "CD7",
+    isPrivate: false,
   },
   {
     id: "234",
@@ -18,6 +19,7 @@ const FakeCollections: ICollection[] = [
     description: "ERC-721",
     imageUrl: "/images/backgrounds/resident.png",
     symbol: "CD7",
+    isPrivate: false,
   },
   {
     id: "1",
@@ -25,6 +27,7 @@ const FakeCollections: ICollection[] = [
     description: "ERC-1155",
     imageUrl: "/images/backgrounds/battlefield.png",
     symbol: "CD7",
+    isPrivate: false,
   },
   {
     id: "13",
@@ -32,6 +35,7 @@ const FakeCollections: ICollection[] = [
     description: "ERC-1155",
     imageUrl: "/images/backgrounds/cyber-assault.png",
     symbol: "CD7",
+    isPrivate: false,
   },
 ];
 

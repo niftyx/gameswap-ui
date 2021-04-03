@@ -1,7 +1,7 @@
 import { Button, CircularProgress, makeStyles } from "@material-ui/core";
 import clsx from "clsx";
 import { FormTextField } from "components";
-import { FormCollectionImageUpload } from "components/Form";
+import { FormCollectionImageUpload, FormSwitchField } from "components/Form";
 import { DEFAULT_NETWORK_ID } from "config/constants";
 import { getContractAddress } from "config/networks";
 import { useConnectedWeb3Context, useGlobal } from "contexts";
@@ -68,6 +68,7 @@ export const CollectionCreateModal = (props: IProps) => {
     description: "",
     uploading: false,
     symbol: "",
+    isPrivate: false,
   };
 
   return (
@@ -86,7 +87,8 @@ export const CollectionCreateModal = (props: IProps) => {
               values.name,
               values.symbol,
               values.imageUrl,
-              values.description || ""
+              values.description || "",
+              values.isPrivate
             );
             logger.log(txResult);
             await waitSeconds(5);
@@ -193,6 +195,22 @@ export const CollectionCreateModal = (props: IProps) => {
                 multiline: true,
               }}
               label="Description"
+            />
+            <FormSwitchField
+              FormControlProps={{ fullWidth: true }}
+              InputLabelProps={{
+                htmlFor: "isPrivate",
+                shrink: true,
+              }}
+              InputProps={{
+                id: "isPrivate",
+                name: "isPrivate",
+                onBlur: handleBlur,
+                onChange: handleChange,
+                checked: values.isPrivate,
+              }}
+              label="Private Collection"
+              subLabel="Only you can mint assets of this collection"
             />
 
             <Button

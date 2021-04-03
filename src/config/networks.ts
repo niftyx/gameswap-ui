@@ -170,11 +170,11 @@ export const getEtherscanUri = (networkId: number): string => {
 
 const OxContractAddresses: { [key in NetworkId]: I0xContractAddresses } = {
   [networkIds.AVAXTEST]: {
-    exchange: "0xb74c1db81f26e3e545757328f8f208e314af9f49",
-    erc20Proxy: "0x607935e692a7470cc6c68a3cb21ad72d59776f58",
-    erc721proxy: "0x570a7bd05516774f4ea0163a77ce1d70ffc21454",
-    devUtils: "0x3fe255415a82ce3f3907a624d936ba99c915928a",
-    forwarder: "0xa165745421610c53818f9504a45ca68fdf56b475",
+    exchange: "0x7a2f1f4659f8e9111590a3f1906925be61e77c41",
+    erc20Proxy: "0x799fa455f6226540847217ce232ad6f66c1e48a7",
+    erc721proxy: "0x4afb6194020a613df19d38095337db95e030fdf9",
+    devUtils: "0xd83b7de90f699c4bae9a017bf331a564abef6908",
+    forwarder: "0xab43f4f24b05e1969a69396577d5e46f9fe42e54",
   },
   [networkIds.AVAXMAIN]: {
     exchange: "0x4eacd0af335451709e1e7b570b8ea68edec8bc97",

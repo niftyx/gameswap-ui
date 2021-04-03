@@ -1,6 +1,10 @@
 import { Button, makeStyles } from "@material-ui/core";
 import clsx from "clsx";
-import { FormCollectionImageUpload, FormTextField } from "components";
+import {
+  FormCollectionImageUpload,
+  FormSwitchField,
+  FormTextField,
+} from "components";
 import { useConnectedWeb3Context } from "contexts";
 import { Form, Formik } from "formik";
 import React from "react";
@@ -48,6 +52,7 @@ export const CollectionCreateForm = (props: IProps) => {
     description: "",
     uploading: false,
     symbol: "",
+    isPrivate: false,
   };
 
   return (
@@ -160,6 +165,22 @@ export const CollectionCreateForm = (props: IProps) => {
                 multiline: true,
               }}
               label="Description"
+            />
+            <FormSwitchField
+              FormControlProps={{ fullWidth: true }}
+              InputLabelProps={{
+                htmlFor: "isPrivate",
+                shrink: true,
+              }}
+              InputProps={{
+                id: "isPrivate",
+                name: "isPrivate",
+                onBlur: handleBlur,
+                onChange: handleChange,
+                checked: values.isPrivate,
+              }}
+              label="Private Collection"
+              subLabel="Only you can mint assets of this collection"
             />
             <Button
               className={clsx(classes.button)}

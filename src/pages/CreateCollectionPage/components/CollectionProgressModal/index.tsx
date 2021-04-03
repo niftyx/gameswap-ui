@@ -61,7 +61,8 @@ export const CollectionProgressModal = (props: IProps) => {
         formValues.name,
         formValues.symbol,
         formValues.imageUrl,
-        formValues.description || ""
+        formValues.description || "",
+        formValues.isPrivate
       );
       logger.log(txResult);
       await waitSeconds(5);

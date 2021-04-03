@@ -129,7 +129,7 @@ export const ERC721CreateForm = (props: IProps) => {
     unlockOncePurchased: false,
     lockedContent: "",
     putOnSale: false,
-    instantSale: true,
+    instantSale: false,
     salePrice: 3,
     saleToken: "",
     collectionId: "",

@@ -142,10 +142,14 @@ export const TradeAssetItem = (props: IProps) => {
   } = useGlobal();
   const { networkId } = useConnectedWeb3Context();
 
+  console.log("==ITradeAssetItem==", data);
+
   const { data: assetDetails, loading } = useAssetDetailsFromIdCollection(
     data.id,
     data.collectionId
   );
+
+  console.log("==assetDetails==", assetDetails);
 
   const assetDataLoaded =
     assetDetails &&

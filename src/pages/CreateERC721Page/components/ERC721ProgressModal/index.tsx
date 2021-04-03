@@ -1,6 +1,6 @@
 import { ProgressBasicModal, ProgressButton } from "components";
 import { DEFAULT_NETWORK_ID } from "config/constants";
-import { get0xContractAddresses } from "config/networks";
+import { get0xContractAddresses, getToken } from "config/networks";
 import { useConnectedWeb3Context, useGlobal } from "contexts";
 import { BigNumber } from "packages/ethers";
 import { parseEther } from "packages/ethers/utils";
@@ -12,6 +12,7 @@ import { getIPFSService } from "services/ipfs";
 import { waitSeconds } from "utils";
 import { getFileType } from "utils/asset";
 import { getLogger } from "utils/logger";
+import { MAX_NUMBER } from "utils/number";
 import { buildSellCollectibleOrder, submitCollectibleOrder } from "utils/order";
 import { EthersBigNumberTo0xBigNumber } from "utils/token";
 import { NetworkId } from "utils/types";
@@ -58,6 +59,7 @@ export const ERC721ProgressModal = (props: IProps) => {
   const ipfsService = getIPFSService();
   const { formValues, onClose, visible } = props;
   const history = useHistory();
+  const wavxToken = getToken(networkId || DEFAULT_NETWORK_ID, "wavax");
   const erc721 = new ERC721Service(
     provider,
     account || "",
@@ -83,7 +85,7 @@ export const ERC721ProgressModal = (props: IProps) => {
     try {
       let isApprovedAll: boolean;
 
-      if (formValues.instantSale && formValues.putOnSale) {
+      if (formValues.putOnSale) {
         isApprovedAll = await erc721.isApprovedForAll(
           account || "",
           erc721ProxyAddress
@@ -262,7 +264,7 @@ export const ERC721ProgressModal = (props: IProps) => {
 
       const tokenId = erc721.getCreatedAssetId(txReceipt);
 
-      if (formValues.instantSale && formValues.putOnSale) {
+      if (formValues.putOnSale) {
         setState((prevState) => ({
           ...prevState,
           error: "",
@@ -302,9 +304,13 @@ export const ERC721ProgressModal = (props: IProps) => {
           account: context.account || "",
           amount: EthersBigNumberTo0xBigNumber(BigNumber.from(1)),
           exchangeAddress: get0xContractAddresses(networkId).exchange,
-          erc20Address: formValues.saleToken,
+          erc20Address: formValues.instantSale
+            ? formValues.saleToken
+            : wavxToken.address,
           price: EthersBigNumberTo0xBigNumber(
-            parseEther(formValues.salePrice.toString())
+            formValues.instantSale
+              ? parseEther(formValues.salePrice.toString())
+              : MAX_NUMBER
           ),
         },
         networkId as NetworkId,
@@ -389,7 +395,7 @@ export const ERC721ProgressModal = (props: IProps) => {
         onClick={mintToken}
         title="Mint token"
       />
-      {formValues.instantSale && formValues.putOnSale && (
+      {formValues.putOnSale && (
         <ProgressButton
           approved={false}
           buttonDisabled={state.followStep !== ECreateStep.SignSellOrder}
