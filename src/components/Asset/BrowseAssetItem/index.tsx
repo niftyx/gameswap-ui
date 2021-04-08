@@ -1,12 +1,18 @@
 import { Button, Grid, Typography, makeStyles } from "@material-ui/core";
 import { IconAssetPlaceholder } from "assets/icons";
+import { ReactComponent as HeartIcon } from "assets/svgs/heart.svg";
 import clsx from "clsx";
 import { DEFAULT_NETWORK_ID } from "config/constants";
 import { useConnectedWeb3Context, useGlobal } from "contexts";
-import { useAssetDetailsFromIdCollection } from "helpers";
+import { useAssetBids, useAssetDetailsFromIdCollection } from "helpers";
 import { transparentize } from "polished";
 import React from "react";
 import useCommonStyles from "styles/common";
+import { MAX_NUMBER } from "utils/number";
+import {
+  EthersBigNumberTo0xBigNumber,
+  xBigNumberToEthersBigNumber,
+} from "utils/token";
 import { getAssetObjectWithPrices } from "utils/tools";
 import { IAssetItem, ITradeAssetItem } from "utils/types";
 
@@ -14,23 +20,28 @@ import { AssetPhoto } from "../AssetPhoto";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
-  contentContainer: {
-    width: "100%",
-    paddingTop: "95%",
+  content: {
     position: "relative",
-    cursor: "pointer",
     userSelect: "none",
+    padding: 8,
+    backgroundColor: theme.colors.background.eleventh,
+    borderRadius: 4,
+    overflow: "hidden",
+    transition: "all 0.4s",
+    "& .game-details-place-bid": {
+      position: "absolute",
+      bottom: 16,
+      opacity: 0,
+      overflow: "hidden",
+      transition: "all 0.4s",
+      zIndex: -1,
+    },
     "&:hover": {
-      "& .asset_item__content": {
-        background: `linear-gradient(149.66deg,${transparentize(
-          0.8,
-          theme.colors.text.default
-        )} 2.97%,${transparentize(0.75, theme.colors.text.default)} 92.61%)`,
-      },
-      "& .asset_item__more_wrapper": {
+      backgroundColor: theme.colors.background.twelfth,
+      "& .game-details-place-bid": {
+        width: "auto",
         opacity: 1,
-        transform: "translateZ(0)",
-        transition: "transform 0.25s ease",
+        zIndex: 5,
       },
     },
   },
@@ -43,69 +54,60 @@ const useStyles = makeStyles((theme) => ({
     zIndex: 10,
     padding: theme.spacing(1),
   },
-  content: {
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
-    position: "absolute",
+  imgWrapper: {
+    position: "relative",
+    width: "100%",
+    paddingTop: "100%",
     backgroundColor: theme.colors.background.sixth,
     display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    padding: theme.spacing(1),
-    willChange: "background",
-  },
-  cartWrapper: {
-    top: theme.spacing(1),
-    left: theme.spacing(1),
-    bottom: theme.spacing(1),
-    right: theme.spacing(1),
-    position: "absolute",
-    display: "flex",
-    justifyContent: "center",
     alignItems: "center",
+    justifyContent: "center",
   },
   img: {
-    height: "80%",
+    height: "100%",
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
   },
-  bottom: {
+  heart: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    position: "absolute",
+    top: 16,
+    right: 16,
+    width: 26,
+    height: 26,
+    backgroundColor: theme.colors.background.secondary,
+    borderRadius: "50%",
+    zIndex: 3,
+    "& svg": {
+      color: theme.colors.text.heart,
+      width: 16,
+      height: 16,
+    },
+  },
+  bottom: {},
+  bottomRow: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
   },
-  usd: {
+  title: {
     color: theme.colors.text.default,
-    fontSize: 17,
-    lineHeight: "23px",
+    marginTop: 8,
   },
-  token: {
-    display: "flex",
-    alignItems: "center",
-    color: theme.colors.text.default,
-  },
-  tokenAmount: {
-    fontSize: 15,
-    lineHeight: "20px",
-  },
-  moreWrapper: {
-    opacity: 0,
-    position: "absolute",
-    zIndex: 11,
-    outlineOffset: -1,
-    width: "100%",
-    transform: "translate3d(0, -110%, 0)",
-  },
-  moreButton: {
-    height: theme.spacing(5),
-    borderTopLeftRadius: 0,
-    borderTopRightRadius: 0,
-  },
+  topBid: { color: theme.colors.text.secondary, fontSize: 13 },
+  price: { color: theme.colors.text.default },
+  count: { color: theme.colors.text.secondary },
 }));
 
 interface IProps {
   data: ITradeAssetItem;
   className?: string;
+  isFullWidth?: boolean;
   onClick?: (_: IAssetItem) => void;
   onMore?: (_: string) => void;
   isOnCart?: boolean;
@@ -114,7 +116,13 @@ interface IProps {
 export const BrowseAssetItem = (props: IProps) => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
-  const { data, onClick, onMore } = props;
+  const {
+    data,
+    isFullWidth = false,
+    // isOnCart = false,
+    onClick,
+    onMore,
+  } = props;
   const {
     data: { price },
   } = useGlobal();
@@ -124,13 +132,18 @@ export const BrowseAssetItem = (props: IProps) => {
     data.id,
     data.collectionId
   );
+  const { bids, loading: bidsLoading } = useAssetBids(
+    data.collectionId,
+    EthersBigNumberTo0xBigNumber(data.id),
+    assetDetails?.owner
+  );
 
-  const assetDataLoaded =
+  const allLoaded =
+    !bidsLoading &&
     assetDetails &&
     !loading &&
     assetDetails.tokenId.eq(data.id) &&
     assetDetails.collectionId === data.collectionId;
-
   const responsive = { xl: 2, lg: 2, md: 4, xs: 6 };
 
   const assetDataWithPriceInfo = getAssetObjectWithPrices(
@@ -140,8 +153,26 @@ export const BrowseAssetItem = (props: IProps) => {
     networkId || DEFAULT_NETWORK_ID
   );
 
-  const onClickDetails = () => {
-    if (assetDataWithPriceInfo.asset && onMore) {
+  const onClickItem = () => {
+    if (assetDataWithPriceInfo.asset && onClick) {
+      const maxOrder = data.orders.find((order) =>
+        xBigNumberToEthersBigNumber(order.takerAssetAmount).eq(MAX_NUMBER)
+      );
+      const orders = data.orders.filter(
+        (order) =>
+          !xBigNumberToEthersBigNumber(order.takerAssetAmount).eq(MAX_NUMBER)
+      );
+      onClick({
+        ...assetDataWithPriceInfo.asset,
+        orders,
+        maxOrder,
+        bids,
+      });
+    }
+  };
+
+  const onMoreItem = () => {
+    if (onMore) {
       onMore((assetDetails || {}).id || "");
     }
   };
@@ -152,58 +183,47 @@ export const BrowseAssetItem = (props: IProps) => {
       item
       {...(responsive as any)}
     >
-      <div className={classes.contentContainer}>
-        {loading && (
+      <div className={classes.content}>
+        {!allLoaded && (
           <div className={classes.placeholder}>
             <IconAssetPlaceholder />
           </div>
         )}
         <div
           className={clsx(
-            classes.content,
-            "asset_item__content",
+            classes.imgWrapper,
             commonClasses.fadeAnimation,
-            !loading ? "visible" : ""
+            allLoaded ? "visible" : ""
           )}
-          onClick={onClickDetails}
+          onClick={onClickItem}
         >
-          {assetDataLoaded && assetDetails && (
-            <>
-              <AssetPhoto
-                className={classes.img}
-                type={assetDetails.imageType}
-                uri={assetDetails.image}
-              />
-              <div className={classes.bottom}>
-                <Typography className={classes.usd} component="div">
-                  ${assetDataWithPriceInfo.minUSDPrice}
-                </Typography>
-                {assetDataWithPriceInfo.asset && (
-                  <div className={classes.token}>
-                    <Typography className={classes.tokenAmount} component="div">
-                      {assetDataWithPriceInfo.minTokenAmountString}
-                    </Typography>
-                  </div>
-                )}
-              </div>
-            </>
+          {assetDetails && assetDetails.image && (
+            <AssetPhoto
+              className={classes.img}
+              type={assetDetails.imageType}
+              uri={assetDetails.image}
+            />
           )}
-        </div>
-        {!loading && (
-          <div
-            className={clsx(classes.moreWrapper, "asset_item__more_wrapper")}
-          >
-            <Button
-              className={classes.moreButton}
-              color="secondary"
-              fullWidth
-              onClick={onClickDetails}
-              variant="contained"
-            >
-              More Info
-            </Button>
+          <div className={classes.heart}>
+            <HeartIcon />
           </div>
-        )}
+        </div>
+        <div
+          className={clsx(
+            classes.bottom,
+            commonClasses.fadeAnimation,
+            allLoaded ? "visible" : ""
+          )}
+        >
+          <Typography className={classes.title}>
+            {allLoaded ? assetDetails?.name : " "}&nbsp;
+          </Typography>
+          <div className={classes.bottomRow}>
+            <Typography className={classes.price}>0.7 ETH</Typography>
+            <Typography className={classes.count}>1 of 1</Typography>
+          </div>
+          <Typography className={classes.topBid}>Bid 0.54</Typography>
+        </div>
       </div>
     </Grid>
   );

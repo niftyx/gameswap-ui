@@ -28,6 +28,8 @@ interface IProps {
   onScrollEnd?: () => void;
   loading?: boolean;
   orders: ISignedOrder[];
+  selectedOrders: ISignedOrder[];
+  onChangeSelected: (_: ISignedOrder[]) => void;
 }
 
 const AssetItemsSection = (props: IProps) => {
@@ -39,7 +41,13 @@ const AssetItemsSection = (props: IProps) => {
   } = useGlobal();
   const { account, setWalletConnectModalOpened } = useConnectedWeb3Context();
   const history = useHistory();
-  const { loading, onScrollEnd, orders } = props;
+  const {
+    loading,
+    onChangeSelected,
+    onScrollEnd,
+    orders,
+    selectedOrders,
+  } = props;
   const { openBuyModal } = useTrade();
 
   const assets: ITradeAssetItem[] = [];
@@ -117,15 +125,37 @@ const AssetItemsSection = (props: IProps) => {
       />
       <ScrollContainer className={classes.assets} onScrollEnd={onScrollEnd}>
         <AssetsContainer>
-          {assets.map((asset) => (
-            <TradeAssetItem
-              data={asset}
-              isOnCart={false}
-              key={`${asset.collectionId}${asset.id.toHexString()}`}
-              onClick={onBuy}
-              onMore={(id) => history.push(`/assets/${id}`)}
-            />
-          ))}
+          {assets.map((asset) => {
+            const selected = !!selectedOrders.find(
+              (sel) =>
+                sel.erc721Address === asset.collectionId &&
+                sel.assetId.eq(asset.id)
+            );
+            return (
+              <TradeAssetItem
+                data={asset}
+                isOnCart={false}
+                key={`${asset.collectionId}${asset.id.toHexString()}`}
+                onClick={() => {
+                  if (selected) {
+                    onChangeSelected(
+                      selectedOrders.filter(
+                        (sel) =>
+                          !(
+                            sel.erc721Address === asset.collectionId &&
+                            sel.assetId.eq(asset.id)
+                          )
+                      )
+                    );
+                  } else {
+                    onChangeSelected([...selectedOrders, ...asset.orders]);
+                  }
+                }}
+                onMore={(id) => history.push(`/assets/${id}`)}
+                selected={selected}
+              />
+            );
+          })}
         </AssetsContainer>
         {loading && <SimpleLoader />}
       </ScrollContainer>

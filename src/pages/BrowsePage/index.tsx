@@ -43,7 +43,6 @@ const useStyles = makeStyles((theme) => ({
 
 const BrowsePage = () => {
   const classes = useStyles();
-  const commonClasses = useCommonStyles();
   const {
     allLoaded: allOrdersLoaded,
     loadMore: loadMoreAllOrders,

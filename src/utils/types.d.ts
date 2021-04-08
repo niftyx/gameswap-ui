@@ -199,6 +199,7 @@ export interface IAssetItem {
   isInSale?: boolean;
   maxOrder?: ISignedOrder;
   orders?: ISignedOrder[];
+  bids?: ISignedOrder[];
   owner: string;
   contentId?: string;
   gameId?: string;
@@ -329,16 +330,15 @@ export interface IFaqNavBarItem {
   children?: IFaqNavBarItem[];
 }
 
+export interface IGlobalPriceData {
+  usd: number;
+  price: BigNumber;
+  decimals: number;
+}
 export interface IGlobalData {
   itemCartIds: string[];
   inventoryCartIds: string[];
-  price: {
-    [key in KnownToken]: {
-      usd: number;
-      price: BigNumber;
-      decimals: number;
-    };
-  };
+  price: { [key in KnownToken]: IGlobalPriceData };
   collections: ICollection[];
   games: IGame[];
   userInfo?: IUserInfo;

@@ -11,6 +11,7 @@ export interface IGraphInventoryAsset {
   isInSale?: boolean;
   maxOrder?: ISignedOrder;
   orders?: ISignedOrder[];
+  bids?: ISignedOrder[];
   owner: string;
 }
 

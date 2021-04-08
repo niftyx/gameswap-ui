@@ -2,13 +2,12 @@ import { Hidden, makeStyles } from "@material-ui/core";
 import clsx from "clsx";
 import { PageContainer, TradeFilter } from "components";
 import { useConnectedWeb3Context } from "contexts";
-import { useInventoryAssets, useMyOrders } from "helpers";
+import { useInventoryAssets } from "helpers";
 import { useAllOrders } from "helpers/useAllOrders";
-import React from "react";
+import React, { useState } from "react";
 import useCommonStyles from "styles/common";
 import { IGraphInventoryAsset } from "types";
-import { MAX_NUMBER } from "utils/number";
-import { xBigNumberToEthersBigNumber } from "utils/token";
+import { ISignedOrder } from "utils/types";
 
 import { AssetItemsSection, InventorySection } from "./components";
 
@@ -37,6 +36,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+interface IState {
+  selectedInventoryAssets: IGraphInventoryAsset[];
+  selectedTradeOrders: ISignedOrder[];
+}
+
 const TradePage = () => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
@@ -50,8 +54,6 @@ const TradePage = () => {
     id: account || "",
   });
 
-  const { orders: myOrders } = useMyOrders();
-
   const {
     allLoaded: allOrdersLoaded,
     loadMore: loadMoreAllOrders,
@@ -59,54 +61,49 @@ const TradePage = () => {
     orders: allOrders,
   } = useAllOrders();
 
-  const finalInventoryAssets: IGraphInventoryAsset[] = inventoryAssets.map(
-    (asset) => {
-      const relatedOrders = myOrders.filter(
-        (order) =>
-          order.assetId.eq(asset.assetId) &&
-          order.erc721Address === asset.collectionId
-      );
-      const maxOrder = relatedOrders.find((order) =>
-        xBigNumberToEthersBigNumber(order.takerAssetAmount).eq(MAX_NUMBER)
-      );
-      const restOrders = relatedOrders.filter(
-        (order) =>
-          !xBigNumberToEthersBigNumber(order.takerAssetAmount).eq(MAX_NUMBER)
-      );
+  const [state, setState] = useState<IState>({
+    selectedInventoryAssets: [],
+    selectedTradeOrders: [],
+  });
 
-      return {
-        ...asset,
-        isInSale: relatedOrders.length > 0,
-        orders: restOrders,
-        maxOrder,
-      };
-    }
-  );
+  const setSelectedInventoryAssets = (
+    selectedInventoryAssets: IGraphInventoryAsset[]
+  ) => {
+    setState((prev) => ({ ...prev, selectedInventoryAssets }));
+  };
+
+  const setSelectedTradeOrders = (selectedTradeOrders: ISignedOrder[]) => {
+    setState((prev) => ({ ...prev, selectedTradeOrders }));
+  };
 
   return (
     <PageContainer>
       <Hidden smDown>
         <div className={classes.content}>
           <InventorySection
-            assets={finalInventoryAssets}
+            assets={inventoryAssets}
             className={clsx(classes.inventory)}
             loading={inventoryLoading}
+            onChangeSelected={setSelectedInventoryAssets}
             onScrollEnd={
               !inventoryLoading && hasMoreInventoryItems
                 ? loadMoreInventoryItems
                 : () => {}
             }
+            selectedAssets={state.selectedInventoryAssets}
           />
           <TradeFilter className={classes.filter} />
           <AssetItemsSection
             className={clsx(classes.assets, commonClasses.scroll)}
             loading={allOrdersLoading}
+            onChangeSelected={setSelectedTradeOrders}
             onScrollEnd={
               !allOrdersLoading && !allOrdersLoaded
                 ? loadMoreAllOrders
                 : () => {}
             }
             orders={allOrders}
+            selectedOrders={state.selectedTradeOrders}
           />
         </div>
       </Hidden>

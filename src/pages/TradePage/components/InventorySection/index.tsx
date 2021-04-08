@@ -35,11 +35,19 @@ interface IProps {
   onScrollEnd?: () => void;
   loading?: boolean;
   assets: IGraphInventoryAsset[];
+  selectedAssets: IGraphInventoryAsset[];
+  onChangeSelected: (_: IGraphInventoryAsset[]) => void;
 }
 
 const InventorySection = (props: IProps) => {
   const classes = useStyles();
-  const { loading = false, onScrollEnd = () => {}, assets } = props;
+  const {
+    loading = false,
+    onChangeSelected,
+    onScrollEnd = () => {},
+    assets,
+    selectedAssets,
+  } = props;
   const { account } = useConnectedWeb3Context();
   const isConnected = !!account;
   const history = useHistory();
@@ -59,14 +67,36 @@ const InventorySection = (props: IProps) => {
             onScrollEnd={onScrollEnd}
           >
             <AssetsContainer>
-              {assets.map((asset) => (
-                <InventoryAssetItem
-                  data={asset}
-                  key={asset.id}
-                  onClick={onSell}
-                  onMore={() => history.push(`/assets/${asset.id}`)}
-                />
-              ))}
+              {assets.map((asset) => {
+                const selected = !!selectedAssets.find(
+                  (sel) =>
+                    sel.collectionId === asset.collectionId &&
+                    sel.assetId.eq(asset.assetId)
+                );
+                return (
+                  <InventoryAssetItem
+                    data={asset}
+                    key={asset.id}
+                    onClick={() => {
+                      if (selected) {
+                        onChangeSelected(
+                          selectedAssets.filter(
+                            (sel) =>
+                              !(
+                                sel.collectionId === asset.collectionId &&
+                                sel.assetId.eq(asset.assetId)
+                              )
+                          )
+                        );
+                      } else {
+                        onChangeSelected([...selectedAssets, asset]);
+                      }
+                    }}
+                    onMore={() => history.push(`/assets/${asset.id}`)}
+                    selected={selected}
+                  />
+                );
+              })}
             </AssetsContainer>
             {loading && <SimpleLoader />}
           </ScrollContainer>

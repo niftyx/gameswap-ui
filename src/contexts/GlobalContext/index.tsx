@@ -7,11 +7,16 @@ import { parseEther } from "packages/ethers/utils";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { getAPIService } from "services/api";
 import { getLogger } from "utils/logger";
-import { IGlobalData, IUserInfo, KnownToken } from "utils/types.d";
+import {
+  IGlobalData,
+  IGlobalPriceData,
+  IUserInfo,
+  KnownToken,
+} from "utils/types.d";
 
 const logger = getLogger("GlobalContext::");
 
-const defaultTokenPrices = {
+const defaultTokenPrices: { [key in KnownToken]: IGlobalPriceData } = {
   gswap: {
     usd: DEFAULT_USD,
     price: DEFAULT_PRICE,

@@ -15,67 +15,22 @@ import { NetworkId } from "./../../utils/types.d";
 const logger = getLogger("useAssetOrders");
 
 interface IState {
-  asks: ISignedOrder[];
   bids: ISignedOrder[];
   loading: boolean;
 }
 
-export const useAssetOrders = (
+export const useAssetBids = (
   collectionId: string,
   assetId: BigNumber,
-  owner: string
+  owner?: string
 ): IState & { loadOrders: () => Promise<void> } => {
   const { networkId } = useConnectedWeb3Context();
   const [state, setState] = useState<IState>({
-    asks: [],
     bids: [],
     loading: true,
   });
   const isRefMounted = useIsMountedRef();
   const zeroXService = getZEROXService();
-
-  const loadAsks = async () => {
-    const makerAssetData = assetDataUtils.encodeERC721AssetData(
-      collectionId,
-      assetId
-    );
-    try {
-      const orderEndPoint = buildOrdersQuery(
-        (networkId || DEFAULT_NETWORK_ID) as NetworkId,
-        {
-          makerAssetData,
-          makerAddress: owner,
-        }
-      );
-      const ordersResponse = (await zeroXService.getData(orderEndPoint)).data;
-      const ordersResult: ISignedOrder[] = ordersResponse.records
-        .map((e: any) => e.order)
-        .map((order: SignedOrder) => {
-          const erc721 = assetDataUtils.decodeAssetDataOrThrow(
-            order.makerAssetData
-          ) as any;
-          const erc20 = assetDataUtils.decodeAssetDataOrThrow(
-            order.takerAssetData
-          ) as any;
-
-          return {
-            ...wrangeOrderResponse(order),
-            assetId: xBigNumberToEthersBigNumber(erc721.tokenId),
-            erc721Address: erc721.tokenAddress.toLowerCase(),
-            erc20Address: erc20.tokenAddress,
-          };
-        });
-
-      if (isRefMounted.current === true) {
-        setState((prev) => ({ ...prev, asks: ordersResult }));
-      }
-    } catch (error) {
-      logger.error("error::", error);
-      if (isRefMounted.current === true) {
-        setState((prev) => ({ ...prev, asks: [] }));
-      }
-    }
-  };
 
   const loadBids = async () => {
     const takerAssetData = assetDataUtils.encodeERC721AssetData(
@@ -133,24 +88,28 @@ export const useAssetOrders = (
   };
 
   const loadData = async () => {
-    setState(() => ({ asks: [], bids: [], loading: true }));
+    setState(() => ({ bids: [], loading: true }));
     try {
-      await Promise.all([loadAsks(), loadBids()]);
+      await loadBids();
       if (isRefMounted.current === true) {
         setState((prev) => ({ ...prev, loading: false }));
       }
     } catch (error) {
       logger.error("error::", error);
       if (isRefMounted.current === true) {
-        setState(() => ({ asks: [], bids: [], loading: false }));
+        setState(() => ({ bids: [], loading: false }));
       }
     }
   };
 
   useEffect(() => {
+    if (!owner) {
+      setState(() => ({ bids: [], loading: false }));
+      return;
+    }
     loadData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [collectionId, assetId.toString()]);
+  }, [collectionId, assetId.toString(), owner]);
 
   return { ...state, loadOrders: loadData };
 };

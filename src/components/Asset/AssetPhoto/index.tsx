@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   },
   bImg: {
     backgroundRepeat: "no-repeat",
-    backgroundSize: "contain",
+    backgroundSize: "cover",
     backgroundPosition: "center",
   },
   icon: {
