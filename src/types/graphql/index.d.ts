@@ -9,6 +9,7 @@ export interface IGraphInventoryAsset {
   createTimeStamp: number;
   updateTimeStamp: number;
   isInSale?: boolean;
+  maxOrder?: ISignedOrder;
   orders?: ISignedOrder[];
   owner: string;
 }

@@ -61,13 +61,10 @@ export const useCollectionsFromGameId = (
     if (!id) return [];
     setState(() => ({ loading: true, collections: [] }));
     try {
-      // const response = await apiService.getCollectionsRelatedToGame(id);
-      // logger.log("collections::", response);
-      await waitSeconds(2);
+      const response = await apiService.getCollectionsRelatedToGame(id);
       if (isMounted.current === true)
         setState(() => ({
-          // collections: response.records,
-          collections: FakeCollections,
+          collections: response.records,
           loading: false,
         }));
 

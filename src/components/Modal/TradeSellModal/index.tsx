@@ -1,8 +1,12 @@
 import { SignedOrder } from "@0x/types";
-import { useTrade } from "contexts";
+import { DEFAULT_NETWORK_ID } from "config/constants";
+import { getToken } from "config/networks";
+import { useConnectedWeb3Context, useTrade } from "contexts";
 import React, { useState } from "react";
+import { waitSeconds } from "utils";
 import { NULL_ADDRESS } from "utils/address";
 import { ETradeStep } from "utils/enums";
+import { MAX_NUMBER } from "utils/number";
 
 import {
   TradCancelOrderStep,
@@ -29,6 +33,8 @@ export const TradeSellModal = (props: IProps) => {
     data: { asset },
     updateAssetPrice,
   } = useTrade();
+  const { networkId } = useConnectedWeb3Context();
+
   const { onClose, visible } = props;
   const [state, setState] = useState<IState>({
     step: ETradeStep.InputPrice,
@@ -57,6 +63,16 @@ export const TradeSellModal = (props: IProps) => {
             }}
             onConfirm={() => {
               // go to next step and get approval for the token and amount selected
+              setState((prevState) => ({
+                ...prevState,
+                step: ETradeStep.GetSellApproveInfo,
+              }));
+            }}
+            onPutSale={async () => {
+              updateAssetPrice({
+                amount: MAX_NUMBER,
+                token: getToken(networkId || DEFAULT_NETWORK_ID, "wavax"),
+              });
               setState((prevState) => ({
                 ...prevState,
                 step: ETradeStep.GetSellApproveInfo,

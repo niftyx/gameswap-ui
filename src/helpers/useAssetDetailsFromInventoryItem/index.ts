@@ -44,6 +44,7 @@ export const useAssetDetailsFromInventoryItem = (
               usdPrice: 0,
               isInSale: data.isInSale,
               orders: data.orders,
+              maxOrder: data.maxOrder,
               owner: data.owner,
             },
             loaded: true,

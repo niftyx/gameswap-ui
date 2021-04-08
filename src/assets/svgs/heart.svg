@@ -1,6 +1,6 @@
-<svg id="heart-outline" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+<svg id="heart-outline"
+  xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
   <g id="heart-outline-2" data-name="heart-outline">
-    <rect id="Rectangle" width="24" height="24" fill="#fff" opacity="0"/>
     <path id="Shape" d="M10,17a1,1,0,0,1-.71-.29L1.521,8.93a5.233,5.233,0,0,1,7.4-7.4L10,2.609l1.08-1.08a5.233,5.233,0,0,1,7.4,7.4l-7.771,7.78a1,1,0,0,1-.7.29Z" transform="translate(1.999 4)" fill="currentColor" />
   </g>
 </svg>

@@ -54,6 +54,9 @@ declare module "@material-ui/core/styles/createMuiTheme" {
         eighth: string;
         ninth: string;
         tenth: string;
+        eleventh: string;
+        twelfth: string;
+        thirteenth: string;
       };
       text: {
         default: string;
@@ -67,6 +70,7 @@ declare module "@material-ui/core/styles/createMuiTheme" {
         arrowUp: string;
         arrowDown: string;
         error: string;
+        heart: string;
       };
       activity: {
         bg: {
@@ -125,6 +129,9 @@ declare module "@material-ui/core/styles/createMuiTheme" {
         eighth: string;
         ninth: string;
         tenth: string;
+        eleventh: string;
+        twelfth: string;
+        thirteenth: string;
       };
       text: {
         default: string;
@@ -138,6 +145,7 @@ declare module "@material-ui/core/styles/createMuiTheme" {
         arrowUp: string;
         arrowDown: string;
         error: string;
+        heart: string;
       };
       activity: {
         bg: {
@@ -189,6 +197,7 @@ export interface IAssetItem {
   price?: ITokenAmount;
   prices?: ITokenAmount[];
   isInSale?: boolean;
+  maxOrder?: ISignedOrder;
   orders?: ISignedOrder[];
   owner: string;
   contentId?: string;

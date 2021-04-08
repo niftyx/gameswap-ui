@@ -7,6 +7,8 @@ import { useAllOrders } from "helpers/useAllOrders";
 import React from "react";
 import useCommonStyles from "styles/common";
 import { IGraphInventoryAsset } from "types";
+import { MAX_NUMBER } from "utils/number";
+import { xBigNumberToEthersBigNumber } from "utils/token";
 
 import { AssetItemsSection, InventorySection } from "./components";
 
@@ -64,11 +66,19 @@ const TradePage = () => {
           order.assetId.eq(asset.assetId) &&
           order.erc721Address === asset.collectionId
       );
+      const maxOrder = relatedOrders.find((order) =>
+        xBigNumberToEthersBigNumber(order.takerAssetAmount).eq(MAX_NUMBER)
+      );
+      const restOrders = relatedOrders.filter(
+        (order) =>
+          !xBigNumberToEthersBigNumber(order.takerAssetAmount).eq(MAX_NUMBER)
+      );
 
       return {
         ...asset,
         isInSale: relatedOrders.length > 0,
-        orders: relatedOrders,
+        orders: restOrders,
+        maxOrder,
       };
     }
   );

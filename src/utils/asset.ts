@@ -1,4 +1,7 @@
 import { EFileType } from "./enums";
+import { MAX_NUMBER } from "./number";
+import { xBigNumberToEthersBigNumber } from "./token";
+import { IAssetItem } from "./types";
 
 export const getFileType = (file: File): EFileType => {
   const type = file.type;
@@ -24,4 +27,13 @@ export const bytesToSize = (bytes: number, decimals = 2) => {
   const i = Math.floor(Math.log(bytes) / Math.log(k));
 
   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
+};
+
+export const hasAssetMaxOrder = (asset: IAssetItem): boolean => {
+  if (!asset.orders) return false;
+  const maxOrder = asset.orders.filter((order) =>
+    xBigNumberToEthersBigNumber(order.takerAssetAmount).eq(MAX_NUMBER)
+  );
+  if (maxOrder) return true;
+  return false;
 };

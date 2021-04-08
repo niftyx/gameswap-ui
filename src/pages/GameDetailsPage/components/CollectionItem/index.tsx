@@ -13,18 +13,46 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 300,
     height: 180,
     position: "relative",
+    [theme.breakpoints.down("sm")]: {
+      width: 250,
+      minWidth: 250,
+      height: 150,
+    },
   },
   content: {
+    width: "100%",
+    height: "100%",
+    opacity: 0,
+    transition: "all 0.5s",
+    position: "relative",
+    "&.visible": {
+      opacity: 1,
+    },
+  },
+  textContent: {
+    padding: 16,
+    position: "absolute",
+    left: 0,
+    right: 0,
+    bottom: 0,
+    top: 0,
+    zIndex: 5,
+  },
+  contentImage: {
     width: "100%",
     height: "100%",
     backgroundPosition: "center",
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",
-    padding: 16,
-    opacity: 0,
-    transition: "all 0.5s",
-    "&.visible": {
-      opacity: 1,
+    "&:before": {
+      content: `" "`,
+      backgroundImage:
+        "linear-gradient(333deg, rgba(58, 62, 69, 0.1) 36%, rgba(10, 10, 10, 0.6) 64%)",
+      position: "absolute",
+      left: 0,
+      right: 0,
+      top: 0,
+      bottom: 0,
     },
   },
   loadWrapper: {
@@ -80,16 +108,21 @@ export const CollectionItem = (props: IProps) => {
 
       <div
         className={clsx(classes.content, state.imageLoaded ? "visible" : "")}
-        style={{
-          backgroundImage: state.imageLoaded
-            ? `url(${collection.imageUrl})`
-            : "",
-        }}
       >
-        <Typography className={classes.name}>{collection.name}</Typography>
-        <Typography className={classes.description}>
-          {collection.description}
-        </Typography>
+        <div className={classes.textContent}>
+          <Typography className={classes.name}>{collection.name}</Typography>
+          <Typography className={classes.description}>
+            {collection.description}
+          </Typography>
+        </div>
+        <div
+          className={classes.contentImage}
+          style={{
+            backgroundImage: state.imageLoaded
+              ? `url(${collection.imageUrl})`
+              : "",
+          }}
+        />
       </div>
 
       <img

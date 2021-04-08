@@ -8,3 +8,4 @@ export * from "./useAssetHistoryFromId";
 export * from "./useGameDetailsFromId";
 export * from "./useCollectionsFromGameId";
 export * from "./useAssetsFromGameId";
+export * from "./useAssetOrders";

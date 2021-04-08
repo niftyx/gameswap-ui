@@ -32,6 +32,9 @@ const colors = [
         eighth: "#4C5395",
         ninth: "#21243F",
         tenth: "#5F6171",
+        eleventh: "#151B2D",
+        twelfth: "#1F263C",
+        thirteenth: "#2660F7",
       },
       text: {
         default: "#FFF",
@@ -45,6 +48,7 @@ const colors = [
         arrowUp: "#09B783",
         arrowDown: "#B94733",
         error: "#f44336",
+        heart: "#B4366E",
       },
       activity: {
         bg: {
@@ -90,6 +94,9 @@ const colors = [
         eighth: "#4C5395",
         ninth: "#21243F",
         tenth: "#5F6171",
+        eleventh: "#151B2D",
+        twelfth: "#1F263C",
+        thirteenth: "#2660F7",
       },
       text: {
         default: "#FFF",
@@ -103,6 +110,7 @@ const colors = [
         arrowUp: "#09B783",
         arrowDown: "#B94733",
         error: "#f44336",
+        heart: "#B4366E",
       },
       activity: {
         bg: {

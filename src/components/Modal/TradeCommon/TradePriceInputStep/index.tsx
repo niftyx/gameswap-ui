@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
 
 interface IProps {
   onConfirm: () => void;
+  onPutSale: () => void;
   onCancel: (order: SignedOrder) => void;
   asset: IAssetItem;
   updatePrice: (_: ITokenAmount) => void;
@@ -33,12 +34,13 @@ interface IProps {
 }
 
 export const TradePriceInputStep = (props: IProps) => {
-  const { asset, onCancel, onConfirm, updatePrice } = props;
+  const { asset, onCancel, onConfirm, onPutSale, updatePrice } = props;
   const classes = useStyles();
 
   if (!asset.price) return null;
 
   const isInSale = asset.isInSale;
+  console.log("=====", asset);
 
   return (
     <div className={clsx(classes.root, props.className)}>
@@ -51,7 +53,9 @@ export const TradePriceInputStep = (props: IProps) => {
       )}
       {isInSale ? (
         <>
-          {asset.orders &&
+          {(asset.orders || asset.maxOrder) &&
+          asset.orders &&
+          asset.orders?.length > 0 ? (
             asset.orders.map((order) => (
               <TradeCancelOrderRow
                 key={order.salt.toString()}
@@ -60,7 +64,20 @@ export const TradePriceInputStep = (props: IProps) => {
                 }}
                 order={order}
               />
-            ))}
+            ))
+          ) : (
+            <Button
+              className={classes.button}
+              color="primary"
+              fullWidth
+              onClick={() => {
+                if (asset.maxOrder) onCancel(asset.maxOrder);
+              }}
+              variant="contained"
+            >
+              Cancel Sale
+            </Button>
+          )}
         </>
       ) : (
         <>
@@ -73,7 +90,16 @@ export const TradePriceInputStep = (props: IProps) => {
             onClick={onConfirm}
             variant="contained"
           >
-            Sell
+            Create Sell Order
+          </Button>
+          <Button
+            className={classes.button}
+            color="primary"
+            fullWidth
+            onClick={onPutSale}
+            variant="contained"
+          >
+            Put On Sale
           </Button>
         </>
       )}

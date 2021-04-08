@@ -105,6 +105,8 @@ export const buildOrdersQuery = (
     makerAssetAddress?: string;
     takerAssetAddress?: string;
     makerAssetData?: string;
+    takerAssetData?: string;
+    takerAddress?: string;
     page?: number;
     perPage?: number;
   }

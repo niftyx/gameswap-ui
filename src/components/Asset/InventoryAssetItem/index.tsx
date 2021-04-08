@@ -2,12 +2,13 @@ import { Button, Grid, makeStyles } from "@material-ui/core";
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import { IconAssetPlaceholder } from "assets/icons";
 import clsx from "clsx";
-import { useAssetDetailsFromInventoryItem } from "helpers";
+import { useAssetDetailsFromInventoryItem, useAssetOrders } from "helpers";
 import { transparentize } from "polished";
 import React from "react";
 import useCommonStyles from "styles/common";
 import { IGraphInventoryAsset } from "types";
 import { getLogger } from "utils/logger";
+import { EthersBigNumberTo0xBigNumber } from "utils/token";
 import { IAssetItem } from "utils/types";
 
 import { AssetPhoto } from "../AssetPhoto";
@@ -102,6 +103,11 @@ export const InventoryAssetItem = (props: IProps) => {
   const { data, isFullWidth = false, onClick, onMore } = props;
 
   const { asset, loaded } = useAssetDetailsFromInventoryItem(data);
+  const { asks, bids, loading: assetsLoading } = useAssetOrders(
+    data.collectionId,
+    EthersBigNumberTo0xBigNumber(data.assetId),
+    data.owner
+  );
 
   const responsive = isFullWidth
     ? { xl: 2, lg: 2, md: 4, xs: 6 }

@@ -1,39 +1,45 @@
-import { Button, Grid, makeStyles } from "@material-ui/core";
-import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
+import { Grid, Typography, makeStyles } from "@material-ui/core";
 import { IconAssetPlaceholder } from "assets/icons";
+import { ReactComponent as HeartIcon } from "assets/svgs/heart.svg";
 import clsx from "clsx";
-import { useAssetDetailsFromInventoryItem } from "helpers";
-import { transparentize } from "polished";
+import { PlaceBidButton } from "components/Button";
+import { useConnectedWeb3Context } from "contexts";
+import { useAssetDetailsFromInventoryItem, useAssetOrders } from "helpers";
 import React from "react";
 import useCommonStyles from "styles/common";
 import { IGraphInventoryAsset } from "types";
 import { getLogger } from "utils/logger";
-import { IAssetItem } from "utils/types";
+import { EthersBigNumberTo0xBigNumber } from "utils/token";
 
 import { AssetPhoto } from "../AssetPhoto";
 
 // eslint-disable-next-line
-const logger = getLogger("InventoryAssetItem::");
+const logger = getLogger("GameDetailsAssetItem::");
 
 const useStyles = makeStyles((theme) => ({
   root: {},
-  contentContainer: {
-    width: "100%",
-    paddingTop: "95%",
+  content: {
     position: "relative",
-    cursor: "pointer",
     userSelect: "none",
+    padding: 8,
+    backgroundColor: theme.colors.background.eleventh,
+    borderRadius: 4,
+    overflow: "hidden",
+    transition: "all 0.4s",
+    "& .game-details-place-bid": {
+      position: "absolute",
+      bottom: 16,
+      opacity: 0,
+      overflow: "hidden",
+      transition: "all 0.4s",
+      zIndex: -1,
+    },
     "&:hover": {
-      "& .asset_item__content": {
-        background: `linear-gradient(149.66deg,${transparentize(
-          0.8,
-          theme.colors.text.default
-        )} 2.97%,${transparentize(0.75, theme.colors.text.default)} 92.61%)`,
-      },
-      "& .asset_item__more_wrapper": {
+      backgroundColor: theme.colors.background.twelfth,
+      "& .game-details-place-bid": {
+        width: "auto",
         opacity: 1,
-        transform: "translateZ(0)",
-        transition: "transform 0.25s ease",
+        zIndex: 5,
       },
     },
   },
@@ -46,70 +52,78 @@ const useStyles = makeStyles((theme) => ({
     zIndex: 10,
     padding: theme.spacing(1),
   },
-  content: {
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
-    position: "absolute",
+  imgWrapper: {
+    position: "relative",
+    width: "100%",
+    paddingTop: "100%",
     backgroundColor: theme.colors.background.sixth,
     display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    padding: theme.spacing(1),
-    willChange: "background",
+    alignItems: "center",
+    justifyContent: "center",
   },
   img: {
-    height: "80%",
-  },
-  inSaleIcon: {
+    height: "100%",
     position: "absolute",
-    top: theme.spacing(1),
-    right: theme.spacing(1),
-    color: transparentize(0.2, theme.colors.text.default),
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
   },
-  bottom: {
+  heart: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    position: "absolute",
+    top: 16,
+    right: 16,
+    width: 26,
+    height: 26,
+    backgroundColor: theme.colors.background.secondary,
+    borderRadius: "50%",
+    zIndex: 3,
+    "& svg": {
+      color: theme.colors.text.heart,
+      width: 16,
+      height: 16,
+    },
+  },
+  bottom: {},
+  bottomRow: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
   },
-  moreWrapper: {
-    opacity: 0,
-    position: "absolute",
-    zIndex: 11,
-    outlineOffset: -1,
-    width: "100%",
-    transform: "translate3d(0, -110%, 0)",
+  title: {
+    color: theme.colors.text.default,
+    marginTop: 8,
   },
-  moreButton: {
-    height: theme.spacing(5),
-    borderTopLeftRadius: 0,
-    borderTopRightRadius: 0,
-  },
+  topBid: { color: theme.colors.text.secondary, fontSize: 13 },
+  price: { color: theme.colors.text.default },
+  count: { color: theme.colors.text.secondary },
 }));
 
 interface IProps {
   data: IGraphInventoryAsset;
   className?: string;
-  isFullWidth?: boolean;
-  onClick?: (_: IAssetItem) => void;
-  onMore?: () => void;
 }
 
 export const GameDetailsAssetItem = (props: IProps) => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
-  const { data, isFullWidth = false, onClick, onMore } = props;
-
+  const { data } = props;
+  const { account } = useConnectedWeb3Context();
   const { asset, loaded } = useAssetDetailsFromInventoryItem(data);
+  const { asks, bids, loading: assetsLoading } = useAssetOrders(
+    data.collectionId,
+    EthersBigNumberTo0xBigNumber(data.assetId),
+    data.owner
+  );
 
-  const responsive = isFullWidth
-    ? { xl: 2, lg: 2, md: 4, xs: 6 }
-    : { xl: 3, lg: 4, md: 6, xs: 6 };
+  const responsive = { xl: 2, lg: 2, md: 4, xs: 6 };
 
-  const onClickDetails = () => {
-    if (asset && onClick) onClick(asset);
-  };
+  const onClickDetails = () => {};
+
+  const allLoaded = loaded && !assetsLoading;
 
   return (
     <Grid
@@ -117,18 +131,17 @@ export const GameDetailsAssetItem = (props: IProps) => {
       item
       {...(responsive as any)}
     >
-      <div className={classes.contentContainer}>
-        {!loaded && (
+      <div className={classes.content}>
+        {!allLoaded && (
           <div className={classes.placeholder}>
             <IconAssetPlaceholder />
           </div>
         )}
         <div
           className={clsx(
-            classes.content,
-            "asset_item__content",
+            classes.imgWrapper,
             commonClasses.fadeAnimation,
-            loaded ? "visible" : ""
+            allLoaded ? "visible" : ""
           )}
           onClick={onClickDetails}
         >
@@ -139,25 +152,32 @@ export const GameDetailsAssetItem = (props: IProps) => {
               uri={asset.image}
             />
           )}
-          {asset && data.isInSale && (
-            <AttachMoneyIcon className={classes.inSaleIcon} />
+          <div className={classes.heart}>
+            <HeartIcon />
+          </div>
+          {account?.toLowerCase() !== data.owner && (
+            <PlaceBidButton
+              className="game-details-place-bid"
+              onClick={() => {}}
+            />
           )}
         </div>
-        {loaded && (
-          <div
-            className={clsx(classes.moreWrapper, "asset_item__more_wrapper")}
-          >
-            <Button
-              className={classes.moreButton}
-              color="secondary"
-              fullWidth
-              onClick={onMore as any}
-              variant="contained"
-            >
-              More Info
-            </Button>
+        <div
+          className={clsx(
+            classes.bottom,
+            commonClasses.fadeAnimation,
+            allLoaded ? "visible" : ""
+          )}
+        >
+          <Typography className={classes.title}>
+            {allLoaded ? asset?.name : " "}&nbsp;
+          </Typography>
+          <div className={classes.bottomRow}>
+            <Typography className={classes.price}>0.7 ETH</Typography>
+            <Typography className={classes.count}>1 of 1</Typography>
           </div>
-        )}
+          <Typography className={classes.topBid}>Bid 0.54</Typography>
+        </div>
       </div>
     </Grid>
   );

@@ -3,7 +3,6 @@ import clsx from "clsx";
 import { AssetsContainer, GameDetailsAssetItem } from "components";
 import { useAssetsFromGameId } from "helpers";
 import React from "react";
-import { useHistory } from "react-router";
 import { NavLink } from "react-router-dom";
 import useCommonStyles from "styles/common";
 
@@ -37,7 +36,6 @@ export const AssetsSection = (props: IProps) => {
   const commonClasses = useCommonStyles();
   const { gameId } = props;
   const { assets, loading } = useAssetsFromGameId(gameId);
-  const history = useHistory();
 
   return (
     <div className={clsx(classes.root, props.className)}>
@@ -49,13 +47,7 @@ export const AssetsSection = (props: IProps) => {
       {assets.length > 0 && !loading && (
         <AssetsContainer>
           {assets.map((asset) => (
-            <GameDetailsAssetItem
-              data={asset}
-              isFullWidth
-              key={asset.id}
-              onClick={() => {}}
-              onMore={() => history.push(`/assets/${asset.id}`)}
-            />
+            <GameDetailsAssetItem data={asset} key={asset.id} />
           ))}
         </AssetsContainer>
       )}
