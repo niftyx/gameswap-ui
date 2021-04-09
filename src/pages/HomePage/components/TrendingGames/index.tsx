@@ -42,7 +42,7 @@ export const TrendingGames = (props: IProps) => {
     dots: false,
     infinite: true,
     speed: 500,
-    slidesToShow: 3,
+    slidesToShow: 4,
     slidesToScroll: 1,
   };
 

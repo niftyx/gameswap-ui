@@ -1,9 +1,10 @@
 import { makeStyles } from "@material-ui/core";
 import clsx from "clsx";
 import { BrowsedFeaturedItem } from "components";
+import { useGlobal } from "contexts";
 import React, { useState } from "react";
 import Slider from "react-slick";
-import { IGameItem } from "utils/types";
+import { IGame, IGameItem } from "utils/types";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,6 +39,9 @@ export const FeaturedItemsSection = (props: IProps) => {
   const classes = useStyles();
 
   const [state, setState] = useState<IState>({});
+  const {
+    data: { games: trendingGames },
+  } = useGlobal();
 
   const selectItem = (id: string) =>
     setState((prevState) => ({ ...prevState, selectedId: id }));
@@ -47,53 +51,15 @@ export const FeaturedItemsSection = (props: IProps) => {
     dots: false,
     infinite: true,
     speed: 500,
-    slidesToShow: 5,
+    slidesToShow: 4,
     slidesToScroll: 1,
   };
-
-  const trendingGames: IGameItem[] = [
-    {
-      id: "rhwf",
-      title: "SkyFall 3",
-      backgroundImage: "/images/backgrounds/skyfall.png",
-    },
-    {
-      id: "34535",
-      title: "Cyberpunk Assault",
-      backgroundImage: "/images/backgrounds/cyber-assault.png",
-    },
-    {
-      id: "23424",
-      title: "No Man's Sky",
-      backgroundImage: "/images/backgrounds/no-mans-sky.png",
-    },
-    {
-      id: "i6i",
-      title: "Horizon Zero Dawn",
-      backgroundImage: "/images/backgrounds/horizon.png",
-    },
-    {
-      id: "ne5",
-      title: "Test",
-      backgroundImage: "/images/backgrounds/no-mans-sky.png",
-    },
-    {
-      id: "i6i234",
-      title: "Horizon Zero Dawn",
-      backgroundImage: "/images/backgrounds/horizon.png",
-    },
-    {
-      id: "ne5gewfg",
-      title: "Test",
-      backgroundImage: "/images/backgrounds/no-mans-sky.png",
-    },
-  ];
 
   return (
     <div className={clsx(classes.root, props.className)}>
       <div className={classes.slick}>
         <Slider {...settings}>
-          {trendingGames.map((game: IGameItem) => (
+          {trendingGames.map((game: IGame) => (
             <BrowsedFeaturedItem
               active={state.selectedId === game.id}
               key={game.id}

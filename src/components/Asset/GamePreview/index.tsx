@@ -25,7 +25,16 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     position: "relative",
-    paddingTop: "59%",
+    height: 200,
+    [theme.breakpoints.down("md")]: {
+      height: 160,
+    },
+    [theme.breakpoints.down("sm")]: {
+      height: 130,
+    },
+    [theme.breakpoints.down("xs")]: {
+      height: 100,
+    },
   },
   img: {
     position: "absolute",
@@ -78,7 +87,7 @@ export const GamePreview = (props: IProps & IGame) => {
   const setLoaded = (loaded: boolean) =>
     setState((prevState) => ({ ...prevState, loaded }));
 
-  const { imageUrl: backgroundImage, name: title } = props;
+  const { headerImageUrl: backgroundImage, name: title } = props;
 
   return (
     <div>

@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core";
 import clsx from "clsx";
-import { AssetPhoto } from "components";
+import { AssetLargePhoto } from "components";
 import React from "react";
 import { IAssetItem } from "utils/types";
 
@@ -40,7 +40,7 @@ export const ItemViewSection = (props: IProps) => {
   return (
     <div className={clsx(classes.root, props.className)}>
       <div className={classes.content}>
-        <AssetPhoto
+        <AssetLargePhoto
           className={classes.img}
           preview={false}
           type={data.imageType}

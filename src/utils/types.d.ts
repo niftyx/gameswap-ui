@@ -190,8 +190,6 @@ export interface IAssetItem {
   imageType: EFileType;
   rar?: string;
   createTimeStamp?: number;
-  usdPrice: number;
-  priceChange: number;
   royalties?: number;
   attributes?: IAssetAttribute[];
   price?: ITokenAmount;

@@ -8,3 +8,4 @@ export * from "./BrowsedFeaturedItem";
 export * from "./BrowseBidItem";
 export * from "./AssetPhoto";
 export * from "./GameDetailsAssetItem";
+export * from "./AssetLargePhoto";

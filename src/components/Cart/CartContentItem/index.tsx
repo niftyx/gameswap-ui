@@ -102,9 +102,7 @@ export const CartContentItem = (props: IProps) => {
         <div className={classes.titleWrapper}>
           <Typography className={classes.title}>{data.name}</Typography>
         </div>
-        <Typography className={classes.price}>
-          {numberWithCommas(data.usdPrice.toFixed(2))}&nbsp;$
-        </Typography>
+        <Typography className={classes.price}>100&nbsp;$</Typography>
       </div>
       <div
         className={clsx(classes.btn, "cart_content__item__btn--remove")}

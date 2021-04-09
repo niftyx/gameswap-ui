@@ -40,8 +40,6 @@ export const useAssetDetailsFromInventoryItem = (
               tokenURL: data.assetURL,
               createTimeStamp: data.createTimeStamp,
               ...details,
-              priceChange: 0,
-              usdPrice: 0,
               isInSale: data.isInSale,
               orders: data.orders,
               maxOrder: data.maxOrder,

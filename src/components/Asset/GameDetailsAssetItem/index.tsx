@@ -3,11 +3,15 @@ import { IconAssetPlaceholder } from "assets/icons";
 import { ReactComponent as HeartIcon } from "assets/svgs/heart.svg";
 import clsx from "clsx";
 import { PlaceBidButton } from "components/Button";
-import { useConnectedWeb3Context, useTrade } from "contexts";
+import { DEFAULT_NETWORK_ID } from "config/constants";
+import { getTokenFromAddress } from "config/networks";
+import { useConnectedWeb3Context, useGlobal, useTrade } from "contexts";
 import { useAssetDetailsFromInventoryItem, useAssetOrders } from "helpers";
 import React from "react";
 import useCommonStyles from "styles/common";
 import { IGraphInventoryAsset } from "types";
+import { formatBigNumber } from "utils";
+import { getHighestAsk, getHighestBid } from "utils/bid";
 import { getLogger } from "utils/logger";
 import { MAX_NUMBER } from "utils/number";
 import {
@@ -115,7 +119,7 @@ export const GameDetailsAssetItem = (props: IProps) => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
   const { data } = props;
-  const { account } = useConnectedWeb3Context();
+  const { account, networkId } = useConnectedWeb3Context();
   const { asset, loaded } = useAssetDetailsFromInventoryItem(data);
   const { asks, bids, loadOrders, loading: assetsLoading } = useAssetOrders(
     data.collectionId,
@@ -123,6 +127,41 @@ export const GameDetailsAssetItem = (props: IProps) => {
     data.owner
   );
   const { openPlaceBidModal } = useTrade();
+  const {
+    data: { price },
+  } = useGlobal();
+
+  const maxOrder = asks.find((order) =>
+    xBigNumberToEthersBigNumber(order.takerAssetAmount).eq(MAX_NUMBER)
+  );
+  const orders = asks.filter(
+    (order) =>
+      !xBigNumberToEthersBigNumber(order.takerAssetAmount).eq(MAX_NUMBER)
+  );
+  const highestBid = getHighestBid(
+    bids,
+    price,
+    networkId || DEFAULT_NETWORK_ID
+  );
+  const highestBidToken = highestBid
+    ? getTokenFromAddress(
+        networkId || DEFAULT_NETWORK_ID,
+        highestBid.erc20Address
+      )
+    : null;
+  const highestAsk = getHighestAsk(
+    orders,
+    price,
+    networkId || DEFAULT_NETWORK_ID
+  );
+  const highestAskToken = highestAsk
+    ? getTokenFromAddress(
+        networkId || DEFAULT_NETWORK_ID,
+        highestAsk.erc20Address
+      )
+    : null;
+
+  const isInSale = !!maxOrder || orders.length > 0;
 
   const responsive = { xl: 2, lg: 2, md: 4, xs: 6 };
 
@@ -130,19 +169,14 @@ export const GameDetailsAssetItem = (props: IProps) => {
 
   const onPlaceBid = () => {
     if (!asset) return;
-    const maxOrder = asks.find((order) =>
-      xBigNumberToEthersBigNumber(order.takerAssetAmount).eq(MAX_NUMBER)
-    );
-    const orders = asks.filter(
-      (order) =>
-        !xBigNumberToEthersBigNumber(order.takerAssetAmount).eq(MAX_NUMBER)
-    );
+
     openPlaceBidModal({ ...asset, bids, orders, maxOrder }, async () => {
       await loadOrders();
     });
   };
 
   const allLoaded = loaded && !assetsLoading;
+  const hasBids = bids.length > 0;
 
   return (
     <Grid
@@ -192,10 +226,32 @@ export const GameDetailsAssetItem = (props: IProps) => {
             {allLoaded ? asset?.name : " "}&nbsp;
           </Typography>
           <div className={classes.bottomRow}>
-            <Typography className={classes.price}>0.7 ETH</Typography>
+            <Typography className={classes.price}>
+              {isInSale
+                ? highestAsk && highestAskToken
+                  ? `${Number(
+                      formatBigNumber(
+                        xBigNumberToEthersBigNumber(
+                          highestAsk.takerAssetAmount
+                        ),
+                        highestAskToken.decimals
+                      )
+                    )} ${highestAskToken.symbol}`
+                  : "In Sale"
+                : "Not In Sale"}
+            </Typography>
             <Typography className={classes.count}>1 of 1</Typography>
           </div>
-          <Typography className={classes.topBid}>Bid 0.54</Typography>
+          <Typography className={classes.topBid}>
+            {highestBid && highestBidToken
+              ? `Bid ${Number(
+                  formatBigNumber(
+                    xBigNumberToEthersBigNumber(highestBid.makerAssetAmount),
+                    highestBidToken.decimals
+                  )
+                )} ${highestBidToken.symbol}`
+              : "No Bid"}
+          </Typography>
         </div>
       </div>
     </Grid>

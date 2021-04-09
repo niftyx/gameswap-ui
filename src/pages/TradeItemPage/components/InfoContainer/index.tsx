@@ -8,13 +8,14 @@ import clsx from "clsx";
 import { BasicModal } from "components";
 import { DEFAULT_NETWORK_ID } from "config/constants";
 import { useConnectedWeb3Context, useGlobal, useTrade } from "contexts";
-import { useAssetHistoryFromId } from "helpers";
+import { useAssetHistoryFromId, useAssetOrders } from "helpers";
 import { transparentize } from "polished";
 import React, { useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { getAPIService } from "services/api";
 import useCommonStyles from "styles/common";
 import { EAssetDetailTab } from "utils/enums";
+import { EthersBigNumberTo0xBigNumber } from "utils/token";
 import { capitalizeStr, getAssetObjectWithPrices } from "utils/tools";
 import { IAssetItem } from "utils/types";
 
@@ -39,12 +40,6 @@ const useStyles = makeStyles((theme) => ({
   mainContent: {
     flex: 1,
     padding: "0 16px",
-  },
-
-  goLabel: {
-    marginTop: 16,
-    fontSize: theme.spacing(2.5),
-    color: theme.colors.text.default,
   },
   buyNow: {
     height: theme.spacing(6),
@@ -98,6 +93,11 @@ export const InfoContainer = (props: IProps) => {
     setWalletConnectModalOpened,
   } = useConnectedWeb3Context();
   const { data } = props;
+  const { asks, bids, loading: ordersLoading } = useAssetOrders(
+    data.collectionId,
+    EthersBigNumberTo0xBigNumber(data.tokenId),
+    data.owner
+  );
   const [state, setState] = useState<IState>({
     unlocking: false,
     decryptedContent: "",
@@ -122,7 +122,9 @@ export const InfoContainer = (props: IProps) => {
   );
   const isInSale = (data.orders || []).length > 0;
   const isMine = data.owner?.toLowerCase() === account?.toLowerCase();
+
   const { openBuyModal } = useTrade();
+
   const onBuy = () => {
     if (!account) {
       setWalletConnectModalOpened(true);
@@ -188,12 +190,6 @@ export const InfoContainer = (props: IProps) => {
         data={data}
       />
       <div className={clsx(classes.mainContent)}>
-        {/* <HeaderSection className={classes.header} data={data} /> */}
-
-        <Typography className={classes.goLabel} component="div">
-          1... 2... 3... Go
-        </Typography>
-
         <TabSection />
 
         {(!tabName || tabName === EAssetDetailTab.Info) && (

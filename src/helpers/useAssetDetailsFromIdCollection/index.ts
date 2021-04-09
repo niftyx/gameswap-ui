@@ -49,8 +49,6 @@ export const useAssetDetailsFromIdCollection = (
           description: "",
           image: "",
           imageType: EFileType.Unknown,
-          usdPrice: 0,
-          priceChange: 0,
         },
       }));
     }
@@ -76,8 +74,6 @@ export const useAssetDetailsFromIdCollection = (
               ? {
                   ...prevState.asset,
                   ...details,
-                  priceChange: 0,
-                  usdPrice: 0,
                 }
               : null,
           }));
