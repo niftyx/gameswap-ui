@@ -99,7 +99,6 @@ interface BuildBidCollectibleOrderParams {
   erc721: string;
   tokenId: BigNumber;
   amount: BigNumber;
-  taker: string;
 
   // exchange
   exchangeAddress: string;
@@ -117,7 +116,6 @@ export const buildBidCollectibleOrder = async (
     erc721,
     exchangeAddress,
     price,
-    taker,
     tokenId,
   } = params;
 
@@ -134,7 +132,7 @@ export const buildBidCollectibleOrder = async (
     makerAssetAmount: round(amount.multipliedBy(price)),
     takerAssetAmount: amount,
     makerAddress: account,
-    takerAddress: taker,
+    takerAddress: ZERO_ADDRESS,
     expirationTimeSeconds: getExpirationTimeOrdersFromConfig(),
   };
 
@@ -146,8 +144,8 @@ export const buildBidCollectibleOrder = async (
     ...orderResult,
     chainId: networkId,
     salt: new BigNumber(Date.now()),
-    makerFeeAssetData: erc20AssetData,
-    makerFee: round(
+    takerFeeAssetData: erc20AssetData,
+    takerFee: round(
       new BigNumber(orderConfigRequest.makerAssetAmount).multipliedBy(
         new BigNumber(SERVICE_FEE)
       )

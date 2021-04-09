@@ -21,8 +21,7 @@ interface IState {
 
 export const useAssetBids = (
   collectionId: string,
-  assetId: BigNumber,
-  owner?: string
+  assetId: BigNumber
 ): IState & { loadOrders: () => Promise<void> } => {
   const { networkId } = useConnectedWeb3Context();
   const [state, setState] = useState<IState>({
@@ -46,7 +45,6 @@ export const useAssetBids = (
           (networkId || DEFAULT_NETWORK_ID) as NetworkId,
           {
             takerAssetData,
-            takerAddress: owner,
             makerAssetProxyId: AssetProxyIds.erc20,
             takerAssetProxyId: AssetProxyIds.erc721,
             page,
@@ -60,10 +58,10 @@ export const useAssetBids = (
           .map((e: any) => e.order)
           .map((order: SignedOrder) => {
             const erc721 = assetDataUtils.decodeAssetDataOrThrow(
-              order.makerAssetData
+              order.takerAssetData
             ) as any;
             const erc20 = assetDataUtils.decodeAssetDataOrThrow(
-              order.takerAssetData
+              order.makerAssetData
             ) as any;
 
             return {
@@ -103,13 +101,9 @@ export const useAssetBids = (
   };
 
   useEffect(() => {
-    if (!owner) {
-      setState(() => ({ bids: [], loading: false }));
-      return;
-    }
     loadData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [collectionId, assetId.toString(), owner]);
+  }, [collectionId, assetId.toString()]);
 
   return { ...state, loadOrders: loadData };
 };

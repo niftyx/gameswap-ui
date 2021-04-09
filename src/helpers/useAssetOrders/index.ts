@@ -91,7 +91,6 @@ export const useAssetOrders = (
           (networkId || DEFAULT_NETWORK_ID) as NetworkId,
           {
             takerAssetData,
-            takerAddress: owner,
             makerAssetProxyId: AssetProxyIds.erc20,
             takerAssetProxyId: AssetProxyIds.erc721,
             page,
@@ -105,10 +104,10 @@ export const useAssetOrders = (
           .map((e: any) => e.order)
           .map((order: SignedOrder) => {
             const erc721 = assetDataUtils.decodeAssetDataOrThrow(
-              order.makerAssetData
+              order.takerAssetData
             ) as any;
             const erc20 = assetDataUtils.decodeAssetDataOrThrow(
-              order.takerAssetData
+              order.makerAssetData
             ) as any;
 
             return {

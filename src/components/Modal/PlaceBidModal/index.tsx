@@ -21,6 +21,7 @@ import { TradeBasicModal } from "../TradeCommon";
 interface IProps {
   visible: boolean;
   onClose: () => void;
+  onSuccess: () => Promise<void>;
 }
 
 interface IState {
@@ -37,7 +38,7 @@ export const PlaceBidModal = (props: IProps) => {
   } = useTrade();
   const { networkId } = useConnectedWeb3Context();
 
-  const { onClose, visible } = props;
+  const { onClose, onSuccess, visible } = props;
   const [state, setState] = useState<IState>({
     step: EBidStep.InputPrice,
     price: {
@@ -109,11 +110,13 @@ export const PlaceBidModal = (props: IProps) => {
         return (
           <PlaceBidStep
             asset={asset}
-            onConfirm={() => {
+            onConfirm={async () => {
               setState((prevState) => ({
                 ...prevState,
                 step: EBidStep.Success,
               }));
+              await onSuccess();
+              onClose();
             }}
             price={{
               ...state.price,

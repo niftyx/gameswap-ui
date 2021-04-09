@@ -128,8 +128,7 @@ export const AssetItem = (props: IProps) => {
   );
   const { bids, loading: bidsLoading } = useAssetBids(
     data.collectionId,
-    EthersBigNumberTo0xBigNumber(data.id),
-    assetDetails?.owner
+    EthersBigNumberTo0xBigNumber(data.id)
   );
 
   const allLoaded =

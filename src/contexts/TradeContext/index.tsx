@@ -129,7 +129,11 @@ export const TradeProvider = ({ children }: IProps) => {
         <TradeBuyModal onClose={onCloseModal} visible={isTradeBuyModalOpened} />
       )}
       {isPlaceBidModalOpened && (
-        <PlaceBidModal onClose={onCloseModal} visible={isPlaceBidModalOpened} />
+        <PlaceBidModal
+          onClose={onCloseModal}
+          onSuccess={functionToCallAfterTradeSuccess}
+          visible={isPlaceBidModalOpened}
+        />
       )}
     </TradeContext.Provider>
   );

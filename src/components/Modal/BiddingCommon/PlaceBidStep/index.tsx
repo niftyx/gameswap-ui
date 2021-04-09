@@ -53,14 +53,7 @@ export const PlaceBidStep = (props: IProps) => {
 
   const placeBid = async () => {
     const { account, networkId } = context;
-    if (
-      !account ||
-      !networkId ||
-      !asset.price ||
-      !asset.tokenId ||
-      !context.library
-    )
-      return;
+    if (!account || !networkId || !context.library) return;
     setState((prevState) => ({
       ...prevState,
       error: "",
@@ -76,7 +69,6 @@ export const PlaceBidStep = (props: IProps) => {
           erc721: asset.collectionId,
           tokenId: EthersBigNumberTo0xBigNumber(asset.tokenId),
           amount: new BigNumber(1),
-          taker: asset.owner,
 
           exchangeAddress: get0xContractAddresses(networkId).exchange,
         },
@@ -111,10 +103,8 @@ export const PlaceBidStep = (props: IProps) => {
   return (
     <div className={clsx(classes.root, props.className)}>
       <div className={classes.content}>
-        {state.loading && <CommentLoader comment="Creating a sell order..." />}
-        {!state.loading && !state.error && (
-          <CommentLoader comment="Redirecting..." />
-        )}
+        {state.loading && <CommentLoader comment="Placing a bid..." />}
+        {!state.loading && !state.error && <CommentLoader comment="" />}
         <ErrorText error={state.error} />
       </div>
 
