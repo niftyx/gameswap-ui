@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     flex: 1,
     marginRight: 24,
   },
-  headerRight: { display: "flex", "& > * + *": { marginLeft: 8 } },
+  headerRight: { display: "flex", "& > * + *": { marginLeft: 24 } },
   title: {
     left: theme.spacing(2),
     top: theme.spacing(4),

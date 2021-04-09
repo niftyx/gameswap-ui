@@ -1,13 +1,16 @@
 import { IconButton, makeStyles } from "@material-ui/core";
-import { ReactComponent as MoreIcon } from "assets/svgs/more.svg";
+import { ReactComponent as MoreIcon } from "assets/svgs/more-in-circle.svg";
 import clsx from "clsx";
-import { transparentize } from "polished";
 import React from "react";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
   button: {
-    border: `1px solid ${transparentize(0.4, theme.colors.text.default)}`,
+    padding: 0,
+    "& svg": {
+      width: 32,
+      height: 32,
+    },
   },
 }));
 

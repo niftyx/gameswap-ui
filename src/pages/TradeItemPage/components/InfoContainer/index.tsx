@@ -5,8 +5,9 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import clsx from "clsx";
-import { BasicModal } from "components";
-import { DEFAULT_NETWORK_ID } from "config/constants";
+import { BasicModal, SimpleLoader } from "components";
+import { DEFAULT_NETWORK_ID, PRICE_DECIMALS } from "config/constants";
+import { getTokenFromAddress } from "config/networks";
 import { useConnectedWeb3Context, useGlobal, useTrade } from "contexts";
 import { useAssetHistoryFromId, useAssetOrders } from "helpers";
 import { transparentize } from "polished";
@@ -14,8 +15,14 @@ import React, { useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { getAPIService } from "services/api";
 import useCommonStyles from "styles/common";
+import { formatBigNumber, numberWithCommas } from "utils";
+import { getHighestAsk, getHighestBid } from "utils/bid";
 import { EAssetDetailTab } from "utils/enums";
-import { EthersBigNumberTo0xBigNumber } from "utils/token";
+import { MAX_NUMBER } from "utils/number";
+import {
+  EthersBigNumberTo0xBigNumber,
+  xBigNumberToEthersBigNumber,
+} from "utils/token";
 import { capitalizeStr, getAssetObjectWithPrices } from "utils/tools";
 import { IAssetItem } from "utils/types";
 
@@ -40,6 +47,18 @@ const useStyles = makeStyles((theme) => ({
   mainContent: {
     flex: 1,
     padding: "0 16px",
+  },
+  top: { padding: "0 16px" },
+  highestAskUsd: {
+    color: theme.colors.text.default,
+    fontSize: 50,
+    fontWeight: 700,
+  },
+  highestAskToken: {
+    fontSize: 20,
+    color: theme.colors.text.sixth,
+    fontWeight: 700,
+    marginBottom: 20,
   },
   buyNow: {
     height: theme.spacing(6),
@@ -114,14 +133,83 @@ export const InfoContainer = (props: IProps) => {
 
   const apiService = getAPIService();
 
-  const assetDataWithPriceInfo = getAssetObjectWithPrices(
-    data,
-    data.orders || [],
+  const maxOrder = asks.find((order) =>
+    xBigNumberToEthersBigNumber(order.takerAssetAmount).eq(MAX_NUMBER)
+  );
+  const orders = asks.filter(
+    (order) =>
+      !xBigNumberToEthersBigNumber(order.takerAssetAmount).eq(MAX_NUMBER)
+  );
+  const highestBid = getHighestBid(
+    bids,
     price,
     networkId || DEFAULT_NETWORK_ID
   );
-  const isInSale = (data.orders || []).length > 0;
+
+  const highestBidToken = highestBid
+    ? getTokenFromAddress(
+        networkId || DEFAULT_NETWORK_ID,
+        highestBid.erc20Address
+      )
+    : null;
+  const highestAsk = getHighestAsk(
+    orders,
+    price,
+    networkId || DEFAULT_NETWORK_ID
+  );
+  const highestAskToken = highestAsk
+    ? getTokenFromAddress(
+        networkId || DEFAULT_NETWORK_ID,
+        highestAsk.erc20Address
+      )
+    : null;
+
+  const isInSale = !!maxOrder || orders.length > 0;
   const isMine = data.owner?.toLowerCase() === account?.toLowerCase();
+
+  const highestAskUsd =
+    highestAskToken && highestAsk
+      ? `$ ${numberWithCommas(
+          formatBigNumber(
+            xBigNumberToEthersBigNumber(highestAsk.takerAssetAmount).mul(
+              (price as any)[highestAskToken.symbol.toLowerCase()].price
+            ),
+            highestAskToken.decimals + PRICE_DECIMALS
+          )
+        )}`
+      : "";
+
+  const highAskTokenStr =
+    highestAskToken && highestAsk
+      ? `${numberWithCommas(
+          formatBigNumber(
+            xBigNumberToEthersBigNumber(highestAsk.takerAssetAmount),
+            highestAskToken.decimals
+          )
+        )} ${highestAskToken.symbol}`
+      : "";
+
+  const highestBidUsd =
+    highestBidToken && highestBid
+      ? `$ ${numberWithCommas(
+          formatBigNumber(
+            xBigNumberToEthersBigNumber(highestBid.makerAssetAmount).mul(
+              (price as any)[highestBidToken.symbol.toLowerCase()].price
+            ),
+            highestBidToken.decimals + PRICE_DECIMALS
+          )
+        )}`
+      : "";
+
+  const highBidTokenStr =
+    highestBidToken && highestBid
+      ? `${numberWithCommas(
+          formatBigNumber(
+            xBigNumberToEthersBigNumber(highestBid.makerAssetAmount),
+            highestBidToken.decimals
+          )
+        )} ${highestBidToken.symbol}`
+      : "";
 
   const { openBuyModal } = useTrade();
 
@@ -130,10 +218,15 @@ export const InfoContainer = (props: IProps) => {
       setWalletConnectModalOpened(true);
       return;
     }
-    if (data && isInSale) {
+    if (data && isInSale && highestAskToken && highestAsk) {
       openBuyModal({
         ...data,
-        ...assetDataWithPriceInfo.asset,
+        prices: [
+          {
+            token: highestAskToken,
+            amount: xBigNumberToEthersBigNumber(highestAsk.takerAssetAmount),
+          },
+        ],
         orders: data.orders,
       });
     }
@@ -159,6 +252,10 @@ export const InfoContainer = (props: IProps) => {
       setState((prev) => ({ ...prev, unlocking: false }));
     }
   };
+
+  if (ordersLoading) {
+    return <SimpleLoader />;
+  }
 
   return (
     <div
@@ -189,6 +286,18 @@ export const InfoContainer = (props: IProps) => {
         )}
         data={data}
       />
+      <div className={classes.top}>
+        {highestAskUsd && highAskTokenStr ? (
+          <div>
+            <Typography className={classes.highestAskUsd} component="div">
+              {highestAskUsd}
+            </Typography>
+            <Typography className={classes.highestAskToken}>
+              {highAskTokenStr}
+            </Typography>
+          </div>
+        ) : null}
+      </div>
       <div className={clsx(classes.mainContent)}>
         <TabSection />
 
