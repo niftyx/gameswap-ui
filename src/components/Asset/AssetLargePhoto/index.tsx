@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
   bImg: {
     backgroundRepeat: "no-repeat",
     backgroundPosition: "center",
+    backgroundSize: "contain",
   },
   icon: {
     position: "absolute",
@@ -49,7 +50,7 @@ interface IProps {
 
 export const AssetLargePhoto = (props: IProps) => {
   const classes = useStyles();
-  const { preview = true } = props;
+  const { preview = false } = props;
   const renderContent = () => {
     switch (props.type) {
       case EFileType.Image:
