@@ -203,7 +203,7 @@ export const GameCreateModal = (props: IProps) => {
                 name: "name",
                 onBlur: handleBlur,
                 onChange: handleChange,
-                placeholder: "Enter token name",
+                placeholder: "Enter game name",
                 value: values.name,
                 required: true,
               }}

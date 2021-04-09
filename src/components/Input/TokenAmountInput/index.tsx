@@ -13,7 +13,12 @@ import { BigNumber, ethers } from "packages/ethers";
 import React, { useEffect, useState } from "react";
 import { IToken, ITokenAmount, KnownToken } from "utils/types";
 
-const useStyles = makeStyles(() => ({ root: {} }));
+const useStyles = makeStyles(() => ({
+  root: {},
+  select: {
+    minWidth: 110,
+  },
+}));
 
 interface IProps {
   value: {
@@ -89,6 +94,7 @@ export const TokenAmountInput = (props: IProps) => {
         endAdornment: (
           <InputAdornment position="end">
             <Select
+              className={classes.select}
               name="saleToken"
               onChange={onChangeToken}
               value={value.token.address}

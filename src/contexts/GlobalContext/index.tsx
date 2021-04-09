@@ -159,7 +159,8 @@ export const GlobalProvider = ({ children }: IProps) => {
     loadBasicData();
     const interval = setInterval(() => {
       fetchPrices();
-    }, 100000);
+      loadBasicData();
+    }, 30000);
 
     return () => {
       clearInterval(interval);

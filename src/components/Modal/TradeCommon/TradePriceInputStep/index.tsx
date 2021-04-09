@@ -1,7 +1,6 @@
 import { SignedOrder } from "@0x/types";
 import { Button, makeStyles } from "@material-ui/core";
 import clsx from "clsx";
-import { AssetPhoto } from "components/Asset";
 import { TokenAmountInput } from "components/Input";
 import React from "react";
 import { ZERO_NUMBER } from "utils/number";
@@ -40,17 +39,9 @@ export const TradePriceInputStep = (props: IProps) => {
   if (!asset.price) return null;
 
   const isInSale = asset.isInSale;
-  console.log("=====", asset);
 
   return (
     <div className={clsx(classes.root, props.className)}>
-      {asset.image && (
-        <AssetPhoto
-          className={classes.img}
-          type={asset.imageType}
-          uri={asset.image}
-        />
-      )}
       {isInSale ? (
         <>
           {(asset.orders || asset.maxOrder) &&

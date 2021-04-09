@@ -49,6 +49,10 @@ const CreateGamePage = () => {
     }));
   };
 
+  const onSuccess = (id: string) => {
+    history.push(`/games/${id}`);
+  };
+
   return (
     <PageContainer className={classes.root}>
       <div className={classes.content}>
@@ -59,6 +63,7 @@ const CreateGamePage = () => {
           <GameProgressModal
             formValues={state.formValues}
             onClose={onCloseModal}
+            onSuccess={onSuccess}
             visible={state.visible}
           />
         )}

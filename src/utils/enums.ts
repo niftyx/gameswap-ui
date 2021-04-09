@@ -28,9 +28,10 @@ export enum ConnectorNames {
   WalletLink = "walletlink",
 }
 
-export enum ESellBuy {
+export enum ETradeType {
   Sell,
   Buy,
+  PlaceBid,
 }
 
 export enum ETradeStep {
@@ -48,6 +49,14 @@ export enum ETradeStep {
   // Cancel Order
   CancelOrder,
   // Result
+  Success,
+}
+
+export enum EBidStep {
+  InputPrice,
+  GetApprovalInfo,
+  SetApproval,
+  PlaceBid,
   Success,
 }
 

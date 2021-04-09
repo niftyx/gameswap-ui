@@ -54,6 +54,9 @@ const themesOptions = [
           textTransform: "none",
           fontWeight: 400,
         },
+        label: {
+          color: "#FFF",
+        },
       },
     },
     palette: {
@@ -111,6 +114,9 @@ const themesOptions = [
           borderRadius: "6px",
           textTransform: "none",
           fontWeight: 400,
+        },
+        label: {
+          color: "#FFF",
         },
       },
     },

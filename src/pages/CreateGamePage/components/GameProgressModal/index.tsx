@@ -7,6 +7,7 @@ import { IGame } from "utils/types";
 interface IProps {
   visible: boolean;
   onClose: () => void;
+  onSuccess: (id: string) => void;
   formValues: IGame;
 }
 
@@ -26,7 +27,7 @@ export const GameProgressModal = (props: IProps) => {
   const { library: provider } = context;
   const { loadGames } = useGlobal();
 
-  const { formValues, onClose, visible } = props;
+  const { formValues, onClose, onSuccess, visible } = props;
   const [state, setState] = useState<IState>({
     loading: false,
     step: ECurrentStep.Signing,
@@ -69,7 +70,7 @@ export const GameProgressModal = (props: IProps) => {
     try {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { id, ...payload } = formValues;
-      await apiService.createGame({
+      const game = await apiService.createGame({
         ...payload,
         message: state.message,
         headerImageUrl: formValues.headerImageUrl || "",
@@ -77,7 +78,7 @@ export const GameProgressModal = (props: IProps) => {
       await loadGames();
       setState((prev) => ({ ...prev, loading: false, error: "" }));
 
-      onClose();
+      onSuccess(game.id);
     } catch (error) {
       setState((prev) => ({ ...prev, loading: false, error: error.message }));
     }

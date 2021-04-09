@@ -4,3 +4,4 @@ export * from "./TradeBuyModal";
 export * from "./Common";
 export * from "./CollectionCreateModal";
 export * from "./GameCreateModal";
+export * from "./PlaceBidModal";

@@ -75,7 +75,7 @@ export const TrendingItems = (props: IProps) => {
             <AssetItem
               data={asset}
               key={`${asset.collectionId}${asset.id.toHexString()}`}
-              onMore={(id) => history.push(`/assets/${id}`)}
+              onClick={(id) => history.push(`/assets/${id}`)}
             />
           ))}
         </AssetsContainer>

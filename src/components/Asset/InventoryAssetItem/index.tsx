@@ -181,9 +181,9 @@ export const InventoryAssetItem = (props: IProps) => {
               uri={asset.image}
             />
           )}
-          <div className={classes.heart}>
+          {/* <div className={classes.heart}>
             <HeartIcon />
-          </div>
+          </div> */}
         </div>
         <div
           className={clsx(

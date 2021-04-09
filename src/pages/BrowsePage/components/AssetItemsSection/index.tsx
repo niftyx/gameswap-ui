@@ -87,7 +87,7 @@ const AssetItemsSection = (props: IProps) => {
                 data={asset}
                 isOnCart={false}
                 key={`${asset.collectionId}${asset.id.toHexString()}`}
-                onMore={(id) => history.push(`/assets/${id}`)}
+                onClick={(id) => history.push(`/assets/${id}`)}
               />
             ))}
           </AssetsContainer>

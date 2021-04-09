@@ -1,10 +1,10 @@
-import { TradeBuyModal, TradeSellModal } from "components";
+import { PlaceBidModal, TradeBuyModal, TradeSellModal } from "components";
 import { DEFAULT_NETWORK_ID } from "config/constants";
 import { getToken } from "config/networks";
 import { useConnectedWeb3Context } from "contexts/connectedWeb3";
 import { BigNumber } from "packages/ethers";
 import React, { createContext, useContext, useState } from "react";
-import { ESellBuy } from "utils/enums";
+import { ETradeType } from "utils/enums";
 import { getLogger } from "utils/logger";
 import { IAssetItem, ITokenAmount, ITradeData } from "utils/types";
 
@@ -12,7 +12,7 @@ const logger = getLogger("TradeContext::");
 
 const defaultData: ITradeData = {
   asset: null,
-  mode: ESellBuy.Sell,
+  mode: ETradeType.Sell,
 };
 
 const TradeContext = createContext({
@@ -21,6 +21,8 @@ const TradeContext = createContext({
   openSellModal: (_: IAssetItem) => {},
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   openBuyModal: (_: IAssetItem) => {},
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  openPlaceBidModal: (_: IAssetItem, __: () => Promise<void>) => {},
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   updateAssetPrice: (_: ITokenAmount) => {},
 });
@@ -43,11 +45,13 @@ export const TradeProvider = ({ children }: IProps) => {
   const [currentData, setCurrentData] = useState<ITradeData>(defaultData);
   const { networkId } = useConnectedWeb3Context();
 
+  let functionToCallAfterTradeSuccess: () => Promise<void> = async () => {};
+
   const openSellModal = (asset: IAssetItem) => {
     logger.log("openSellModal");
     setCurrentData((prevData) => ({
       ...prevData,
-      mode: ESellBuy.Sell,
+      mode: ETradeType.Sell,
       asset: {
         ...asset,
         price: {
@@ -62,9 +66,22 @@ export const TradeProvider = ({ children }: IProps) => {
     logger.log("openBuyModal");
     setCurrentData((prevData) => ({
       ...prevData,
-      mode: ESellBuy.Buy,
+      mode: ETradeType.Buy,
       asset,
     }));
+  };
+
+  const openPlaceBidModal = (
+    asset: IAssetItem,
+    callback: () => Promise<void>
+  ) => {
+    logger.log("openPlaceBidModal");
+    setCurrentData((prevData) => ({
+      ...prevData,
+      mode: ETradeType.PlaceBid,
+      asset,
+    }));
+    functionToCallAfterTradeSuccess = callback;
   };
 
   const onCloseModal = () => {
@@ -72,6 +89,7 @@ export const TradeProvider = ({ children }: IProps) => {
       ...prevData,
       asset: null,
     }));
+    functionToCallAfterTradeSuccess = async () => {};
   };
 
   const updateAssetPrice = (price: ITokenAmount) => {
@@ -84,9 +102,11 @@ export const TradeProvider = ({ children }: IProps) => {
   };
 
   const isTradeSellModalOpened =
-    currentData.asset && currentData.mode === ESellBuy.Sell;
+    currentData.asset && currentData.mode === ETradeType.Sell;
   const isTradeBuyModalOpened =
-    currentData.asset && currentData.mode === ESellBuy.Buy;
+    currentData.asset && currentData.mode === ETradeType.Buy;
+  const isPlaceBidModalOpened =
+    currentData.asset && currentData.mode === ETradeType.PlaceBid;
 
   return (
     <TradeContext.Provider
@@ -95,6 +115,7 @@ export const TradeProvider = ({ children }: IProps) => {
         openSellModal,
         openBuyModal,
         updateAssetPrice,
+        openPlaceBidModal,
       }}
     >
       {children}
@@ -106,6 +127,9 @@ export const TradeProvider = ({ children }: IProps) => {
       )}
       {isTradeBuyModalOpened && (
         <TradeBuyModal onClose={onCloseModal} visible={isTradeBuyModalOpened} />
+      )}
+      {isPlaceBidModalOpened && (
+        <PlaceBidModal onClose={onCloseModal} visible={isPlaceBidModalOpened} />
       )}
     </TradeContext.Provider>
   );

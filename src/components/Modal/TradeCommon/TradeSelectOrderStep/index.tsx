@@ -1,7 +1,6 @@
 import { SignedOrder } from "@0x/types";
 import { Button, Typography, makeStyles } from "@material-ui/core";
 import clsx from "clsx";
-import { AssetPhoto } from "components/Asset";
 import { DEFAULT_NETWORK_ID } from "config/constants";
 import { getTokenFromAddress } from "config/networks";
 import { useConnectedWeb3Context, useGlobal } from "contexts";
@@ -75,13 +74,6 @@ export const TradeSelectOrderStep = (props: IProps) => {
 
   return (
     <div className={clsx(classes.root, props.className)}>
-      {asset.image && (
-        <AssetPhoto
-          className={classes.img}
-          type={asset.imageType}
-          uri={asset.image}
-        />
-      )}
       <div className={clsx(classes.prices, commonClasses.scroll)}>
         {asset.prices.map((tPrice: ITokenAmount, priceIndex: number) => {
           const loadedUSDPrice =

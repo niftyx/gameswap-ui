@@ -5,14 +5,18 @@ import {
 } from "assets/icons";
 import clsx from "clsx";
 import React, { useState } from "react";
+import { NavLink } from "react-router-dom";
 import useCommonStyles from "styles/common";
-import { IGameItem } from "utils/types";
+import { IGame } from "utils/types";
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    display: "block",
+    textDecoration: "none",
     width: "100%",
     position: "relative",
     overflow: "hidden",
+    cursor: "pointer",
     padding: theme.spacing(1.5),
   },
   title: {
@@ -66,7 +70,7 @@ interface IState {
   loaded: boolean;
 }
 
-export const GamePreview = (props: IProps & IGameItem) => {
+export const GamePreview = (props: IProps & IGame) => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
   const [state, setState] = useState<IState>({ loaded: false });
@@ -74,44 +78,53 @@ export const GamePreview = (props: IProps & IGameItem) => {
   const setLoaded = (loaded: boolean) =>
     setState((prevState) => ({ ...prevState, loaded }));
 
-  const { backgroundImage, title } = props;
+  const { imageUrl: backgroundImage, name: title } = props;
 
   return (
-    <div className={clsx(classes.root, props.className)}>
-      <div className={classes.content}>
-        {!state.loaded && (
-          <div className={classes.imgPlaceholder}>
-            <IconTrendingGameImagePlaceholder />
-          </div>
+    <div>
+      <NavLink
+        className={clsx(
+          classes.root,
+          props.className,
+          commonClasses.normalHover
         )}
-        <img
-          alt="img"
-          className={clsx(
-            classes.img,
-            commonClasses.fadeAnimation,
-            state.loaded ? "visible" : ""
+        to={`/games/${props.id}`}
+      >
+        <div className={classes.content}>
+          {!state.loaded && (
+            <div className={classes.imgPlaceholder}>
+              <IconTrendingGameImagePlaceholder />
+            </div>
           )}
-          onLoad={() => setLoaded(true)}
-          src={backgroundImage}
-        />
-      </div>
-      <div className={classes.titleWrapper}>
-        {!state.loaded && (
-          <div className={classes.titlePlaceholder}>
-            <IconTrendingGameTitlePlaceholder />
-          </div>
-        )}
-        <Typography
-          className={clsx(
-            classes.title,
-            commonClasses.fadeAnimation,
-            state.loaded ? "visible" : ""
+          <img
+            alt="img"
+            className={clsx(
+              classes.img,
+              commonClasses.fadeAnimation,
+              state.loaded ? "visible" : ""
+            )}
+            onLoad={() => setLoaded(true)}
+            src={backgroundImage}
+          />
+        </div>
+        <div className={classes.titleWrapper}>
+          {!state.loaded && (
+            <div className={classes.titlePlaceholder}>
+              <IconTrendingGameTitlePlaceholder />
+            </div>
           )}
-          component="div"
-        >
-          {title}
-        </Typography>
-      </div>
+          <Typography
+            className={clsx(
+              classes.title,
+              commonClasses.fadeAnimation,
+              state.loaded ? "visible" : ""
+            )}
+            component="div"
+          >
+            {title}
+          </Typography>
+        </div>
+      </NavLink>
     </div>
   );
 };

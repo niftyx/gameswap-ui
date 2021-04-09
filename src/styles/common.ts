@@ -70,6 +70,12 @@ const useCommonStyles = makeStyles((theme) => ({
       transition: "max-height 1s ease-in-out",
     },
   },
+  normalHover: {
+    transition: "all 0.4s",
+    "&:hover": {
+      opacity: 0.7,
+    },
+  },
 }));
 
 export default useCommonStyles;

@@ -1,9 +1,10 @@
 import { Typography, makeStyles } from "@material-ui/core";
 import clsx from "clsx";
 import { BackNextGroup, GamePreview } from "components";
+import { useGlobal } from "contexts";
 import React, { useRef } from "react";
 import Slider from "react-slick";
-import { IGameItem } from "utils/types";
+import { IGame } from "utils/types";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,46 +33,18 @@ interface IProps {
 export const TrendingGames = (props: IProps) => {
   const classes = useStyles();
   const sliderRef = useRef();
+  const {
+    data: { games: trendingGames },
+  } = useGlobal();
 
   const settings = {
     arrows: false,
     dots: false,
     infinite: true,
     speed: 500,
-    slidesToShow: 4,
+    slidesToShow: 3,
     slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 5000,
-    pauseOnHover: true,
   };
-
-  const trendingGames: IGameItem[] = [
-    {
-      id: "rhwf",
-      title: "SkyFall 3",
-      backgroundImage: "/images/backgrounds/skyfall.png",
-    },
-    {
-      id: "34535",
-      title: "Cyberpunk Assault",
-      backgroundImage: "/images/backgrounds/cyber-assault.png",
-    },
-    {
-      id: "23424",
-      title: "No Man's Sky",
-      backgroundImage: "/images/backgrounds/no-mans-sky.png",
-    },
-    {
-      id: "i6i",
-      title: "Horizon Zero Dawn",
-      backgroundImage: "/images/backgrounds/horizon.png",
-    },
-    {
-      id: "ne5",
-      title: "Test",
-      backgroundImage: "/images/backgrounds/no-mans-sky.png",
-    },
-  ];
 
   const onBack = () => {
     (sliderRef.current as any).slickPrev();
@@ -94,7 +67,7 @@ export const TrendingGames = (props: IProps) => {
 
       <div className={classes.slick}>
         <Slider {...settings} ref={sliderRef as any}>
-          {trendingGames.map((game: IGameItem) => (
+          {trendingGames.map((game: IGame) => (
             <GamePreview key={game.id} {...game} />
           ))}
         </Slider>

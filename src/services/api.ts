@@ -42,7 +42,7 @@ export class APIService {
     page?: number
   ) {
     const response = await axios.get(
-      `${this.gamePath}${id}/collections?perPage=${perPage || 100}&page=${
+      `${this.collectionPath}games/${id}?perPage=${perPage || 100}&page=${
         page || 1
       }`
     );
@@ -85,7 +85,7 @@ export class APIService {
    * Games
    * create Game
    */
-  public async createGame(payload: any) {
+  public async createGame(payload: any): Promise<IGame> {
     const response = await axios.post(this.gamePath, payload);
     return response.data;
   }

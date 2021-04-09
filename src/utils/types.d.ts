@@ -9,7 +9,7 @@ import {
   EFileType,
   EHistoryItemType,
   EPlatform,
-  ESellBuy,
+  ETradeType,
 } from "./enums";
 declare module "@material-ui/core/styles/createMuiTheme" {
   interface Theme {
@@ -352,7 +352,7 @@ export interface IIPFSConfig {
 
 export interface ITradeData {
   asset?: IAssetItem | null;
-  mode: ESellBuy;
+  mode: ETradeType;
 }
 
 export interface ISignedOrder extends SignedOrder {

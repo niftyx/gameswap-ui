@@ -89,6 +89,78 @@ export const buildSellCollectibleOrder = async (
   );
 };
 
+interface BuildBidCollectibleOrderParams {
+  // erc20
+  erc20Address: string;
+  price: BigNumber;
+  account: string;
+
+  // erc721
+  erc721: string;
+  tokenId: BigNumber;
+  amount: BigNumber;
+  taker: string;
+
+  // exchange
+  exchangeAddress: string;
+}
+
+export const buildBidCollectibleOrder = async (
+  params: BuildBidCollectibleOrderParams,
+  networkId: NetworkId,
+  provider: any
+) => {
+  const {
+    account,
+    amount,
+    erc20Address,
+    erc721,
+    exchangeAddress,
+    price,
+    taker,
+    tokenId,
+  } = params;
+
+  const collectibleData = assetDataUtils.encodeERC721AssetData(erc721, tokenId);
+  const erc20AssetData = assetDataUtils.encodeERC20AssetData(erc20Address);
+
+  const round = (num: BigNumber): BigNumber =>
+    num.integerValue(BigNumber.ROUND_FLOOR);
+
+  const orderConfigRequest: OrderConfigRequest = {
+    exchangeAddress,
+    makerAssetData: erc20AssetData,
+    takerAssetData: collectibleData,
+    makerAssetAmount: round(amount.multipliedBy(price)),
+    takerAssetAmount: amount,
+    makerAddress: account,
+    takerAddress: taker,
+    expirationTimeSeconds: getExpirationTimeOrdersFromConfig(),
+  };
+
+  const client = getRelayer({ networkId });
+  const orderResult = await client.getOrderConfigAsync(orderConfigRequest);
+
+  const order: Order = {
+    ...orderConfigRequest,
+    ...orderResult,
+    chainId: networkId,
+    salt: new BigNumber(Date.now()),
+    makerFeeAssetData: erc20AssetData,
+    makerFee: round(
+      new BigNumber(orderConfigRequest.makerAssetAmount).multipliedBy(
+        new BigNumber(SERVICE_FEE)
+      )
+    ),
+  };
+
+  return signatureUtils.ecSignOrderAsync(
+    new MetamaskSubprovider(provider),
+    order,
+    account
+  );
+};
+
 export const submitCollectibleOrder = async (
   signedOrder: SignedOrder,
   networkId: NetworkId

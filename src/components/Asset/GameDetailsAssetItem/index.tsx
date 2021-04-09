@@ -3,13 +3,17 @@ import { IconAssetPlaceholder } from "assets/icons";
 import { ReactComponent as HeartIcon } from "assets/svgs/heart.svg";
 import clsx from "clsx";
 import { PlaceBidButton } from "components/Button";
-import { useConnectedWeb3Context } from "contexts";
+import { useConnectedWeb3Context, useTrade } from "contexts";
 import { useAssetDetailsFromInventoryItem, useAssetOrders } from "helpers";
 import React from "react";
 import useCommonStyles from "styles/common";
 import { IGraphInventoryAsset } from "types";
 import { getLogger } from "utils/logger";
-import { EthersBigNumberTo0xBigNumber } from "utils/token";
+import { MAX_NUMBER } from "utils/number";
+import {
+  EthersBigNumberTo0xBigNumber,
+  xBigNumberToEthersBigNumber,
+} from "utils/token";
 
 import { AssetPhoto } from "../AssetPhoto";
 
@@ -113,15 +117,30 @@ export const GameDetailsAssetItem = (props: IProps) => {
   const { data } = props;
   const { account } = useConnectedWeb3Context();
   const { asset, loaded } = useAssetDetailsFromInventoryItem(data);
-  const { asks, bids, loading: assetsLoading } = useAssetOrders(
+  const { asks, bids, loadOrders, loading: assetsLoading } = useAssetOrders(
     data.collectionId,
     EthersBigNumberTo0xBigNumber(data.assetId),
     data.owner
   );
+  const { openPlaceBidModal } = useTrade();
 
   const responsive = { xl: 2, lg: 2, md: 4, xs: 6 };
 
   const onClickDetails = () => {};
+
+  const onPlaceBid = () => {
+    if (!asset) return;
+    const maxOrder = asks.find((order) =>
+      xBigNumberToEthersBigNumber(order.takerAssetAmount).eq(MAX_NUMBER)
+    );
+    const orders = asks.filter(
+      (order) =>
+        !xBigNumberToEthersBigNumber(order.takerAssetAmount).eq(MAX_NUMBER)
+    );
+    openPlaceBidModal({ ...asset, bids, orders, maxOrder }, async () => {
+      await loadOrders();
+    });
+  };
 
   const allLoaded = loaded && !assetsLoading;
 
@@ -152,13 +171,13 @@ export const GameDetailsAssetItem = (props: IProps) => {
               uri={asset.image}
             />
           )}
-          <div className={classes.heart}>
+          {/* <div className={classes.heart}>
             <HeartIcon />
-          </div>
+          </div> */}
           {account?.toLowerCase() !== data.owner && (
             <PlaceBidButton
               className="game-details-place-bid"
-              onClick={() => {}}
+              onClick={onPlaceBid}
             />
           )}
         </div>

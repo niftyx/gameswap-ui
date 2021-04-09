@@ -21,6 +21,7 @@ import { AssetPhoto } from "../AssetPhoto";
 const useStyles = makeStyles((theme) => ({
   root: {},
   content: {
+    cursor: "pointer",
     position: "relative",
     userSelect: "none",
     padding: 8,
@@ -107,8 +108,7 @@ const useStyles = makeStyles((theme) => ({
 interface IProps {
   data: ITradeAssetItem;
   className?: string;
-  isFullWidth?: boolean;
-  onClick?: (_: IAssetItem) => void;
+  onClick?: (_: string) => void;
   onMore?: (_: string) => void;
   isOnCart?: boolean;
 }
@@ -116,13 +116,7 @@ interface IProps {
 export const BrowseAssetItem = (props: IProps) => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
-  const {
-    data,
-    isFullWidth = false,
-    // isOnCart = false,
-    onClick,
-    onMore,
-  } = props;
+  const { data, onClick = () => {}, onMore } = props;
   const {
     data: { price },
   } = useGlobal();
@@ -153,24 +147,6 @@ export const BrowseAssetItem = (props: IProps) => {
     networkId || DEFAULT_NETWORK_ID
   );
 
-  const onClickItem = () => {
-    if (assetDataWithPriceInfo.asset && onClick) {
-      const maxOrder = data.orders.find((order) =>
-        xBigNumberToEthersBigNumber(order.takerAssetAmount).eq(MAX_NUMBER)
-      );
-      const orders = data.orders.filter(
-        (order) =>
-          !xBigNumberToEthersBigNumber(order.takerAssetAmount).eq(MAX_NUMBER)
-      );
-      onClick({
-        ...assetDataWithPriceInfo.asset,
-        orders,
-        maxOrder,
-        bids,
-      });
-    }
-  };
-
   const onMoreItem = () => {
     if (onMore) {
       onMore((assetDetails || {}).id || "");
@@ -183,7 +159,12 @@ export const BrowseAssetItem = (props: IProps) => {
       item
       {...(responsive as any)}
     >
-      <div className={classes.content}>
+      <div
+        className={classes.content}
+        onClick={() => {
+          if (allLoaded) onClick((assetDetails || {}).id || "");
+        }}
+      >
         {!allLoaded && (
           <div className={classes.placeholder}>
             <IconAssetPlaceholder />
@@ -195,7 +176,6 @@ export const BrowseAssetItem = (props: IProps) => {
             commonClasses.fadeAnimation,
             allLoaded ? "visible" : ""
           )}
-          onClick={onClickItem}
         >
           {assetDetails && assetDetails.image && (
             <AssetPhoto
@@ -204,9 +184,9 @@ export const BrowseAssetItem = (props: IProps) => {
               uri={assetDetails.image}
             />
           )}
-          <div className={classes.heart}>
+          {/* <div className={classes.heart}>
             <HeartIcon />
-          </div>
+          </div> */}
         </div>
         <div
           className={clsx(
