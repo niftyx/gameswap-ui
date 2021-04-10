@@ -84,6 +84,9 @@ declare module "@material-ui/core/styles/createMuiTheme" {
           sale: string;
         };
       };
+      shadow: {
+        modal: string;
+      };
     };
   }
   // allow configuration using `createMuiTheme`
@@ -158,6 +161,9 @@ declare module "@material-ui/core/styles/createMuiTheme" {
           bid: string;
           sale: string;
         };
+      };
+      shadow: {
+        modal: string;
       };
     };
   }

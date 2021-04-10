@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 interface IProps {
   data: IAssetItem;
 }
-export const DetailsSectionTab = (props: IProps) => {
+export const TradeHistorySectionTab = (props: IProps) => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
 

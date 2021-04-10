@@ -5,7 +5,12 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import clsx from "clsx";
-import { BasicModal, SimpleLoader } from "components";
+import {
+  BasicModal,
+  PrimaryButton,
+  SecondaryButton,
+  SimpleLoader,
+} from "components";
 import { DEFAULT_NETWORK_ID, PRICE_DECIMALS } from "config/constants";
 import { getTokenFromAddress } from "config/networks";
 import { useConnectedWeb3Context, useGlobal, useTrade } from "contexts";
@@ -23,17 +28,17 @@ import {
   EthersBigNumberTo0xBigNumber,
   xBigNumberToEthersBigNumber,
 } from "utils/token";
-import { capitalizeStr, getAssetObjectWithPrices } from "utils/tools";
+import { capitalizeStr } from "utils/tools";
 import { IAssetItem } from "utils/types";
 
 import { BidsSectionTab } from "../BidsSectionTab";
-import { BuySection } from "../BuySection";
-import { DetailsSectionTab } from "../DetailsSectionTab";
 import { HeaderSection } from "../HeaderSection";
+import { HighestBidInfo } from "../HighestBidInfo";
 import { InfoSectionTab } from "../InfoSectionTab";
 import { PriceHistory } from "../PriceHistory";
 import { TabSection } from "../TabSection";
 import { TradeHistory } from "../TradeHistory";
+import { TradeHistorySectionTab } from "../TradeHistorySectionTab";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,9 +51,12 @@ const useStyles = makeStyles((theme) => ({
   },
   mainContent: {
     flex: 1,
-    padding: "0 16px",
+    padding: "24px",
   },
-  top: { padding: "0 16px" },
+  top: {
+    padding: "0 24px",
+    borderBottom: `1px solid ${theme.colors.border.secondary}`,
+  },
   highestAskUsd: {
     color: theme.colors.text.default,
     fontSize: 50,
@@ -68,7 +76,6 @@ const useStyles = makeStyles((theme) => ({
       height: theme.spacing(6),
     },
   },
-
   unlockData: {
     fontSize: theme.spacing(2),
     color: theme.colors.text.default,
@@ -82,6 +89,18 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: "rgb(18 18 18 / 90%) 0px 14px 40px",
     transition: "opacity 0.18s ease-in-out 0s",
     "&.visible": { backdropFilter: "blur(20px)" },
+  },
+  buttons: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 24,
+    "& > * + *": {
+      marginLeft: 24,
+    },
+    "& > *": {
+      flex: 1,
+    },
   },
 }));
 
@@ -189,29 +208,7 @@ export const InfoContainer = (props: IProps) => {
         )} ${highestAskToken.symbol}`
       : "";
 
-  const highestBidUsd =
-    highestBidToken && highestBid
-      ? `$ ${numberWithCommas(
-          formatBigNumber(
-            xBigNumberToEthersBigNumber(highestBid.makerAssetAmount).mul(
-              (price as any)[highestBidToken.symbol.toLowerCase()].price
-            ),
-            highestBidToken.decimals + PRICE_DECIMALS
-          )
-        )}`
-      : "";
-
-  const highBidTokenStr =
-    highestBidToken && highestBid
-      ? `${numberWithCommas(
-          formatBigNumber(
-            xBigNumberToEthersBigNumber(highestBid.makerAssetAmount),
-            highestBidToken.decimals
-          )
-        )} ${highestBidToken.symbol}`
-      : "";
-
-  const { openBuyModal } = useTrade();
+  const { openBuyModal, openPlaceBidModal, openSellModal } = useTrade();
 
   const onBuy = () => {
     if (!account) {
@@ -227,10 +224,23 @@ export const InfoContainer = (props: IProps) => {
             amount: xBigNumberToEthersBigNumber(highestAsk.takerAssetAmount),
           },
         ],
-        orders: data.orders,
+        orders: [highestAsk],
       });
     }
   };
+
+  const onSell = () => {
+    if (!account) {
+      setWalletConnectModalOpened(true);
+      return;
+    }
+    if (data) {
+      openSellModal(data);
+    }
+  };
+  const onBid = () => {};
+  const onAcceptBid = () => {};
+  const onCancelSell = () => {};
 
   const onUnlockData = async () => {
     if (!data.lockedData || !provider) {
@@ -297,6 +307,32 @@ export const InfoContainer = (props: IProps) => {
             </Typography>
           </div>
         ) : null}
+        <div className={classes.buttons}>
+          {isMine && !highestAsk && (
+            <PrimaryButton label="Sell now" onClick={onSell} />
+          )}
+          {isMine && highestAsk && (
+            <PrimaryButton label="Cancel Sell" onClick={onCancelSell} />
+          )}
+          {isMine && highestBid && (
+            <SecondaryButton
+              className="accept-bid"
+              label="Accept bid"
+              onClick={onAcceptBid}
+            />
+          )}
+          {!isMine && highestAsk && (
+            <PrimaryButton label="Buy now" onClick={onBuy} />
+          )}
+          {!isMine && <SecondaryButton label="Bid" onClick={onBid} />}
+        </div>
+        {highestBid && highestBidToken && (
+          <HighestBidInfo
+            bid={highestBid}
+            price={price}
+            token={highestBidToken}
+          />
+        )}
       </div>
       <div className={clsx(classes.mainContent)}>
         <TabSection />
@@ -307,14 +343,13 @@ export const InfoContainer = (props: IProps) => {
         {tabName === EAssetDetailTab.Owners && (
           <TradeHistory tradeHistoryData={historyData} />
         )}
-        {tabName === EAssetDetailTab.History && <PriceHistory />}
-        {tabName === EAssetDetailTab.Details && (
-          <DetailsSectionTab data={data} />
+        {tabName === EAssetDetailTab.Price && <PriceHistory />}
+        {tabName === EAssetDetailTab.TradeHistory && (
+          <TradeHistorySectionTab data={data} />
         )}
-        {tabName === EAssetDetailTab.Bids && <BidsSectionTab data={data} />}
+        {tabName === EAssetDetailTab.Bids && <BidsSectionTab bids={bids} />}
       </div>
 
-      {isInSale && !isMine && <BuySection data={data} onBuy={onBuy} />}
       {isMine && data.lockedData && (
         <Button
           className={classes.buyNow}

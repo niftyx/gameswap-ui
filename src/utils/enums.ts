@@ -91,7 +91,7 @@ export enum EOrderStatus {
 export enum EAssetDetailTab {
   Info = "Info",
   Owners = "Owners",
-  History = "History",
-  Details = "Details",
+  Price = "Price",
+  TradeHistory = "Trade History",
   Bids = "Bids",
 }

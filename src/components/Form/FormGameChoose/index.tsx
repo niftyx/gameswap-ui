@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     overflowX: "auto",
     overflowY: "hidden",
+    flexWrap: "wrap",
   },
   icon: {
     fontSize: 40,

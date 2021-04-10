@@ -5,3 +5,4 @@ export * from "./TabSection";
 export * from "./InfoSectionTab";
 export * from "./HeaderSection";
 export * from "./BidsSectionTab";
+export * from "./HighestBidInfo";

@@ -29,11 +29,6 @@ const useStyles = makeStyles((theme) => ({
     fontSize: theme.spacing(2.25),
     color: theme.colors.text.sixth,
   },
-  description: {
-    fontSize: theme.spacing(2),
-    color: theme.colors.text.sixth,
-    maxWidth: 500,
-  },
   priceRow: {
     "& > * + *": {
       marginLeft: theme.spacing(2),
@@ -89,11 +84,6 @@ export const HeaderSection = (props: IProps) => {
         {game && (
           <Typography className={classes.gameType} component="div">
             {game.name}
-          </Typography>
-        )}
-        {data.description && (
-          <Typography className={classes.description} component="div">
-            {data.description}
           </Typography>
         )}
         {isInSale && (

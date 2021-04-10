@@ -44,6 +44,7 @@ const useStyles = makeStyles((theme) => ({
   },
   right: {
     width: "calc(33% - 20px)",
+    minWidth: "calc(33% - 20px)",
     [theme.breakpoints.down(800)]: {
       display: "none",
     },

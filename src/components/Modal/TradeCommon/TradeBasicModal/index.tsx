@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     width: 580,
     backgroundColor: theme.colors.background.secondary,
-    boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
+    boxShadow: theme.colors.shadow.modal,
     borderRadius: theme.spacing(1),
     padding: theme.spacing(6),
     top: "50%",

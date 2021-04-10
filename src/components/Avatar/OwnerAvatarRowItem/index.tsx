@@ -1,6 +1,5 @@
 import { Avatar, Typography, makeStyles } from "@material-ui/core";
-import { ReactComponent as TickIcon } from "assets/svgs/yellow-tick.svg";
-import { transparentize } from "polished";
+import { ReactComponent as TickIcon } from "assets/svgs/blue-tick.svg";
 import React from "react";
 import Identicon from "react-identicons";
 import { shortenAddress } from "utils";
@@ -8,7 +7,7 @@ import { shortenAddress } from "utils";
 const IdenticonComponent = Identicon as any;
 
 const AVATAR_SIZE = 50;
-const tickerWidth = 16;
+const tickerWidth = 24;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     flex: 1,
   },
   role: {
-    color: transparentize(0.4, theme.colors.text.default),
+    color: theme.colors.text.sixth,
   },
   name: {
     color: theme.colors.text.default,
@@ -38,7 +37,9 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     zIndex: 1,
     bottom: 16,
-    left: AVATAR_SIZE - tickerWidth,
+    left: AVATAR_SIZE - tickerWidth / 2,
+    width: tickerWidth,
+    height: tickerWidth,
   },
 }));
 
@@ -48,6 +49,7 @@ interface IProps {
   address?: string;
   name?: string;
   showTick?: boolean;
+  right?: () => React.ReactNode;
 }
 
 export const OwnerAvatarRowItem = (props: IProps) => {
@@ -56,6 +58,7 @@ export const OwnerAvatarRowItem = (props: IProps) => {
     address = "",
     image = "",
     name = "",
+    right,
     roleName,
     showTick = true,
   } = props;
@@ -81,6 +84,7 @@ export const OwnerAvatarRowItem = (props: IProps) => {
           {name ? name : shortenAddress(address)}
         </Typography>
       </div>
+      {right && right()}
     </div>
   );
 };
