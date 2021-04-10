@@ -1,35 +1,40 @@
 @font-face {
   font-family: "CircularStd";
   font-display: auto;
-  src: local("CircularStd"), url(fonts/CircularStd-Medium.woff) format("woff");
+  src: local("CircularStd"),
+    url(fonts/CircularStd/CircularStd-Medium.woff) format("woff");
 }
 
 @font-face {
   font-family: "CircularStd";
   font-display: auto;
   font-weight: 200;
-  src: local("CircularStd"), url(fonts/CircularStd-Light.woff) format("woff");
+  src: local("CircularStd"),
+    url(fonts/CircularStd/CircularStd-Light.woff) format("woff");
 }
 
 @font-face {
   font-family: "CircularStd";
   font-display: auto;
   font-weight: 300;
-  src: local("CircularStd"), url(fonts/CircularStd-Book.woff) format("woff");
+  src: local("CircularStd"),
+    url(fonts/CircularStd/CircularStd-Book.woff) format("woff");
 }
 
 @font-face {
   font-family: "CircularStd";
   font-display: auto;
   font-weight: 500;
-  src: local("CircularStd"), url(fonts/CircularStd-Bold.woff) format("woff");
+  src: local("CircularStd"),
+    url(fonts/CircularStd/CircularStd-Bold.woff) format("woff");
 }
 
 @font-face {
   font-family: "CircularStd";
   font-display: auto;
   font-weight: 600;
-  src: local("CircularStd"), url(fonts/CircularStd-Black.woff) format("woff");
+  src: local("CircularStd"),
+    url(fonts/CircularStd/CircularStd-Black.woff) format("woff");
 }
 
 /* Icons */
@@ -38,11 +43,11 @@
   font-weight: normal;
   font-style: normal;
 
-  src: url(fonts/slick/slick.eot);
-  src: url(fonts/slick/slick.eot?#iefix) format("embedded-opentype"),
-    url(fonts/slick/slick.woff) format("woff"),
-    url(fonts/slick/slick.ttf) format("truetype"),
-    url(fonts/slick/slick.svg#slick) format("svg");
+  src: url(fonts/CircularStd/slick/slick.eot);
+  src: url(fonts/CircularStd/slick/slick.eot?#iefix) format("embedded-opentype"),
+    url(fonts/CircularStd/slick/slick.woff) format("woff"),
+    url(fonts/CircularStd/slick/slick.ttf) format("truetype"),
+    url(fonts/CircularStd/slick/slick.svg#slick) format("svg");
 }
 
 body {
@@ -80,4 +85,76 @@ body {
   100% {
     transform: rotate(360deg);
   }
+}
+
+/* font Nudista
+*/
+
+@font-face {
+  font-family: "Nudista";
+  src: url(fonts/Nudista/NudistaThin.ttf) format("truetype");
+  font-weight: 200;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Nudista";
+  src: url(fonts/Nudista/NudistaThin-Italic.ttf) format("truetype");
+  font-weight: 200;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Nudista";
+  src: url(fonts/Nudista/NudistaLight.ttf) format("truetype");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Nudista";
+  src: url(fonts/Nudista/NudistaLight-Italic.ttf) format("truetype");
+  font-weight: 300;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Nudista";
+  src: url(fonts/Nudista/Nudista.ttf) format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Nudista";
+  src: url(fonts/Nudista/Nudista-Italic.ttf) format("truetype");
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Nudista";
+  src: url(fonts/Nudista/NudistaSemiBold.ttf) format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Nudista";
+  src: url(fonts/Nudista/NudistaSemiBold-Italic.ttf) format("truetype");
+  font-weight: 500;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Nudista";
+  src: url(fonts/Nudista/Nudista-Bold.ttf) format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Nudista";
+  src: url(fonts/Nudista/Nudista-BoldItalic.ttf) format("truetype");
+  font-weight: 600;
+  font-style: italic;
 }
