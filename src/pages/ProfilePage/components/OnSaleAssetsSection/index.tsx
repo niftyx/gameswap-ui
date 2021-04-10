@@ -63,7 +63,7 @@ const OnSaleAssetsSection = (props: IProps) => {
                 data={asset}
                 isFullWidth
                 key={asset.id}
-                onMore={() => history.push(`/assets/${asset.id}`)}
+                onClick={() => history.push(`/assets/${asset.id}`)}
               />
             ))}
         </AssetsContainer>

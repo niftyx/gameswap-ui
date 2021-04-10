@@ -22,6 +22,7 @@ const logger = getLogger("InventoryAssetItem::");
 const useStyles = makeStyles((theme) => ({
   root: {},
   content: {
+    cursor: "pointer",
     position: "relative",
     userSelect: "none",
     padding: 8,
