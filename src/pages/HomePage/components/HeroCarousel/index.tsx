@@ -11,40 +11,40 @@ import { IGameItem } from "utils/types";
 
 const games: IGameItem[] = [
   {
-    id: "rhwf",
+    id: "1",
     title: "SkyFall 3",
-    backgroundImage: "/images/backgrounds/skyfall.png",
+    backgroundImage: "/images/backgrounds/home_bg_1.jpg",
   },
   {
-    id: "34535",
-    title: "Cyberpunk Assault",
-    backgroundImage: "/images/backgrounds/cyber-assault.png",
+    id: "2",
+    title: "WoW",
+    backgroundImage: "/images/backgrounds/home_bg_2.jpg",
   },
   {
-    id: "23424",
-    title: "No Man's Sky",
-    backgroundImage: "/images/backgrounds/no-mans-sky.png",
+    id: "3",
+    title: "Minecraft",
+    backgroundImage: "/images/backgrounds/home_bg_6.jpg",
   },
   {
-    id: "i6i",
-    title: "Horizon Zero Dawn",
-    backgroundImage: "/images/backgrounds/horizon.png",
+    id: "4",
+    title: "CSGO",
+    backgroundImage: "/images/backgrounds/home_bg_3.jpg",
   },
-  {
-    id: "ne5",
-    title: "Test",
-    backgroundImage: "/images/backgrounds/no-mans-sky.png",
-  },
-  {
-    id: "i6i234",
-    title: "Horizon Zero Dawn",
-    backgroundImage: "/images/backgrounds/horizon.png",
-  },
-  {
-    id: "ne5gewfg",
-    title: "Test",
-    backgroundImage: "/images/backgrounds/no-mans-sky.png",
-  },
+  // {
+  //   id: "ne5",
+  //   title: "Test",
+  //   backgroundImage: "/images/backgrounds/no-mans-sky.png",
+  // },
+  // {
+  //   id: "i6i234",
+  //   title: "Horizon Zero Dawn",
+  //   backgroundImage: "/images/backgrounds/horizon.png",
+  // },
+  // {
+  //   id: "ne5gewfg",
+  //   title: "Test",
+  //   backgroundImage: "/images/backgrounds/no-mans-sky.png",
+  // },
 ];
 
 const useStyles = makeStyles((theme) => ({
@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     position: "relative",
   },
-  imgsWrapper: { height: "50vh", position: "relative" },
+  imgsWrapper: { height: "45vh", position: "relative" },
   imgItem: {
     backgroundPositionY: "bottom",
     backgroundSize: "cover",
@@ -83,8 +83,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     "&:before": {
       content: `" "`,
-      backgroundImage:
-        "linear-gradient(180deg, rgba(58, 62, 69, 0) 31%, black 82%)",
+      background: "linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 90%)",
       position: "absolute",
       left: 0,
       right: 0,
@@ -94,10 +93,11 @@ const useStyles = makeStyles((theme) => ({
   },
   comment: {
     zIndex: 2,
-    fontSize: 50,
+    fontSize: 80,
+    fontFamily: "Nudista",
     lineHeight: "85px",
     color: theme.colors.text.default,
-    fontWeight: "bold",
+    fontWeight: 500,
     [theme.breakpoints.down(1200)]: {
       fontSize: 50,
       lineHeight: "75px",
@@ -253,6 +253,10 @@ export const HeroCarousel = (props: IProps) => {
     history.push("/browse");
   };
 
+  const onFAQ = () => {
+    history.push("/faq");
+  };
+
   return (
     <div className={clsx(classes.root, props.className)}>
       <div className={classes.imgsWrapper}>
@@ -272,9 +276,9 @@ export const HeroCarousel = (props: IProps) => {
       <div className={classes.comments}>
         <div className={classes.empty} />
         <Typography className={classes.comment} component="div">
-          Create and trade in-game
+          Create and trade
           <br />
-          NFT assets
+          gaming NFTs
         </Typography>
         <div className={classes.bottomRow}>
           <div className={classes.row}>
@@ -288,6 +292,7 @@ export const HeroCarousel = (props: IProps) => {
             </Button>
             <Button
               className={clsx(commonClasses.transparentButton, classes.button)}
+              onClick={onFAQ}
               variant="contained"
             >
               HOW IT WORKS

@@ -190,7 +190,7 @@ export const CollectionCreateModal = (props: IProps) => {
                 name: "description",
                 onBlur: handleBlur,
                 onChange: handleChange,
-                placeholder: "Spread some words about your collection",
+                placeholder: "Add a description for your collection",
                 value: values.description,
                 multiline: true,
               }}
@@ -210,7 +210,7 @@ export const CollectionCreateModal = (props: IProps) => {
                 checked: values.isPrivate,
               }}
               label="Private Collection"
-              subLabel="Only you can mint assets of this collection"
+              subLabel="Only you can mint assets for this collection"
             />
 
             <Button

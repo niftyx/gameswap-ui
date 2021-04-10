@@ -15,7 +15,6 @@ const useStyles = makeStyles((theme) => ({
   content: {
     display: "flex",
     flexDirection: "row",
-    backgroundColor: transparentize(0.9, theme.colors.text.default),
     borderRadius: theme.spacing(1),
     padding: theme.spacing(1),
     "& > * + *": {

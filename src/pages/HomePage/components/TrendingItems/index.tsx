@@ -64,7 +64,7 @@ export const TrendingItems = (props: IProps) => {
     <div className={clsx(classes.root, props.className)}>
       <div className={classes.header}>
         <Typography className={classes.title} component="div">
-          TRENDING GAMES
+          TRENDING ITEMS
         </Typography>
         <TrendingToolbar className={classes.toolbar} />
       </div>

@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     "&:before": {
       content: `" "`,
       backgroundImage:
-        "linear-gradient(160deg, rgba(58, 62, 69, 0) 28%, black 72%)",
+        "linear-gradient(175deg, rgba(58, 62, 69, 0) 28%, black 92%)",
       position: "absolute",
       left: 0,
       right: 0,
@@ -61,7 +61,8 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
   },
   name: {
-    fontSize: 40,
+    fontSize: 90,
+    letterSpacing: "-5px",
     color: theme.colors.text.default,
     fontWeight: "bold",
     margin: "16px 0 12px 0",

@@ -63,8 +63,7 @@ const FaqDetailsSection = (props: IProps & RouteComponentProps) => {
       <div className={classes.content}>
         <div className={clsx(classes.mainContent)}>
           <Typography className={classes.title} component="div">
-            Why can I see my item on the site&apos;s inventory but not in Steam?{" "}
-            {faqId}
+            Frequently Asked Questions
           </Typography>
         </div>
       </div>

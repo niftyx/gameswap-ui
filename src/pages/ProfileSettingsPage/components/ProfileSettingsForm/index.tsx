@@ -146,8 +146,7 @@ export const ProfileSettingsForm = (props: IProps) => {
             loading={values.uploading}
           />
           <Typography className={classes.description} component="div">
-            You can set preferred display name, create your branded profile URL
-            and manage other personal settings
+            Set preferred display name, images and manage personal settings
           </Typography>
           <FormTextField
             FormControlProps={{
@@ -188,7 +187,7 @@ export const ProfileSettingsForm = (props: IProps) => {
               id: "customUrl",
               startAdornment: (
                 <InputAdornment position="start">
-                  <Typography>app.rarible.com/</Typography>
+                  <Typography>gameswap.org/</Typography>
                 </InputAdornment>
               ),
               name: "customUrl",
@@ -213,11 +212,11 @@ export const ProfileSettingsForm = (props: IProps) => {
               name: "bio",
               onBlur: handleBlur,
               onChange: handleChange,
-              placeholder: "Tell about yourself in a few words",
+              placeholder: "Some words about yourself",
               value: values.bio,
               multiline: true,
             }}
-            helperText="URLs are allowed"
+            helperText="URLs allowed"
             label="Bio"
           />
           <FormTextField
@@ -247,7 +246,7 @@ export const ProfileSettingsForm = (props: IProps) => {
               placeholder: "Enter username",
               value: values.twitterUsername,
             }}
-            helperText="Verify your Twitter account in order to get the verification badge"
+            helperText="Verify your Twitter handle and get a verification badge"
             label="Twitter username"
           />
           <FormTextField
@@ -271,7 +270,7 @@ export const ProfileSettingsForm = (props: IProps) => {
               value: values.personalSite,
             }}
             helperText={touched.personalSite && errors.personalSite}
-            label="Personal site or portfolio"
+            label="Personal or professional site"
           />
           <Typography className={classes.description} component="div">
             To update your settings you should sign message through your wallet.

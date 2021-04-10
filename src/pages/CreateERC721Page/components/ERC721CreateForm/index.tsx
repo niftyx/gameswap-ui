@@ -254,7 +254,7 @@ export const ERC721CreateForm = (props: IProps) => {
                   checked: values.putOnSale,
                 }}
                 label="Put on sale"
-                subLabel="You'll receive bids on this item"
+                subLabel="You'll receive bids for this item"
               />
               {values.putOnSale && (
                 <>
@@ -269,7 +269,7 @@ export const ERC721CreateForm = (props: IProps) => {
                       checked: values.instantSale,
                     }}
                     label="Instant sale price"
-                    subLabel="Enter the price for which the item will be instantly sold"
+                    subLabel="Price for which the item would be instantly sold"
                   />
                   {values.instantSale && (
                     <>
@@ -303,16 +303,16 @@ export const ERC721CreateForm = (props: IProps) => {
                           name: "salePrice",
                           onBlur: handleBlur,
                           onChange: handleChange,
-                          placeholder: "Enter price for one piece",
+                          placeholder: "Enter price for one item",
                           value: values.salePrice,
                           type: "number",
                         }}
                         helperText={
                           touched.salePrice &&
                           (!values.salePrice
-                            ? "SalesPrice can't be equal 0"
+                            ? "Sale price can't be 0"
                             : !values.saleToken
-                            ? "Please select saleToken!"
+                            ? "Please select token!"
                             : "")
                         }
                       />
@@ -364,8 +364,8 @@ export const ERC721CreateForm = (props: IProps) => {
                   onChange: handleChange,
                   checked: values.unlockOncePurchased,
                 }}
-                label="Unlock once purchased"
-                subLabel="Content will be unlocked after successful transaction"
+                label="Unlockable content"
+                subLabel="Content will be unlocked after the item is bought"
               />
 
               {values.unlockOncePurchased && (
@@ -388,10 +388,10 @@ export const ERC721CreateForm = (props: IProps) => {
                   }}
                   helperText={
                     touched.lockedContent && !values.lockedContent
-                      ? "'Locked content' is not allowed to be empty"
-                      : "Tip: Markdown syntax is supported"
+                      ? "'Locked content' can't be empty"
+                      : "Markdown syntax is supported"
                   }
-                  label="Digital key, code to redeem or link to a file..."
+                  label="Game license, digital key, code to redeem or link to a file..."
                 />
               )}
 
@@ -441,7 +441,7 @@ export const ERC721CreateForm = (props: IProps) => {
                   name: "name",
                   onBlur: handleBlur,
                   onChange: handleChange,
-                  placeholder: `e.g. "Redeemable T-Shirt with logo"`,
+                  placeholder: `e.g. "Premium Weapon Skin"`,
                   value: values.name,
                 }}
                 helperText={touched.name && errors.name}
@@ -455,7 +455,7 @@ export const ERC721CreateForm = (props: IProps) => {
                   name: "description",
                   onBlur: handleBlur,
                   onChange: handleChange,
-                  placeholder: `e.g. "After purchasing you'll be able to get the real T-Shirt"`,
+                  placeholder: `Add a description about this item`,
                   value: values.description,
                 }}
                 helperText="With preserved line-breaks"

@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
     height: 100,
   },
   imgItem: {
-    height: "50vh",
+    height: "40vh",
     backgroundPositionY: "center",
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",

@@ -36,7 +36,7 @@ const TrendingToolbar = (props: IProps) => {
       <VerticalDivider />
       <GamesSelect />
       <Box flex="1" />
-      <AuctionsButton />
+      {/* <AuctionsButton /> */}
       <SortSelect />
       <PriceSelect />
     </div>

@@ -211,7 +211,7 @@ export const GameCreateForm = (props: IProps) => {
                 name: "description",
                 onBlur: handleBlur,
                 onChange: handleChange,
-                placeholder: "Spread some words about your collection",
+                placeholder: "Add a description about the game",
                 value: values.description,
                 multiline: true,
               }}

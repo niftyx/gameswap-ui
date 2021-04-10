@@ -236,7 +236,7 @@ export const GameCreateModal = (props: IProps) => {
                 name: "description",
                 onBlur: handleBlur,
                 onChange: handleChange,
-                placeholder: "Spread some words about your collection",
+                placeholder: "Add a game description",
                 value: values.description,
                 multiline: true,
               }}
