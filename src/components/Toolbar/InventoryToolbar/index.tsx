@@ -44,10 +44,10 @@ const InventoryToolbar = (props: IProps) => {
         <SearchInput />
       </Hidden>
 
-      <Typography align="right" className={classes.balance} component="div">
+      {/* <Typography align="right" className={classes.balance} component="div">
         $ {numberWithCommas("2.00")}
       </Typography>
-      <CartIcon className={classes.cart} />
+      <CartIcon className={classes.cart} /> */}
     </div>
   );
 };

@@ -57,10 +57,10 @@ const BrowseToolbar = (props: IProps) => {
       <SortSelect />
       <PriceSelect />
       <VerticalDivider />
-      <Typography align="right" className={classes.balance} component="div">
+      {/* <Typography align="right" className={classes.balance} component="div">
         $ {numberWithCommas("2.00")}
       </Typography>
-      <CartIcon className={classes.cart} />
+      <CartIcon className={classes.cart} /> */}
     </div>
   );
 };
