@@ -22,21 +22,25 @@ const useStyles = makeStyles((theme) => ({
       borderColor: theme.colors.text.positive,
       color: theme.colors.text.positive,
     },
+    "&.unlock-content": {
+      borderColor: theme.colors.background.fourth,
+      color: theme.colors.background.fourth,
+    },
   },
 }));
 
 interface IProps {
-  label: string;
   className?: string;
   onClick: () => void;
+  children: React.ReactNode | React.ReactNode[];
 }
 
 export const SecondaryButton = (props: IProps) => {
   const classes = useStyles();
-  const { label, onClick } = props;
+  const { children, onClick } = props;
   return (
     <div className={clsx(classes.root, props.className)} onClick={onClick}>
-      {label}
+      {children}
     </div>
   );
 };

@@ -1,5 +1,10 @@
-import { Typography, makeStyles } from "@material-ui/core";
-import { HorizonDivider, OwnerAvatarRowItem } from "components";
+import { CircularProgress, Typography, makeStyles } from "@material-ui/core";
+import clsx from "clsx";
+import {
+  HorizonDivider,
+  OwnerAvatarRowItem,
+  SecondaryButton,
+} from "components";
 import { DEFAULT_NETWORK_ID } from "config/constants";
 import { getEtherscanUri, getNetworkName } from "config/networks";
 import { useConnectedWeb3Context, useGlobal } from "contexts";
@@ -52,27 +57,53 @@ const useStyles = makeStyles((theme) => ({
     color: theme.colors.text.sixth,
     flex: 1,
   },
+  unlock: {
+    margin: "8px 0",
+  },
 }));
 
 interface IProps {
   data: IAssetItem;
   creator: string;
+  onUnlockData: () => Promise<void>;
+  unlocking: boolean;
 }
 
 export const InfoSectionTab = (props: IProps) => {
   const classes = useStyles();
-  const { creator, data } = props;
+  const { creator, data, onUnlockData, unlocking } = props;
   const {
     data: { collections },
   } = useGlobal();
   const { attributes, description } = data;
-  const { networkId } = useConnectedWeb3Context();
+  const { account, networkId } = useConnectedWeb3Context();
   const etherUri = getEtherscanUri(networkId || DEFAULT_NETWORK_ID);
 
   const collection = collections.find((c) => c.id === data.collectionId);
 
+  const showUnlock =
+    account?.toLowerCase() === data.owner.toLowerCase() && !!data.lockedData;
+
   return (
     <div className={classes.root}>
+      {showUnlock && (
+        <SecondaryButton
+          className={clsx(classes.unlock, "unlock-content")}
+          onClick={() => {
+            if (!unlocking) {
+              onUnlockData();
+            }
+          }}
+        >
+          {unlocking && (
+            <>
+              <CircularProgress size={32} />
+              &nbsp;&nbsp;
+            </>
+          )}
+          {unlocking ? "Unlocking ..." : "View Locked Content"}
+        </SecondaryButton>
+      )}
       <OwnerAvatarRowItem address={data.owner} roleName="Owner" />
       {creator && (
         <>

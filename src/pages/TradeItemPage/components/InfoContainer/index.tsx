@@ -1,9 +1,4 @@
-import {
-  Button,
-  CircularProgress,
-  Typography,
-  makeStyles,
-} from "@material-ui/core";
+import { Typography, makeStyles } from "@material-ui/core";
 import clsx from "clsx";
 import {
   BasicModal,
@@ -344,22 +339,20 @@ export const InfoContainer = (props: IProps) => {
         ) : null}
         <div className={classes.buttons}>
           {isMine && !highestAsk && (
-            <PrimaryButton label="Sell now" onClick={onSell} />
+            <PrimaryButton onClick={onSell}>Sell now</PrimaryButton>
           )}
           {isMine && highestAsk && (
-            <PrimaryButton label="Cancel Sell" onClick={onCancelSell} />
+            <PrimaryButton onClick={onCancelSell}>Cancel Sell</PrimaryButton>
           )}
           {isMine && highestBid && (
-            <SecondaryButton
-              className="accept-bid"
-              label="Accept bid"
-              onClick={onAcceptBid}
-            />
+            <SecondaryButton className="accept-bid" onClick={onAcceptBid}>
+              Accept bid
+            </SecondaryButton>
           )}
           {!isMine && highestAsk && (
-            <PrimaryButton label="Buy now" onClick={onBuy} />
+            <PrimaryButton onClick={onBuy}>Buy now</PrimaryButton>
           )}
-          {!isMine && <SecondaryButton label="Bid" onClick={onBid} />}
+          {!isMine && <SecondaryButton onClick={onBid}>Bid</SecondaryButton>}
         </div>
         {highestBid && highestBidToken && (
           <HighestBidInfo
@@ -373,7 +366,12 @@ export const InfoContainer = (props: IProps) => {
         <TabSection />
 
         {(!tabName || tabName === EAssetDetailTab.Info) && (
-          <InfoSectionTab creator={data.creator || ""} data={data} />
+          <InfoSectionTab
+            creator={data.creator || ""}
+            data={data}
+            onUnlockData={onUnlockData}
+            unlocking={state.unlocking}
+          />
         )}
         {tabName === EAssetDetailTab.Owners && (
           <TradeHistory tradeHistoryData={historyData} />
@@ -384,20 +382,6 @@ export const InfoContainer = (props: IProps) => {
         )}
         {tabName === EAssetDetailTab.Bids && <BidsSectionTab bids={bids} />}
       </div>
-
-      {isMine && data.lockedData && (
-        <Button
-          className={classes.buyNow}
-          color="secondary"
-          disabled={state.unlocking}
-          fullWidth
-          onClick={onUnlockData}
-          variant="contained"
-        >
-          {state.unlocking && <CircularProgress color="primary" size={24} />}
-          {state.unlocking ? "Unlocking content ..." : "Unlock content"}
-        </Button>
-      )}
     </div>
   );
 };

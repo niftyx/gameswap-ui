@@ -7,7 +7,7 @@ import useCommonStyles from "styles/common";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
-    backgroundColor: transparentize(0.2, theme.colors.background.fifth),
+    backgroundColor: transparentize(0.5, theme.colors.background.fifth),
   },
   root: {
     position: "absolute",

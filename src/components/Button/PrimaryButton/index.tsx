@@ -21,17 +21,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface IProps {
-  label: string;
+  children: React.ReactNode | React.ReactNode[];
   className?: string;
   onClick: () => void;
 }
 
 export const PrimaryButton = (props: IProps) => {
   const classes = useStyles();
-  const { label, onClick } = props;
+  const { children, onClick } = props;
   return (
     <div className={clsx(classes.root, props.className)} onClick={onClick}>
-      {label}
+      {children}
     </div>
   );
 };
