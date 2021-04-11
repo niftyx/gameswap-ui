@@ -1,19 +1,16 @@
-import { BigNumber } from "@ethersproject/bignumber";
 import { DEFAULT_NETWORK_ID } from "config/constants";
-import { getToken } from "config/networks";
+import { getTokenFromAddress } from "config/networks";
 import { useConnectedWeb3Context, useTrade } from "contexts";
 import React, { useState } from "react";
-import { EBidStep } from "utils/enums";
-import { ZERO_NUMBER } from "utils/number";
-import { EthersBigNumberTo0xBigNumber } from "utils/token";
-import { IToken } from "utils/types";
+import { EAcceptBidStep } from "utils/enums";
+import { xBigNumberToEthersBigNumber } from "utils/token";
 
 import {
-  BidApprovalStep,
-  BidGetInfoStep,
-  BidInputStep,
+  AcceptApprovalStep,
+  AcceptBidStep,
+  AcceptGetInfoStep,
   BidSuccessStep,
-  PlaceBidStep,
+  ShowPriceStep,
 } from "../BiddingCommon";
 import { TradeBasicModal } from "../TradeCommon";
 
@@ -23,39 +20,35 @@ interface IProps {
 }
 
 interface IState {
-  step: EBidStep;
-  price: {
-    amount: BigNumber;
-    token: IToken;
-  };
+  step: EAcceptBidStep;
 }
 
-export const PlaceBidModal = (props: IProps) => {
+export const AcceptBidModal = (props: IProps) => {
   const {
-    data: { asset },
+    data: { asset, bid },
   } = useTrade();
   const { networkId } = useConnectedWeb3Context();
 
   const { onClose, visible } = props;
   const [state, setState] = useState<IState>({
-    step: EBidStep.InputPrice,
-    price: {
-      amount: ZERO_NUMBER,
-      token: getToken(networkId || DEFAULT_NETWORK_ID, "wavax"),
-    },
+    step: EAcceptBidStep.ShowPrice,
   });
 
-  const updatePrice = (price: { amount: BigNumber; token: IToken }) => {
-    setState((prev) => ({ ...prev, price }));
-  };
+  if (!asset || !bid) return null;
 
-  if (!asset) return null;
+  const price = {
+    token: getTokenFromAddress(
+      networkId || DEFAULT_NETWORK_ID,
+      bid.erc20Address
+    ),
+    amount: xBigNumberToEthersBigNumber(bid.makerAssetAmount),
+  };
 
   const renderContent = () => {
     switch (state.step) {
-      case EBidStep.InputPrice:
+      case EAcceptBidStep.ShowPrice:
         return (
-          <BidInputStep
+          <ShowPriceStep
             asset={asset}
             onCancel={() => {
               onClose();
@@ -64,70 +57,65 @@ export const PlaceBidModal = (props: IProps) => {
               // go to next step and get approval for the token and amount selected
               setState((prevState) => ({
                 ...prevState,
-                step: EBidStep.GetApprovalInfo,
+                step: EAcceptBidStep.GetApprovalInfo,
               }));
             }}
-            price={state.price}
-            updatePrice={updatePrice}
+            price={price}
           />
         );
-      case EBidStep.GetApprovalInfo:
+      case EAcceptBidStep.GetApprovalInfo:
         return (
-          <BidGetInfoStep
+          <AcceptGetInfoStep
             onConfirm={(isUnlocked: boolean) => {
               if (!isUnlocked) {
                 setState((prevState) => ({
                   ...prevState,
-                  step: EBidStep.SetApproval,
+                  step: EAcceptBidStep.SetApproval,
                 }));
               } else {
                 setState((prevState) => ({
                   ...prevState,
-                  step: EBidStep.PlaceBid,
+                  step: EAcceptBidStep.AcceptBid,
                 }));
               }
             }}
-            tokenAddress={state.price.token.address}
-            tokenAmount={state.price.amount}
+            tokenAddress={bid.erc721Address}
+            tokenAmount={xBigNumberToEthersBigNumber(bid.takerAssetAmount)}
           />
         );
-      case EBidStep.SetApproval:
+      case EAcceptBidStep.SetApproval:
         return (
-          <BidApprovalStep
+          <AcceptApprovalStep
             onConfirm={() => {
               setState((prevState) => ({
                 ...prevState,
-                step: EBidStep.PlaceBid,
+                step: EAcceptBidStep.AcceptBid,
               }));
             }}
-            tokenAddress={state.price.token.address}
-            tokenAmount={state.price.amount}
+            tokenAddress={bid.erc721Address}
+            tokenAmount={xBigNumberToEthersBigNumber(bid.takerAssetAmount)}
           />
         );
-      case EBidStep.PlaceBid:
+      case EAcceptBidStep.AcceptBid:
         return (
-          <PlaceBidStep
-            asset={asset}
+          <AcceptBidStep
+            bid={bid}
             onConfirm={async () => {
               setState((prevState) => ({
                 ...prevState,
-                step: EBidStep.Success,
+                step: EAcceptBidStep.Success,
               }));
-            }}
-            price={{
-              ...state.price,
-              amount: EthersBigNumberTo0xBigNumber(state.price.amount),
             }}
           />
         );
-      case EBidStep.Success:
+      case EAcceptBidStep.Success:
         return (
           <BidSuccessStep
             onClose={() => {
               onClose();
               window.location.reload();
             }}
-            title={"Your bid is placed successfully"}
+            title={"You accepted a bid successfully"}
           />
         );
       default:
@@ -136,7 +124,7 @@ export const PlaceBidModal = (props: IProps) => {
   };
 
   return (
-    <TradeBasicModal onClose={onClose} title="Place Bid" visible={visible}>
+    <TradeBasicModal onClose={onClose} title="Accept Bid" visible={visible}>
       {renderContent()}
     </TradeBasicModal>
   );

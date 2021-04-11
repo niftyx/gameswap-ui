@@ -5,3 +5,4 @@ export * from "./Common";
 export * from "./CollectionCreateModal";
 export * from "./GameCreateModal";
 export * from "./PlaceBidModal";
+export * from "./AcceptBidModal";

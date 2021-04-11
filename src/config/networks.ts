@@ -18,7 +18,7 @@ export const networkIds = {
 
 const networks: { [K in NetworkId]: INetwork } = {
   [networkIds.AVAXTEST]: {
-    label: "Kovan",
+    label: "Avalanche Fuji",
     url: "https://api.avax-test.network/ext/bc/C/rpc",
     contracts: {
       erc721Factory: process.env.REACT_APP_ERC721_FACTORY_TEST || "",
@@ -26,7 +26,7 @@ const networks: { [K in NetworkId]: INetwork } = {
     etherscanUri: "https://cchain.explorer.avax-test.network/",
   },
   [networkIds.AVAXMAIN]: {
-    label: "Kovan",
+    label: "Avajanche",
     url: "https://api.avax.network/ext/bc/C/rpc",
     contracts: {
       erc721Factory: process.env.REACT_APP_ERC721_FACTORY_MAIN || "",
@@ -192,4 +192,11 @@ export const get0xContractAddresses = (
     throw new Error(`Unsupported network id: '${networkId}'`);
   }
   return OxContractAddresses[networkId];
+};
+
+export const getNetworkName = (networkId: number): string => {
+  if (!validNetworkId(networkId)) {
+    throw new Error(`Unsupported network id: '${networkId}'`);
+  }
+  return networks[networkId].label;
 };

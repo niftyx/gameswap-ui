@@ -37,7 +37,7 @@ export const BidsSectionTab = (props: IProps) => {
           order.erc20Address
         );
 
-        const m = moment(Number(order.expirationTimeSeconds.toString()) * 1000);
+        const m = moment(Number(order.salt.toString()));
 
         return (
           <div key={index}>
@@ -48,7 +48,7 @@ export const BidsSectionTab = (props: IProps) => {
                 xBigNumberToEthersBigNumber(order.makerAssetAmount),
                 token.decimals,
                 3
-              )} ${token.symbol} (expire in ${m.fromNow()})`}
+              )} ${token.symbol} ${m.fromNow()}`}
             />
             {bids && index < bids.length - 1 && <HorizonDivider />}
           </div>

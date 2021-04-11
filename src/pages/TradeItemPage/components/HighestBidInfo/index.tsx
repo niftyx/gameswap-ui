@@ -83,8 +83,6 @@ export const HighestBidInfo = (props: IProps) => {
     xBigNumberToEthersBigNumber(bid.takerFee)
   );
 
-  console.log(bid);
-
   return (
     <div className={clsx(classes.root, props.className)}>
       <div className={classes.main}>

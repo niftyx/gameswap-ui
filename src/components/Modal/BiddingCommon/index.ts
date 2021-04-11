@@ -3,3 +3,7 @@ export * from "./BidApprovalStep";
 export * from "./BidGetInfoStep";
 export * from "./PlaceBidStep";
 export * from "./BidSuccessStep";
+export * from "./ShowPriceStep";
+export * from "./AcceptGetInfoStep";
+export * from "./AcceptApprovalStep";
+export * from "./AcceptBidStep";

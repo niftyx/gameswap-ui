@@ -1,5 +1,6 @@
 import { Typography, makeStyles } from "@material-ui/core";
-import React from "react";
+import React, { useEffect } from "react";
+import { waitSeconds } from "utils";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,10 +27,18 @@ const useStyles = makeStyles((theme) => ({
 
 interface IProps {
   title: string;
+  onClose: () => void;
 }
 
 export const BidSuccessStep = (props: IProps) => {
   const classes = useStyles();
+  useEffect(() => {
+    const wait = async () => {
+      await waitSeconds(2);
+      props.onClose();
+    };
+    wait();
+  }, []);
   return (
     <div className={classes.root}>
       <div className={classes.content}>

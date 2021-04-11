@@ -1,16 +1,16 @@
+import { BigNumber } from "@0x/utils";
 import { Button, makeStyles } from "@material-ui/core";
 import clsx from "clsx";
 import { CommentLoader } from "components/Loader";
 import { ErrorText } from "components/Text";
-import { SERVICE_FEE_IN_PERCENT } from "config/constants";
-import { get0xContractAddresses } from "config/networks";
 import { useConnectedWeb3Context } from "contexts";
-import { BigNumber } from "packages/ethers";
 import React, { useEffect, useState } from "react";
-import { ERC20Service } from "services";
 import { getLogger } from "utils/logger";
+import { submitBuyCollectible } from "utils/order";
+import { EthersBigNumberTo0xBigNumber } from "utils/token";
+import { IAssetItem, ISignedOrder } from "utils/types";
 
-const logger = getLogger("BidGetInfoStep::");
+const logger = getLogger("PlaceBidStep::");
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,10 +30,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface IProps {
-  onConfirm: (_: boolean) => void;
+  onConfirm: () => void;
   className?: string;
-  tokenAddress: string;
-  tokenAmount: BigNumber;
+  bid: ISignedOrder;
 }
 
 interface IState {
@@ -41,49 +40,42 @@ interface IState {
   error: string;
 }
 
-export const BidGetInfoStep = (props: IProps) => {
+export const AcceptBidStep = (props: IProps) => {
   const classes = useStyles();
   const [state, setState] = useState<IState>({ loading: false, error: "" });
   const context = useConnectedWeb3Context();
-  const erc20 = new ERC20Service(
-    context.library,
-    context.account || "",
-    props.tokenAddress
-  );
-  const { onConfirm } = props;
+  const { bid, onConfirm } = props;
 
-  const getInfo = async () => {
+  const placeBid = async () => {
     const { account, networkId } = context;
-    if (!account || !networkId) return;
+    if (!account || !networkId || !context.library) return;
     setState((prevState) => ({
       ...prevState,
       error: "",
       loading: true,
     }));
     try {
-      // get approval information
-      const operator = get0xContractAddresses(networkId).erc20Proxy;
+      const gasPrice = await context.library.getGasPrice();
 
-      const isUnlocked = await erc20.hasEnoughAllowance(
-        account || "",
-        operator,
-        props.tokenAmount.add(
-          props.tokenAmount
-            .mul(BigNumber.from(SERVICE_FEE_IN_PERCENT * 100))
-            .div(BigNumber.from("10000"))
-        )
+      const txHash = await submitBuyCollectible(
+        context.library.provider,
+        bid,
+        account,
+        EthersBigNumberTo0xBigNumber(gasPrice),
+        networkId
       );
 
-      logger.log("isUnlocked::", isUnlocked);
+      await context.library.waitForTransaction(txHash);
+      logger.log("accept Bid::Success");
 
-      onConfirm(isUnlocked);
+      onConfirm();
 
       setState((prevState) => ({
         ...prevState,
         loading: false,
       }));
     } catch (error) {
-      logger.error("getInfo", error);
+      logger.error("acceptBid", error);
       setState((prevState) => ({
         ...prevState,
         error: error.message || "Something went wrong!",
@@ -93,14 +85,15 @@ export const BidGetInfoStep = (props: IProps) => {
   };
 
   useEffect(() => {
-    getInfo();
+    placeBid();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <div className={clsx(classes.root, props.className)}>
       <div className={classes.content}>
-        {state.loading && <CommentLoader comment="Checking if unlocked..." />}
+        {state.loading && <CommentLoader comment="Accepting a bid..." />}
+        {!state.loading && !state.error && <CommentLoader comment="" />}
         <ErrorText error={state.error} />
       </div>
 
@@ -109,7 +102,7 @@ export const BidGetInfoStep = (props: IProps) => {
           className={classes.button}
           color="primary"
           fullWidth
-          onClick={getInfo}
+          onClick={placeBid}
           variant="contained"
         >
           Try again

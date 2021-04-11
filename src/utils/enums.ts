@@ -32,6 +32,7 @@ export enum ETradeType {
   Sell,
   Buy,
   PlaceBid,
+  AcceptBid,
 }
 
 export enum ETradeStep {
@@ -57,6 +58,14 @@ export enum EBidStep {
   GetApprovalInfo,
   SetApproval,
   PlaceBid,
+  Success,
+}
+
+export enum EAcceptBidStep {
+  ShowPrice,
+  GetApprovalInfo,
+  SetApproval,
+  AcceptBid,
   Success,
 }
 

@@ -39,7 +39,10 @@ const TradeItemPage = () => {
   const classes = useStyles();
   const params = useParams();
   const assetId = ((params || {}) as any).id as string;
-  const { data: assetData } = useAssetDetailsWithOrderFromId(assetId || "");
+  const {
+    data: assetData,
+    load: loadAssetData,
+  } = useAssetDetailsWithOrderFromId(assetId || "");
 
   if (!assetId || !assetId.startsWith("0x")) {
     return <Redirect to="/trade" />;
@@ -55,7 +58,11 @@ const TradeItemPage = () => {
               <ItemViewSection data={assetData} />
             </div>
             <div className={classes.rightContent}>
-              <InfoContainer className={classes.infoSection} data={assetData} />
+              <InfoContainer
+                className={classes.infoSection}
+                data={assetData}
+                reloadAssetData={loadAssetData}
+              />
             </div>
           </>
         )}

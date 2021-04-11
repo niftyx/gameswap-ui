@@ -1,4 +1,3 @@
-import { useConnectedWeb3Context } from "contexts";
 import { useIsMountedRef } from "hooks";
 import { BigNumber } from "packages/ethers";
 import { useEffect, useState } from "react";
@@ -12,6 +11,7 @@ const logger = getLogger("useAssetDetailsWithOrderFromId");
 interface IResponse {
   data: IAssetItem | null;
   loading: boolean;
+  load: () => Promise<void>;
 }
 
 interface IState {
@@ -20,7 +20,6 @@ interface IState {
 }
 
 export const useAssetDetailsWithOrderFromId = (id: string): IResponse => {
-  const { networkId } = useConnectedWeb3Context();
   const [state, setState] = useState<IState>({
     asset: null,
     loading: false,
@@ -29,9 +28,9 @@ export const useAssetDetailsWithOrderFromId = (id: string): IResponse => {
 
   const apiService = getAPIService();
 
-  const loadAssetInfo = async (assetId: string) => {
+  const loadAssetInfo = async () => {
     setState((prev) => ({ ...prev, loading: true }));
-    const response = await apiService.getAssetDetails(assetId);
+    const response = await apiService.getAssetDetails(id);
     if (isRefMounted.current === false) return;
     if (response) {
       setState((prev) => ({
@@ -52,9 +51,9 @@ export const useAssetDetailsWithOrderFromId = (id: string): IResponse => {
   };
 
   useEffect(() => {
-    loadAssetInfo(id);
+    loadAssetInfo();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [networkId]);
+  }, [id]);
 
   useEffect(() => {
     let isMounted = true;
@@ -88,7 +87,7 @@ export const useAssetDetailsWithOrderFromId = (id: string): IResponse => {
       isMounted = false;
     };
     // eslint-disable-next-line
-  }, [state.asset]);
+  }, [state.asset?.id]);
 
-  return { data: state.asset, loading: state.loading };
+  return { data: state.asset, loading: state.loading, load: loadAssetInfo };
 };

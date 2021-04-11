@@ -2,15 +2,14 @@ import { Button, makeStyles } from "@material-ui/core";
 import clsx from "clsx";
 import { CommentLoader } from "components/Loader";
 import { ErrorText } from "components/Text";
-import { SERVICE_FEE_IN_PERCENT } from "config/constants";
 import { get0xContractAddresses } from "config/networks";
 import { useConnectedWeb3Context } from "contexts";
 import { BigNumber } from "packages/ethers";
 import React, { useEffect, useState } from "react";
-import { ERC20Service } from "services";
+import { ERC721Service } from "services";
 import { getLogger } from "utils/logger";
 
-const logger = getLogger("BidGetInfoStep::");
+const logger = getLogger("AcceptGetInfoStep::");
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,11 +40,11 @@ interface IState {
   error: string;
 }
 
-export const BidGetInfoStep = (props: IProps) => {
+export const AcceptGetInfoStep = (props: IProps) => {
   const classes = useStyles();
   const [state, setState] = useState<IState>({ loading: false, error: "" });
   const context = useConnectedWeb3Context();
-  const erc20 = new ERC20Service(
+  const erc721 = new ERC721Service(
     context.library,
     context.account || "",
     props.tokenAddress
@@ -62,17 +61,9 @@ export const BidGetInfoStep = (props: IProps) => {
     }));
     try {
       // get approval information
-      const operator = get0xContractAddresses(networkId).erc20Proxy;
+      const operator = get0xContractAddresses(networkId).erc721proxy;
 
-      const isUnlocked = await erc20.hasEnoughAllowance(
-        account || "",
-        operator,
-        props.tokenAmount.add(
-          props.tokenAmount
-            .mul(BigNumber.from(SERVICE_FEE_IN_PERCENT * 100))
-            .div(BigNumber.from("10000"))
-        )
-      );
+      const isUnlocked = await erc721.isApprovedForAll(account || "", operator);
 
       logger.log("isUnlocked::", isUnlocked);
 

@@ -195,7 +195,7 @@ export interface IAssetItem {
   image: string;
   imageType: EFileType;
   rar?: string;
-  createTimeStamp?: number;
+  createTimeStamp: number;
   royalties?: number;
   attributes?: IAssetAttribute[];
   price?: ITokenAmount;
@@ -357,6 +357,7 @@ export interface IIPFSConfig {
 export interface ITradeData {
   asset?: IAssetItem | null;
   mode: ETradeType;
+  bid?: ISignedOrder | null;
 }
 
 export interface ISignedOrder extends SignedOrder {

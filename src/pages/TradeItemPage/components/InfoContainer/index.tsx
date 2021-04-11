@@ -107,6 +107,7 @@ const useStyles = makeStyles((theme) => ({
 interface IProps {
   className?: string;
   data: IAssetItem;
+  reloadAssetData: () => Promise<void>;
 }
 
 interface IState {
@@ -130,8 +131,13 @@ export const InfoContainer = (props: IProps) => {
     networkId,
     setWalletConnectModalOpened,
   } = useConnectedWeb3Context();
-  const { data } = props;
-  const { asks, bids, loading: ordersLoading } = useAssetOrders(
+  const { data, reloadAssetData } = props;
+  const {
+    asks,
+    bids,
+    loadOrders: loadBidsAsks,
+    loading: ordersLoading,
+  } = useAssetOrders(
     data.collectionId,
     EthersBigNumberTo0xBigNumber(data.tokenId),
     data.owner
@@ -208,7 +214,12 @@ export const InfoContainer = (props: IProps) => {
         )} ${highestAskToken.symbol}`
       : "";
 
-  const { openBuyModal, openPlaceBidModal, openSellModal } = useTrade();
+  const {
+    openAcceptBidModal,
+    openBuyModal,
+    openPlaceBidModal,
+    openSellModal,
+  } = useTrade();
 
   const onBuy = () => {
     if (!account) {
@@ -238,9 +249,33 @@ export const InfoContainer = (props: IProps) => {
       openSellModal(data);
     }
   };
-  const onBid = () => {};
-  const onAcceptBid = () => {};
-  const onCancelSell = () => {};
+  const onBid = () => {
+    if (!account) {
+      setWalletConnectModalOpened(true);
+      return;
+    }
+    openPlaceBidModal({ ...data, bids, orders, maxOrder });
+  };
+
+  const onAcceptBid = () => {
+    if (!account) {
+      setWalletConnectModalOpened(true);
+      return;
+    }
+    if (data && highestBid) {
+      openAcceptBidModal(data, highestBid);
+    }
+  };
+
+  const onCancelSell = () => {
+    if (!account) {
+      setWalletConnectModalOpened(true);
+      return;
+    }
+    if (data) {
+      openSellModal({ ...data, orders: asks, isInSale, maxOrder });
+    }
+  };
 
   const onUnlockData = async () => {
     if (!data.lockedData || !provider) {

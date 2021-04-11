@@ -1,4 +1,9 @@
-import { PlaceBidModal, TradeBuyModal, TradeSellModal } from "components";
+import {
+  AcceptBidModal,
+  PlaceBidModal,
+  TradeBuyModal,
+  TradeSellModal,
+} from "components";
 import { DEFAULT_NETWORK_ID } from "config/constants";
 import { getToken } from "config/networks";
 import { useConnectedWeb3Context } from "contexts/connectedWeb3";
@@ -6,7 +11,12 @@ import { BigNumber } from "packages/ethers";
 import React, { createContext, useContext, useState } from "react";
 import { ETradeType } from "utils/enums";
 import { getLogger } from "utils/logger";
-import { IAssetItem, ITokenAmount, ITradeData } from "utils/types";
+import {
+  IAssetItem,
+  ISignedOrder,
+  ITokenAmount,
+  ITradeData,
+} from "utils/types";
 
 const logger = getLogger("TradeContext::");
 
@@ -22,7 +32,14 @@ const TradeContext = createContext({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   openBuyModal: (_: IAssetItem) => {},
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  openPlaceBidModal: (_: IAssetItem, __: () => Promise<void>) => {},
+  openPlaceBidModal: (_: IAssetItem) => {},
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  openAcceptBidModal: (
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _: IAssetItem,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    bid: ISignedOrder
+  ) => {},
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   updateAssetPrice: (_: ITokenAmount) => {},
 });
@@ -44,8 +61,6 @@ interface IProps {
 export const TradeProvider = ({ children }: IProps) => {
   const [currentData, setCurrentData] = useState<ITradeData>(defaultData);
   const { networkId } = useConnectedWeb3Context();
-
-  let functionToCallAfterTradeSuccess: () => Promise<void> = async () => {};
 
   const openSellModal = (asset: IAssetItem) => {
     logger.log("openSellModal");
@@ -71,17 +86,23 @@ export const TradeProvider = ({ children }: IProps) => {
     }));
   };
 
-  const openPlaceBidModal = (
-    asset: IAssetItem,
-    callback: () => Promise<void>
-  ) => {
+  const openPlaceBidModal = (asset: IAssetItem) => {
     logger.log("openPlaceBidModal");
     setCurrentData((prevData) => ({
       ...prevData,
       mode: ETradeType.PlaceBid,
       asset,
     }));
-    functionToCallAfterTradeSuccess = callback;
+  };
+
+  const openAcceptBidModal = (asset: IAssetItem, bid: ISignedOrder) => {
+    logger.log("openPlaceBidModal");
+    setCurrentData((prevData) => ({
+      ...prevData,
+      mode: ETradeType.AcceptBid,
+      asset,
+      bid,
+    }));
   };
 
   const onCloseModal = () => {
@@ -89,7 +110,6 @@ export const TradeProvider = ({ children }: IProps) => {
       ...prevData,
       asset: null,
     }));
-    functionToCallAfterTradeSuccess = async () => {};
   };
 
   const updateAssetPrice = (price: ITokenAmount) => {
@@ -106,7 +126,9 @@ export const TradeProvider = ({ children }: IProps) => {
   const isTradeBuyModalOpened =
     currentData.asset && currentData.mode === ETradeType.Buy;
   const isPlaceBidModalOpened =
-    currentData.asset && currentData.mode === ETradeType.PlaceBid;
+    !!currentData.asset && currentData.mode === ETradeType.PlaceBid;
+  const isAcceptBidModalOpened =
+    !!currentData.asset && currentData.mode === ETradeType.AcceptBid;
 
   return (
     <TradeContext.Provider
@@ -116,6 +138,7 @@ export const TradeProvider = ({ children }: IProps) => {
         openBuyModal,
         updateAssetPrice,
         openPlaceBidModal,
+        openAcceptBidModal,
       }}
     >
       {children}
@@ -129,10 +152,12 @@ export const TradeProvider = ({ children }: IProps) => {
         <TradeBuyModal onClose={onCloseModal} visible={isTradeBuyModalOpened} />
       )}
       {isPlaceBidModalOpened && (
-        <PlaceBidModal
+        <PlaceBidModal onClose={onCloseModal} visible={isPlaceBidModalOpened} />
+      )}
+      {isAcceptBidModalOpened && (
+        <AcceptBidModal
           onClose={onCloseModal}
-          onSuccess={functionToCallAfterTradeSuccess}
-          visible={isPlaceBidModalOpened}
+          visible={isAcceptBidModalOpened}
         />
       )}
     </TradeContext.Provider>

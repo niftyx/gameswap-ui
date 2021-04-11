@@ -170,9 +170,7 @@ export const GameDetailsAssetItem = (props: IProps) => {
   const onPlaceBid = () => {
     if (!asset) return;
 
-    openPlaceBidModal({ ...asset, bids, orders, maxOrder }, async () => {
-      await loadOrders();
-    });
+    openPlaceBidModal({ ...asset, bids, orders, maxOrder });
   };
 
   const allLoaded = loaded && !assetsLoading;

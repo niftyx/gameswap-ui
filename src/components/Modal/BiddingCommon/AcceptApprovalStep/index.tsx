@@ -1,16 +1,15 @@
+import { BigNumber } from "@ethersproject/bignumber";
 import { Button, makeStyles } from "@material-ui/core";
 import clsx from "clsx";
 import { CommentLoader } from "components/Loader";
 import { ErrorText } from "components/Text";
-import { SERVICE_FEE_IN_PERCENT } from "config/constants";
 import { get0xContractAddresses } from "config/networks";
 import { useConnectedWeb3Context } from "contexts";
-import { BigNumber } from "packages/ethers";
 import React, { useEffect, useState } from "react";
-import { ERC20Service } from "services";
+import { ERC20Service, ERC721Service } from "services";
 import { getLogger } from "utils/logger";
 
-const logger = getLogger("BidGetInfoStep::");
+const logger = getLogger("BidApprovalStep::");
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface IProps {
-  onConfirm: (_: boolean) => void;
+  onConfirm: () => void;
   className?: string;
   tokenAddress: string;
   tokenAmount: BigNumber;
@@ -41,18 +40,19 @@ interface IState {
   error: string;
 }
 
-export const BidGetInfoStep = (props: IProps) => {
+export const AcceptApprovalStep = (props: IProps) => {
   const classes = useStyles();
   const [state, setState] = useState<IState>({ loading: false, error: "" });
   const context = useConnectedWeb3Context();
-  const erc20 = new ERC20Service(
+  const erc721 = new ERC721Service(
     context.library,
     context.account || "",
     props.tokenAddress
   );
+
   const { onConfirm } = props;
 
-  const getInfo = async () => {
+  const approveAll = async () => {
     const { account, networkId } = context;
     if (!account || !networkId) return;
     setState((prevState) => ({
@@ -61,29 +61,18 @@ export const BidGetInfoStep = (props: IProps) => {
       loading: true,
     }));
     try {
-      // get approval information
-      const operator = get0xContractAddresses(networkId).erc20Proxy;
+      const operator = get0xContractAddresses(networkId).erc721proxy;
+      logger.log("operator::", operator);
+      await erc721.approveForAll(operator, true);
 
-      const isUnlocked = await erc20.hasEnoughAllowance(
-        account || "",
-        operator,
-        props.tokenAmount.add(
-          props.tokenAmount
-            .mul(BigNumber.from(SERVICE_FEE_IN_PERCENT * 100))
-            .div(BigNumber.from("10000"))
-        )
-      );
-
-      logger.log("isUnlocked::", isUnlocked);
-
-      onConfirm(isUnlocked);
+      onConfirm();
 
       setState((prevState) => ({
         ...prevState,
         loading: false,
       }));
     } catch (error) {
-      logger.error("getInfo", error);
+      logger.error("approveAll", error);
       setState((prevState) => ({
         ...prevState,
         error: error.message || "Something went wrong!",
@@ -93,14 +82,14 @@ export const BidGetInfoStep = (props: IProps) => {
   };
 
   useEffect(() => {
-    getInfo();
+    approveAll();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <div className={clsx(classes.root, props.className)}>
       <div className={classes.content}>
-        {state.loading && <CommentLoader comment="Checking if unlocked..." />}
+        {state.loading && <CommentLoader comment="Unlocking asset..." />}
         <ErrorText error={state.error} />
       </div>
 
@@ -109,7 +98,7 @@ export const BidGetInfoStep = (props: IProps) => {
           className={classes.button}
           color="primary"
           fullWidth
-          onClick={getInfo}
+          onClick={approveAll}
           variant="contained"
         >
           Try again

@@ -7,8 +7,6 @@ import React from "react";
 import useCommonStyles from "styles/common";
 import { IAssetAttribute, IAssetItem } from "utils/types";
 
-import { ChainInfoSection } from "../ChainInfoSection";
-
 const useStyles = makeStyles((theme) => ({
   root: {},
   itemDetailsItemRow: {
@@ -73,7 +71,6 @@ export const TradeHistorySectionTab = (props: IProps) => {
           </Typography>
         </div>
       ))}
-      <ChainInfoSection data={data} />
     </div>
   );
 };

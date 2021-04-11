@@ -1,8 +1,12 @@
 import { Typography, makeStyles } from "@material-ui/core";
 import { HorizonDivider, OwnerAvatarRowItem } from "components";
-import { useGlobal } from "contexts";
+import { DEFAULT_NETWORK_ID } from "config/constants";
+import { getEtherscanUri, getNetworkName } from "config/networks";
+import { useConnectedWeb3Context, useGlobal } from "contexts";
+import moment from "moment";
 import { transparentize } from "polished";
 import React from "react";
+import { shortenAddress } from "utils";
 import { IAssetItem } from "utils/types";
 
 const useStyles = makeStyles((theme) => ({
@@ -30,6 +34,24 @@ const useStyles = makeStyles((theme) => ({
     lineHeight: "23px",
     color: theme.colors.text.sixth,
   },
+  propertyRow: {
+    display: "flex",
+    "& + &": {
+      marginTop: 12,
+    },
+  },
+  propertyKey: {
+    fontSize: 16,
+    lineHeight: "23px",
+    color: theme.colors.text.sixth,
+    marginRight: 16,
+  },
+  propertyValue: {
+    fontSize: 16,
+    lineHeight: "23px",
+    color: theme.colors.text.sixth,
+    flex: 1,
+  },
 }));
 
 interface IProps {
@@ -44,6 +66,8 @@ export const InfoSectionTab = (props: IProps) => {
     data: { collections },
   } = useGlobal();
   const { attributes, description } = data;
+  const { networkId } = useConnectedWeb3Context();
+  const etherUri = getEtherscanUri(networkId || DEFAULT_NETWORK_ID);
 
   const collection = collections.find((c) => c.id === data.collectionId);
 
@@ -86,6 +110,55 @@ export const InfoSectionTab = (props: IProps) => {
           <Typography className={classes.description}>{description}</Typography>
         </div>
       )}
+      {attributes && attributes.length > 0 && (
+        <div className={classes.section}>
+          <Typography className={classes.sectionTitle}>Properties</Typography>
+          {attributes.map((attribute) => (
+            <div className={classes.propertyRow} key={attribute.key}>
+              <Typography className={classes.propertyKey}>
+                {attribute.key}:
+              </Typography>
+              <Typography className={classes.propertyValue}>
+                {attribute.value}
+              </Typography>
+            </div>
+          ))}
+        </div>
+      )}
+      <div className={classes.section}>
+        <Typography className={classes.sectionTitle}>More details</Typography>
+        <div className={classes.propertyRow}>
+          <Typography className={classes.propertyKey}>Date:</Typography>
+          <Typography className={classes.propertyValue}>
+            {moment(data.createTimeStamp * 1000).format("MM/DD/YYYY")}
+          </Typography>
+        </div>
+        <div className={classes.propertyRow}>
+          <Typography className={classes.propertyKey}>
+            Contract Address:
+          </Typography>
+          <a
+            className={classes.propertyValue}
+            href={`${etherUri}address/${data.collectionId}`}
+            rel="noreferrer"
+            target="_blank"
+          >
+            {shortenAddress(data.collectionId)}
+          </a>
+        </div>
+        <div className={classes.propertyRow}>
+          <Typography className={classes.propertyKey}>TokenId:</Typography>
+          <Typography className={classes.propertyValue}>
+            {data.tokenId.toString()}
+          </Typography>
+        </div>
+        <div className={classes.propertyRow}>
+          <Typography className={classes.propertyKey}>Blockchain:</Typography>
+          <Typography className={classes.propertyValue}>
+            {getNetworkName(networkId || DEFAULT_NETWORK_ID)}
+          </Typography>
+        </div>
+      </div>
     </div>
   );
 };
