@@ -30,10 +30,10 @@ import { BidsSectionTab } from "../BidsSectionTab";
 import { HeaderSection } from "../HeaderSection";
 import { HighestBidInfo } from "../HighestBidInfo";
 import { InfoSectionTab } from "../InfoSectionTab";
+import { Owners } from "../Owners";
 import { PriceHistory } from "../PriceHistory";
 import { TabSection } from "../TabSection";
 import { TradeHistory } from "../TradeHistory";
-import { TradeHistorySectionTab } from "../TradeHistorySectionTab";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -102,7 +102,6 @@ const useStyles = makeStyles((theme) => ({
 interface IProps {
   className?: string;
   data: IAssetItem;
-  reloadAssetData: () => Promise<void>;
 }
 
 interface IState {
@@ -126,13 +125,8 @@ export const InfoContainer = (props: IProps) => {
     networkId,
     setWalletConnectModalOpened,
   } = useConnectedWeb3Context();
-  const { data, reloadAssetData } = props;
-  const {
-    asks,
-    bids,
-    loadOrders: loadBidsAsks,
-    loading: ordersLoading,
-  } = useAssetOrders(
+  const { data } = props;
+  const { asks, bids, loading: ordersLoading } = useAssetOrders(
     data.collectionId,
     EthersBigNumberTo0xBigNumber(data.tokenId),
     data.owner
@@ -374,11 +368,11 @@ export const InfoContainer = (props: IProps) => {
           />
         )}
         {tabName === EAssetDetailTab.Owners && (
-          <TradeHistory tradeHistoryData={historyData} />
+          <Owners tradeHistoryData={historyData} />
         )}
         {tabName === EAssetDetailTab.Price && <PriceHistory />}
         {tabName === EAssetDetailTab.TradeHistory && (
-          <TradeHistorySectionTab data={data} />
+          <TradeHistory tradeHistoryData={historyData} />
         )}
         {tabName === EAssetDetailTab.Bids && <BidsSectionTab bids={bids} />}
       </div>

@@ -9,7 +9,6 @@ import { MetamaskSubprovider } from "@0x/subproviders";
 import { OrderConfigRequest, ZeroExTransaction } from "@0x/types";
 import { BigNumber } from "@0x/utils";
 import {
-  AssetProxyIds,
   DEFAULT_NETWORK_ID,
   ORDERS_PAGE_COUNT,
   PROTOCOL_FEE_MULTIPLIER,
@@ -176,7 +175,6 @@ export const buildOrdersQuery = (
     takerAssetAddress?: string;
     makerAssetData?: string;
     takerAssetData?: string;
-    takerAddress?: string;
     page?: number;
     perPage?: number;
   }
@@ -184,18 +182,11 @@ export const buildOrdersQuery = (
   const endPoint = `${
     RELAYER_URL[(networkId || DEFAULT_NETWORK_ID) as NetworkId]
   }/orders`;
-  const {
-    makerAssetProxyId = AssetProxyIds.erc721,
-    page = 1,
-    perPage = ORDERS_PAGE_COUNT,
-    takerAssetProxyId = AssetProxyIds.erc20,
-  } = params;
+  const { page = 1, perPage = ORDERS_PAGE_COUNT } = params;
   const finalParams: { [key: string]: string | number | undefined } = {
     ...params,
     perPage,
     page,
-    makerAssetProxyId,
-    takerAssetProxyId,
   };
   const query = Object.keys(finalParams)
     .filter((key) => finalParams[key])

@@ -1,6 +1,10 @@
 import { assetDataUtils } from "@0x/order-utils";
 import { SignedOrder } from "@0x/types";
-import { DEFAULT_NETWORK_ID, ORDERS_PAGE_COUNT } from "config/constants";
+import {
+  AssetProxyIds,
+  DEFAULT_NETWORK_ID,
+  ORDERS_PAGE_COUNT,
+} from "config/constants";
 import { useConnectedWeb3Context } from "contexts";
 import { useIsMountedRef } from "hooks";
 import { useEffect, useState } from "react";
@@ -34,6 +38,8 @@ export const useMyOrders = (): IState & { loadMore: () => Promise<void> } => {
         makerAddress: account || "",
         perPage: ORDERS_PAGE_COUNT,
         page,
+        makerAssetProxyId: AssetProxyIds.erc721,
+        takerAssetProxyId: AssetProxyIds.erc20,
       }
     );
 

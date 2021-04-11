@@ -45,6 +45,7 @@ export const useAssetOrders = (
         {
           makerAssetData,
           makerAddress: owner,
+          takerAssetProxyId: AssetProxyIds.erc20,
         }
       );
       const ordersResponse = (await zeroXService.getData(orderEndPoint)).data;
@@ -92,7 +93,6 @@ export const useAssetOrders = (
           {
             takerAssetData,
             makerAssetProxyId: AssetProxyIds.erc20,
-            takerAssetProxyId: AssetProxyIds.erc721,
             page,
           }
         );

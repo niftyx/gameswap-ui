@@ -46,7 +46,7 @@ export const useAssetBids = (
           {
             takerAssetData,
             makerAssetProxyId: AssetProxyIds.erc20,
-            takerAssetProxyId: AssetProxyIds.erc721,
+
             page,
           }
         );
