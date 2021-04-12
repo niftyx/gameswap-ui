@@ -170,6 +170,27 @@ export class APIService {
 
   /**
    * Assets
+   * get assets' creators
+   */
+  public async getAssetsOfCreatedUser(
+    creatorAddress: string,
+    perPage?: number,
+    page?: number
+  ) {
+    const response = await axios.get(
+      `${this.assetPath}creator/${creatorAddress}?perPage=${
+        perPage || 100
+      }&page=${page || 1}`
+    );
+    return response.data as {
+      page: number;
+      perPage: number;
+      records: Record<string, unknown>[];
+    };
+  }
+
+  /**
+   * Assets
    * get history of asset
    */
   public async getAssetHistory(

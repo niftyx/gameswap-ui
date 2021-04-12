@@ -3,7 +3,6 @@ import clsx from "clsx";
 import { BrowseFilter, PageContainer } from "components";
 import { useAllOrders } from "helpers/useAllOrders";
 import React from "react";
-import useCommonStyles from "styles/common";
 
 import { AssetItemsSection, FeaturedItemsSection } from "./components";
 

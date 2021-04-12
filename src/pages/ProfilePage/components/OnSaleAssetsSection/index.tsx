@@ -1,13 +1,16 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { makeStyles } from "@material-ui/core";
 import clsx from "clsx";
-import { AssetsContainer, InventoryAssetItem, SimpleLoader } from "components";
-import { useConnectedWeb3Context } from "contexts";
-import { useInventoryAssets, useMyOrders } from "helpers";
-import { transparentize } from "polished";
+import {
+  AssetsContainer,
+  BrowseAssetItem,
+  ScrollContainer,
+  SimpleLoader,
+} from "components";
+import { useMyOrders } from "helpers";
 import React from "react";
 import { useHistory } from "react-router-dom";
-import useCommonStyles from "styles/common";
+import { ITradeAssetItem } from "utils/types";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -15,14 +18,11 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
     paddingBottom: 40,
   },
-  comment: {
-    fontSize: theme.spacing(1.6125),
+  assets: {
     marginTop: theme.spacing(2),
-    color: transparentize(0.4, theme.colors.text.default),
-  },
-  value: {
-    fontSize: theme.spacing(6),
-    color: theme.colors.text.default,
+    overflowY: "auto",
+    flex: 1,
+    padding: "0 6px",
   },
 }));
 
@@ -32,43 +32,49 @@ interface IProps {
 
 const OnSaleAssetsSection = (props: IProps) => {
   const classes = useStyles();
-  const commonClasses = useCommonStyles();
-  const { account } = useConnectedWeb3Context();
-  const {
-    assets: inventoryAssets,
-    hasMore: hasMoreInventoryItems,
-    loadMore: loadMoreInventoryItems,
-    loading: inventoryLoading,
-  } = useInventoryAssets({
-    id: account || "",
-  });
   const history = useHistory();
-  const { orders: myOrders } = useMyOrders();
+  const { allLoaded, loadMore, loading, orders } = useMyOrders();
+
+  const assets: ITradeAssetItem[] = [];
+
+  orders.forEach((order) => {
+    const assetId = order.assetId;
+    const collectionId = order.erc721Address.toLowerCase();
+
+    const addedElement = assets.find(
+      (asset) => asset.id.eq(assetId) && asset.collectionId === collectionId
+    );
+    if (addedElement) {
+      addedElement.orders.push(order);
+    } else {
+      assets.push({
+        id: assetId,
+        collectionId: collectionId,
+        orders: [order],
+      });
+    }
+  });
 
   return (
     <div className={clsx(classes.root, props.className)}>
-      <div>
+      <ScrollContainer
+        className={classes.assets}
+        onScrollEnd={() => {
+          if (!allLoaded) loadMore();
+        }}
+      >
         <AssetsContainer>
-          {inventoryAssets
-            .filter((asset) => {
-              const matchedOrder = myOrders.find(
-                (order) =>
-                  order.erc721Address === asset.collectionId &&
-                  order.assetId.eq(asset.assetId)
-              );
-              return !!matchedOrder;
-            })
-            .map((asset) => (
-              <InventoryAssetItem
-                data={asset}
-                isFullWidth
-                key={asset.id}
-                onClick={() => history.push(`/assets/${asset.id}`)}
-              />
-            ))}
+          {assets.map((asset) => (
+            <BrowseAssetItem
+              data={asset}
+              isOnCart={false}
+              key={`${asset.collectionId}${asset.id.toHexString()}`}
+              onClick={(id) => history.push(`/assets/${id}`)}
+            />
+          ))}
         </AssetsContainer>
-      </div>
-      {inventoryLoading && <SimpleLoader />}
+      </ScrollContainer>
+      {loading && <SimpleLoader />}
     </div>
   );
 };

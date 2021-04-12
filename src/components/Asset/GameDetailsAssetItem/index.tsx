@@ -121,7 +121,7 @@ export const GameDetailsAssetItem = (props: IProps) => {
   const { data } = props;
   const { account, networkId } = useConnectedWeb3Context();
   const { asset, loaded } = useAssetDetailsFromInventoryItem(data);
-  const { asks, bids, loadOrders, loading: assetsLoading } = useAssetOrders(
+  const { asks, bids, loading: assetsLoading } = useAssetOrders(
     data.collectionId,
     EthersBigNumberTo0xBigNumber(data.assetId),
     data.owner

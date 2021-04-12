@@ -81,7 +81,6 @@ const useStyles = makeStyles((theme) => ({
     position: "sticky",
     top: 0,
     backgroundColor: transparentize(0.9, theme.colors.text.secondary),
-    boxShadow: "rgb(18 18 18 / 90%) 0px 14px 40px",
     transition: "opacity 0.18s ease-in-out 0s",
     "&.visible": { backdropFilter: "blur(20px)" },
   },
@@ -316,7 +315,7 @@ export const InfoContainer = (props: IProps) => {
       <HeaderSection
         className={clsx(
           classes.headerSticky,
-          state.scroll > 5 ? "visible" : ""
+          state.scroll > 20 ? "visible" : ""
         )}
         data={data}
       />

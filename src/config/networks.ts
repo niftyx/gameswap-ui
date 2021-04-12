@@ -26,7 +26,7 @@ const networks: { [K in NetworkId]: INetwork } = {
     etherscanUri: "https://cchain.explorer.avax-test.network/",
   },
   [networkIds.AVAXMAIN]: {
-    label: "Avajanche",
+    label: "Avalanche",
     url: "https://api.avax.network/ext/bc/C/rpc",
     contracts: {
       erc721Factory: process.env.REACT_APP_ERC721_FACTORY_MAIN || "",

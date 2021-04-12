@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: { width: AVATAR_SIZE, height: AVATAR_SIZE },
   left: {
-    marginRight: 16,
+    marginRight: 24,
     borderRadius: "50%",
     overflow: "hidden",
     width: AVATAR_SIZE,

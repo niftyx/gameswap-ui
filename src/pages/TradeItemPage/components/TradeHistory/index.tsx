@@ -1,23 +1,15 @@
-import {
-  CircularProgress,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  makeStyles,
-} from "@material-ui/core";
-import LaunchIcon from "@material-ui/icons/Launch";
+import { CircularProgress, makeStyles } from "@material-ui/core";
 import clsx from "clsx";
-import { TradingHistoryItemTypeTag } from "components";
+import { OwnerAvatarRowItem } from "components";
 import { DEFAULT_NETWORK_ID } from "config/constants";
-import { getEtherscanUri, getTokenFromAddress } from "config/networks";
+import { getToken, getTokenFromAddress } from "config/networks";
 import { useConnectedWeb3Context } from "contexts";
 import moment from "moment";
 import React from "react";
-import { formatBigNumber, shortenAddress } from "utils";
+import { formatBigNumber, formatToShortNumber } from "utils";
+import { EHistoryItemType } from "utils/enums";
 import { ZERO_NUMBER } from "utils/number";
-import { IHistoryItem } from "utils/types";
+import { IHistoryItem, IToken } from "utils/types";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,6 +25,9 @@ const useStyles = makeStyles((theme) => ({
     "& > * + *": {
       marginLeft: 8,
     },
+  },
+  ownerItem: {
+    borderBottom: `1px solid ${theme.colors.border.secondary}`,
   },
 }));
 
@@ -56,61 +51,44 @@ export const TradeHistory = (props: IProps) => {
       {loading ? (
         <CircularProgress color="primary" size={40} />
       ) : (
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Event</TableCell>
-              <TableCell>Price</TableCell>
-              <TableCell>From</TableCell>
-              <TableCell>To</TableCell>
-              <TableCell>Date</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {historyItems.map((item) => (
-              <TableRow key={item.id}>
-                <TableCell>
-                  <TradingHistoryItemTypeTag type={item.type} />
-                </TableCell>
-                <TableCell>
-                  {item.price?.amount.gt(ZERO_NUMBER)
-                    ? `${formatBigNumber(
-                        item.price.amount,
-                        getTokenFromAddress(
-                          networkId || DEFAULT_NETWORK_ID,
-                          item.price.tokenAddress
-                        ).decimals
-                      )} ${
-                        getTokenFromAddress(
-                          networkId || DEFAULT_NETWORK_ID,
-                          item.price.tokenAddress
-                        ).symbol
-                      }`
-                    : null}
-                </TableCell>
-                <TableCell>{shortenAddress(item.from)}</TableCell>
-                <TableCell>{item.to && shortenAddress(item.to)}</TableCell>
-                <TableCell>
-                  {item.txHash ? (
-                    <a
-                      className={classes.hashA}
-                      href={`${getEtherscanUri(
-                        networkId || DEFAULT_NETWORK_ID
-                      )}tx/${item.txHash}`}
-                      rel="noreferrer"
-                      target="_blank"
-                    >
-                      <span>{moment(item.timestamp * 1000).fromNow()}</span>
-                      <LaunchIcon />
-                    </a>
-                  ) : (
-                    moment(item.timestamp * 1000).fromNow()
-                  )}
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        historyItems.map((item) => {
+          let roleStr = "";
+          let token: IToken;
+          switch (item.type) {
+            case EHistoryItemType.Created:
+              roleStr = `Minted ${moment(item.timestamp * 1000).fromNow()}`;
+              break;
+            case EHistoryItemType.Transfer:
+              roleStr = `Transferred ${moment(
+                item.timestamp * 1000
+              ).fromNow()}`;
+              break;
+            case EHistoryItemType.Sale:
+              token = item.price
+                ? getTokenFromAddress(
+                    networkId || DEFAULT_NETWORK_ID,
+                    item.price.tokenAddress
+                  )
+                : getToken(networkId || DEFAULT_NETWORK_ID, "wavax");
+              roleStr = `Bought for ${formatToShortNumber(
+                formatBigNumber(
+                  item.price?.amount || ZERO_NUMBER,
+                  token.decimals
+                )
+              )} ${token.symbol} ${moment(item.timestamp * 1000).fromNow()}`;
+              break;
+            default:
+              break;
+          }
+          return (
+            <OwnerAvatarRowItem
+              address={item.to}
+              className={classes.ownerItem}
+              key={item.timestamp}
+              roleName={roleStr}
+            />
+          );
+        })
       )}
     </div>
   );

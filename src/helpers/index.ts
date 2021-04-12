@@ -10,3 +10,4 @@ export * from "./useCollectionsFromGameId";
 export * from "./useAssetsFromGameId";
 export * from "./useAssetOrders";
 export * from "./useAssetBids";
+export * from "./useCreatedAssets";

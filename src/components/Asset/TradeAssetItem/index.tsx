@@ -1,13 +1,15 @@
-import { Button, Grid, Typography, makeStyles } from "@material-ui/core";
+import { Grid, Typography, makeStyles } from "@material-ui/core";
 import { IconAssetPlaceholder } from "assets/icons";
 import { ReactComponent as HeartIcon } from "assets/svgs/heart.svg";
 import clsx from "clsx";
 import { DEFAULT_NETWORK_ID } from "config/constants";
+import { getTokenFromAddress } from "config/networks";
 import { useConnectedWeb3Context, useGlobal } from "contexts";
 import { useAssetBids, useAssetDetailsFromIdCollection } from "helpers";
-import { transparentize } from "polished";
 import React from "react";
 import useCommonStyles from "styles/common";
+import { formatBigNumber } from "utils";
+import { getHighestAsk, getHighestBid } from "utils/bid";
 import { MAX_NUMBER } from "utils/number";
 import {
   EthersBigNumberTo0xBigNumber,
@@ -143,6 +145,40 @@ export const TradeAssetItem = (props: IProps) => {
     EthersBigNumberTo0xBigNumber(data.id)
   );
 
+  const { orders: asks } = data;
+
+  const maxOrder = asks.find((order) =>
+    xBigNumberToEthersBigNumber(order.takerAssetAmount).eq(MAX_NUMBER)
+  );
+  const orders = asks.filter(
+    (order) =>
+      !xBigNumberToEthersBigNumber(order.takerAssetAmount).eq(MAX_NUMBER)
+  );
+  const highestBid = getHighestBid(
+    bids,
+    price,
+    networkId || DEFAULT_NETWORK_ID
+  );
+  const highestBidToken = highestBid
+    ? getTokenFromAddress(
+        networkId || DEFAULT_NETWORK_ID,
+        highestBid.erc20Address
+      )
+    : null;
+  const highestAsk = getHighestAsk(
+    orders,
+    price,
+    networkId || DEFAULT_NETWORK_ID
+  );
+  const highestAskToken = highestAsk
+    ? getTokenFromAddress(
+        networkId || DEFAULT_NETWORK_ID,
+        highestAsk.erc20Address
+      )
+    : null;
+
+  const isInSale = !!maxOrder || orders.length > 0;
+
   const allLoaded =
     !bidsLoading &&
     assetDetails &&
@@ -162,9 +198,6 @@ export const TradeAssetItem = (props: IProps) => {
 
   const onClickItem = () => {
     if (assetDataWithPriceInfo.asset && onClick) {
-      const maxOrder = data.orders.find((order) =>
-        xBigNumberToEthersBigNumber(order.takerAssetAmount).eq(MAX_NUMBER)
-      );
       const orders = data.orders.filter(
         (order) =>
           !xBigNumberToEthersBigNumber(order.takerAssetAmount).eq(MAX_NUMBER)
@@ -226,10 +259,32 @@ export const TradeAssetItem = (props: IProps) => {
             {allLoaded ? assetDetails?.name : " "}&nbsp;
           </Typography>
           <div className={classes.bottomRow}>
-            <Typography className={classes.price}>0.7 ETH</Typography>
+            <Typography className={classes.price}>
+              {isInSale
+                ? highestAsk && highestAskToken
+                  ? `${Number(
+                      formatBigNumber(
+                        xBigNumberToEthersBigNumber(
+                          highestAsk.takerAssetAmount
+                        ),
+                        highestAskToken.decimals
+                      )
+                    )} ${highestAskToken.symbol}`
+                  : "In Sale"
+                : "Not In Sale"}
+            </Typography>
             <Typography className={classes.count}>1 of 1</Typography>
           </div>
-          <Typography className={classes.topBid}>Bid 0.54</Typography>
+          <Typography className={classes.topBid}>
+            {highestBid && highestBidToken
+              ? `Bid ${Number(
+                  formatBigNumber(
+                    xBigNumberToEthersBigNumber(highestBid.makerAssetAmount),
+                    highestBidToken.decimals
+                  )
+                )} ${highestBidToken.symbol}`
+              : "No Bid"}
+          </Typography>
         </div>
       </div>
     </Grid>

@@ -122,6 +122,7 @@ export const PriceHistory = (props: IProps) => {
     },
 
     navigator: {
+      enabled: false,
       outlineWidth: 0,
       handles: {
         borderColor: "#0000",

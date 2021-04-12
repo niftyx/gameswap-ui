@@ -45,6 +45,7 @@ interface IState {
   tokenURI: string;
   tokenId: BigNumber;
   contentId: string;
+  assetId: string;
 }
 
 export const ERC721ProgressModal = (props: IProps) => {
@@ -78,6 +79,7 @@ export const ERC721ProgressModal = (props: IProps) => {
     tokenId: BigNumber.from(0),
     filesUploadPercent: "0",
     contentId: "",
+    assetId: "",
   });
   const apiService = getAPIService();
 
@@ -272,10 +274,11 @@ export const ERC721ProgressModal = (props: IProps) => {
           followStep: ECreateStep.SignSellOrder,
           isLoading: false,
           tokenMint: true,
+          assetId: txReceipt.transactionHash.toLowerCase(),
         }));
       } else {
         await waitSeconds(5);
-        history.push("/trade");
+        history.push(`/assets/${txReceipt.transactionHash.toLowerCase()}`);
         onClose();
       }
     } catch (error) {
@@ -326,7 +329,7 @@ export const ERC721ProgressModal = (props: IProps) => {
         isLoading: false,
       }));
 
-      history.push("/trade");
+      history.push(`/assets/${state.assetId}`);
       onClose();
     } catch (error) {
       setState((prevState) => ({
