@@ -165,6 +165,32 @@ export const submitCollectibleOrder = async (
   return getRelayer({ networkId }).submitOrderAsync(signedOrder);
 };
 
+export const buildOrderBookQuery = (
+  networkId: number,
+  params: {
+    baseAssetData: string;
+    quoteAssetData: string;
+    page?: number;
+    perPage?: number;
+  }
+) => {
+  const endPoint = `${
+    RELAYER_URL[(networkId || DEFAULT_NETWORK_ID) as NetworkId]
+  }/orderbook`;
+  const { page = 1, perPage = ORDERS_PAGE_COUNT } = params;
+  const finalParams: { [key: string]: string | number | undefined } = {
+    ...params,
+    perPage,
+    page,
+  };
+  const query = Object.keys(finalParams)
+    .filter((key) => finalParams[key])
+    .map((key) => `${key}=${encodeURIComponent(String(finalParams[key]))}`)
+    .join("&");
+
+  return `${endPoint}?${query}`;
+};
+
 export const buildOrdersQuery = (
   networkId: NetworkId,
   params: {

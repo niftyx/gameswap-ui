@@ -1,14 +1,19 @@
 import { SignedOrder, assetDataUtils } from "@0x/order-utils";
 import { BigNumber } from "@0x/utils";
 import { AssetProxyIds, DEFAULT_NETWORK_ID } from "config/constants";
+import { getToken, knownTokens } from "config/networks";
 import { useConnectedWeb3Context } from "contexts";
 import { useIsMountedRef } from "hooks";
 import { useEffect, useState } from "react";
 import { getZEROXService } from "services/zeroX";
 import { getLogger } from "utils/logger";
-import { buildOrdersQuery, wrangeOrderResponse } from "utils/order";
+import {
+  buildOrderBookQuery,
+  buildOrdersQuery,
+  wrangeOrderResponse,
+} from "utils/order";
 import { xBigNumberToEthersBigNumber } from "utils/token";
-import { ISignedOrder } from "utils/types.d";
+import { ISignedOrder, KnownToken } from "utils/types.d";
 
 import { NetworkId } from "./../../utils/types.d";
 
@@ -131,9 +136,36 @@ export const useAssetOrders = (
     }
   };
 
+  const loadOrderbook = async (erc20TokenAddress: string) => {
+    const baseAssetData = assetDataUtils.encodeERC721AssetData(
+      collectionId,
+      assetId
+    );
+    const quoteAssetData = assetDataUtils.encodeERC20AssetData(
+      erc20TokenAddress
+    );
+
+    const endPoint = buildOrderBookQuery(networkId || DEFAULT_NETWORK_ID, {
+      baseAssetData,
+      quoteAssetData,
+    });
+    const orderBookResponse = (await zeroXService.getData(endPoint)).data;
+    console.log("===orderBookResponse", orderBookResponse);
+  };
+
   const loadData = async () => {
     setState(() => ({ asks: [], bids: [], loading: true }));
     try {
+      // const erc20TokenIds = Object.keys(knownTokens) as KnownToken[];
+      // const promises: Promise<void>[] = [];
+
+      // erc20TokenIds.forEach((tokenId) => {
+      //   const token = getToken(networkId || DEFAULT_NETWORK_ID, tokenId);
+      //   promises.push(loadOrderbook(token.address));
+      // });
+
+      // await Promise.all(promises);
+
       await Promise.all([loadAsks(), loadBids()]);
       if (isRefMounted.current === true) {
         setState((prev) => ({ ...prev, loading: false }));

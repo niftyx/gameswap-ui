@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     marginTop: theme.spacing(1),
-    border: `1px solid ${theme.colors.border.sixth}`,
+    backgroundColor: theme.colors.background.preview,
     padding: theme.spacing(2),
     borderRadius: theme.spacing(2),
     minHeight: theme.spacing(40),
@@ -25,13 +25,26 @@ const useStyles = makeStyles((theme) => ({
     color: theme.colors.text.default,
     fontWeight: "bold",
   },
+  assetWrapper: {
+    position: "relative",
+    paddingTop: "100%",
+    backgroundColor: theme.colors.background.secondary,
+  },
   img: {
-    width: "100%",
-    margin: `${theme.spacing(2)}px 0`,
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
   },
   iconWrapper: {
-    width: "100%",
-    margin: `${theme.spacing(2)}px 0`,
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
     borderRadius: theme.spacing(0.5),
     backgroundColor: transparentize(0.6, theme.colors.background.tenth),
     display: "flex",
@@ -47,10 +60,20 @@ const useStyles = makeStyles((theme) => ({
     fontSize: theme.spacing(2),
     color: theme.colors.text.default,
     fontWeight: 500,
+    marginTop: 8,
+  },
+  priceRow: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   price: {
     fontSize: theme.spacing(2),
     color: transparentize(0.2, theme.colors.text.default),
+  },
+  count: {
+    fontSize: 14,
+    color: transparentize(0.2, theme.colors.text.secondary),
   },
   unlockWrapper: {
     marginTop: theme.spacing(1),
@@ -92,9 +115,15 @@ export const ERC721Preview = (props: IProps) => {
   const renderImage = () => {
     if (!image || !imageObjectURL) return null;
     const type = getFileType(image);
+
     switch (type) {
       case EFileType.Image:
-        return <img alt="img" className={classes.img} src={imageObjectURL} />;
+        return (
+          <div
+            className={classes.img}
+            style={{ backgroundImage: `url(${imageObjectURL})` }}
+          ></div>
+        );
       case EFileType.Video:
         return (
           <div className={classes.iconWrapper}>
@@ -116,13 +145,23 @@ export const ERC721Preview = (props: IProps) => {
     <div className={classes.root}>
       <Typography className={classes.title}>Preview</Typography>
       <div className={classes.content}>
-        {renderImage()}
+        <div className={classes.assetWrapper}>{renderImage()}</div>
         <Typography className={classes.name}>{name}</Typography>
-        {instantSale && putOnSale && (
-          <Typography className={classes.price}>
-            {salePrice} {saleToken}
-          </Typography>
-        )}
+        <div className={classes.priceRow}>
+          {instantSale && putOnSale && (
+            <Typography className={classes.price}>
+              {salePrice} {saleToken}
+            </Typography>
+          )}
+          {!instantSale && putOnSale && (
+            <Typography className={classes.price}>In Sale</Typography>
+          )}
+          {!putOnSale && (
+            <Typography className={classes.price}>Not In Sale</Typography>
+          )}
+          <Typography className={classes.count}>1/1</Typography>
+        </div>
+        <Typography className={classes.count}>No Bid</Typography>
       </div>
       {unlockOncePurchased && (
         <div className={classes.unlockWrapper}>

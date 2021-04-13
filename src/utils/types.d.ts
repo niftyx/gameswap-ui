@@ -57,6 +57,7 @@ declare module "@material-ui/core/styles/createMuiTheme" {
         eleventh: string;
         twelfth: string;
         thirteenth: string;
+        preview: string;
       };
       text: {
         default: string;
@@ -135,6 +136,7 @@ declare module "@material-ui/core/styles/createMuiTheme" {
         eleventh: string;
         twelfth: string;
         thirteenth: string;
+        preview: string;
       };
       text: {
         default: string;

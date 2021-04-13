@@ -1,3 +1,4 @@
+import { RateLimit } from "async-sema";
 import axios from "axios";
 import { API_BASE_URL } from "config/constants";
 import { BigNumber } from "packages/ethers";
@@ -15,19 +16,24 @@ interface IAssetHistoryResponseRecord {
 }
 
 export class APIService {
+  private readonly _rateLimit: () => Promise<void>;
+
   private readonly cryptoContentPath = "/lock-content/v1/";
   private readonly gamePath = "/games/v1/";
   private readonly collectionPath = "/collections/v1/";
   private readonly assetPath = "/assets/v1/";
   private readonly accountPath = "/accounts/v1/";
 
-  constructor() {}
+  constructor() {
+    this._rateLimit = RateLimit(20);
+  }
 
   /**
    * Games
    * get all games
    */
   public async getGames() {
+    await this._rateLimit();
     const response = await axios.get(`${this.gamePath}all`);
     return response.data;
   }
@@ -41,6 +47,7 @@ export class APIService {
     perPage?: number,
     page?: number
   ) {
+    await this._rateLimit();
     const response = await axios.get(
       `${this.collectionPath}games/${id}?perPage=${perPage || 100}&page=${
         page || 1
@@ -62,6 +69,7 @@ export class APIService {
     perPage?: number,
     page?: number
   ) {
+    await this._rateLimit();
     const response = await axios.get(
       `${this.gamePath}${id}/assets?perPage=${perPage || 100}&page=${page || 1}`
     );
@@ -77,6 +85,7 @@ export class APIService {
    * get game
    */
   public async getGame(id: string) {
+    await this._rateLimit();
     const response = await axios.get(`${this.gamePath}${id}`);
     return response.data as IGame;
   }
@@ -86,6 +95,7 @@ export class APIService {
    * create Game
    */
   public async createGame(payload: any): Promise<IGame> {
+    await this._rateLimit();
     const response = await axios.post(this.gamePath, payload);
     return response.data;
   }
@@ -95,6 +105,7 @@ export class APIService {
    * get all collections
    */
   public async getCollections() {
+    await this._rateLimit();
     const response = await axios.get(`${this.collectionPath}all`);
     return response.data;
   }
@@ -104,6 +115,7 @@ export class APIService {
    * encrypt content data
    */
   public async getEncryptedContentData(contentStr: string) {
+    await this._rateLimit();
     const response = await axios.post(`${this.cryptoContentPath}encrypt`, {
       contentStr,
     });
@@ -115,6 +127,7 @@ export class APIService {
    * decrypt content data
    */
   public async getDecryptedContentData(contentStr: string, hashedStr: string) {
+    await this._rateLimit();
     const response = await axios.post(`${this.cryptoContentPath}decrypt`, {
       contentStr,
       signedContentStr: hashedStr,
@@ -127,6 +140,7 @@ export class APIService {
    * get asset details from asset id
    */
   public async getAssetDetails(id: string) {
+    await this._rateLimit();
     const response = await axios.get(`${this.assetPath}${id}`);
     return response.data;
   }
@@ -139,6 +153,7 @@ export class APIService {
     assetId: BigNumber,
     collectionId: string
   ) {
+    await this._rateLimit();
     const response = await axios.get(
       `${
         this.assetPath
@@ -156,6 +171,7 @@ export class APIService {
     perPage?: number,
     page?: number
   ) {
+    await this._rateLimit();
     const response = await axios.get(
       `${this.assetPath}user/${ownerAddress}?perPage=${perPage || 100}&page=${
         page || 1
@@ -177,6 +193,7 @@ export class APIService {
     perPage?: number,
     page?: number
   ) {
+    await this._rateLimit();
     const response = await axios.get(
       `${this.assetPath}creator/${creatorAddress}?perPage=${
         perPage || 100
@@ -198,6 +215,7 @@ export class APIService {
     perPage?: number,
     page?: number
   ) {
+    await this._rateLimit();
     const response = await axios.get(
       `${this.assetPath}${assetId}/history?perPage=${perPage || 100}&page=${
         page || 1
@@ -215,6 +233,7 @@ export class APIService {
    * get account info
    */
   public async getAccountInfo(account: string) {
+    await this._rateLimit();
     const response = await axios.get(`${this.accountPath}${account}`);
     return response.data as IUserInfo;
   }
@@ -228,6 +247,7 @@ export class APIService {
     payload: any,
     signedMessage: string
   ) {
+    await this._rateLimit();
     const response = await axios.post(`${this.accountPath}${account}`, {
       ...payload,
       signedMessage,

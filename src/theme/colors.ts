@@ -35,6 +35,7 @@ const colors = [
         eleventh: "#151B2D",
         twelfth: "#1F263C",
         thirteenth: "#2660F7",
+        preview: "#141A28",
       },
       text: {
         default: "#FFF",
@@ -100,6 +101,7 @@ const colors = [
         eleventh: "#151B2D",
         twelfth: "#1F263C",
         thirteenth: "#2660F7",
+        preview: "#141A28",
       },
       text: {
         default: "#FFF",
