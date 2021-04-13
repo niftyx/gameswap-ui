@@ -68,7 +68,7 @@ export const CollectionCreateModal = (props: IProps) => {
     description: "",
     uploading: false,
     symbol: "",
-    isPrivate: false,
+    isPrivate: true,
   };
 
   return (

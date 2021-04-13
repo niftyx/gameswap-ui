@@ -52,7 +52,7 @@ export const CollectionCreateForm = (props: IProps) => {
     description: "",
     uploading: false,
     symbol: "",
-    isPrivate: false,
+    isPrivate: true,
   };
 
   return (
