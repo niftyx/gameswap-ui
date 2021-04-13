@@ -414,23 +414,6 @@ export const ERC721CreateForm = (props: IProps) => {
                 onNewGame={props.onNewGame}
               />
 
-              {/* <FormSelectField
-                FormControlProps={{ fullWidth: true }}
-                InputLabelProps={{ htmlFor: "gameId", shrink: true }}
-                SelectProps={{
-                  id: "gameId",
-                  name: "gameId",
-                  onBlur: handleBlur,
-                  onChange: handleChange,
-                  value: values.gameId,
-                }}
-                items={GAMES.map((game) => ({
-                  value: game.id,
-                  label: game.title,
-                }))}
-                label="Game"
-              /> */}
-
               <FormTextField
                 FormControlProps={{ fullWidth: true }}
                 FormHelperTextProps={{

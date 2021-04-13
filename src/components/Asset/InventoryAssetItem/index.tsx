@@ -10,7 +10,7 @@ import React from "react";
 import useCommonStyles from "styles/common";
 import { IGraphInventoryAsset } from "types";
 import { formatBigNumber } from "utils";
-import { getHighestAsk, getHighestBid } from "utils/bid";
+import { getHighestBid, getLowestAsk } from "utils/bid";
 import { getLogger } from "utils/logger";
 import { MAX_NUMBER } from "utils/number";
 import {
@@ -137,8 +137,7 @@ export const InventoryAssetItem = (props: IProps) => {
   const { asset, loaded } = useAssetDetailsFromInventoryItem(data);
   const { asks, bids, loading: assetsLoading } = useAssetOrders(
     data.collectionId,
-    EthersBigNumberTo0xBigNumber(data.assetId),
-    data.owner
+    EthersBigNumberTo0xBigNumber(data.assetId)
   );
   const {
     data: { price },
@@ -163,7 +162,7 @@ export const InventoryAssetItem = (props: IProps) => {
         highestBid.erc20Address
       )
     : null;
-  const highestAsk = getHighestAsk(
+  const highestAsk = getLowestAsk(
     orders,
     price,
     networkId || DEFAULT_NETWORK_ID

@@ -37,8 +37,11 @@ const useCommonStyles = makeStyles((theme) => ({
       backgroundColor: transparentize(0.5, theme.colors.text.default),
     },
   },
-  textAlignRight: {
+  textRight: {
     textAlign: "right",
+  },
+  textCenter: {
+    textAlign: "center",
   },
   row: {
     display: "flex",

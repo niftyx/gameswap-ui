@@ -33,7 +33,7 @@ export const getHighestBid = (
   return data[0].bid;
 };
 
-export const getHighestAsk = (
+export const getLowestAsk = (
   asks: ISignedOrder[],
   price: { [key in KnownToken]: IGlobalPriceData },
   networkId: number
@@ -51,10 +51,10 @@ export const getHighestAsk = (
   });
   data.sort((d1, d2) => {
     if (d1.calcPrice.lt(d2.calcPrice)) {
-      return 1;
+      return -1;
     }
     if (d1.calcPrice.lt(d2.calcPrice)) {
-      return -1;
+      return 1;
     }
     return 0;
   });

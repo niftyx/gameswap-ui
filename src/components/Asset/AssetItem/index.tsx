@@ -5,11 +5,11 @@ import clsx from "clsx";
 import { DEFAULT_NETWORK_ID } from "config/constants";
 import { getTokenFromAddress } from "config/networks";
 import { useConnectedWeb3Context, useGlobal } from "contexts";
-import { useAssetBids, useAssetDetailsFromIdCollection } from "helpers";
+import { useAssetDetailsFromIdCollection, useAssetOrders } from "helpers";
 import React from "react";
 import useCommonStyles from "styles/common";
 import { formatBigNumber } from "utils";
-import { getHighestAsk, getHighestBid } from "utils/bid";
+import { getHighestBid, getLowestAsk } from "utils/bid";
 import { MAX_NUMBER } from "utils/number";
 import {
   EthersBigNumberTo0xBigNumber,
@@ -127,7 +127,7 @@ export const AssetItem = (props: IProps) => {
     data.id,
     data.collectionId
   );
-  const { bids, loading: bidsLoading } = useAssetBids(
+  const { bids, loading: bidsLoading } = useAssetOrders(
     data.collectionId,
     EthersBigNumberTo0xBigNumber(data.id)
   );
@@ -151,7 +151,7 @@ export const AssetItem = (props: IProps) => {
         highestBid.erc20Address
       )
     : null;
-  const highestAsk = getHighestAsk(
+  const highestAsk = getLowestAsk(
     orders,
     price,
     networkId || DEFAULT_NETWORK_ID

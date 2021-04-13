@@ -114,13 +114,7 @@ export const BrowseBidItem = (props: IProps & IBrowseGameBidItem) => {
             <span>{startFromAmount.toNumber()}</span>
           </Typography>
         </Grid>
-        <Grid
-          className={commonClasses.textAlignRight}
-          item
-          lg={2}
-          md={3}
-          xs={3}
-        >
+        <Grid className={commonClasses.textRight} item lg={2} md={3} xs={3}>
           <Button
             className={classes.button}
             color="primary"
@@ -129,13 +123,7 @@ export const BrowseBidItem = (props: IProps & IBrowseGameBidItem) => {
             BID FOR 43.00
           </Button>
         </Grid>
-        <Grid
-          className={commonClasses.textAlignRight}
-          item
-          lg={1}
-          md={2}
-          xs={2}
-        >
+        <Grid className={commonClasses.textRight} item lg={1} md={2} xs={2}>
           <>
             <IconButton className={classes.moreButton} onClick={handleClick}>
               <MoreHorizIcon />

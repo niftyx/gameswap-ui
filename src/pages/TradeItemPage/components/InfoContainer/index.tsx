@@ -16,7 +16,7 @@ import { useLocation, useParams } from "react-router-dom";
 import { getAPIService } from "services/api";
 import useCommonStyles from "styles/common";
 import { formatBigNumber, numberWithCommas } from "utils";
-import { getHighestAsk, getHighestBid } from "utils/bid";
+import { getHighestBid, getLowestAsk } from "utils/bid";
 import { EAssetDetailTab } from "utils/enums";
 import { MAX_NUMBER } from "utils/number";
 import {
@@ -47,6 +47,8 @@ const useStyles = makeStyles((theme) => ({
   mainContent: {
     flex: 1,
     padding: "24px",
+    display: "flex",
+    flexDirection: "column",
   },
   top: {
     padding: "0 24px",
@@ -127,8 +129,7 @@ export const InfoContainer = (props: IProps) => {
   const { data } = props;
   const { asks, bids, loading: ordersLoading } = useAssetOrders(
     data.collectionId,
-    EthersBigNumberTo0xBigNumber(data.tokenId),
-    data.owner
+    EthersBigNumberTo0xBigNumber(data.tokenId)
   );
   const [state, setState] = useState<IState>({
     unlocking: false,
@@ -165,7 +166,7 @@ export const InfoContainer = (props: IProps) => {
         highestBid.erc20Address
       )
     : null;
-  const highestAsk = getHighestAsk(
+  const highestAsk = getLowestAsk(
     orders,
     price,
     networkId || DEFAULT_NETWORK_ID
@@ -373,7 +374,7 @@ export const InfoContainer = (props: IProps) => {
         {tabName === EAssetDetailTab.TradeHistory && (
           <TradeHistory tradeHistoryData={historyData} />
         )}
-        {tabName === EAssetDetailTab.Bids && <BidsSectionTab bids={bids} />}
+        {tabName === EAssetDetailTab.Bids && <BidsSectionTab data={data} />}
       </div>
     </div>
   );
