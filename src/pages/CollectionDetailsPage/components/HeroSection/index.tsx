@@ -121,10 +121,11 @@ export const HeroSection = (props: IProps) => {
     setState((prev) => ({ ...prev, imageLoaded }));
 
   const headerImage = "";
+  const dataVisible = state.imageLoaded || !headerImage;
 
   return (
     <div className={clsx(classes.root, props.className)}>
-      {(!state.imageLoaded || collectionLoading) && (
+      {(!dataVisible || collectionLoading) && (
         <div className={classes.loadWrapper}>
           <CircularProgress size={40} />
         </div>
@@ -143,19 +144,13 @@ export const HeroSection = (props: IProps) => {
             />
           )}
           <div
-            className={clsx(
-              classes.imgItem,
-              !headerImage || state.imageLoaded ? "visible" : ""
-            )}
+            className={clsx(classes.imgItem, dataVisible ? "visible" : "")}
             style={{
               backgroundImage: state.imageLoaded ? `url(${headerImage})` : "",
             }}
           />
           <div
-            className={clsx(
-              classes.mainContent,
-              !headerImage || state.imageLoaded ? "visible" : ""
-            )}
+            className={clsx(classes.mainContent, dataVisible ? "visible" : "")}
           >
             <Typography className={classes.comment} component="div">
               COLLECTION

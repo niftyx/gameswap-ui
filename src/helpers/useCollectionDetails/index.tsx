@@ -40,10 +40,11 @@ export const useCollectionDetails = (
     setState((prev) => ({ ...prev, loading: true }));
     try {
       const collection = await apiService.getCollection(id);
-      setState(() => ({
-        loading: false,
-        collection: wrangleCollection(collection),
-      }));
+      if (isRefMounted.current === true)
+        setState(() => ({
+          loading: false,
+          collection: wrangleCollection(collection),
+        }));
     } catch (error) {
       if (isRefMounted.current === true) setState(() => ({ loading: false }));
     }
