@@ -83,8 +83,8 @@ const Navbar = (props: IProps & RouteComponentProps) => {
           Icon: ShoppingBagIcon,
         },
         {
-          title: "Followings",
-          href: "/followings",
+          title: "Following",
+          href: "/following",
           Icon: TvIcon,
         },
       ],
