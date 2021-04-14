@@ -1,43 +1,7 @@
 import { useIsMountedRef } from "hooks";
 import { useEffect, useState } from "react";
 import { getAPIService } from "services/api";
-import { waitSeconds } from "utils";
 import { ICollection } from "utils/types";
-
-const FakeCollections: ICollection[] = [
-  {
-    id: "123",
-    name: "Collection Daylight",
-    description: "ERC-20 / ERC-721",
-    imageUrl: "/images/backgrounds/daylight.png",
-    symbol: "CD7",
-    isPrivate: false,
-  },
-  {
-    id: "234",
-    name: "Awesome collection",
-    description: "ERC-721",
-    imageUrl: "/images/backgrounds/resident.png",
-    symbol: "CD7",
-    isPrivate: false,
-  },
-  {
-    id: "1",
-    name: "Good collection",
-    description: "ERC-1155",
-    imageUrl: "/images/backgrounds/battlefield.png",
-    symbol: "CD7",
-    isPrivate: false,
-  },
-  {
-    id: "13",
-    name: "Cool",
-    description: "ERC-1155",
-    imageUrl: "/images/backgrounds/cyber-assault.png",
-    symbol: "CD7",
-    isPrivate: false,
-  },
-];
 
 interface IState {
   loading: boolean;
@@ -68,8 +32,7 @@ export const useCollectionsFromGameId = (
           loading: false,
         }));
 
-      return FakeCollections;
-      // return response.records;
+      return response.records;
     } catch (error) {
       setState(() => ({ loading: false, collections: [] }));
       return [];
