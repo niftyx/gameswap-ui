@@ -9,3 +9,4 @@ export * from "./BrowseBidItem";
 export * from "./AssetPhoto";
 export * from "./GameDetailsAssetItem";
 export * from "./AssetLargePhoto";
+export * from "./CollectionPreview";

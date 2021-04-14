@@ -2,6 +2,7 @@
 import axios from "axios";
 import { DEFAULT_PRICE, DEFAULT_USD, PRICE_DECIMALS } from "config/constants";
 import { knownTokens } from "config/networks";
+import { wrangleCollection } from "helpers";
 import { useIsMountedRef } from "hooks";
 import { parseEther } from "packages/ethers/utils";
 import React, { createContext, useContext, useEffect, useState } from "react";
@@ -138,7 +139,7 @@ export const GlobalProvider = ({ children }: IProps) => {
       const collectionResponse = await apiService.getCollections();
       setCurrentData((prev) => ({
         ...prev,
-        collections: collectionResponse.records,
+        collections: collectionResponse.records.map(wrangleCollection),
       }));
     } catch (error) {
       logger.error(error);

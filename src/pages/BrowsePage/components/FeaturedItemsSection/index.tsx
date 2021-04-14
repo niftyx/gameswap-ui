@@ -4,7 +4,7 @@ import { BrowsedFeaturedItem } from "components";
 import { useGlobal } from "contexts";
 import React, { useState } from "react";
 import Slider from "react-slick";
-import { IGame, IGameItem } from "utils/types";
+import { IGame } from "utils/types";
 
 const useStyles = makeStyles((theme) => ({
   root: {

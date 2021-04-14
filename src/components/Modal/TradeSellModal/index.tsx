@@ -3,8 +3,6 @@ import { DEFAULT_NETWORK_ID } from "config/constants";
 import { getToken } from "config/networks";
 import { useConnectedWeb3Context, useTrade } from "contexts";
 import React, { useState } from "react";
-import { waitSeconds } from "utils";
-import { NULL_ADDRESS } from "utils/address";
 import { ETradeStep } from "utils/enums";
 import { MAX_NUMBER } from "utils/number";
 

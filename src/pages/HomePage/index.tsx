@@ -6,7 +6,12 @@ import { transparentize } from "polished";
 import React from "react";
 import useCommonStyles from "styles/common";
 
-import { HeroCarousel, TrendingGames, TrendingItems } from "./components";
+import {
+  FeaturedCollections,
+  HeroCarousel,
+  TrendingGames,
+  TrendingItems,
+} from "./components";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,16 +25,12 @@ const useStyles = makeStyles((theme) => ({
     minHeight: "50%",
   },
   restContent: { padding: "16px 24px" },
-  trendingGames: {
+  section: {
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2),
   },
   divider: {
     backgroundColor: transparentize(0.94, theme.colors.text.default),
-  },
-  trendingItems: {
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(2),
   },
 }));
 
@@ -49,10 +50,12 @@ const HomePage = () => {
       <div className={clsx(classes.content, commonClasses.scroll)}>
         <HeroCarousel className={classes.heroCarousel} />
         <div className={classes.restContent}>
-          <TrendingGames className={classes.trendingGames} />
+          <TrendingGames className={classes.section} />
+          <Divider className={classes.divider} />
+          <FeaturedCollections className={classes.section} />
           <Divider className={classes.divider} />
           <TrendingItems
-            className={classes.trendingItems}
+            className={classes.section}
             loading={allOrdersLoading}
             onScrollEnd={
               !allOrdersLoading && !allOrdersLoaded

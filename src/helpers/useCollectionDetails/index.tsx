@@ -7,7 +7,7 @@ import { ICollection } from "utils/types";
 
 const logger = getLogger("useCollectionDetails::");
 
-const wrangleCollection = (res: any): ICollection =>
+export const wrangleCollection = (res: any): ICollection =>
   ({
     ...res,
     totalBurned: BigNumber.from(res.totalBurned.hex),

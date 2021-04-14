@@ -12,7 +12,6 @@ import { useCollectionDetails } from "helpers";
 import { transparentize } from "polished";
 import React, { useState } from "react";
 import { shortenAddress, waitSeconds } from "utils";
-import { ICollection } from "utils/types";
 
 const AVATAR_SIZE = 60;
 
@@ -34,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",
     backgroundPositionX: "center",
+    backgroundColor: theme.colors.background.fourth,
     opacity: 0,
     transition: "all 0.5s",
     position: "relative",
@@ -120,7 +120,7 @@ export const HeroSection = (props: IProps) => {
   const setImageLoaded = (imageLoaded: boolean) =>
     setState((prev) => ({ ...prev, imageLoaded }));
 
-  const headerImage = "/images/backgrounds/profile.png";
+  const headerImage = "";
 
   return (
     <div className={clsx(classes.root, props.className)}>
@@ -131,19 +131,21 @@ export const HeroSection = (props: IProps) => {
       )}
       {collection && (
         <>
-          <img
-            alt="fake"
-            className={classes.fakeImage}
-            onLoad={async () => {
-              await waitSeconds(1);
-              setImageLoaded(true);
-            }}
-            src={headerImage}
-          />
+          {headerImage && (
+            <img
+              alt="fake"
+              className={classes.fakeImage}
+              onLoad={async () => {
+                await waitSeconds(1);
+                setImageLoaded(true);
+              }}
+              src={headerImage}
+            />
+          )}
           <div
             className={clsx(
               classes.imgItem,
-              state.imageLoaded ? "visible" : ""
+              !headerImage || state.imageLoaded ? "visible" : ""
             )}
             style={{
               backgroundImage: state.imageLoaded ? `url(${headerImage})` : "",
@@ -152,7 +154,7 @@ export const HeroSection = (props: IProps) => {
           <div
             className={clsx(
               classes.mainContent,
-              state.imageLoaded ? "visible" : ""
+              !headerImage || state.imageLoaded ? "visible" : ""
             )}
           >
             <Typography className={classes.comment} component="div">
@@ -166,7 +168,7 @@ export const HeroSection = (props: IProps) => {
 
               <a
                 className={classes.address}
-                href={`${etherscan}address/${collection.id}`}
+                href={`${etherscan}tokens/${collection.id}/inventory`}
                 rel="noreferrer"
                 target="_blank"
               >
