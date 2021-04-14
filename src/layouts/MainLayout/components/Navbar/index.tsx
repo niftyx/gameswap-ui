@@ -4,6 +4,9 @@ import { ReactComponent as ShoppingBagIcon } from "assets/svgs/format-list-text.
 import { ReactComponent as GamePadIcon } from "assets/svgs/gamepad.svg";
 import { ReactComponent as HeartIcon } from "assets/svgs/heart-outline.svg";
 import { ReactComponent as GlobeIcon } from "assets/svgs/lightning-bolt-outline.svg";
+import { ReactComponent as DiscordIcon } from "assets/svgs/social/discord.svg";
+import { ReactComponent as TelegramIcon } from "assets/svgs/social/telegram.svg";
+import { ReactComponent as TwitterIcon } from "assets/svgs/social/twitter.svg";
 import { ReactComponent as FlagIcon } from "assets/svgs/star-outline.svg";
 import { ReactComponent as FlashIcon } from "assets/svgs/trending-up.svg";
 import clsx from "clsx";
@@ -35,13 +38,21 @@ const useStyles = makeStyles((theme) => ({
   bottomWrapper: {
     position: "absolute",
     bottom: 0,
-    right: 0,
-    left: 0,
+    right: 16,
+    left: 16,
     height: theme.spacing(8),
     borderTop: `1px solid ${theme.colors.border.secondary}`,
     display: "flex",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-between",
+  },
+  bottomSocials: {
+    display: "flex",
+    alignItems: "center",
+    "& > a": {},
+    "& > a + a": {
+      marginLeft: 16,
+    },
   },
   switcher: {
     margin: "0 !important",
@@ -148,6 +159,25 @@ const Navbar = (props: IProps & RouteComponentProps) => {
             style={{ marginBottom: "2rem" }}
             sunColor="#FFF"
           />
+          <div className={classes.bottomSocials}>
+            <a
+              href="https://twitter.com/gameswapdex"
+              rel="noreferrer"
+              target="_blank"
+            >
+              <TwitterIcon />
+            </a>
+            <a href="https://t.me/gameswap" rel="noreferrer" target="_blank">
+              <TelegramIcon />
+            </a>
+            <a
+              href="https://discord.gg/eXctughEDH"
+              rel="noreferrer"
+              target="_blank"
+            >
+              <DiscordIcon />
+            </a>
+          </div>
         </div>
       </div>
     </div>
