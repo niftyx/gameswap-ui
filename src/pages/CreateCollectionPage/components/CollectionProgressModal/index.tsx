@@ -3,6 +3,7 @@ import { DEFAULT_NETWORK_ID } from "config/constants";
 import { getContractAddress } from "config/networks";
 import { useConnectedWeb3Context, useGlobal } from "contexts";
 import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router";
 import { ERC721FactoryService } from "services";
 import { waitSeconds } from "utils";
 import { getLogger } from "utils/logger";
@@ -40,6 +41,7 @@ export const CollectionProgressModal = (props: IProps) => {
     message: "",
     error: "",
   });
+  const history = useHistory();
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -64,10 +66,11 @@ export const CollectionProgressModal = (props: IProps) => {
         formValues.description || "",
         formValues.isPrivate
       );
-      logger.log(txResult);
+      const collectionId = factoryContract.getCreatedCollectionId(txResult);
       await waitSeconds(5);
       await loadCollections();
       setState((prev) => ({ ...prev, loading: false }));
+      history.push(`/collections/${collectionId}`);
       onClose();
     } catch (error) {
       setState((prev) => ({ ...prev, loading: false, error: error.message }));

@@ -30,6 +30,11 @@ const routes = [
       },
       {
         exact: true,
+        path: "/collections/:id",
+        component: lazy(() => import("pages/CollectionDetailsPage")),
+      },
+      {
+        exact: true,
         path: "/browse",
         component: lazy(() => import("pages/BrowsePage")),
       },

@@ -422,6 +422,9 @@ export interface ICollection {
   imageUrl: string;
   symbol: string;
   isPrivate: boolean;
+  totalSupply?: BigNumber;
+  totalBurned?: BigNumber;
+  totalMinted?: BigNumber;
 }
 export interface IBalances {
   eth: BigNumber;

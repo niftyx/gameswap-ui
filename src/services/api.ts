@@ -111,6 +111,16 @@ export class APIService {
   }
 
   /**
+   * Collections
+   * get collection
+   */
+  public async getCollection(id: string) {
+    await this._rateLimit();
+    const response = await axios.get(`${this.collectionPath}${id}`);
+    return response.data;
+  }
+
+  /**
    * Crypto
    * encrypt content data
    */
@@ -176,6 +186,28 @@ export class APIService {
       `${this.assetPath}user/${ownerAddress}?perPage=${perPage || 100}&page=${
         page || 1
       }`
+    );
+    return response.data as {
+      page: number;
+      perPage: number;
+      records: Record<string, unknown>[];
+    };
+  }
+
+  /**
+   * Assets
+   * get assets of user
+   */
+  public async getAssetsOfCollection(
+    collectionId: string,
+    perPage?: number,
+    page?: number
+  ) {
+    await this._rateLimit();
+    const response = await axios.get(
+      `${this.assetPath}collection/${collectionId}?perPage=${
+        perPage || 100
+      }&page=${page || 1}`
     );
     return response.data as {
       page: number;

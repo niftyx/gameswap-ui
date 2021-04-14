@@ -1,12 +1,14 @@
 import { TransactionReceipt } from "@ethersproject/abstract-provider/lib/index";
-import { Contract, Wallet, ethers } from "packages/ethers";
+import { Contract, Wallet, ethers, utils } from "packages/ethers";
 import { getLogger } from "utils/logger";
 import { Maybe } from "utils/types";
 
+const { Interface } = utils;
 const logger = getLogger("Services::Erc20");
 
-const erc20Abi = [
+const factoryAbi = [
   "function createGswap721(string memory name,string memory symbol,string memory imageUrl,string memory description,bool isPrivate) public returns (address)",
+  "event CollectionCreated(address indexed tokenAddress,string name,string symbol,string imageURL,string description,bool isPrivate)",
 ];
 
 class ERC721FactoryService {
@@ -23,11 +25,11 @@ class ERC721FactoryService {
       const signer: Wallet = provider.getSigner();
       this.contract = new ethers.Contract(
         tokenAddress,
-        erc20Abi,
+        factoryAbi,
         provider
       ).connect(signer);
     } else {
-      this.contract = new ethers.Contract(tokenAddress, erc20Abi, provider);
+      this.contract = new ethers.Contract(tokenAddress, factoryAbi, provider);
     }
   }
 
@@ -53,8 +55,22 @@ class ERC721FactoryService {
       description,
       isPrivate
     );
-    logger.log(`CreateGswap721 transaccion hash: ${transactionObject.hash}`);
+    logger.log(`CreateGswap721 transaction hash: ${transactionObject.hash}`);
     return this.provider.waitForTransaction(transactionObject.hash);
+  };
+
+  getCreatedCollectionId = (txReceipt: TransactionReceipt): string => {
+    const iface = new Interface(factoryAbi);
+    const { logs } = txReceipt;
+    const filter = this.contract.filters.CollectionCreated();
+    if (!filter.topics || filter.topics.length === 0) return "";
+    const CollectionCreatedId = filter.topics[0] as string;
+    const log = logs.find((log) => log.topics.includes(CollectionCreatedId));
+    if (log) {
+      const parsedLog = iface.parseLog(log);
+      return parsedLog.args[0];
+    }
+    return "";
   };
 }
 
