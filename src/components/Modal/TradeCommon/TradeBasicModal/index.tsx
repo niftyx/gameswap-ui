@@ -16,12 +16,15 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: theme.colors.shadow.modal,
     borderRadius: theme.spacing(1),
     padding: theme.spacing(6),
+    paddingRight: theme.spacing(5),
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
     outline: "none",
     maxHeight: "80vh",
     userSelect: "none",
+    display: "flex",
+    flexDirection: "column",
     [theme.breakpoints.down("xs")]: {
       width: 400,
       padding: theme.spacing(2),
@@ -45,6 +48,9 @@ const useStyles = makeStyles((theme) => ({
   content: {
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
+    flex: 1,
+    paddingRight: 8,
+    overflowY: "auto",
   },
 }));
 
