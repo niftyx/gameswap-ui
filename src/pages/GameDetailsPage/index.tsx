@@ -43,7 +43,7 @@ const GameDetailsPage = () => {
   const commonClasses = useCommonStyles();
   const params = useParams();
   const history = useHistory();
-  const gameId = ((params || {}) as any).id as string;
+  const gameId = (((params || {}) as any).id as string).toLowerCase();
 
   const { game: gameInfo, loading: gameLoading } = useGameDetailsFromId(
     gameId || ""

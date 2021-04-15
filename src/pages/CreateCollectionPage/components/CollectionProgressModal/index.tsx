@@ -66,7 +66,9 @@ export const CollectionProgressModal = (props: IProps) => {
         formValues.description || "",
         formValues.isPrivate
       );
-      const collectionId = factoryContract.getCreatedCollectionId(txResult);
+      const collectionId = factoryContract
+        .getCreatedCollectionId(txResult)
+        .toLowerCase();
       await waitSeconds(5);
       await loadCollections();
       setState((prev) => ({ ...prev, loading: false }));

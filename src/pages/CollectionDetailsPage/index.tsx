@@ -31,7 +31,7 @@ const CollectionDetailsPage = () => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
   const params = useParams();
-  const collectionId = ((params || {}) as any).id as string;
+  const collectionId = (((params || {}) as any).id as string).toLowerCase();
 
   if (!isAddress(collectionId)) {
     return <Redirect to="/" />;

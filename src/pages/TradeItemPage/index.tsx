@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
 const TradeItemPage = () => {
   const classes = useStyles();
   const params = useParams();
-  const assetId = ((params || {}) as any).id as string;
+  const assetId = (((params || {}) as any).id as string).toLowerCase();
   const { data: assetData } = useAssetDetailsWithOrderFromId(assetId || "");
 
   if (!assetId || !assetId.startsWith("0x")) {
