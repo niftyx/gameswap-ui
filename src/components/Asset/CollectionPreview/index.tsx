@@ -40,9 +40,12 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
   },
   content: {
-    backgroundColor: theme.colors.border.secondary,
+    backgroundColor: theme.colors.background.eleventh,
     borderRadius: 4,
     padding: theme.spacing(1),
+    "&:hover": {
+      backgroundColor: theme.colors.background.twelfth,
+    },
   },
   top: {
     position: "relative",
