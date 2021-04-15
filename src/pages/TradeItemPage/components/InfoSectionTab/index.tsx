@@ -179,9 +179,16 @@ export const InfoSectionTab = (props: IProps) => {
         </div>
         <div className={classes.propertyRow}>
           <Typography className={classes.propertyKey}>TokenId:</Typography>
-          <Typography className={classes.propertyValue}>
+          <a
+            className={classes.propertyValue}
+            href={`${etherUri}tokens/${
+              data.collectionId
+            }/instance/${data.tokenId.toString()}/token-transfers`}
+            rel="noreferrer"
+            target="_blank"
+          >
             {data.tokenId.toString()}
-          </Typography>
+          </a>
         </div>
         <div className={classes.propertyRow}>
           <Typography className={classes.propertyKey}>Blockchain:</Typography>

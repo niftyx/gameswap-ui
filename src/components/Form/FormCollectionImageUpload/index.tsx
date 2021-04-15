@@ -8,6 +8,7 @@ import {
   Typography,
   makeStyles,
 } from "@material-ui/core";
+import { ReactComponent as ImagePlusIcon } from "assets/svgs/image-plus.svg";
 import clsx from "clsx";
 import { ASSET_IMAGE_FILE_SIZE_LIMIT } from "config/constants";
 import { useSnackbar } from "notistack";
@@ -23,6 +24,15 @@ const useStyles = makeStyles((theme) => ({
     width: 100,
     height: 100,
     marginRight: 16,
+    borderRadius: 4,
+    backgroundColor: theme.colors.border.fourth,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    "& svg": {
+      width: 80,
+      height: 80,
+    },
   },
   right: {
     flex: 1,
@@ -112,7 +122,13 @@ export const FormCollectionImageUpload = (props: IProps) => {
         {...restInputProps}
       />
       <div className={classes.content}>
-        <Avatar className={classes.avatar} src={imageUrl} />
+        {imageUrl ? (
+          <Avatar className={classes.avatar} src={imageUrl} variant="rounded" />
+        ) : (
+          <div className={classes.avatar}>
+            <ImagePlusIcon />
+          </div>
+        )}
         <div className={classes.right}>
           <Typography className={classes.label} component="div">
             We recommend an image of at least 400x400.
