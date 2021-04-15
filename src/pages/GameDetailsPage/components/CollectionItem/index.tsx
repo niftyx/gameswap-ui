@@ -2,6 +2,7 @@ import { CircularProgress, Typography, makeStyles } from "@material-ui/core";
 import clsx from "clsx";
 import { transparentize } from "polished";
 import React, { useState } from "react";
+import { NavLink } from "react-router-dom";
 import { ICollection } from "utils/types";
 
 const useStyles = makeStyles((theme) => ({
@@ -25,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
     opacity: 0,
     transition: "all 0.5s",
     position: "relative",
+    display: "block",
     "&.visible": {
       opacity: 1,
     },
@@ -106,8 +108,9 @@ export const CollectionItem = (props: IProps) => {
         </div>
       )}
 
-      <div
+      <NavLink
         className={clsx(classes.content, state.imageLoaded ? "visible" : "")}
+        to={`/collections/${collection.id}`}
       >
         <div className={classes.textContent}>
           <Typography className={classes.name}>{collection.name}</Typography>
@@ -123,7 +126,7 @@ export const CollectionItem = (props: IProps) => {
               : "",
           }}
         />
-      </div>
+      </NavLink>
 
       <img
         alt="fake"
