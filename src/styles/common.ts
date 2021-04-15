@@ -30,11 +30,17 @@ const useCommonStyles = makeStyles((theme) => ({
     },
   },
   transparentButton: {
-    backgroundColor: transparentize(0.9, theme.colors.text.default),
+    backgroundColor: `${transparentize(
+      0.9,
+      theme.colors.text.default
+    )} !important`,
     borderRadius: 6,
     color: theme.colors.text.default,
     "&:hover": {
-      backgroundColor: transparentize(0.5, theme.colors.text.default),
+      backgroundColor: `${transparentize(
+        0.5,
+        theme.colors.text.default
+      )} !important`,
     },
   },
   textRight: {

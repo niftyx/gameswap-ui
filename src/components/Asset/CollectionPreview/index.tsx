@@ -6,11 +6,14 @@ import {
 import clsx from "clsx";
 import { transparentize } from "polished";
 import React, { useState } from "react";
+import Identicon from "react-identicons";
 import { NavLink } from "react-router-dom";
 import useCommonStyles from "styles/common";
 import { formatBigNumber } from "utils";
 import { ONE_NUMBER, ZERO_NUMBER } from "utils/number";
 import { ICollection } from "utils/types";
+
+const IdenticonComponent = Identicon as any;
 
 const AVATAR_SIZE = 60;
 
@@ -52,17 +55,16 @@ const useStyles = makeStyles((theme) => ({
     right: 0,
     top: 0,
     bottom: 0,
-    objectFit: "cover",
-    width: "100%",
-    height: "100%",
     backgroundColor: transparentize(0.5, theme.colors.background.fourth),
+    backgroundSize: "cover",
+    backgroundPosition: "center",
   },
   imgPlaceholder: {
     position: "absolute",
     left: 0,
     right: 0,
     top: 0,
-    bottom: 0,
+    bottom: -AVATAR_SIZE / 2 - 10,
     borderRadius: theme.spacing(1),
     objectFit: "cover",
     width: "100%",
@@ -77,6 +79,8 @@ const useStyles = makeStyles((theme) => ({
     margin: "auto",
     width: AVATAR_SIZE,
     height: AVATAR_SIZE,
+    borderRadius: "50%",
+    overflow: "hidden",
   },
   textWrapper: { marginTop: -AVATAR_SIZE / 4, position: "relative" },
   titlePlaceholder: {
@@ -92,6 +96,9 @@ const useStyles = makeStyles((theme) => ({
     height: 3,
     borderRadius: "50%",
     backgroundColor: theme.colors.background.tenth,
+  },
+  fakeImg: {
+    display: "none !important",
   },
 }));
 
@@ -116,10 +123,9 @@ export const CollectionPreview = (props: IProps & ICollection) => {
   const setLoaded = (loaded: boolean) =>
     setState((prevState) => ({ ...prevState, loaded }));
 
-  const { imageUrl, name: title } = props;
-  const backgroundImage = "";
+  const { imageUrl: backgroundImage, name: title } = props;
 
-  const dataVisible = state.loaded || !backgroundImage;
+  const dataVisible = state.loaded;
 
   return (
     <NavLink
@@ -141,12 +147,25 @@ export const CollectionPreview = (props: IProps & ICollection) => {
               commonClasses.fadeAnimation,
               dataVisible ? "visible" : ""
             )}
-            onLoad={() => setLoaded(true)}
             style={{ backgroundImage: `url(${backgroundImage})` }}
+          />
+          <img
+            alt="fake"
+            className={classes.fakeImg}
+            onLoad={() => {
+              setLoaded(true);
+            }}
+            src={backgroundImage}
           />
         </div>
         <div className={classes.avatarWrapper}>
-          <Avatar className={classes.avatar} src={imageUrl} />
+          <div className={classes.avatar}>
+            <IdenticonComponent
+              bg="#fff"
+              size={AVATAR_SIZE}
+              string={props.owner || ""}
+            />
+          </div>
         </div>
         <div className={classes.textWrapper}>
           {!dataVisible && (

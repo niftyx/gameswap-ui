@@ -425,6 +425,7 @@ export interface ICollection {
   totalSupply?: BigNumber;
   totalBurned?: BigNumber;
   totalMinted?: BigNumber;
+  owner?: string;
 }
 export interface IBalances {
   eth: BigNumber;
