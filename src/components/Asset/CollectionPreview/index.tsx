@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
   },
   top: {
     position: "relative",
-    maxHeight: 150,
+    maxHeight: 100,
   },
   topEmpty: { paddingTop: "60%" },
   img: {

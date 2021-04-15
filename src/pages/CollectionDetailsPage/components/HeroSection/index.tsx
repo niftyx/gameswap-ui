@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     height: 100,
   },
   imgItem: {
-    height: "40vh",
+    height: "35vh",
     backgroundPositionY: "center",
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",
@@ -67,11 +67,14 @@ const useStyles = makeStyles((theme) => ({
   comment: { color: theme.colors.text.default, fontSize: 13 },
   title: {
     color: theme.colors.text.default,
-    fontSize: 60,
+    fontSize: 90,
+    fontWeight: "bold",
+    letterSpacing: "-5px",
   },
   address: {
     color: theme.colors.text.default,
     marginLeft: 8,
+    textDecoration: "none",
   },
   row: {
     display: "flex",
