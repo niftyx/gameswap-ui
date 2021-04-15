@@ -176,7 +176,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundRepeat: "no-repeat",
     backgroundPosition: "50% 50%",
     backgroundSize: "cover",
-    borderRadius: 12,
+    borderRadius: 5,
     transition: "box-shadow .25s, -webkit-box-shadow .25s",
     "&:hover": {
       "-webkit-box-shadow": `0 0 6px 1px ${transparentize(

@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core";
 import clsx from "clsx";
 import {
   AssetsContainer,
-  GameDetailsAssetItem,
+  CollectionDetailsAssetItem,
   SimpleLoader,
 } from "components";
 import { useAssetsFromCollectionId } from "helpers";
@@ -36,7 +36,7 @@ export const AssetsSection = (props: IProps) => {
       <div>
         <AssetsContainer>
           {assets.map((asset) => (
-            <GameDetailsAssetItem data={asset} key={asset.id} />
+            <CollectionDetailsAssetItem data={asset} key={asset.id} />
           ))}
         </AssetsContainer>
       </div>
