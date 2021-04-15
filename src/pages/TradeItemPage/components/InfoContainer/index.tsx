@@ -333,7 +333,7 @@ export const InfoContainer = (props: IProps) => {
         ) : null}
         <div className={classes.buttons}>
           {isMine && !highestAsk && (
-            <PrimaryButton onClick={onSell}>Sell now</PrimaryButton>
+            <PrimaryButton onClick={onSell}>Sell</PrimaryButton>
           )}
           {isMine && highestAsk && (
             <PrimaryButton onClick={onCancelSell}>Cancel Sell</PrimaryButton>
