@@ -49,6 +49,7 @@ const useStyles = makeStyles((theme) => ({
   },
   bottomSocials: {
     display: "flex",
+    marginRight: 10,
     alignItems: "center",
     "& > a": {},
     "& > a + a": {
