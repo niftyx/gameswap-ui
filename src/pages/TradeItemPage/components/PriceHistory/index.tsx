@@ -1,10 +1,16 @@
-import { makeStyles } from "@material-ui/core";
+import { BigNumber } from "@ethersproject/bignumber";
+import { CircularProgress, Typography, makeStyles } from "@material-ui/core";
 import clsx from "clsx";
-import chartMockData from "config/chartMockData.json";
+import { DEFAULT_NETWORK_ID, PRICE_DECIMALS } from "config/constants";
+import { getTokenFromAddress } from "config/networks";
+import { useConnectedWeb3Context, useGlobal } from "contexts";
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import Highstockcharts from "highcharts/highstock";
 import React from "react";
+import { formatBigNumber } from "utils";
+import { EHistoryItemType } from "utils/enums";
+import { IHistoryItem } from "utils/types";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,144 +33,197 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
+  empty: {
+    color: theme.colors.text.default,
+    fontSize: 20,
+  },
 }));
 
 interface IProps {
   className?: string;
+  tradeHistoryData: {
+    history: IHistoryItem[];
+    loading: boolean;
+  };
 }
 
 export const PriceHistory = (props: IProps) => {
   const classes = useStyles();
+  const {
+    tradeHistoryData: { history: historyItems, loading },
+  } = props;
+  const { networkId } = useConnectedWeb3Context();
+  const {
+    data: { price },
+  } = useGlobal();
 
-  const ohlc = [],
-    volume = [],
-    dataLength = chartMockData.length;
-  let i = 0;
+  const saleHistoryItems = historyItems
+    .filter((item) => item.type === EHistoryItemType.Sale)
+    .map((item) => ({
+      timestamp: item.timestamp,
+      price: item.price as Required<{
+        tokenAddress: string;
+        amount: BigNumber;
+      }>,
+    }));
 
-  for (i; i < dataLength; i += 1) {
-    ohlc.push([
-      chartMockData[i][0], // the date
-      chartMockData[i][4], // close
-    ]);
+  const renderChart = () => {
+    if (saleHistoryItems.length === 0) {
+      return (
+        <Typography align="center" className={classes.empty}>
+          No Price History
+        </Typography>
+      );
+    }
+    const chartData = saleHistoryItems.map((item) => {
+      const token = getTokenFromAddress(
+        networkId || DEFAULT_NETWORK_ID,
+        item.price.tokenAddress
+      );
 
-    volume.push([
-      chartMockData[i][0], // the date
-      chartMockData[i][5], // the volume
-    ]);
-  }
+      const dollar = item.price.amount.mul(
+        (price as any)[token.symbol.toLowerCase()].price
+      );
+      return [
+        item.timestamp * 1000,
+        Number(formatBigNumber(dollar, token.decimals + PRICE_DECIMALS)),
+        1,
+      ];
+    });
 
-  const options: Highcharts.Options = {
-    title: { text: "" },
-    chart: {
-      backgroundColor: "#0000",
-      zoomType: "x",
-    },
-    rangeSelector: {
-      buttonPosition: { align: "right" },
-      buttonTheme: {
-        stroke: "#A6A9B7",
-        fill: "#0000",
+    const ohlc = [],
+      volume = [],
+      dataLength = chartData.length;
+    let i = 0;
+
+    for (i; i < dataLength; i += 1) {
+      ohlc.push([
+        chartData[i][0], // the date
+        chartData[i][1], // close
+      ]);
+
+      volume.push([
+        chartData[i][0], // the date
+        chartData[i][2], // the volume
+      ]);
+    }
+
+    const options: Highcharts.Options = {
+      title: { text: "" },
+      chart: {
+        backgroundColor: "#0000",
+        zoomType: "x",
       },
-      inputPosition: { align: "left" },
-    },
-    yAxis: [
-      {
-        startOnTick: false,
-        endOnTick: false,
-        labels: {
-          align: "right",
-          x: -3,
+      rangeSelector: {
+        buttonPosition: { align: "right" },
+        buttonTheme: {
+          stroke: "#A6A9B7",
+          fill: "#0000",
         },
-        title: {
-          text: "",
-        },
-        height: "60%",
-        lineWidth: 0,
-        gridLineWidth: 0,
-        resize: {
-          enabled: true,
-        },
+        inputPosition: { align: "left" },
       },
-      {
-        labels: {
-          align: "right",
-          x: -3,
+      yAxis: [
+        {
+          startOnTick: false,
+          endOnTick: false,
+          labels: {
+            align: "right",
+            x: -3,
+          },
+          title: {
+            text: "",
+          },
+          height: "60%",
+          lineWidth: 0,
+          gridLineWidth: 0,
+          resize: {
+            enabled: true,
+          },
         },
-        title: {
-          text: "Volume",
+        {
+          labels: {
+            align: "right",
+            x: -3,
+          },
+          title: {
+            text: "Volume",
+          },
+          top: "65%",
+          height: "35%",
+          offset: 0,
+          lineWidth: 0,
+          gridLineWidth: 0,
+          tickWidth: 0,
         },
-        top: "65%",
-        height: "35%",
-        offset: 0,
-        lineWidth: 0,
+      ],
+
+      xAxis: {
+        zoomEnabled: true,
+        type: "datetime",
         gridLineWidth: 0,
+        lineWidth: 0,
         tickWidth: 0,
       },
-    ],
 
-    xAxis: {
-      zoomEnabled: true,
-      type: "datetime",
-      gridLineWidth: 0,
-      lineWidth: 0,
-      tickWidth: 0,
-    },
-
-    tooltip: {
-      split: true,
-    },
-
-    legend: {
-      enabled: false,
-    },
-    credits: {
-      enabled: false,
-    },
-
-    navigator: {
-      enabled: false,
-      outlineWidth: 0,
-      handles: {
-        borderColor: "#0000",
+      tooltip: {
+        split: true,
       },
-    },
 
-    scrollbar: {
-      barBackgroundColor: "#A6A9B7",
-      trackBackgroundColor: "#A6A9B755",
-      barBorderColor: "#A6A9B7",
-      trackBorderColor: "#A6A9B755",
-    },
-
-    series: [
-      {
-        type: "line",
-        name: "Price",
-        pointStart: ohlc[0][0],
-        pointInterval: 24 * 3600 * 1000,
-        data: ohlc,
-        color: "#5F6BDD",
+      legend: {
+        enabled: false,
       },
-      {
-        type: "column",
-        name: "Volume",
-        id: "volume",
-        data: volume,
-        yAxis: 1,
-        color: "#1F263C",
-        borderWidth: 0,
+      credits: {
+        enabled: false,
       },
-    ],
-  };
 
-  return (
-    <div className={clsx(classes.root, props.className)}>
+      navigator: {
+        enabled: false,
+        outlineWidth: 0,
+        handles: {
+          borderColor: "#0000",
+        },
+      },
+
+      scrollbar: {
+        barBackgroundColor: "#A6A9B7",
+        trackBackgroundColor: "#A6A9B755",
+        barBorderColor: "#A6A9B7",
+        trackBorderColor: "#A6A9B755",
+      },
+
+      series: [
+        {
+          type: "line",
+          name: "Price",
+          pointStart: ohlc[0][0],
+          pointInterval: 24 * 3600 * 1000,
+          data: ohlc,
+          color: "#5F6BDD",
+        },
+        {
+          type: "column",
+          name: "Volume",
+          id: "volume",
+          data: volume,
+          yAxis: 1,
+          color: "#1F263C",
+          borderWidth: 0,
+        },
+      ],
+    };
+    return (
       <HighchartsReact
         constructorType={"stockChart"}
         highcharts={Highstockcharts}
         // highCharts={Highcharts}
         options={options}
       />
+    );
+  };
+
+  return (
+    <div className={clsx(classes.root, props.className)}>
+      {loading ? <CircularProgress color="primary" size={40} /> : renderChart()}
     </div>
   );
 };

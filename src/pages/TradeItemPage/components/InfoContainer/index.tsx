@@ -370,7 +370,9 @@ export const InfoContainer = (props: IProps) => {
         {tabName === EAssetDetailTab.Owners && (
           <Owners tradeHistoryData={historyData} />
         )}
-        {tabName === EAssetDetailTab.Price && <PriceHistory />}
+        {tabName === EAssetDetailTab.Price && (
+          <PriceHistory tradeHistoryData={historyData} />
+        )}
         {tabName === EAssetDetailTab.TradeHistory && (
           <TradeHistory tradeHistoryData={historyData} />
         )}
