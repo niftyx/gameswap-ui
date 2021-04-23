@@ -18,7 +18,7 @@ export const networkIds = {
 
 const networks: { [K in NetworkId]: INetwork } = {
   [networkIds.AVAXTEST]: {
-    label: "Avalanche Fuji",
+    label: "Avalanche Fuji Testnet",
     url: "https://api.avax-test.network/ext/bc/C/rpc",
     contracts: {
       erc721Factory: process.env.REACT_APP_ERC721_FACTORY_TEST || "",

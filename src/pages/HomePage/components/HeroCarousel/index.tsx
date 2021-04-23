@@ -64,7 +64,6 @@ const useStyles = makeStyles((theme) => ({
     right: 0,
     top: 0,
     bottom: 0,
-
     "&.active": {
       opacity: 1,
       transition: "all 0.7s",

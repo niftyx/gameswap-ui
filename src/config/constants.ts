@@ -242,7 +242,7 @@ export const NETWORK_CONFIG = TEST_MODE
       params: [
         {
           chainId: "0xa869",
-          chainName: "Fuji Testnet",
+          chainName: "Avalanche Fuji Testnet",
           nativeCurrency: {
             name: "AVAX",
             symbol: "AVAX",
