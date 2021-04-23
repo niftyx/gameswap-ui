@@ -110,7 +110,7 @@ export const TokenAmountInput = (props: IProps) => {
         id: "salePrice",
         name: "salePrice",
         onChange: onChangeAmount,
-        placeholder: "Enter price for one piece",
+        placeholder: "Enter price",
         value: currentValue,
         type: "number",
       }}

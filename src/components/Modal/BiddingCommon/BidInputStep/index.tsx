@@ -71,7 +71,7 @@ export const BidInputStep = (props: IProps) => {
   return (
     <div className={clsx(classes.root, props.className)}>
       <Typography align="left" className={classes.description}>
-        You are about to place a bit for <span>“{asset.name}”</span> from{" "}
+        You are about to place a bid for <span>“{asset.name}”</span> from{" "}
         <span>{shortenAddress(asset.owner)}</span>.
       </Typography>
       <TokenAmountInput onChange={updatePrice} value={price} />
