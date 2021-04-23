@@ -74,8 +74,8 @@ export const ShowPriceStep = (props: IProps) => {
   return (
     <div className={clsx(classes.root, props.className)}>
       <Typography align="left" className={classes.description}>
-        You are about to bid for <span>“{asset.name}”</span> from{" "}
-        <span>{shortenAddress(asset.owner)}</span>.
+        {/* You are about to bid for <span>“{asset.name}”</span> from{" "}
+        <span>{shortenAddress(asset.owner)}</span>. */}
       </Typography>
       <div className={classes.priceWrapper}>
         <span className={classes.priceToken}>
