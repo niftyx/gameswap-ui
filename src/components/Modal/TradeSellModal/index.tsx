@@ -143,8 +143,8 @@ export const TradeSellModal = (props: IProps) => {
           <TradeSuccessStep
             title={
               state.orderToCancel
-                ? "Order is cancelled successfully!"
-                : "Order is created successfully!"
+                ? "Order cancelled successfully!"
+                : "Order created successfully!"
             }
           />
         );
