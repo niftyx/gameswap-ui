@@ -159,6 +159,9 @@ export const InfoContainer = (props: IProps) => {
     price,
     networkId || DEFAULT_NETWORK_ID
   );
+  const myBid = bids.find(
+    (bid) => bid.makerAddress.toLowerCase() === account?.toLowerCase()
+  );
 
   const highestBidToken = highestBid
     ? getTokenFromAddress(
@@ -206,6 +209,7 @@ export const InfoContainer = (props: IProps) => {
   const {
     openAcceptBidModal,
     openBuyModal,
+    openCancelBidModal,
     openPlaceBidModal,
     openSellModal,
   } = useTrade();
@@ -346,7 +350,14 @@ export const InfoContainer = (props: IProps) => {
           {!isMine && highestAsk && (
             <PrimaryButton onClick={onBuy}>Buy now</PrimaryButton>
           )}
-          {!isMine && <SecondaryButton onClick={onBid}>Bid</SecondaryButton>}
+          {!isMine &&
+            (myBid ? (
+              <SecondaryButton onClick={() => openCancelBidModal(myBid)}>
+                Cancel Bid
+              </SecondaryButton>
+            ) : (
+              <PrimaryButton onClick={onBid}>New Bid</PrimaryButton>
+            ))}
         </div>
         {highestBid && highestBidToken && (
           <HighestBidInfo

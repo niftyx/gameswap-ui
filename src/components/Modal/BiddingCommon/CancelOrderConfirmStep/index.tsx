@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.colors.text.third,
     fontSize: 14,
     lineHeight: "24px",
-    marginBottom: 48,
+    marginBottom: 24,
     "& span": {
       color: theme.colors.text.default,
       fontSize: 16,
