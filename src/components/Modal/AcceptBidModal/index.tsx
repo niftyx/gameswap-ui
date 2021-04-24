@@ -2,6 +2,7 @@ import { DEFAULT_NETWORK_ID } from "config/constants";
 import { getTokenFromAddress } from "config/networks";
 import { useConnectedWeb3Context, useTrade } from "contexts";
 import React, { useState } from "react";
+import { waitSeconds } from "utils";
 import { EAcceptBidStep } from "utils/enums";
 import { xBigNumberToEthersBigNumber } from "utils/token";
 
@@ -113,6 +114,7 @@ export const AcceptBidModal = (props: IProps) => {
           <AcceptBidStep
             bid={bid}
             onConfirm={async () => {
+              await waitSeconds(5);
               setState((prevState) => ({
                 ...prevState,
                 step: EAcceptBidStep.Success,

@@ -88,7 +88,8 @@ export const AssetLargePhoto = (props: IProps) => {
             autoPlay
             className={classes.content}
             controls={false} //{!preview}
-            loop={false} //{!preview}
+            loop={true} //{!preview}
+            muted
             onLoadStart={props.onLoad}
           >
             <source src={props.uri}></source>
