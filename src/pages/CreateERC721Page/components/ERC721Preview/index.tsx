@@ -1,8 +1,9 @@
+/* eslint-disable jsx-a11y/media-has-caption */
 import { Typography, makeStyles } from "@material-ui/core";
 import AudiotrackIcon from "@material-ui/icons/Audiotrack";
 import VideocamIcon from "@material-ui/icons/Videocam";
 import { transparentize } from "polished";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { getFileType } from "utils/asset";
 import { EFileType } from "utils/enums";
 
@@ -52,6 +53,30 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     padding: `${theme.spacing(4)}px 0`,
   },
+  videoContent: {
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    position: "absolute",
+    overflow: "hidden",
+    "& video": {
+      position: "absolute",
+      left: "50%",
+      top: "50%",
+      opacity: 0,
+      transform: "translate(-50%, -50%)",
+      transition: "all 0.4s",
+    },
+  },
+  videoIcon: {
+    position: "absolute",
+    right: 16,
+    top: 16,
+    zIndex: 1,
+    fontSize: theme.spacing(5),
+    color: theme.colors.text.default,
+  },
   icon: {
     fontSize: theme.spacing(15),
     color: theme.colors.text.default,
@@ -96,6 +121,11 @@ interface IProps {
   data: IERC721FormValues;
 }
 
+interface IState {
+  videoWidth: number;
+  videoHeight: number;
+}
+
 export const ERC721Preview = (props: IProps) => {
   const classes = useStyles();
   const {
@@ -111,6 +141,16 @@ export const ERC721Preview = (props: IProps) => {
       unlockOncePurchased,
     },
   } = props;
+  const [state, setState] = useState<IState>({ videoHeight: 0, videoWidth: 0 });
+
+  useEffect(() => {
+    setState(() => ({
+      videoHeight: 0,
+      videoWidth: 0,
+    }));
+  }, [props.data.imageObjectURL]);
+
+  const isVideoLoaded = state.videoHeight !== 0 && state.videoWidth !== 0;
 
   const renderImage = () => {
     if (!image || !imageObjectURL) return null;
@@ -127,7 +167,38 @@ export const ERC721Preview = (props: IProps) => {
       case EFileType.Video:
         return (
           <div className={classes.iconWrapper}>
-            <VideocamIcon className={classes.icon} />
+            <VideocamIcon className={classes.videoIcon} />
+            <div className={classes.videoContent}>
+              <video
+                autoPlay
+                controls={false}
+                id="preview-video"
+                onLoadedMetadata={() => {
+                  const vid = document.getElementById("preview-video") as any;
+                  setState(() => ({
+                    videoWidth: vid.videoWidth,
+                    videoHeight: vid.videoHeight,
+                  }));
+                }}
+                style={
+                  isVideoLoaded
+                    ? {
+                        opacity: 1,
+                        width:
+                          state.videoWidth > state.videoHeight
+                            ? "auto"
+                            : "100%",
+                        height:
+                          state.videoWidth < state.videoHeight
+                            ? "auto"
+                            : "100%",
+                      }
+                    : {}
+                }
+              >
+                <source src={props.data.imageObjectURL}></source>
+              </video>
+            </div>
           </div>
         );
       case EFileType.Audio:

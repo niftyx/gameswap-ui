@@ -85,9 +85,10 @@ export const AssetLargePhoto = (props: IProps) => {
         return (
           // eslint-disable-next-line jsx-a11y/media-has-caption
           <video
-            autoPlay={preview}
+            autoPlay
             className={classes.content}
-            controls={!preview}
+            controls={false} //{!preview}
+            loop={false} //{!preview}
             onLoadStart={props.onLoad}
           >
             <source src={props.uri}></source>
