@@ -31,8 +31,12 @@ const useStyles = makeStyles((theme) => ({
 interface IProps {
   onConfirm: () => void;
   className?: string;
+  collectionId: string;
+  collectionAmount: BigNumber;
   tokenAddress: string;
   tokenAmount: BigNumber;
+  erc20Confirmed: boolean;
+  erc721Confirmed: boolean;
 }
 
 interface IState {
@@ -45,6 +49,11 @@ export const AcceptApprovalStep = (props: IProps) => {
   const [state, setState] = useState<IState>({ loading: false, error: "" });
   const context = useConnectedWeb3Context();
   const erc721 = new ERC721Service(
+    context.library,
+    context.account || "",
+    props.collectionId
+  );
+  const erc20 = new ERC20Service(
     context.library,
     context.account || "",
     props.tokenAddress
@@ -61,9 +70,12 @@ export const AcceptApprovalStep = (props: IProps) => {
       loading: true,
     }));
     try {
-      const operator = get0xContractAddresses(networkId).erc721proxy;
-      logger.log("operator::", operator);
-      await erc721.approveForAll(operator, true);
+      const zeroAddresses = get0xContractAddresses(networkId);
+
+      if (!props.erc721Confirmed)
+        await erc721.approveForAll(zeroAddresses.erc721proxy, true);
+      if (!props.erc20Confirmed)
+        await erc20.approveUnlimited(zeroAddresses.erc20Proxy);
 
       onConfirm();
 

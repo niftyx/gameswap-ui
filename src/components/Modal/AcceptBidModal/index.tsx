@@ -21,6 +21,8 @@ interface IProps {
 
 interface IState {
   step: EAcceptBidStep;
+  erc721Confirmed: boolean;
+  erc20Confirmed: boolean;
 }
 
 export const AcceptBidModal = (props: IProps) => {
@@ -32,6 +34,8 @@ export const AcceptBidModal = (props: IProps) => {
   const { onClose, visible } = props;
   const [state, setState] = useState<IState>({
     step: EAcceptBidStep.ShowPrice,
+    erc20Confirmed: false,
+    erc721Confirmed: false,
   });
 
   if (!asset || !bid) return null;
@@ -66,11 +70,15 @@ export const AcceptBidModal = (props: IProps) => {
       case EAcceptBidStep.GetApprovalInfo:
         return (
           <AcceptGetInfoStep
-            onConfirm={(isUnlocked: boolean) => {
-              if (!isUnlocked) {
+            collectionAmount={xBigNumberToEthersBigNumber(bid.takerAssetAmount)}
+            collectionId={bid.erc721Address}
+            onConfirm={(erc721Confirmed: boolean, erc20Confirmed: boolean) => {
+              if (!erc721Confirmed || !erc20Confirmed) {
                 setState((prevState) => ({
                   ...prevState,
                   step: EAcceptBidStep.SetApproval,
+                  erc20Confirmed,
+                  erc721Confirmed,
                 }));
               } else {
                 setState((prevState) => ({
@@ -79,21 +87,25 @@ export const AcceptBidModal = (props: IProps) => {
                 }));
               }
             }}
-            tokenAddress={bid.erc721Address}
-            tokenAmount={xBigNumberToEthersBigNumber(bid.takerAssetAmount)}
+            tokenAddress={bid.erc20Address}
+            tokenAmount={xBigNumberToEthersBigNumber(bid.takerFee)}
           />
         );
       case EAcceptBidStep.SetApproval:
         return (
           <AcceptApprovalStep
+            collectionAmount={xBigNumberToEthersBigNumber(bid.takerAssetAmount)}
+            collectionId={bid.erc721Address}
+            erc20Confirmed={state.erc20Confirmed}
+            erc721Confirmed={state.erc721Confirmed}
             onConfirm={() => {
               setState((prevState) => ({
                 ...prevState,
                 step: EAcceptBidStep.AcceptBid,
               }));
             }}
-            tokenAddress={bid.erc721Address}
-            tokenAmount={xBigNumberToEthersBigNumber(bid.takerAssetAmount)}
+            tokenAddress={bid.erc20Address}
+            tokenAmount={xBigNumberToEthersBigNumber(bid.takerFee)}
           />
         );
       case EAcceptBidStep.AcceptBid:

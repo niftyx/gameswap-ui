@@ -6,7 +6,7 @@ import { get0xContractAddresses } from "config/networks";
 import { useConnectedWeb3Context } from "contexts";
 import { BigNumber } from "packages/ethers";
 import React, { useEffect, useState } from "react";
-import { ERC721Service } from "services";
+import { ERC20Service, ERC721Service } from "services";
 import { getLogger } from "utils/logger";
 
 const logger = getLogger("AcceptGetInfoStep::");
@@ -29,8 +29,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface IProps {
-  onConfirm: (_: boolean) => void;
+  onConfirm: (erc721Confirmed: boolean, erc20Confirmed: boolean) => void;
   className?: string;
+  collectionId: string;
+  collectionAmount: BigNumber;
   tokenAddress: string;
   tokenAmount: BigNumber;
 }
@@ -47,6 +49,11 @@ export const AcceptGetInfoStep = (props: IProps) => {
   const erc721 = new ERC721Service(
     context.library,
     context.account || "",
+    props.collectionId
+  );
+  const erc20 = new ERC20Service(
+    context.library,
+    context.account || "",
     props.tokenAddress
   );
   const { onConfirm } = props;
@@ -61,13 +68,22 @@ export const AcceptGetInfoStep = (props: IProps) => {
     }));
     try {
       // get approval information
-      const operator = get0xContractAddresses(networkId).erc721proxy;
+      const zeroAddresses = get0xContractAddresses(networkId);
 
-      const isUnlocked = await erc721.isApprovedForAll(account || "", operator);
+      const isERC721Unlocked = await erc721.isApprovedForAll(
+        account || "",
+        zeroAddresses.erc721proxy
+      );
 
-      logger.log("isUnlocked::", isUnlocked);
+      logger.log("isERC721Unlocked::", isERC721Unlocked);
 
-      onConfirm(isUnlocked);
+      const isERC20Unlocked = await erc20.hasEnoughAllowance(
+        account || "",
+        zeroAddresses.erc20Proxy,
+        props.tokenAmount
+      );
+
+      onConfirm(isERC721Unlocked, isERC20Unlocked);
 
       setState((prevState) => ({
         ...prevState,
