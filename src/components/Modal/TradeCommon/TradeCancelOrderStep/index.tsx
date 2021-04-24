@@ -93,7 +93,7 @@ export const TradeCancelOrderStep = (props: IProps) => {
   return (
     <div className={clsx(classes.root, props.className)}>
       <div className={classes.content}>
-        {state.loading && <CommentLoader comment="Cancelling a order..." />}
+        {state.loading && <CommentLoader comment="Cancelling order..." />}
         {!state.loading && !state.error && (
           <CommentLoader comment="Redirecting..." />
         )}
