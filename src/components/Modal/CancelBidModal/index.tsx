@@ -63,7 +63,7 @@ export const CancelBidModal = (props: IProps) => {
               onClose();
               window.location.reload();
             }}
-            title={"Bid is cancelled successfully!"}
+            title={"Bid cancelled successfully"}
           />
         );
       default:
