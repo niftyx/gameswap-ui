@@ -35,7 +35,9 @@ export const TradeSellModal = (props: IProps) => {
 
   const { onClose, visible } = props;
   const [state, setState] = useState<IState>({
-    step: ETradeStep.InputPrice,
+    step: asset?.isInSale ? ETradeStep.CancelOrder : ETradeStep.InputPrice,
+    orderToCancel:
+      asset && asset.orders && asset.isInSale ? asset.orders[0] : undefined,
   });
 
   if (!asset) return null;

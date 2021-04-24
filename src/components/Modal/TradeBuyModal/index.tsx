@@ -1,5 +1,5 @@
 import { SignedOrder } from "@0x/types";
-import { useTrade } from "contexts";
+import { useConnectedWeb3Context, useTrade } from "contexts";
 import React, { useState } from "react";
 import { ETradeStep } from "utils/enums";
 
@@ -29,9 +29,15 @@ export const TradeBuyModal = (props: IProps) => {
     data: { asset },
   } = useTrade();
   const { onClose, visible } = props;
+  const { account } = useConnectedWeb3Context();
+  const isMine =
+    asset &&
+    asset.owner &&
+    account &&
+    asset.owner.toLowerCase() === account.toLowerCase();
   const [state, setState] = useState<IState>({
-    step: ETradeStep.SelectOrder,
-    selectedOrder: null,
+    step: isMine ? ETradeStep.CancelOrder : ETradeStep.BuyGetApproveInfo,
+    selectedOrder: asset && asset.orders ? asset.orders[0] : null,
   });
 
   if (!asset) return null;
