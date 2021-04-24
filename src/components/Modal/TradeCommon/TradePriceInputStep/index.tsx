@@ -54,7 +54,7 @@ export const TradePriceInputStep = (props: IProps) => {
                 order={order}
               />
             ))}
-          {asset.maxOrder && (
+          {/* {asset.maxOrder && (
             <Button
               className={classes.button}
               color="primary"
@@ -66,7 +66,7 @@ export const TradePriceInputStep = (props: IProps) => {
             >
               Cancel Sale
             </Button>
-          )}
+          )} */}
         </>
       ) : (
         <>
@@ -81,7 +81,7 @@ export const TradePriceInputStep = (props: IProps) => {
           >
             Create Sell Order
           </Button>
-          <Button
+          {/* <Button
             className={classes.button}
             color="primary"
             fullWidth
@@ -89,7 +89,7 @@ export const TradePriceInputStep = (props: IProps) => {
             variant="contained"
           >
             Put On Sale
-          </Button>
+          </Button> */}
         </>
       )}
     </div>
