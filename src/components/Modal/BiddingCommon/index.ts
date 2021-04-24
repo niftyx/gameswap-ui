@@ -7,3 +7,5 @@ export * from "./ShowPriceStep";
 export * from "./AcceptGetInfoStep";
 export * from "./AcceptApprovalStep";
 export * from "./AcceptBidStep";
+export * from "./CancelOrderConfirmStep";
+export * from "./CancelBidStep";

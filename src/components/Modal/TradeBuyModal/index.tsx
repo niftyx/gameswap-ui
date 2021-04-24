@@ -4,11 +4,11 @@ import React, { useState } from "react";
 import { ETradeStep } from "utils/enums";
 
 import {
-  TradCancelOrderStep,
   TradeBasicModal,
   TradeBuyApprovalStep,
   TradeBuyAssetStep,
   TradeBuyGetInfoStep,
+  TradeCancelOrderStep,
   TradeSuccessStep,
 } from "../TradeCommon";
 import { TradeSelectOrderStep } from "../TradeCommon/TradeSelectOrderStep";
@@ -65,7 +65,7 @@ export const TradeBuyModal = (props: IProps) => {
       case ETradeStep.CancelOrder:
         return (
           state.orderToCancel && (
-            <TradCancelOrderStep
+            <TradeCancelOrderStep
               onConfirm={() => {
                 setState((prevState) => ({
                   ...prevState,

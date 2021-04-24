@@ -262,7 +262,7 @@ export const InfoContainer = (props: IProps) => {
       return;
     }
     if (data) {
-      openSellModal({ ...data, orders: asks, isInSale, maxOrder });
+      openSellModal({ ...data, orders: orders, isInSale, maxOrder });
     }
   };
 
@@ -332,10 +332,10 @@ export const InfoContainer = (props: IProps) => {
           </div>
         ) : null}
         <div className={classes.buttons}>
-          {isMine && !highestAsk && (
+          {isMine && !highestAsk && !maxOrder && (
             <PrimaryButton onClick={onSell}>Sell</PrimaryButton>
           )}
-          {isMine && highestAsk && (
+          {isMine && (highestAsk || maxOrder) && (
             <PrimaryButton onClick={onCancelSell}>Cancel Sell</PrimaryButton>
           )}
           {isMine && highestBid && (

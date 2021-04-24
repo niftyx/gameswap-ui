@@ -19,6 +19,7 @@ import {
 import { get0xContractAddresses } from "config/networks";
 import { getRelayer } from "services/relayer";
 
+import { round } from "./number";
 import { getExpirationTimeOrdersFromConfig } from "./time-utils";
 import { ZERO_ADDRESS } from "./token";
 import { NetworkId } from "./types";
@@ -120,9 +121,6 @@ export const buildBidCollectibleOrder = async (
 
   const collectibleData = assetDataUtils.encodeERC721AssetData(erc721, tokenId);
   const erc20AssetData = assetDataUtils.encodeERC20AssetData(erc20Address);
-
-  const round = (num: BigNumber): BigNumber =>
-    num.integerValue(BigNumber.ROUND_FLOOR);
 
   const orderConfigRequest: OrderConfigRequest = {
     exchangeAddress,

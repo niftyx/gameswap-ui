@@ -7,8 +7,8 @@ import { ETradeStep } from "utils/enums";
 import { MAX_NUMBER } from "utils/number";
 
 import {
-  TradCancelOrderStep,
   TradeBasicModal,
+  TradeCancelOrderStep,
   TradePriceInputStep,
   TradeSellApprovalStep,
   TradeSellAssetStep,
@@ -82,7 +82,7 @@ export const TradeSellModal = (props: IProps) => {
       case ETradeStep.CancelOrder:
         return (
           state.orderToCancel && (
-            <TradCancelOrderStep
+            <TradeCancelOrderStep
               onConfirm={() => {
                 setState((prevState) => ({
                   ...prevState,
@@ -154,7 +154,11 @@ export const TradeSellModal = (props: IProps) => {
   };
 
   return (
-    <TradeBasicModal onClose={onClose} title="Sell Asset" visible={visible}>
+    <TradeBasicModal
+      onClose={onClose}
+      title={asset.isInSale ? "Cancel Sell" : "Sell Asset"}
+      visible={visible}
+    >
       {renderContent()}
     </TradeBasicModal>
   );

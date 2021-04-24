@@ -41,7 +41,7 @@ export const PlaceBidModal = (props: IProps) => {
     step: EBidStep.InputPrice,
     price: {
       amount: ZERO_NUMBER,
-      token: getToken(networkId || DEFAULT_NETWORK_ID, "wavax"),
+      token: getToken(networkId || DEFAULT_NETWORK_ID, "gswap"),
     },
   });
 

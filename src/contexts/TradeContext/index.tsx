@@ -1,5 +1,6 @@
 import {
   AcceptBidModal,
+  CancelBidModal,
   PlaceBidModal,
   TradeBuyModal,
   TradeSellModal,
@@ -40,6 +41,7 @@ const TradeContext = createContext({
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     bid: ISignedOrder
   ) => {},
+  openCancelBidModal: (_: ISignedOrder) => {},
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   updateAssetPrice: (_: ITokenAmount) => {},
 });
@@ -105,10 +107,21 @@ export const TradeProvider = ({ children }: IProps) => {
     }));
   };
 
+  const openCancelBidModal = (bid: ISignedOrder) => {
+    logger.log("openCancelBidModal");
+    setCurrentData((prevData) => ({
+      ...prevData,
+      mode: ETradeType.CancelBid,
+
+      bid,
+    }));
+  };
+
   const onCloseModal = () => {
     setCurrentData((prevData) => ({
       ...prevData,
       asset: null,
+      bid: null,
     }));
   };
 
@@ -129,6 +142,8 @@ export const TradeProvider = ({ children }: IProps) => {
     !!currentData.asset && currentData.mode === ETradeType.PlaceBid;
   const isAcceptBidModalOpened =
     !!currentData.asset && currentData.mode === ETradeType.AcceptBid;
+  const isCancelBidModalOpened =
+    !!currentData.bid && currentData.mode === ETradeType.CancelBid;
 
   return (
     <TradeContext.Provider
@@ -139,6 +154,7 @@ export const TradeProvider = ({ children }: IProps) => {
         updateAssetPrice,
         openPlaceBidModal,
         openAcceptBidModal,
+        openCancelBidModal,
       }}
     >
       {children}
@@ -158,6 +174,12 @@ export const TradeProvider = ({ children }: IProps) => {
         <AcceptBidModal
           onClose={onCloseModal}
           visible={isAcceptBidModalOpened}
+        />
+      )}
+      {isCancelBidModalOpened && (
+        <CancelBidModal
+          onClose={onCloseModal}
+          visible={isCancelBidModalOpened}
         />
       )}
     </TradeContext.Provider>

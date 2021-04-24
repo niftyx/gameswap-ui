@@ -40,7 +40,7 @@ interface IState {
   error: string;
 }
 
-export const TradCancelOrderStep = (props: IProps) => {
+export const TradeCancelOrderStep = (props: IProps) => {
   const classes = useStyles();
   const [state, setState] = useState<IState>({ loading: false, error: "" });
   const context = useConnectedWeb3Context();

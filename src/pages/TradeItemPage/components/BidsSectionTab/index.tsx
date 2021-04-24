@@ -3,7 +3,7 @@ import clsx from "clsx";
 import { BidAvatarRowItem, HorizonDivider, SimpleLoader } from "components";
 import { DEFAULT_NETWORK_ID } from "config/constants";
 import { getTokenFromAddress } from "config/networks";
-import { useConnectedWeb3Context } from "contexts";
+import { useConnectedWeb3Context, useTrade } from "contexts";
 import { useAssetBids } from "helpers";
 import moment from "moment";
 import React from "react";
@@ -13,7 +13,7 @@ import {
   EthersBigNumberTo0xBigNumber,
   xBigNumberToEthersBigNumber,
 } from "utils/token";
-import { IAssetItem } from "utils/types";
+import { IAssetItem, ISignedOrder } from "utils/types";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,6 +22,15 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
     marginTop: 16,
     overflowY: "auto",
+  },
+  rowItem: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  cancel: {
+    border: "none !important",
+    backgroundColor: theme.colors.background.tenth,
   },
 }));
 
@@ -33,13 +42,18 @@ interface IProps {
 export const BidsSectionTab = (props: IProps) => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
+  const { openCancelBidModal } = useTrade();
 
-  const { networkId } = useConnectedWeb3Context();
+  const { account, networkId } = useConnectedWeb3Context();
   const { data } = props;
   const { bids, hasMore, loadBids, loading: ordersLoading } = useAssetBids(
     data.collectionId,
     EthersBigNumberTo0xBigNumber(data.tokenId)
   );
+
+  const onCancel = (order: ISignedOrder) => {
+    openCancelBidModal(order);
+  };
 
   return (
     <div className={clsx(classes.root, props.className)}>
@@ -50,18 +64,32 @@ export const BidsSectionTab = (props: IProps) => {
         );
 
         const m = moment(Number(order.salt.toString()));
+        const isMine =
+          account?.toLowerCase() === order.makerAddress.toLowerCase();
 
         return (
           <div key={index}>
-            <BidAvatarRowItem
-              address={order.makerAddress}
-              comment1="by"
-              tokenPrice={`${formatBigNumber(
-                xBigNumberToEthersBigNumber(order.makerAssetAmount),
-                token.decimals,
-                3
-              )} ${token.symbol} ${m.fromNow()}`}
-            />
+            <div className={classes.rowItem}>
+              <BidAvatarRowItem
+                address={order.makerAddress}
+                comment1="by"
+                tokenPrice={`${formatBigNumber(
+                  xBigNumberToEthersBigNumber(order.makerAssetAmount),
+                  token.decimals,
+                  3
+                )} ${token.symbol} ${m.fromNow()}`}
+              />
+              {isMine && (
+                <Button
+                  className={classes.cancel}
+                  onClick={() => onCancel(order)}
+                  variant="outlined"
+                >
+                  CANCEL
+                </Button>
+              )}
+            </div>
+
             {bids && index < bids.length - 1 && <HorizonDivider />}
           </div>
         );

@@ -1,17 +1,16 @@
+import { SignedOrder } from "@0x/types";
 import { Button, makeStyles } from "@material-ui/core";
 import clsx from "clsx";
 import { CommentLoader } from "components/Loader";
 import { ErrorText } from "components/Text";
-import { SERVICE_FEE_IN_PERCENT } from "config/constants";
-import { get0xContractAddresses } from "config/networks";
 import { useConnectedWeb3Context } from "contexts";
-import { BigNumber } from "packages/ethers";
 import React, { useEffect, useState } from "react";
-import { ERC20Service } from "services";
-import { formatBigNumber } from "utils";
+import { waitSeconds } from "utils";
 import { getLogger } from "utils/logger";
+import { cancelOrder } from "utils/order";
+import { EthersBigNumberTo0xBigNumber } from "utils/token";
 
-const logger = getLogger("BidGetInfoStep::");
+const logger = getLogger("TradeSellAssetStep::");
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,10 +30,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface IProps {
-  onConfirm: (_: boolean) => void;
+  onConfirm: () => void;
   className?: string;
-  tokenAddress: string;
-  tokenAmount: BigNumber;
+  order: SignedOrder;
 }
 
 interface IState {
@@ -42,51 +40,43 @@ interface IState {
   error: string;
 }
 
-export const BidGetInfoStep = (props: IProps) => {
+export const CancelBidStep = (props: IProps) => {
   const classes = useStyles();
   const [state, setState] = useState<IState>({ loading: false, error: "" });
   const context = useConnectedWeb3Context();
-  const erc20 = new ERC20Service(
-    context.library,
-    context.account || "",
-    props.tokenAddress
-  );
-  const { onConfirm, tokenAddress, tokenAmount } = props;
+  const { onConfirm, order } = props;
 
-  const getInfo = async () => {
+  const cancelBidAsync = async () => {
     const { account, networkId } = context;
-    if (!account || !networkId) return;
+    if (!account || !networkId || !context.library) return;
     setState((prevState) => ({
       ...prevState,
       error: "",
       loading: true,
     }));
     try {
-      // get approval information
-      const operator = get0xContractAddresses(networkId).erc20Proxy;
+      const gasPrice = await context.library.getGasPrice();
 
-      const amount = tokenAmount.add(
-        tokenAmount
-          .mul(BigNumber.from(SERVICE_FEE_IN_PERCENT * 100))
-          .div(BigNumber.from("10000"))
+      const txHash = await cancelOrder(
+        context.library.provider,
+        order,
+        account,
+        EthersBigNumberTo0xBigNumber(gasPrice),
+        networkId
       );
+      await context.library.waitForTransaction(txHash);
+      logger.log("submitResult::Success");
 
-      const isUnlocked = await erc20.hasEnoughAllowance(
-        account || "",
-        operator,
-        amount
-      );
-
-      logger.log("isUnlocked::", isUnlocked);
-
-      onConfirm(isUnlocked);
+      await waitSeconds(3);
 
       setState((prevState) => ({
         ...prevState,
         loading: false,
       }));
+
+      onConfirm();
     } catch (error) {
-      logger.error("getInfo", error);
+      logger.error("cancelBid", error);
       setState((prevState) => ({
         ...prevState,
         error: error.message || "Something went wrong!",
@@ -96,14 +86,17 @@ export const BidGetInfoStep = (props: IProps) => {
   };
 
   useEffect(() => {
-    getInfo();
+    cancelBidAsync();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <div className={clsx(classes.root, props.className)}>
       <div className={classes.content}>
-        {state.loading && <CommentLoader comment="Checking if unlocked..." />}
+        {state.loading && <CommentLoader comment="Cancelling a bid..." />}
+        {!state.loading && !state.error && (
+          <CommentLoader comment="Redirecting..." />
+        )}
         <ErrorText error={state.error} />
       </div>
 
@@ -112,7 +105,7 @@ export const BidGetInfoStep = (props: IProps) => {
           className={classes.button}
           color="primary"
           fullWidth
-          onClick={getInfo}
+          onClick={cancelBidAsync}
           variant="contained"
         >
           Try again

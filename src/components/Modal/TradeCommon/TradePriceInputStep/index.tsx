@@ -44,9 +44,7 @@ export const TradePriceInputStep = (props: IProps) => {
     <div className={clsx(classes.root, props.className)}>
       {isInSale ? (
         <>
-          {(asset.orders || asset.maxOrder) &&
-          asset.orders &&
-          asset.orders?.length > 0 ? (
+          {asset.orders &&
             asset.orders.map((order) => (
               <TradeCancelOrderRow
                 key={order.salt.toString()}
@@ -55,8 +53,8 @@ export const TradePriceInputStep = (props: IProps) => {
                 }}
                 order={order}
               />
-            ))
-          ) : (
+            ))}
+          {asset.maxOrder && (
             <Button
               className={classes.button}
               color="primary"

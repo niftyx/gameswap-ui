@@ -8,4 +8,4 @@ export * from "./TradeBuyAssetStep";
 export * from "./TradeBuyGetInfoStep";
 export * from "./TradeBuyApprovalStep";
 export * from "./TradeCancelOrderRow";
-export * from "./TradCancelOrderStep";
+export * from "./TradeCancelOrderStep";

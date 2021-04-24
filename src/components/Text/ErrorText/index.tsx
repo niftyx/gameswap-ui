@@ -6,6 +6,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     color: theme.colors.text.error,
     fontSize: theme.spacing(2),
+    wordBreak: "break-all",
   },
 }));
 
