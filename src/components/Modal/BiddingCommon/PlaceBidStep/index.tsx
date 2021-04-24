@@ -103,7 +103,7 @@ export const PlaceBidStep = (props: IProps) => {
   return (
     <div className={clsx(classes.root, props.className)}>
       <div className={classes.content}>
-        {state.loading && <CommentLoader comment="Placing a bid..." />}
+        {state.loading && <CommentLoader comment="Placing bid..." />}
         {!state.loading && !state.error && <CommentLoader comment="" />}
         <ErrorText error={state.error} />
       </div>

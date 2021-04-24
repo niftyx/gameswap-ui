@@ -127,7 +127,7 @@ export const AcceptBidModal = (props: IProps) => {
               onClose();
               window.location.reload();
             }}
-            title={"You accepted a bid successfully"}
+            title={"Bid accepted successfully"}
           />
         );
       default:
