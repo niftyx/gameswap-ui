@@ -92,7 +92,7 @@ export const AcceptBidStep = (props: IProps) => {
   return (
     <div className={clsx(classes.root, props.className)}>
       <div className={classes.content}>
-        {state.loading && <CommentLoader comment="Accepting a bid..." />}
+        {state.loading && <CommentLoader comment="Accepting bid..." />}
         {!state.loading && !state.error && <CommentLoader comment="" />}
         <ErrorText error={state.error} />
       </div>
