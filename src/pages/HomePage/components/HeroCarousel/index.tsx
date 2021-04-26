@@ -82,7 +82,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     "&:before": {
       content: `" "`,
-      background: "linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 90%)",
+      background: theme.colors.background.gradient4,
       position: "absolute",
       left: 0,
       right: 0,

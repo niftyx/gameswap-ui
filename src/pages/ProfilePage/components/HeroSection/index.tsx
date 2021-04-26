@@ -46,6 +46,7 @@ const useStyles = makeStyles((theme) => ({
   },
   imgItem: {
     height: "40vh",
+    backgroundColor: theme.colors.background.eleventh,
     backgroundPositionY: "center",
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",
@@ -55,8 +56,7 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
     "&:before": {
       content: `" "`,
-      backgroundImage:
-        "linear-gradient(160deg, rgba(58, 62, 69, 0) 11%, black 82%)",
+      backgroundImage: theme.colors.background.gradient1,
       position: "absolute",
       left: 0,
       right: 0,
@@ -212,7 +212,8 @@ export const HeroSection = (props: IProps) => {
     enqueueSnackbar("Address is copied");
   };
 
-  const headerImage = "/images/backgrounds/profile.png";
+  const headerBgVisible =
+    state.imageLoaded || (userInfo && !userInfo.headerImageUrl);
 
   return (
     <div className={clsx(classes.root, props.className)}>
@@ -221,19 +222,23 @@ export const HeroSection = (props: IProps) => {
           <CircularProgress size={40} />
         </div>
       )}
-      <img
-        alt="fake"
-        className={classes.fakeImage}
-        onLoad={async () => {
-          await waitSeconds(3);
-          setImageLoaded(true);
-        }}
-        src={headerImage}
-      />
+      {userInfo && userInfo.headerImageUrl && (
+        <img
+          alt="fake"
+          className={classes.fakeImage}
+          onLoad={async () => {
+            await waitSeconds(3);
+            setImageLoaded(true);
+          }}
+          src={userInfo?.headerImageUrl}
+        />
+      )}
       <div
-        className={clsx(classes.imgItem, state.imageLoaded ? "visible" : "")}
+        className={clsx(classes.imgItem, headerBgVisible ? "visible" : "")}
         style={{
-          backgroundImage: state.imageLoaded ? `url(${headerImage})` : "",
+          backgroundImage: state.imageLoaded
+            ? `url(${userInfo?.headerImageUrl})`
+            : "",
         }}
       />
       <div

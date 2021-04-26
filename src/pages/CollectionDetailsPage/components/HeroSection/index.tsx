@@ -39,8 +39,7 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
     "&:before": {
       content: `" "`,
-      backgroundImage:
-        "linear-gradient(160deg, rgba(58, 62, 69, 0) 11%, black 82%)",
+      backgroundImage: theme.colors.background.gradient1,
       position: "absolute",
       left: 0,
       right: 0,

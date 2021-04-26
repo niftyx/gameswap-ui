@@ -36,6 +36,13 @@ const colors = [
         twelfth: "#1F263C",
         thirteenth: "#2660F7",
         preview: "#141A28",
+        gradient1:
+          "linear-gradient(160deg, rgba(58, 62, 69, 0) 11%, black 82%)",
+        gradient2:
+          "linear-gradient(333deg, rgba(58, 62, 69, 0.1) 36%, rgba(10, 10, 10, 0.6) 64%)",
+        gradient3:
+          "linear-gradient(175deg, rgba(58, 62, 69, 0) 28%, black 92%)",
+        gradient4: "linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 90%)",
       },
       text: {
         default: "#FFF",
@@ -50,18 +57,6 @@ const colors = [
         arrowDown: "#B94733",
         error: "#f44336",
         heart: "#B4366E",
-      },
-      activity: {
-        bg: {
-          buy: "#44D7B6",
-          bid: "#5F6BDD",
-          sale: "#FF005E",
-        },
-        text: {
-          buy: "#000000",
-          bid: "#FFFFFF",
-          sale: "#FFFFFF",
-        },
       },
       shadow: {
         modal: "0px 4px 10px rgba(0, 0, 0, 0.2)",
@@ -102,6 +97,13 @@ const colors = [
         twelfth: "#1F263C",
         thirteenth: "#2660F7",
         preview: "#141A28",
+        gradient1:
+          "linear-gradient(160deg, rgba(58, 62, 69, 0) 11%, black 82%)",
+        gradient2:
+          "linear-gradient(333deg, rgba(58, 62, 69, 0.1) 36%, rgba(10, 10, 10, 0.6) 64%)",
+        gradient3:
+          "linear-gradient(175deg, rgba(58, 62, 69, 0) 28%, black 92%)",
+        gradient4: "linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 90%)",
       },
       text: {
         default: "#FFF",
@@ -116,18 +118,6 @@ const colors = [
         arrowDown: "#B94733",
         error: "#f44336",
         heart: "#B4366E",
-      },
-      activity: {
-        bg: {
-          buy: "#44D7B6",
-          bid: "#5F6BDD",
-          sale: "#FF005E",
-        },
-        text: {
-          buy: "#000000",
-          bid: "#FFFFFF",
-          sale: "#FFFFFF",
-        },
       },
       shadow: {
         modal: "0px 4px 10px rgba(0, 0, 0, 0.2)",

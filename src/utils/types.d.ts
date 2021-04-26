@@ -58,6 +58,10 @@ declare module "@material-ui/core/styles/createMuiTheme" {
         twelfth: string;
         thirteenth: string;
         preview: string;
+        gradient1: string;
+        gradient2: string;
+        gradient3: string;
+        gradient4: string;
       };
       text: {
         default: string;
@@ -72,18 +76,6 @@ declare module "@material-ui/core/styles/createMuiTheme" {
         arrowDown: string;
         error: string;
         heart: string;
-      };
-      activity: {
-        bg: {
-          buy: string;
-          bid: string;
-          sale: string;
-        };
-        text: {
-          buy: string;
-          bid: string;
-          sale: string;
-        };
       };
       shadow: {
         modal: string;
@@ -137,6 +129,10 @@ declare module "@material-ui/core/styles/createMuiTheme" {
         twelfth: string;
         thirteenth: string;
         preview: string;
+        gradient1: string;
+        gradient2: string;
+        gradient3: string;
+        gradient4: string;
       };
       text: {
         default: string;
@@ -151,18 +147,6 @@ declare module "@material-ui/core/styles/createMuiTheme" {
         arrowDown: string;
         error: string;
         heart: string;
-      };
-      activity: {
-        bg: {
-          buy: string;
-          bid: string;
-          sale: string;
-        };
-        text: {
-          buy: string;
-          bid: string;
-          sale: string;
-        };
       };
       shadow: {
         modal: string;
@@ -443,6 +427,7 @@ export interface IUserInfo {
   twitterUsername: string;
   personalSite: string;
   imageUrl: string;
+  headerImageUrl: string;
 }
 
 // game create

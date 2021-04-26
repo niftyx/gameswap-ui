@@ -1,20 +1,14 @@
 import {
-  Avatar,
   CircularProgress,
   FormControl,
   FormControlProps,
-  FormHelperText,
-  FormHelperTextProps,
-  Typography,
   makeStyles,
 } from "@material-ui/core";
+import CameraEnhanceOutlinedIcon from "@material-ui/icons/CameraEnhanceOutlined";
 import clsx from "clsx";
 import { ASSET_IMAGE_FILE_SIZE_LIMIT } from "config/constants";
 import { useSnackbar } from "notistack";
 import React from "react";
-import Identicon from "react-identicons";
-
-const IdenticonComponent = Identicon as any;
 
 const AVATAR_SIZE = 100;
 
@@ -23,46 +17,34 @@ const useStyles = makeStyles((theme) => ({
   input: {
     display: "none",
   },
-  content: { display: "flex" },
-  avatar: {
+  content: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
     width: AVATAR_SIZE,
     height: AVATAR_SIZE,
-    overflow: "hidden",
     borderRadius: "50%",
-    marginRight: 16,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+    overflow: "hidden",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    border: `2px solid ${theme.colors.text.default}`,
+    backgroundColor: theme.colors.background.primary,
   },
-  right: {
-    flex: 1,
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-  },
-  label: {
-    fontSize: theme.spacing(1.875),
-    color: theme.colors.text.seventh,
-  },
-  button: {
+  selectorButton: {
+    width: theme.spacing(5),
     height: theme.spacing(5),
-    borderRadius: 6,
-    marginTop: theme.spacing(2),
-    backgroundColor: theme.colors.background.fourth,
-    color: theme.colors.text.default,
-    transition: "all 0.3s",
-    cursor: "pointer",
-    "&:hover": {
-      opacity: 0.7,
-    },
-    padding: "0 28px",
-    display: "inline-flex",
+    display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    maxWidth: 160,
-  },
-  circle: {
+    borderRadius: "50%",
     color: theme.colors.text.default,
+    cursor: "pointer",
+    userSelect: "none",
+    border: `1px dashed ${theme.colors.transparent}`,
+    transition: "all 0.5s",
+    "&:hover": {
+      borderColor: theme.colors.text.default,
+    },
   },
 }));
 
@@ -77,22 +59,17 @@ interface InputProps {
 
 interface IProps {
   className?: string;
-  FormHelperTextProps?: FormHelperTextProps;
   FormControlProps: FormControlProps;
   InputProps: InputProps;
   imageUrl: string;
   loading: boolean;
-  helperText?: string | false | undefined;
-  address: string;
 }
 
 export const FormSettingsAvatarUpload = (props: IProps) => {
   const {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     InputProps: { onChange, value, ...restInputProps },
-    address,
     className,
-    helperText,
     imageUrl,
     loading,
   } = props;
@@ -123,35 +100,18 @@ export const FormSettingsAvatarUpload = (props: IProps) => {
         type="file"
         {...restInputProps}
       />
-      <div className={classes.content}>
-        {imageUrl ? (
-          <Avatar className={classes.avatar} src={imageUrl} />
+      <div
+        className={classes.content}
+        style={{ backgroundImage: imageUrl ? `url(${imageUrl})` : "" }}
+      >
+        {loading ? (
+          <CircularProgress size={20} />
         ) : (
-          <div className={classes.avatar}>
-            <IdenticonComponent bg="#fff" size={AVATAR_SIZE} string={address} />
-          </div>
-        )}
-        <div className={classes.right}>
-          <Typography className={classes.label} component="div">
-            We recommend an image of at least 400x400.
-          </Typography>
-          <label
-            className={classes.button}
-            htmlFor={loading ? "" : props.InputProps.id}
-          >
-            {loading ? (
-              <CircularProgress className={classes.circle} size={20} />
-            ) : (
-              "Choose File"
-            )}
+          <label className={classes.selectorButton} htmlFor={restInputProps.id}>
+            <CameraEnhanceOutlinedIcon />
           </label>
-        </div>
+        )}
       </div>
-      {helperText && (
-        <FormHelperText {...props.FormHelperTextProps}>
-          {helperText}
-        </FormHelperText>
-      )}
     </FormControl>
   );
 };

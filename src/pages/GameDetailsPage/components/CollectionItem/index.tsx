@@ -48,8 +48,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundRepeat: "no-repeat",
     "&:before": {
       content: `" "`,
-      backgroundImage:
-        "linear-gradient(333deg, rgba(58, 62, 69, 0.1) 36%, rgba(10, 10, 10, 0.6) 64%)",
+      backgroundImage: theme.colors.background.gradient2,
       position: "absolute",
       left: 0,
       right: 0,

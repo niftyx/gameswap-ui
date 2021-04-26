@@ -5,8 +5,12 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import clsx from "clsx";
-import { FormSettingsAvatarUpload, FormTextField } from "components";
-import { useConnectedWeb3Context, useGlobal } from "contexts";
+import {
+  FormHeaderImageUpload,
+  FormSettingsAvatarUpload,
+  FormTextField,
+} from "components";
+import { useGlobal } from "contexts";
 import { Form, Formik } from "formik";
 import { transparentize } from "polished";
 import React from "react";
@@ -46,11 +50,18 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 6,
     marginTop: theme.spacing(5),
   },
+  avatar: {
+    marginTop: -40,
+    marginLeft: 20,
+    width: 100,
+  },
 }));
 
 export interface ISettingsFormValues extends IUserInfo {
   uploading: boolean;
   image: File | null;
+  headerImage: File | null;
+  headerImageUploading: boolean;
 }
 
 interface IProps {
@@ -62,7 +73,6 @@ export const ProfileSettingsForm = (props: IProps) => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
   const { onSubmit } = props;
-  const { account } = useConnectedWeb3Context();
   const ipfsService = getIPFSService();
   const {
     data: { userInfo },
@@ -77,7 +87,10 @@ export const ProfileSettingsForm = (props: IProps) => {
     twitterUsername: userInfo.twitterUsername,
     personalSite: userInfo.personalSite,
     imageUrl: userInfo.imageUrl,
+    headerImageUrl: userInfo.headerImageUrl,
+    headerImage: null,
     uploading: false,
+    headerImageUploading: false,
     image: null,
     id: userInfo.id,
     address: userInfo.address,
@@ -88,7 +101,13 @@ export const ProfileSettingsForm = (props: IProps) => {
       initialValues={initialValues}
       onSubmit={(values) => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { image, uploading, ...payload } = values;
+        const {
+          headerImage,
+          headerImageUploading,
+          image,
+          uploading,
+          ...payload
+        } = values;
         onSubmit(payload);
       }}
       validationSchema={Yup.object().shape({
@@ -118,8 +137,38 @@ export const ProfileSettingsForm = (props: IProps) => {
           className={clsx(classes.root, commonClasses.scroll)}
           onSubmit={handleSubmit}
         >
-          <FormSettingsAvatarUpload
+          <FormHeaderImageUpload
             FormControlProps={{ fullWidth: true }}
+            InputProps={{
+              id: "headerImage",
+              name: "headerImage",
+              onBlur: handleBlur,
+              onChange: (file: File | null) => {
+                setFieldValue("headerImage", file);
+                if (file) {
+                  setFieldValue("headerImageUploading", true);
+                  ipfsService
+                    .uploadData(file)
+                    .then((url) => {
+                      setFieldValue("headerImageUploading", false);
+                      setFieldValue("headerImageUrl", url);
+                    })
+                    .catch(() => {
+                      setFieldValue("headerImageUploading", false);
+                    });
+                } else {
+                  setFieldValue("headerImageUrl", "");
+                }
+              },
+              value: {
+                file: values.headerImage,
+                fileURL: values.headerImageUrl,
+              },
+            }}
+            loading={values.headerImageUploading}
+          />
+          <FormSettingsAvatarUpload
+            FormControlProps={{ className: classes.avatar, fullWidth: true }}
             InputProps={{
               id: "avatar-image",
               name: "avatar-image",
@@ -141,7 +190,6 @@ export const ProfileSettingsForm = (props: IProps) => {
               },
               value: values.image,
             }}
-            address={account || ""}
             imageUrl={values.imageUrl}
             loading={values.uploading}
           />
