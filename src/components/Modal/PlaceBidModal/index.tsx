@@ -127,7 +127,7 @@ export const PlaceBidModal = (props: IProps) => {
               onClose();
               window.location.reload();
             }}
-            title={"Your bid is placed successfully"}
+            title={"Bid placed successfully"}
           />
         );
       default:
