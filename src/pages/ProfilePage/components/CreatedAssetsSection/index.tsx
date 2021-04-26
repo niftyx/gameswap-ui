@@ -5,9 +5,10 @@ import { AssetsContainer, InventoryAssetItem, SimpleLoader } from "components";
 import { useConnectedWeb3Context } from "contexts";
 import { useInventoryAssets } from "helpers";
 import { transparentize } from "polished";
-import React from "react";
-import { useHistory } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useHistory, useParams } from "react-router-dom";
 import useCommonStyles from "styles/common";
+import { isAddress } from "utils/tools";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,16 +34,27 @@ interface IProps {
 const CreatedAssetsSection = (props: IProps) => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
-  const { account } = useConnectedWeb3Context();
+  const params = useParams();
+  const history = useHistory();
+  const userId = ((params || {}) as any).id;
+
   const {
     assets: inventoryAssets,
     hasMore: hasMoreInventoryItems,
     loadMore: loadMoreInventoryItems,
     loading: inventoryLoading,
   } = useInventoryAssets({
-    id: account || "",
+    id: userId || "",
   });
-  const history = useHistory();
+  useEffect(() => {
+    if (!userId || !isAddress(userId)) {
+      history.push("/");
+    }
+  }, [userId]);
+
+  if (!userId || !isAddress(userId)) {
+    return null;
+  }
 
   return (
     <div className={clsx(classes.root, props.className)}>

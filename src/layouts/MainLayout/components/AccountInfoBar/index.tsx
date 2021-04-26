@@ -143,7 +143,7 @@ const AccountInfoBar = (props: IProps) => {
   };
 
   const toProfile = () => {
-    history.push("/profile");
+    history.push(`/users/${account}`);
   };
 
   const isConnected = !!account;

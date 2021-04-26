@@ -177,8 +177,8 @@ export const InventoryAssetItem = (props: IProps) => {
   const isInSale = !!maxOrder || orders.length > 0;
 
   const responsive = isFullWidth
-    ? { xl: 2, lg: 2, md: 4, xs: 6 }
-    : { xl: 3, lg: 4, md: 6, xs: 6 };
+    ? { xl: 2, lg: 2, md: 3, xs: 6, sm: 4 }
+    : { xl: 3, lg: 4, md: 4, xs: 6, sm: 6 };
 
   const onClickDetails = () => {
     if (asset && onClick) {

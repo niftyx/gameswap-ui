@@ -12,6 +12,7 @@ import { getZEROXService } from "services/zeroX";
 import { getLogger } from "utils/logger";
 import { buildOrdersQuery, wrangeOrderResponse } from "utils/order";
 import { xBigNumberToEthersBigNumber } from "utils/token";
+import { isAddress } from "utils/tools";
 import { ISignedOrder, NetworkId } from "utils/types";
 
 const logger = getLogger("useMyOrders::");
@@ -22,8 +23,10 @@ interface IState {
   loading: boolean;
 }
 
-export const useMyOrders = (): IState & { loadMore: () => Promise<void> } => {
-  const { account, networkId } = useConnectedWeb3Context();
+export const useMyOrders = (
+  account: string
+): IState & { loadMore: () => Promise<void> } => {
+  const { networkId } = useConnectedWeb3Context();
   const isRefMounted = useIsMountedRef();
   const [state, setState] = useState<IState>({
     allLoaded: false,
@@ -90,7 +93,7 @@ export const useMyOrders = (): IState & { loadMore: () => Promise<void> } => {
 
   useEffect(() => {
     setState({ allLoaded: account ? false : true, orders: [], loading: false });
-    if (account) {
+    if (account && isAddress(account)) {
       loadOrders();
     }
     // eslint-disable-next-line

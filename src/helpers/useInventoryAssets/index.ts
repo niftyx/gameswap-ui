@@ -53,7 +53,7 @@ export const useInventoryAssets = (
       setState((prevState) => ({ ...prevState, loading: true }));
 
       const info = await apiService.getAssetsOfUser(
-        variables.id,
+        variables.id.toLowerCase(),
         variables.perPage,
         variables.page
       );

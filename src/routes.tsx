@@ -1,7 +1,7 @@
 import { AuthGuard, LoadingScreen } from "components";
 import { MainLayout } from "layouts";
 import React, { Fragment, Suspense, lazy } from "react";
-import { Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 
 const routes = [
   {
@@ -70,9 +70,8 @@ const routes = [
       },
       {
         exact: false,
-        path: "/profile",
+        path: "/users/:id",
         component: lazy(() => import("pages/ProfilePage")),
-        guard: AuthGuard,
       },
       {
         exact: true,
@@ -80,6 +79,8 @@ const routes = [
         component: lazy(() => import("pages/ProfileSettingsPage")),
         guard: AuthGuard,
       },
+      // eslint-disable-next-line react/display-name
+      { path: "*", component: () => <Redirect to="/" /> },
     ],
   },
 ];

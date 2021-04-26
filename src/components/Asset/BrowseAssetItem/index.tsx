@@ -172,7 +172,7 @@ export const BrowseAssetItem = (props: IProps) => {
     !loading &&
     assetDetails.tokenId.eq(data.id) &&
     assetDetails.collectionId === data.collectionId;
-  const responsive = { xl: 2, lg: 2, md: 4, xs: 6 };
+  const responsive = { xl: 2, lg: 2, md: 3, xs: 6, sm: 4 };
 
   const onMoreItem = () => {
     if (onMore) {

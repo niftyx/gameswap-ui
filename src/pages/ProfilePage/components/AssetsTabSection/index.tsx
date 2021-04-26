@@ -1,8 +1,9 @@
+import { isAddress } from "@ethersproject/address";
 import { makeStyles } from "@material-ui/core";
 import clsx from "clsx";
 import { transparentize } from "polished";
-import React from "react";
-import { NavLink, matchPath, useHistory } from "react-router-dom";
+import React, { useEffect } from "react";
+import { NavLink, matchPath, useHistory, useParams } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,12 +37,25 @@ interface IProps {
 export const AssetsTabSection = (props: IProps) => {
   const classes = useStyles();
   const history = useHistory();
+  const params = useParams();
+
+  const userId = ((params || {}) as any).id;
+
+  useEffect(() => {
+    if (!userId || !isAddress(userId)) {
+      history.push("/");
+    }
+  }, [userId]);
+
+  if (!userId || !isAddress(userId)) {
+    return null;
+  }
 
   const Tabs = [
-    { id: "assets", title: "Assets", href: "/profile/assets" },
-    { id: "on-sale", title: "OnSale", href: "/profile/on-sale" },
-    { id: "created", title: "Created", href: "/profile/created" },
-    { id: "liked", title: "Liked", href: "/profile/liked" },
+    { id: "assets", title: "Assets", href: `/users/${userId}/assets` },
+    { id: "on-sale", title: "OnSale", href: `/users/${userId}/on-sale` },
+    { id: "created", title: "Created", href: `/users/${userId}/created` },
+    { id: "liked", title: "Liked", href: `/users/${userId}/liked` },
   ];
 
   const isIncludeAny = Tabs.map(

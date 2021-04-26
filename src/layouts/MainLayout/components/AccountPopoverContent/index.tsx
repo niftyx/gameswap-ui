@@ -20,7 +20,7 @@ interface IProps {
 
 export const AccountPopoverContent = (props: IProps) => {
   const classes = useStyles();
-  const { rawWeb3Context } = useConnectedWeb3Context();
+  const { account, rawWeb3Context } = useConnectedWeb3Context();
   const { saveSettings, settings } = useSettings();
   const history = useHistory();
   const { onClose } = props;
@@ -32,7 +32,7 @@ export const AccountPopoverContent = (props: IProps) => {
   };
 
   const onMyItems = () => {
-    history.push("/profile/assets");
+    history.push(`/users/${account}/assets`);
     onClose();
   };
 

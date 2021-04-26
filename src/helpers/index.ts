@@ -13,3 +13,4 @@ export * from "./useAssetBids";
 export * from "./useCreatedAssets";
 export * from "./useAssetsFromCollectionId";
 export * from "./useCollectionDetails";
+export * from "./useUserInfo";

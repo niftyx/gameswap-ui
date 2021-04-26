@@ -11,6 +11,7 @@ import { ReactComponent as FlagIcon } from "assets/svgs/star-outline.svg";
 import { ReactComponent as FlashIcon } from "assets/svgs/trending-up.svg";
 import clsx from "clsx";
 import { SideMenuGroupHeader, SideMenuItem } from "components";
+import { useConnectedWeb3Context } from "contexts";
 import { useSettings } from "hooks";
 import React from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
@@ -70,6 +71,7 @@ const Navbar = (props: IProps & RouteComponentProps) => {
   const commonClasses = useCommonStyles();
   const { saveSettings, settings } = useSettings();
   const { theme } = settings;
+  const { account } = useConnectedWeb3Context();
 
   const menuItems: {
     group: ISideMenuGroupHeaderItem;
@@ -87,12 +89,12 @@ const Navbar = (props: IProps & RouteComponentProps) => {
         },
         {
           title: "Favorites",
-          href: "/profile/liked",
+          href: account ? `/users/${account}/liked` : "",
           Icon: HeartIcon,
         },
         {
           title: "My Items",
-          href: "/profile/assets",
+          href: account ? `/users/${account}/assets` : "",
           Icon: ShoppingBagIcon,
         },
         {

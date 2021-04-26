@@ -13,7 +13,7 @@ import { DEFAULT_NETWORK_ID, PRICE_DECIMALS } from "config/constants";
 import { getToken } from "config/networks";
 import { useConnectedWeb3Context, useGlobal } from "contexts";
 import copy from "copy-to-clipboard";
-import { useBalances } from "helpers";
+import { useBalances, useUserInfo } from "helpers";
 import { useSnackbar } from "notistack";
 import { BigNumber } from "packages/ethers";
 import { transparentize } from "polished";
@@ -167,6 +167,7 @@ const useStyles = makeStyles((theme) => ({
 
 interface IProps {
   className?: string;
+  userId: string;
 }
 
 interface IState {
@@ -180,6 +181,10 @@ export const HeroSection = (props: IProps) => {
   const { enqueueSnackbar } = useSnackbar();
   const { account, networkId } = context;
   const [state, setState] = useState<IState>({ imageLoaded: false });
+  const { userId } = props;
+  const { userInfo } = useUserInfo(userId);
+
+  const isMine = account?.toLowerCase() === userId.toLowerCase();
 
   const setImageLoaded = (imageLoaded: boolean) =>
     setState((prev) => ({ ...prev, imageLoaded }));
@@ -195,7 +200,6 @@ export const HeroSection = (props: IProps) => {
       price: {
         gswap: { price },
       },
-      userInfo,
     },
   } = useGlobal();
   const formattedGswapBalance = numberWithCommas(
@@ -217,7 +221,7 @@ export const HeroSection = (props: IProps) => {
 
   return (
     <div className={clsx(classes.root, props.className)}>
-      {!state.imageLoaded && (
+      {!headerBgVisible && (
         <div className={classes.loadWrapper}>
           <CircularProgress size={40} />
         </div>
@@ -242,13 +246,10 @@ export const HeroSection = (props: IProps) => {
         }}
       />
       <div
-        className={clsx(
-          classes.mainContent,
-          state.imageLoaded ? "visible" : ""
-        )}
+        className={clsx(classes.mainContent, headerBgVisible ? "visible" : "")}
       >
         <Typography className={classes.title} component="div">
-          MY ACCOUNT
+          {isMine ? "MY ACCOUNT" : "User Info"}
         </Typography>
         <div className={classes.comments}>
           <Grid container spacing={3}>
@@ -285,31 +286,37 @@ export const HeroSection = (props: IProps) => {
                   </div>
                 </div>
               </div>
-              <NavLink
-                className={clsx(
-                  commonClasses.transparentButton,
-                  classes.editProfileNav
-                )}
-                to="/settings"
-              >
-                EDIT PROFILE
-              </NavLink>
+              {isMine && (
+                <NavLink
+                  className={clsx(
+                    commonClasses.transparentButton,
+                    classes.editProfileNav
+                  )}
+                  to="/settings"
+                >
+                  EDIT PROFILE
+                </NavLink>
+              )}
             </Grid>
             <Grid item md={4} xs={12}>
-              <div>
-                <Typography className={classes.balanceLabel} component="div">
-                  BALANCE
-                </Typography>
-                <div className={classes.row}>
-                  <Typography className={classes.balanceUSD} component="div">
-                    $ {formattedUsdBalance}
+              {isMine ? (
+                <div>
+                  <Typography className={classes.balanceLabel} component="div">
+                    BALANCE
                   </Typography>
-                  <ArrowUpwardIcon className={classes.arrowUp} />
+                  <div className={classes.row}>
+                    <Typography className={classes.balanceUSD} component="div">
+                      $ {formattedUsdBalance}
+                    </Typography>
+                    <ArrowUpwardIcon className={classes.arrowUp} />
+                  </div>
+                  <Typography className={classes.balanceGSWAP} component="div">
+                    {formattedGswapBalance} {gSwapToken.symbol}
+                  </Typography>
                 </div>
-                <Typography className={classes.balanceGSWAP} component="div">
-                  {formattedGswapBalance} {gSwapToken.symbol}
-                </Typography>
-              </div>
+              ) : (
+                <div></div>
+              )}
             </Grid>
           </Grid>
         </div>

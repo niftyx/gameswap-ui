@@ -8,8 +8,9 @@ import {
   SimpleLoader,
 } from "components";
 import { useMyOrders } from "helpers";
-import React from "react";
-import { useHistory } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useHistory, useParams } from "react-router-dom";
+import { isAddress } from "utils/tools";
 import { ITradeAssetItem } from "utils/types";
 
 const useStyles = makeStyles((theme) => ({
@@ -32,8 +33,20 @@ interface IProps {
 
 const OnSaleAssetsSection = (props: IProps) => {
   const classes = useStyles();
+  const params = useParams();
   const history = useHistory();
-  const { allLoaded, loadMore, loading, orders } = useMyOrders();
+  const userId = ((params || {}) as any).id;
+  const { allLoaded, loadMore, loading, orders } = useMyOrders(userId);
+
+  useEffect(() => {
+    if (!userId || !isAddress(userId)) {
+      history.push("/");
+    }
+  }, [userId]);
+
+  if (!userId || !isAddress(userId)) {
+    return null;
+  }
 
   const assets: ITradeAssetItem[] = [];
 
