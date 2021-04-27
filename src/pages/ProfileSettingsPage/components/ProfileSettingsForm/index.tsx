@@ -85,6 +85,12 @@ export const ProfileSettingsForm = (props: IProps) => {
     customUrl: userInfo.customUrl,
     bio: userInfo.bio,
     twitterUsername: userInfo.twitterUsername,
+    twitterVerified: userInfo.twitterVerified,
+    twitchUsername: userInfo.twitchUsername,
+    facebookUsername: userInfo.facebookUsername,
+    youtubeUsername: userInfo.youtubeUsername,
+    instagramUsername: userInfo.instagramUsername,
+    tiktokUsername: userInfo.tiktokUsername,
     personalSite: userInfo.personalSite,
     imageUrl: userInfo.imageUrl,
     headerImageUrl: userInfo.headerImageUrl,
@@ -114,7 +120,30 @@ export const ProfileSettingsForm = (props: IProps) => {
         name: Yup.string().required(),
         customUrl: Yup.string(),
         bio: Yup.string(),
-        twitterUsername: Yup.string(),
+        twitterUsername: Yup.string().matches(
+          /^[a-zA-Z0-9\-_]+$/,
+          "Enter valid username!"
+        ),
+        twitchUsername: Yup.string().matches(
+          /^[a-zA-Z0-9\-_]+$/,
+          "Enter valid username!"
+        ),
+        facebookUsername: Yup.string().matches(
+          /^[a-zA-Z0-9\-_]+$/,
+          "Enter valid username!"
+        ),
+        youtubeUsername: Yup.string().matches(
+          /^[a-zA-Z0-9\-_]+$/,
+          "Enter valid username!"
+        ),
+        instagramUsername: Yup.string().matches(
+          /^[a-zA-Z0-9\-_]+$/,
+          "Enter valid username!"
+        ),
+        tiktokUsername: Yup.string().matches(
+          /^[a-zA-Z0-9\-_]+$/,
+          "Enter valid username!"
+        ),
         personalSite: Yup.string().matches(
           /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
           "Enter correct url!"
@@ -271,6 +300,9 @@ export const ProfileSettingsForm = (props: IProps) => {
             FormControlProps={{
               fullWidth: true,
             }}
+            FormHelperTextProps={{
+              error: Boolean(errors.twitterUsername),
+            }}
             InputLabelProps={{
               htmlFor: "twitterUsername",
               shrink: true,
@@ -291,11 +323,154 @@ export const ProfileSettingsForm = (props: IProps) => {
               name: "twitterUsername",
               onBlur: handleBlur,
               onChange: handleChange,
-              placeholder: "Enter username",
+              placeholder: "Enter twitter username",
               value: values.twitterUsername,
             }}
-            helperText="Verify your Twitter handle and get a verification badge"
+            helperText={
+              errors.twitterUsername ||
+              "Verify your Twitter handle and get a verification badge"
+            }
             label="Twitter username"
+          />
+          <FormTextField
+            FormControlProps={{
+              fullWidth: true,
+            }}
+            FormHelperTextProps={{
+              error: Boolean(errors.twitchUsername),
+            }}
+            InputLabelProps={{
+              htmlFor: "twitchUsername",
+              shrink: true,
+              className: classes.inputLabel,
+            }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Typography className={classes.at}>@</Typography>
+                </InputAdornment>
+              ),
+              id: "twitchUsername",
+              name: "twitchUsername",
+              onBlur: handleBlur,
+              onChange: handleChange,
+              placeholder: "Enter twitch username",
+              value: values.twitchUsername,
+            }}
+            helperText={errors.twitchUsername}
+            label="Twitch username"
+          />
+          <FormTextField
+            FormControlProps={{
+              fullWidth: true,
+            }}
+            FormHelperTextProps={{
+              error: Boolean(errors.facebookUsername),
+            }}
+            InputLabelProps={{
+              htmlFor: "facebookUsername",
+              shrink: true,
+              className: classes.inputLabel,
+            }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Typography className={classes.at}>@</Typography>
+                </InputAdornment>
+              ),
+              id: "facebookUsername",
+              name: "facebookUsername",
+              onBlur: handleBlur,
+              onChange: handleChange,
+              placeholder: "Enter facebook username",
+              value: values.facebookUsername,
+            }}
+            helperText={errors.facebookUsername}
+            label="Facebook username"
+          />
+          <FormTextField
+            FormControlProps={{
+              fullWidth: true,
+            }}
+            FormHelperTextProps={{
+              error: Boolean(errors.youtubeUsername),
+            }}
+            InputLabelProps={{
+              htmlFor: "youtubeUsername",
+              shrink: true,
+              className: classes.inputLabel,
+            }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Typography className={classes.at}>@</Typography>
+                </InputAdornment>
+              ),
+              id: "youtubeUsername",
+              name: "youtubeUsername",
+              onBlur: handleBlur,
+              onChange: handleChange,
+              placeholder: "Enter youtube username",
+              value: values.youtubeUsername,
+            }}
+            helperText={errors.youtubeUsername}
+            label="Youtube username"
+          />
+          <FormTextField
+            FormControlProps={{
+              fullWidth: true,
+            }}
+            FormHelperTextProps={{
+              error: Boolean(errors.instagramUsername),
+            }}
+            InputLabelProps={{
+              htmlFor: "instagramUsername",
+              shrink: true,
+              className: classes.inputLabel,
+            }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Typography className={classes.at}>@</Typography>
+                </InputAdornment>
+              ),
+              id: "instagramUsername",
+              name: "instagramUsername",
+              onBlur: handleBlur,
+              onChange: handleChange,
+              placeholder: "Enter instagram username",
+              value: values.instagramUsername,
+            }}
+            helperText={errors.instagramUsername}
+            label="Instagram username"
+          />
+          <FormTextField
+            FormControlProps={{
+              fullWidth: true,
+            }}
+            FormHelperTextProps={{
+              error: Boolean(errors.tiktokUsername),
+            }}
+            InputLabelProps={{
+              htmlFor: "tiktokUsername",
+              shrink: true,
+              className: classes.inputLabel,
+            }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Typography className={classes.at}>@</Typography>
+                </InputAdornment>
+              ),
+              id: "tiktokUsername",
+              name: "tiktokUsername",
+              onBlur: handleBlur,
+              onChange: handleChange,
+              placeholder: "Enter tiktok username",
+              value: values.tiktokUsername,
+            }}
+            helperText={errors.tiktokUsername}
+            label="Tiktok username"
           />
           <FormTextField
             FormControlProps={{

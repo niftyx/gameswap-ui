@@ -425,6 +425,12 @@ export interface IUserInfo {
   customUrl: string;
   bio: string;
   twitterUsername: string;
+  twitterVerified: boolean;
+  twitchUsername: string;
+  facebookUsername: string;
+  youtubeUsername: string;
+  instagramUsername: string;
+  tiktokUsername: string;
   personalSite: string;
   imageUrl: string;
   headerImageUrl: string;

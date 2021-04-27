@@ -1,5 +1,6 @@
 import { makeStyles } from "@material-ui/core";
 import { PageBackButton, PageContainer, PageTitle } from "components";
+import { useConnectedWeb3Context } from "contexts";
 import React, { useState } from "react";
 import { useHistory } from "react-router";
 import { IUserInfo } from "utils/types";
@@ -28,6 +29,7 @@ const ProfileSettingsPage = () => {
   const classes = useStyles();
   const [state, setState] = useState<IState>({ visible: false });
   const history = useHistory();
+  const { account } = useConnectedWeb3Context();
 
   const onSubmit = (payload: IUserInfo) => {
     setState({
@@ -37,7 +39,7 @@ const ProfileSettingsPage = () => {
   };
 
   const onBack = () => {
-    history.push("/create");
+    history.push(`/users/${account}/assets`);
   };
 
   return (
