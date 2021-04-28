@@ -30,9 +30,9 @@ export const TX_DEFAULTS = {
 };
 
 export const IPFS_CONFIG: IIPFSConfig = {
-  host: process.env.REACT_APP_IPFS_HOST || "",
-  port: Number(process.env.REACT_APP_IPFS_PORT || "5001"),
-  protocol: process.env.REACT_APP_IPFS_PROTOCOL || "",
+  host: "ipfs.infura.io",
+  port: 5001,
+  protocol: "https",
 };
 
 export const RELAYER_URL: { [key in NetworkId]: string } = {

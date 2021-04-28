@@ -209,6 +209,7 @@ export interface ISideMenuItem {
   Icon: React.ElementType;
   href?: string;
   onClick?: () => void;
+  auth?: boolean;
 }
 
 export interface IGameItem {

@@ -4,6 +4,7 @@ import { ConnectWalletModal, LoadingScreen } from "components";
 import { STORAGE_KEY_CONNECTOR } from "config/constants";
 import { useGlobal } from "contexts/GlobalContext";
 import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router";
 import { getAPIService } from "services/api";
 import { waitSeconds } from "utils";
 import connectors from "utils/connectors";
@@ -60,6 +61,9 @@ export const ConnectedWeb3: React.FC = (props) => {
     walletConnectModalOpened: false,
   });
 
+  const history = useHistory();
+  const nextPath = new URLSearchParams(history.location.search).get("next");
+
   const apiService = getAPIService();
 
   const setInitialized = (initialized: boolean) => {
@@ -97,6 +101,19 @@ export const ConnectedWeb3: React.FC = (props) => {
 
   useEffect(() => {
     let isMounted = true;
+
+    const checkNextPath = () => {
+      if (nextPath) {
+        const lNextPath = nextPath.toLowerCase();
+        if (lNextPath.includes("/next/")) {
+          const replacePath = lNextPath.replace("/next/", `/${account}/`);
+          history.push(replacePath);
+        }
+      }
+    };
+
+    checkNextPath();
+
     const loadUserInfo = async () => {
       if (!account) {
         updateUserInfo();
@@ -108,6 +125,7 @@ export const ConnectedWeb3: React.FC = (props) => {
       }
     };
     loadUserInfo();
+
     return () => {
       isMounted = false;
     };

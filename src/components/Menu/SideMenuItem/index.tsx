@@ -1,5 +1,6 @@
 import { Typography, makeStyles } from "@material-ui/core";
 import clsx from "clsx";
+import { useConnectedWeb3Context } from "contexts";
 import { transparentize } from "polished";
 import React from "react";
 import { NavLink, matchPath, useHistory } from "react-router-dom";
@@ -42,6 +43,9 @@ export const SideMenuItem = (props: ISideMenuItem) => {
   const classes = useStyles();
   const history = useHistory();
 
+  const { account, setWalletConnectModalOpened } = useConnectedWeb3Context();
+  const isLoggedIn = Boolean(account);
+
   if (href) {
     const isActive = () =>
       !!matchPath(history.location.pathname, {
@@ -53,6 +57,11 @@ export const SideMenuItem = (props: ISideMenuItem) => {
         activeClassName="active"
         className={clsx(classes.root, props.className)}
         isActive={isActive}
+        onClick={() => {
+          if (!isLoggedIn && props.auth) {
+            setWalletConnectModalOpened(true);
+          }
+        }}
         to={href}
       >
         <Icon className={classes.icon} />

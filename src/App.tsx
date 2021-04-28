@@ -38,11 +38,11 @@ function App() {
             maxSnack={3}
           >
             <Web3ReactProvider getLibrary={getLibrary}>
-              <ConnectedWeb3>
-                <BrowserRouter>
+              <BrowserRouter>
+                <ConnectedWeb3>
                   <TradeProvider>{renderRoutes(routes)}</TradeProvider>
-                </BrowserRouter>
-              </ConnectedWeb3>
+                </ConnectedWeb3>
+              </BrowserRouter>
             </Web3ReactProvider>
           </SnackbarProvider>
         </ThemeProvider>

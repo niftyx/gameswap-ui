@@ -89,18 +89,27 @@ const Navbar = (props: IProps & RouteComponentProps) => {
         },
         {
           title: "Favorites",
-          href: account ? `/users/${account}/liked` : "",
+          href: account
+            ? `/users/${account}/liked`
+            : `/?next=${encodeURIComponent(`/users/next/liked`)}`,
           Icon: HeartIcon,
+          auth: true,
         },
         {
           title: "My Items",
-          href: account ? `/users/${account}/assets` : "",
+          href: account
+            ? `/users/${account}/assets`
+            : `/?next=${encodeURIComponent(`/users/next/assets`)}`,
           Icon: ShoppingBagIcon,
+          auth: true,
         },
         {
           title: "Following",
-          href: "/following",
+          href: account
+            ? "/following"
+            : `/?next=${encodeURIComponent("/following")}`,
           Icon: TvIcon,
+          auth: true,
         },
       ],
     },
