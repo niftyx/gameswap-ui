@@ -7,6 +7,12 @@ import {
 } from "@material-ui/core";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import { ReactComponent as CopyIcon } from "assets/svgs/content-copy.svg";
+import { ReactComponent as FacebookIcon } from "assets/svgs/profile/facebook.svg";
+import { ReactComponent as InstagramIcon } from "assets/svgs/profile/instagram.svg";
+import { ReactComponent as TwitchIcon } from "assets/svgs/profile/twitch.svg";
+import { ReactComponent as TwitterIcon } from "assets/svgs/profile/twitter.svg";
+import { ReactComponent as TiktokIcon } from "assets/svgs/profile/youtube-gaming.svg";
+import { ReactComponent as YoutubeIcon } from "assets/svgs/profile/youtube.svg";
 import clsx from "clsx";
 import { ProfileMarker } from "components/Marker";
 import { DEFAULT_NETWORK_ID, PRICE_DECIMALS } from "config/constants";
@@ -163,6 +169,17 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
   },
+  socialLink: {
+    color: theme.colors.text.default,
+    textDecoration: "none",
+    transition: "all 0.4s",
+    "&:hover": {
+      opacity: 0.7,
+    },
+    "& + &": {
+      marginLeft: 12,
+    },
+  },
 }));
 
 interface IProps {
@@ -284,6 +301,70 @@ export const HeroSection = (props: IProps) => {
                       <CopyIcon />
                     </span>
                   </div>
+                  {userInfo && (
+                    <div className={classes.row}>
+                      {userInfo.twitterUsername && (
+                        <a
+                          className={classes.socialLink}
+                          href={`https://twitter.com/${userInfo.twitterUsername}`}
+                          rel="noreferrer"
+                          target="_blank"
+                        >
+                          <TwitterIcon />
+                        </a>
+                      )}
+                      {userInfo.twitchUsername && (
+                        <a
+                          className={classes.socialLink}
+                          href={`https://www.twitch.tv/${userInfo.twitchUsername}`}
+                          rel="noreferrer"
+                          target="_blank"
+                        >
+                          <TwitchIcon />
+                        </a>
+                      )}
+                      {userInfo.facebookUsername && (
+                        <a
+                          className={classes.socialLink}
+                          href={`https://www.facebook.com/${userInfo.facebookUsername}`}
+                          rel="noreferrer"
+                          target="_blank"
+                        >
+                          <FacebookIcon />
+                        </a>
+                      )}
+                      {userInfo.youtubeUsername && (
+                        <a
+                          className={classes.socialLink}
+                          href={`https://www.youtube.com/c/${userInfo.youtubeUsername}`}
+                          rel="noreferrer"
+                          target="_blank"
+                        >
+                          <YoutubeIcon />
+                        </a>
+                      )}
+                      {userInfo.instagramUsername && (
+                        <a
+                          className={classes.socialLink}
+                          href={`https://www.instagram.com/${userInfo.instagramUsername}`}
+                          rel="noreferrer"
+                          target="_blank"
+                        >
+                          <InstagramIcon />
+                        </a>
+                      )}
+                      {userInfo.tiktokUsername && (
+                        <a
+                          className={classes.socialLink}
+                          href={`https://www.tiktok.com/@${userInfo.tiktokUsername}`}
+                          rel="noreferrer"
+                          target="_blank"
+                        >
+                          <TiktokIcon />
+                        </a>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
               {isMine && (
