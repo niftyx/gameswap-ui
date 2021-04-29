@@ -104,12 +104,17 @@ export const InfoSectionTab = (props: IProps) => {
           {unlocking ? "Unlocking ..." : "View Locked Content"}
         </SecondaryButton>
       )}
-      <OwnerAvatarRowItem address={data.owner} roleName="Owner" />
+      <OwnerAvatarRowItem
+        address={data.owner}
+        href={`/users/${data.owner}`}
+        roleName="Owner"
+      />
       {creator && (
         <>
           <HorizonDivider />
           <OwnerAvatarRowItem
             address={creator}
+            href={`/users/${creator}`}
             right={() => (
               <Typography
                 align="center"
@@ -128,6 +133,7 @@ export const InfoSectionTab = (props: IProps) => {
         <>
           <HorizonDivider />
           <OwnerAvatarRowItem
+            href={`/collections/${collection.id}`}
             image={collection.imageUrl}
             name={collection.name || ""}
             roleName="Collection (ERC721)"

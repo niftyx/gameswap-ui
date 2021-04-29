@@ -109,6 +109,9 @@ const useStyles = makeStyles((theme) => ({
   title: {
     color: theme.colors.text.default,
     marginTop: 8,
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
   },
   topBid: { color: theme.colors.text.secondary, fontSize: 13 },
   price: { color: theme.colors.text.default },

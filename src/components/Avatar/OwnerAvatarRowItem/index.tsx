@@ -3,6 +3,7 @@ import { ReactComponent as TickIcon } from "assets/svgs/blue-tick.svg";
 import clsx from "clsx";
 import React from "react";
 import Identicon from "react-identicons";
+import { NavLink } from "react-router-dom";
 import { shortenAddress } from "utils";
 
 const IdenticonComponent = Identicon as any;
@@ -33,6 +34,8 @@ const useStyles = makeStyles((theme) => ({
   },
   name: {
     color: theme.colors.text.default,
+    display: "block",
+    textDecoration: "none",
   },
   tick: {
     position: "absolute",
@@ -52,12 +55,14 @@ interface IProps {
   showTick?: boolean;
   right?: () => React.ReactNode;
   className?: string;
+  href?: string;
 }
 
 export const OwnerAvatarRowItem = (props: IProps) => {
   const classes = useStyles();
   const {
     address = "",
+    href,
     image = "",
     name = "",
     right,
@@ -82,9 +87,15 @@ export const OwnerAvatarRowItem = (props: IProps) => {
       {showTick && <TickIcon className={classes.tick} />}
       <div className={classes.content}>
         <Typography className={classes.role}>{roleName}</Typography>
-        <Typography className={classes.name}>
-          {name ? name : shortenAddress(address)}
-        </Typography>
+        {href ? (
+          <NavLink className={classes.name} to={href}>
+            {name ? name : shortenAddress(address)}
+          </NavLink>
+        ) : (
+          <Typography className={classes.name}>
+            {name ? name : shortenAddress(address)}
+          </Typography>
+        )}
       </div>
       {right && right()}
     </div>

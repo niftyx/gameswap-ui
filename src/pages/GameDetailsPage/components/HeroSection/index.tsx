@@ -110,6 +110,10 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
   },
+  platformIcon: {
+    width: 16.8,
+    height: 16.7,
+  },
 }));
 
 interface IProps {
@@ -195,7 +199,7 @@ export const HeroSection = (props: IProps) => {
                 PLATFORM
               </Typography>
               <Typography align="center" className={classes.detailItemContent}>
-                <PlatformIcon />
+                <PlatformIcon className={classes.platformIcon} />
               </Typography>
             </div>
             <div className={classes.detailItem}>

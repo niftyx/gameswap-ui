@@ -73,6 +73,7 @@ export const BidsSectionTab = (props: IProps) => {
               <BidAvatarRowItem
                 address={order.makerAddress}
                 comment1="by"
+                href={`/users/${order.makerAddress}`}
                 tokenPrice={`${formatBigNumber(
                   xBigNumberToEthersBigNumber(order.makerAssetAmount),
                   token.decimals,

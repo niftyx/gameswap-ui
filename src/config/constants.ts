@@ -1,5 +1,9 @@
-import { ReactComponent as MacIcon } from "assets/svgs/mac.svg";
-import { ReactComponent as WindowsIcon } from "assets/svgs/windows.svg";
+import { ReactComponent as AndroidIcon } from "assets/svgs/platform/android.svg";
+import { ReactComponent as IOSIcon } from "assets/svgs/platform/ios.svg";
+import { ReactComponent as LinuxIcon } from "assets/svgs/platform/linux.svg";
+import { ReactComponent as MacIcon } from "assets/svgs/platform/mac.svg";
+import { ReactComponent as WebIcon } from "assets/svgs/platform/web.svg";
+import { ReactComponent as WindowsIcon } from "assets/svgs/platform/windows.svg";
 import { BigNumber, ethers } from "packages/ethers";
 import { EBrowseGameBidItemStatus } from "utils/enums";
 import {
@@ -70,10 +74,10 @@ export const PROTOCOL_FEE_MULTIPLIER = 70000;
 export const PLATFORM_ICONS: { [key: string]: React.ElementType } = {
   Windows: WindowsIcon,
   Mac: MacIcon,
-  Linux: WindowsIcon,
-  Android: MacIcon,
-  iOS: WindowsIcon,
-  Web: WindowsIcon,
+  Linux: LinuxIcon,
+  Android: AndroidIcon,
+  iOS: IOSIcon,
+  Web: WebIcon,
 };
 
 export const MOCK_AUCTIONS_ITEMS: IBrowseGameBidItem[] = [

@@ -2,6 +2,7 @@ import { Avatar, Typography, makeStyles } from "@material-ui/core";
 import { transparentize } from "polished";
 import React from "react";
 import Identicon from "react-identicons";
+import { NavLink } from "react-router-dom";
 import { shortenAddress } from "utils";
 
 const IdenticonComponent = Identicon as any;
@@ -37,6 +38,10 @@ const useStyles = makeStyles((theme) => ({
     "& span": {
       color: theme.colors.text.default,
     },
+    "& a": {
+      color: theme.colors.text.default,
+      textDecoration: "none",
+    },
   },
 }));
 
@@ -46,11 +51,12 @@ interface IProps {
   image?: string;
   address?: string;
   name?: string;
+  href?: string;
 }
 
 export const BidAvatarRowItem = (props: IProps) => {
   const classes = useStyles();
-  const { address = "", comment1, image, name, tokenPrice } = props;
+  const { address = "", comment1, href, image, name, tokenPrice } = props;
 
   return (
     <div className={classes.root}>
@@ -68,7 +74,12 @@ export const BidAvatarRowItem = (props: IProps) => {
           <span>{tokenPrice}</span>
         </Typography>
         <Typography className={classes.name}>
-          {comment1} <span>{name ? name : shortenAddress(address)}</span>
+          {comment1}{" "}
+          {href ? (
+            <NavLink to={href}>{name ? name : shortenAddress(address)}</NavLink>
+          ) : (
+            <span>{name ? name : shortenAddress(address)}</span>
+          )}
         </Typography>
       </div>
     </div>

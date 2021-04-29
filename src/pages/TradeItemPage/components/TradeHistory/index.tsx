@@ -84,6 +84,7 @@ export const TradeHistory = (props: IProps) => {
             <OwnerAvatarRowItem
               address={item.to}
               className={classes.ownerItem}
+              href={item.to ? `/users/${item.to}` : undefined}
               key={item.timestamp}
               roleName={roleStr}
             />
