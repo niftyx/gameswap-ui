@@ -14,7 +14,7 @@ import { getAPIService } from "services/api";
 import { getIPFSService } from "services/ipfs";
 import { EPlatform } from "utils/enums";
 import { getLogger } from "utils/logger";
-import { IGameFormValues } from "utils/types";
+import { IGame, IGameFormValues } from "utils/types";
 import * as Yup from "yup";
 
 import { BasicModal } from "../Common";
@@ -45,11 +45,14 @@ const useStyles = makeStyles((theme) => ({
 interface IProps {
   visible: boolean;
   onClose: () => void;
+  game?: IGame;
+  onSuccess?: () => Promise<void>;
 }
 
 export const GameCreateModal = (props: IProps) => {
   const classes = useStyles();
-  const { onClose, visible } = props;
+  const { game, onClose, onSuccess, visible } = props;
+  const isCreate = !game;
   const ipfsService = getIPFSService();
   const {
     account,
@@ -60,19 +63,27 @@ export const GameCreateModal = (props: IProps) => {
   const apiService = getAPIService();
   const isWalletConnected = !!account;
 
-  const initialFormValues: IGameFormValues = {
-    id: "",
-    image: null,
-    imageUrl: "",
-    name: "",
-    version: "",
-    description: "",
-    categoryId: GAME_CATEGORIES[0].value,
-    imageUploading: false,
-    headerImage: null,
-    headerImageUploading: false,
-    platform: EPlatform.Windows,
-  };
+  const initialFormValues: IGameFormValues = game
+    ? {
+        ...game,
+        image: null,
+        imageUploading: false,
+        headerImage: null,
+        headerImageUploading: false,
+      }
+    : {
+        id: "",
+        image: null,
+        imageUrl: "",
+        name: "",
+        version: "",
+        description: "",
+        categoryId: GAME_CATEGORIES[0].value,
+        imageUploading: false,
+        headerImage: null,
+        headerImageUploading: false,
+        platform: EPlatform.Windows,
+      };
 
   return (
     <BasicModal onClose={onClose} title="Game" visible={visible}>
@@ -102,8 +113,16 @@ export const GameCreateModal = (props: IProps) => {
               .signMessage(payload.name);
             payload.message = signedMessage;
 
-            await apiService.createGame(payload);
+            if (!game) {
+              await apiService.createGame(payload);
+            } else {
+              await apiService.updateGame(game.id, payload);
+            }
+
             await loadGames();
+            if (onSuccess) {
+              await onSuccess();
+            }
             setSubmitting(false);
             onClose();
           } catch (error) {
@@ -288,7 +307,11 @@ export const GameCreateModal = (props: IProps) => {
               variant="contained"
             >
               {isSubmitting && <CircularProgress color="primary" size={32} />}
-              {isWalletConnected ? "Create" : "Connect wallet and create"}
+              {isWalletConnected
+                ? isCreate
+                  ? "Create"
+                  : "Update"
+                : `Connect wallet and ${isCreate ? "create" : "update"}`}
             </Button>
           </Form>
         )}

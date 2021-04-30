@@ -101,6 +101,16 @@ export class APIService {
   }
 
   /**
+   * Games
+   * create Game
+   */
+  public async updateGame(id: string, payload: any): Promise<IGame> {
+    await this._rateLimit();
+    const response = await axios.post(`${this.gamePath}${id}`, payload);
+    return response.data;
+  }
+
+  /**
    * Collections
    * get all collections
    */

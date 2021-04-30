@@ -1,7 +1,7 @@
 import { useIsMountedRef } from "hooks";
 import { useEffect, useState } from "react";
 import { getAPIService } from "services/api";
-import { IGame, Maybe } from "utils/types";
+import { IGame } from "utils/types";
 
 interface IState {
   loading: boolean;
@@ -11,7 +11,7 @@ interface IState {
 export const useGameDetailsFromId = (
   id?: string
 ): IState & {
-  loadGameInfo: () => Promise<Maybe<IGame>>;
+  loadGameInfo: () => Promise<void>;
 } => {
   const [state, setState] = useState<IState>({
     loading: true,
@@ -19,17 +19,17 @@ export const useGameDetailsFromId = (
   const apiService = getAPIService();
   const isMounted = useIsMountedRef();
 
-  const loadGameInfo = async (): Promise<Maybe<IGame>> => {
-    if (!id) return null;
+  const loadGameInfo = async (): Promise<void> => {
+    if (!id) return;
     setState(() => ({ loading: true }));
     try {
       const game = await apiService.getGame(id);
       if (isMounted.current === true)
         setState(() => ({ game, loading: false }));
-      return game;
+      return;
     } catch (error) {
       setState(() => ({ loading: false }));
-      return null;
+      return;
     }
   };
 

@@ -1,8 +1,8 @@
 import { CircularProgress, makeStyles } from "@material-ui/core";
 import clsx from "clsx";
-import { PageContainer } from "components";
+import { GameCreateModal, PageContainer } from "components";
 import { useGameDetailsFromId } from "helpers";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router";
 import useCommonStyles from "styles/common";
 
@@ -38,16 +38,33 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+interface IState {
+  gameEditModalVisible: boolean;
+}
+
 const GameDetailsPage = () => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
+  const [state, setState] = useState<IState>({
+    gameEditModalVisible: false,
+  });
+  const setGameEditModalVisible = (gameEditModalVisible: boolean) => {
+    setState((prev) => ({
+      ...prev,
+      gameEditModalVisible,
+    }));
+  };
+
   const params = useParams();
   const history = useHistory();
+
   const gameId = (((params || {}) as any).id as string).toLowerCase();
 
-  const { game: gameInfo, loading: gameLoading } = useGameDetailsFromId(
-    gameId || ""
-  );
+  const {
+    game: gameInfo,
+    loadGameInfo,
+    loading: gameLoading,
+  } = useGameDetailsFromId(gameId || "");
 
   useEffect(() => {
     if (!gameId) {
@@ -61,6 +78,11 @@ const GameDetailsPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameId, gameInfo, gameLoading]);
 
+  const onEditGame = () => {
+    if (!gameInfo) return;
+    setGameEditModalVisible(true);
+  };
+
   return (
     <PageContainer className={classes.root}>
       <div className={clsx(classes.content, commonClasses.scroll)}>
@@ -71,7 +93,11 @@ const GameDetailsPage = () => {
         )}
         {!gameLoading && gameInfo && (
           <>
-            <HeroSection className={classes.heroSection} game={gameInfo} />
+            <HeroSection
+              className={classes.heroSection}
+              game={gameInfo}
+              onEditGame={onEditGame}
+            />
             <SectionHeader href="/create/collection" title="Collections" />
             <CollectionsSection
               className={classes.section}
@@ -80,6 +106,14 @@ const GameDetailsPage = () => {
             <SectionHeader href="/create/erc721" title="Assets" />
             <AssetsSection className={classes.section} gameId={gameInfo.id} />
           </>
+        )}
+        {state.gameEditModalVisible && (
+          <GameCreateModal
+            game={gameInfo}
+            onClose={() => setGameEditModalVisible(false)}
+            onSuccess={loadGameInfo}
+            visible={state.gameEditModalVisible}
+          />
         )}
       </div>
     </PageContainer>

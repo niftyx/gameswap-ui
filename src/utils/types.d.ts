@@ -398,6 +398,7 @@ export interface IGame {
   categoryId: string;
   description: string;
   platform: EPlatform;
+  owner?: string;
 }
 
 export interface ICollection {

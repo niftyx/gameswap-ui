@@ -1,11 +1,14 @@
 import {
   Button,
   CircularProgress,
+  IconButton,
   Typography,
   makeStyles,
 } from "@material-ui/core";
+import CreateIcon from "@material-ui/icons/Create";
 import clsx from "clsx";
 import { PLATFORM_ICONS } from "config/constants";
+import { useConnectedWeb3Context } from "contexts";
 import { transparentize } from "polished";
 import React, { useState } from "react";
 import useCommonStyles from "styles/common";
@@ -58,6 +61,13 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "flex-end",
     justifyContent: "space-between",
+  },
+  pencil: {
+    position: "absolute",
+    right: theme.spacing(3),
+    top: 0,
+    color: theme.colors.text.default,
+    backgroundColor: transparentize(0.7, theme.colors.text.default),
   },
   name: {
     fontSize: 90,
@@ -119,6 +129,7 @@ const useStyles = makeStyles((theme) => ({
 interface IProps {
   className?: string;
   game: IGame;
+  onEditGame: () => void;
 }
 
 interface IState {
@@ -129,7 +140,13 @@ export const HeroSection = (props: IProps) => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
   const { game } = props;
-  const [state, setState] = useState<IState>({ imageLoaded: false });
+  const [state, setState] = useState<IState>({
+    imageLoaded: false,
+  });
+
+  const { account } = useConnectedWeb3Context();
+
+  const isOwner = account?.toLowerCase() === game.owner?.toLowerCase();
 
   const setImageLoaded = (imageLoaded: boolean) =>
     setState((prev) => ({ ...prev, imageLoaded }));
@@ -164,6 +181,11 @@ export const HeroSection = (props: IProps) => {
         </div>
       ) : (
         <div className={classes.comments}>
+          {isOwner && (
+            <IconButton className={classes.pencil} onClick={props.onEditGame}>
+              <CreateIcon />
+            </IconButton>
+          )}
           <div>
             <Typography className={classes.title}>GAME</Typography>
             <Typography className={classes.name}>{game.name}</Typography>
