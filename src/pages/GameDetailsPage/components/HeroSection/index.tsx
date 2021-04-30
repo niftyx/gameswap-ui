@@ -65,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
   pencil: {
     position: "absolute",
     right: theme.spacing(3),
-    top: 0,
+    top: theme.spacing(3),
     color: theme.colors.text.default,
     backgroundColor: transparentize(0.7, theme.colors.text.default),
   },
@@ -153,13 +153,12 @@ export const HeroSection = (props: IProps) => {
 
   const PlatformIcon = PLATFORM_ICONS[game.platform];
 
+  const showContent = !game.headerImageUrl || state.imageLoaded;
+
   return (
     <div className={clsx(classes.root, props.className)}>
       <div
-        className={clsx(
-          classes.imgItem,
-          !game.headerImageUrl || state.imageLoaded ? "visible" : ""
-        )}
+        className={clsx(classes.imgItem, showContent ? "visible" : "")}
         style={{
           backgroundImage:
             game.headerImageUrl && state.imageLoaded
@@ -175,17 +174,17 @@ export const HeroSection = (props: IProps) => {
           src={game.headerImageUrl}
         />
       )}
+      {isOwner && showContent && (
+        <IconButton className={classes.pencil} onClick={props.onEditGame}>
+          <CreateIcon />
+        </IconButton>
+      )}
       {game.headerImageUrl && !state.imageLoaded ? (
         <div className={classes.loadWrapper}>
           <CircularProgress size={40} />
         </div>
       ) : (
         <div className={classes.comments}>
-          {isOwner && (
-            <IconButton className={classes.pencil} onClick={props.onEditGame}>
-              <CreateIcon />
-            </IconButton>
-          )}
           <div>
             <Typography className={classes.title}>GAME</Typography>
             <Typography className={classes.name}>{game.name}</Typography>
