@@ -23,6 +23,7 @@ export class APIService {
   private readonly collectionPath = "/collections/v1/";
   private readonly assetPath = "/assets/v1/";
   private readonly accountPath = "/accounts/v1/";
+  private readonly commonPath = "/common/v1/";
 
   constructor() {
     this._rateLimit = RateLimit(20);
@@ -295,6 +296,20 @@ export class APIService {
       signedMessage,
     });
     return response.data as IUserInfo;
+  }
+
+  /**
+   * check if customUrl is not duplicated (games/accounts)
+   */
+  public async checkCustomUrlUsable(url: string) {
+    await this._rateLimit();
+
+    const response = await axios.post(
+      `${this.commonPath}check-custom-url-usable`,
+      { url }
+    );
+
+    return response.data as boolean;
   }
 }
 

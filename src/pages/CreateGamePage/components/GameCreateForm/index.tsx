@@ -1,4 +1,11 @@
-import { Button, makeStyles } from "@material-ui/core";
+import {
+  Button,
+  CircularProgress,
+  InputAdornment,
+  Typography,
+  makeStyles,
+} from "@material-ui/core";
+import CheckIcon from "@material-ui/icons/Check";
 import clsx from "clsx";
 import {
   FormGameImageUpload,
@@ -6,10 +13,12 @@ import {
   FormSelectField,
   FormTextField,
 } from "components";
-import { GAME_CATEGORIES } from "config/constants";
+import { BANNED_CUSTOM_URLS, GAME_CATEGORIES } from "config/constants";
 import { useConnectedWeb3Context } from "contexts";
 import { Form, Formik } from "formik";
 import React from "react";
+import { getAPIService } from "services/api";
+import { getFLEEKService } from "services/fleek";
 import { getIPFSService } from "services/ipfs";
 import { EPlatform } from "utils/enums";
 import { IGame, IGameFormValues } from "utils/types";
@@ -39,7 +48,13 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 20,
     width: 100,
   },
+  loader: {
+    width: "24px !important",
+    height: "24px !important",
+  },
 }));
+
+let UrlVerifyTimer: any;
 
 interface IProps {
   className?: string;
@@ -50,7 +65,9 @@ export const GameCreateForm = (props: IProps) => {
   const classes = useStyles();
   const { account, setWalletConnectModalOpened } = useConnectedWeb3Context();
   const ipfsService = getIPFSService();
+  const fleekService = getFLEEKService();
   const isWalletConnected = !!account;
+  const apiService = getAPIService();
 
   const initialFormValue: IGameFormValues = {
     id: "",
@@ -64,6 +81,9 @@ export const GameCreateForm = (props: IProps) => {
     headerImage: null,
     headerImageUploading: false,
     platform: EPlatform.Windows,
+    customUrl: "",
+    customUrlVerified: true,
+    customUrlVerifying: false,
   };
 
   return (
@@ -83,11 +103,15 @@ export const GameCreateForm = (props: IProps) => {
           imageUrl: values.imageUrl,
           headerImageUrl: values.headerImageUrl,
           platform: values.platform,
+          customUrl: values.customUrl,
         };
         props.onSubmit(payload);
       }}
       validationSchema={Yup.object().shape({
         id: Yup.string(),
+        customUrl: Yup.string()
+          .min(5)
+          .matches(/^[a-zA-Z0-9\-_]+$/, "You can use a-z, A-Z, 0-9, _ and -"),
         imageUrl: Yup.string().required(),
         name: Yup.string().required(),
         version: Yup.string().required(),
@@ -103,6 +127,7 @@ export const GameCreateForm = (props: IProps) => {
         handleSubmit,
         isSubmitting,
         isValid,
+        setFieldError,
         setFieldValue,
         touched,
         values,
@@ -119,15 +144,21 @@ export const GameCreateForm = (props: IProps) => {
                   setFieldValue("headerImage", file);
                   if (file) {
                     setFieldValue("headerImageUploading", true);
-                    ipfsService
+                    fleekService
                       .uploadData(file)
                       .then((url) => {
-                        setFieldValue("headerImageUploading", false);
-                        setFieldValue("headerImageUrl", url);
+                        console.log(url);
                       })
-                      .catch(() => {
-                        setFieldValue("headerImageUploading", false);
-                      });
+                      .catch((err) => {});
+                    // ipfsService
+                    //   .uploadData(file)
+                    //   .then((url) => {
+                    //     setFieldValue("headerImageUploading", false);
+                    //     setFieldValue("headerImageUrl", url);
+                    //   })
+                    //   .catch(() => {
+                    //     setFieldValue("headerImageUploading", false);
+                    //   });
                   } else {
                     setFieldValue("headerImageUrl", "");
                   }
@@ -233,6 +264,85 @@ export const GameCreateForm = (props: IProps) => {
               }))}
               label="Select Category"
             />
+            <FormTextField
+              FormControlProps={{
+                fullWidth: true,
+              }}
+              FormHelperTextProps={{
+                error: Boolean(touched.customUrl && errors.customUrl),
+              }}
+              InputLabelProps={{
+                htmlFor: "customUrl",
+                shrink: true,
+              }}
+              InputProps={{
+                id: "customUrl",
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Typography>gameswap.org/</Typography>
+                  </InputAdornment>
+                ),
+                endAdornment:
+                  values.customUrlVerifying || values.customUrlVerified ? (
+                    <InputAdornment position="end">
+                      {values.customUrlVerifying ? (
+                        <CircularProgress className={classes.loader} />
+                      ) : (
+                        <CheckIcon />
+                      )}
+                    </InputAdornment>
+                  ) : null,
+                name: "customUrl",
+                onBlur: handleBlur,
+                onChange: (event) => {
+                  handleChange(event);
+                  const newUrl = event.target.value;
+
+                  if (newUrl === "") {
+                    setFieldValue("customUrlVerifying", false);
+                    setFieldValue("customUrlVerified", true);
+                  } else if (
+                    newUrl.length >= 6 &&
+                    newUrl.match(/^[a-zA-Z0-9\-_]+$/)
+                  ) {
+                    setFieldValue("customUrlVerified", false);
+                    if (UrlVerifyTimer) {
+                      clearTimeout(UrlVerifyTimer);
+                    }
+                    if (BANNED_CUSTOM_URLS.includes(newUrl.toLowerCase())) {
+                      setFieldError(
+                        "customUrl",
+                        "It's not allowed to use this!"
+                      );
+                      return;
+                    }
+                    UrlVerifyTimer = setTimeout(async () => {
+                      // verify if username is not duplicated
+                      setFieldValue("customUrlVerifying", true);
+                      const verified = await apiService.checkCustomUrlUsable(
+                        newUrl
+                      );
+                      setFieldValue("customUrlVerifying", false);
+                      setFieldValue("customUrlVerified", verified);
+                      if (!verified) {
+                        setFieldError(
+                          "customUrl",
+                          "It's not allowed to use this!"
+                        );
+                      }
+                      UrlVerifyTimer = null;
+                    }, 1000);
+                  } else {
+                    setFieldValue("customUrlVerifying", false);
+                    setFieldValue("customUrlVerified", false);
+                  }
+                },
+                placeholder: "Enter your custom URL",
+                value: values.customUrl,
+              }}
+              helperText={touched.customUrl && errors.customUrl}
+              label="Custom URL"
+            />
             <FormSelectField
               FormControlProps={{ fullWidth: true }}
               InputLabelProps={{ htmlFor: "platform", shrink: true }}
@@ -256,7 +366,8 @@ export const GameCreateForm = (props: IProps) => {
                 !isValid ||
                 isSubmitting ||
                 values.imageUploading ||
-                values.headerImageUploading
+                values.headerImageUploading ||
+                (values.customUrl !== "" && !values.customUrlVerified)
               }
               type="submit"
               variant="contained"

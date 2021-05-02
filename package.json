@@ -18,6 +18,7 @@
     "@ethersproject/units": "5.0.8",
     "@ethersproject/wallet": "5.0.12",
     "@ethersproject/wordlists": "5.0.10",
+    "@fleekhq/fleek-storage-js": "^1.0.15",
     "@material-ui/core": "^4.11.2",
     "@material-ui/icons": "^4.9.1",
     "@testing-library/jest-dom": "^5.11.5",
@@ -59,6 +60,7 @@
     "source-map-explorer": "^2.5.2",
     "subscriptions-transport-ws": "^0.9.18",
     "typescript": "4.0.5",
+    "uuid": "^8.3.2",
     "web-vitals": "^0.2.4",
     "yup": "^0.32.6"
   },
@@ -109,6 +111,7 @@
   },
   "devDependencies": {
     "@0x/types": "3.3.1",
+    "@types/uuid": "^8.3.0",
     "@typescript-eslint/eslint-plugin": "4.7.0",
     "@typescript-eslint/parser": "4.7.0",
     "eslint": "^7.13.0",

@@ -398,6 +398,7 @@ export interface IGame {
   categoryId: string;
   description: string;
   platform: EPlatform;
+  customUrl: string;
   owner?: string;
 }
 
@@ -444,6 +445,8 @@ export interface IGameFormValues extends IGame {
   imageUploading: boolean;
   headerImage: File | null;
   headerImageUploading: boolean;
+  customUrlVerified: boolean;
+  customUrlVerifying: boolean;
 }
 
 // collection create

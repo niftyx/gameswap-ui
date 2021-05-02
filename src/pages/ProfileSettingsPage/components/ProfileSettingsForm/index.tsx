@@ -1,19 +1,24 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Button,
+  CircularProgress,
   InputAdornment,
   Typography,
   makeStyles,
 } from "@material-ui/core";
+import CheckIcon from "@material-ui/icons/Check";
 import clsx from "clsx";
 import {
   FormHeaderImageUpload,
   FormSettingsAvatarUpload,
   FormTextField,
 } from "components";
+import { BANNED_CUSTOM_URLS } from "config/constants";
 import { useGlobal } from "contexts";
 import { Form, Formik } from "formik";
 import { transparentize } from "polished";
 import React from "react";
+import { getAPIService } from "services/api";
 import { getIPFSService } from "services/ipfs";
 import useCommonStyles from "styles/common";
 import { IUserInfo } from "utils/types";
@@ -55,6 +60,10 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 20,
     width: 100,
   },
+  loader: {
+    width: "24px !important",
+    height: "24px !important",
+  },
 }));
 
 export interface ISettingsFormValues extends IUserInfo {
@@ -62,7 +71,11 @@ export interface ISettingsFormValues extends IUserInfo {
   image: File | null;
   headerImage: File | null;
   headerImageUploading: boolean;
+  customUrlVerified: boolean;
+  customUrlVerifying: boolean;
 }
+
+let UrlVerifyTimer: any;
 
 interface IProps {
   className?: string;
@@ -74,6 +87,7 @@ export const ProfileSettingsForm = (props: IProps) => {
   const commonClasses = useCommonStyles();
   const { onSubmit } = props;
   const ipfsService = getIPFSService();
+  const apiService = getAPIService();
   const {
     data: { userInfo },
   } = useGlobal();
@@ -100,14 +114,17 @@ export const ProfileSettingsForm = (props: IProps) => {
     image: null,
     id: userInfo.id,
     address: userInfo.address,
+    customUrlVerified: true,
+    customUrlVerifying: false,
   };
 
   return (
     <Formik
       initialValues={initialValues}
       onSubmit={(values) => {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const {
+          customUrlVerified,
+          customUrlVerifying,
           headerImage,
           headerImageUploading,
           image,
@@ -118,7 +135,9 @@ export const ProfileSettingsForm = (props: IProps) => {
       }}
       validationSchema={Yup.object().shape({
         name: Yup.string().required(),
-        customUrl: Yup.string(),
+        customUrl: Yup.string()
+          .min(5)
+          .matches(/^[a-zA-Z0-9\-_]+$/, "You can use a-z, A-Z, 0-9, _ and -"),
         bio: Yup.string(),
         twitterUsername: Yup.string().matches(
           /^[a-zA-Z0-9\-_]+$/,
@@ -158,6 +177,7 @@ export const ProfileSettingsForm = (props: IProps) => {
         handleSubmit,
         isSubmitting,
         isValid,
+        setFieldError,
         setFieldValue,
         touched,
         values,
@@ -255,6 +275,9 @@ export const ProfileSettingsForm = (props: IProps) => {
             FormControlProps={{
               fullWidth: true,
             }}
+            FormHelperTextProps={{
+              error: Boolean(touched.customUrl && errors.customUrl),
+            }}
             InputLabelProps={{
               htmlFor: "customUrl",
               shrink: true,
@@ -267,12 +290,62 @@ export const ProfileSettingsForm = (props: IProps) => {
                   <Typography>gameswap.org/</Typography>
                 </InputAdornment>
               ),
+              endAdornment:
+                values.customUrlVerifying || values.customUrlVerified ? (
+                  <InputAdornment position="end">
+                    {values.customUrlVerifying ? (
+                      <CircularProgress className={classes.loader} />
+                    ) : (
+                      <CheckIcon />
+                    )}
+                  </InputAdornment>
+                ) : null,
               name: "customUrl",
               onBlur: handleBlur,
-              onChange: handleChange,
+              onChange: (event) => {
+                handleChange(event);
+                const newUrl = event.target.value;
+
+                if (newUrl === "") {
+                  setFieldValue("customUrlVerifying", false);
+                  setFieldValue("customUrlVerified", true);
+                } else if (
+                  newUrl.length >= 6 &&
+                  newUrl.match(/^[a-zA-Z0-9\-_]+$/)
+                ) {
+                  setFieldValue("customUrlVerified", false);
+                  if (UrlVerifyTimer) {
+                    clearTimeout(UrlVerifyTimer);
+                  }
+                  if (BANNED_CUSTOM_URLS.includes(newUrl.toLowerCase())) {
+                    setFieldError("customUrl", "It's not allowed to use this!");
+                    return;
+                  }
+                  UrlVerifyTimer = setTimeout(async () => {
+                    // verify if username is not duplicated
+                    setFieldValue("customUrlVerifying", true);
+                    const verified = await apiService.checkCustomUrlUsable(
+                      newUrl
+                    );
+                    setFieldValue("customUrlVerifying", false);
+                    setFieldValue("customUrlVerified", verified);
+                    if (!verified) {
+                      setFieldError(
+                        "customUrl",
+                        "It's not allowed to use this!"
+                      );
+                    }
+                    UrlVerifyTimer = null;
+                  }, 1000);
+                } else {
+                  setFieldValue("customUrlVerifying", false);
+                  setFieldValue("customUrlVerified", false);
+                }
+              },
               placeholder: "Enter your custom URL",
               value: values.customUrl,
             }}
+            helperText={touched.customUrl && errors.customUrl}
             label="Custom URL"
           />
           <FormTextField
@@ -502,7 +575,11 @@ export const ProfileSettingsForm = (props: IProps) => {
           <Button
             className={classes.button}
             color="primary"
-            disabled={!isValid || isSubmitting}
+            disabled={
+              !isValid ||
+              isSubmitting ||
+              (values.customUrl !== "" && !values.customUrlVerified)
+            }
             type="submit"
             variant="contained"
           >
