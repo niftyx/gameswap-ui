@@ -34,8 +34,8 @@ export const TX_DEFAULTS = {
 };
 
 export const IPFS_CONFIG: IIPFSConfig = {
-  host: "ipfs.infura.io",
-  port: 5001,
+  host: "ipfs.niftyx.org",
+  port: 443,
   protocol: "https",
 };
 
