@@ -8,7 +8,7 @@ import { useConnectedWeb3Context, useGlobal } from "contexts";
 import { Form, Formik } from "formik";
 import React from "react";
 import { ERC721FactoryService } from "services";
-import { getFLEEKService } from "services/fleek";
+import { getIPFSService } from "services/ipfs";
 import { waitSeconds } from "utils";
 import { getLogger } from "utils/logger";
 import { ICollectionFormValues } from "utils/types";
@@ -40,7 +40,7 @@ interface IProps {
 export const CollectionCreateModal = (props: IProps) => {
   const classes = useStyles();
   const { onClose, visible } = props;
-  const fleekService = getFLEEKService();
+  const ipfsService = getIPFSService();
   const { loadCollections } = useGlobal();
 
   const {
@@ -129,7 +129,7 @@ export const CollectionCreateModal = (props: IProps) => {
                   setFieldValue("image", file);
                   if (file) {
                     setFieldValue("uploading", true);
-                    fleekService
+                    ipfsService
                       .uploadData(file)
                       .then((url) => {
                         setFieldValue("uploading", false);

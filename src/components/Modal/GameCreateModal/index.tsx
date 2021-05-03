@@ -18,7 +18,7 @@ import { useConnectedWeb3Context, useGlobal } from "contexts";
 import { Form, Formik } from "formik";
 import React from "react";
 import { getAPIService } from "services/api";
-import { getFLEEKService } from "services/fleek";
+import { getIPFSService } from "services/ipfs";
 import { EPlatform } from "utils/enums";
 import { getLogger } from "utils/logger";
 import { IGame, IGameFormValues } from "utils/types";
@@ -66,7 +66,7 @@ export const GameCreateModal = (props: IProps) => {
   const classes = useStyles();
   const { game, onClose, onSuccess, visible } = props;
   const isCreate = !game;
-  const fleekService = getFLEEKService();
+  const ipfsService = getIPFSService();
   const {
     account,
     library: provider,
@@ -185,7 +185,7 @@ export const GameCreateModal = (props: IProps) => {
                   setFieldValue("headerImage", file);
                   if (file) {
                     setFieldValue("headerImageUploading", true);
-                    fleekService
+                    ipfsService
                       .uploadData(file)
                       .then((url) => {
                         setFieldValue("headerImageUploading", false);
@@ -216,7 +216,7 @@ export const GameCreateModal = (props: IProps) => {
                   setFieldValue("image", file);
                   if (file) {
                     setFieldValue("imageUploading", true);
-                    fleekService
+                    ipfsService
                       .uploadData(file)
                       .then((url) => {
                         setFieldValue("imageUploading", false);

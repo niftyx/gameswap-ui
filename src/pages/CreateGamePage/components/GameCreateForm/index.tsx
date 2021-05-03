@@ -18,7 +18,7 @@ import { useConnectedWeb3Context } from "contexts";
 import { Form, Formik } from "formik";
 import React from "react";
 import { getAPIService } from "services/api";
-import { getFLEEKService } from "services/fleek";
+import { getIPFSService } from "services/ipfs";
 import { EPlatform } from "utils/enums";
 import { IGame, IGameFormValues } from "utils/types";
 import * as Yup from "yup";
@@ -63,7 +63,7 @@ interface IProps {
 export const GameCreateForm = (props: IProps) => {
   const classes = useStyles();
   const { account, setWalletConnectModalOpened } = useConnectedWeb3Context();
-  const fleekService = getFLEEKService();
+  const ipfsService = getIPFSService();
   const isWalletConnected = !!account;
   const apiService = getAPIService();
 
@@ -142,7 +142,7 @@ export const GameCreateForm = (props: IProps) => {
                   setFieldValue("headerImage", file);
                   if (file) {
                     setFieldValue("headerImageUploading", true);
-                    fleekService
+                    ipfsService
                       .uploadData(file)
                       .then((url) => {
                         setFieldValue("headerImageUploading", false);
@@ -172,7 +172,7 @@ export const GameCreateForm = (props: IProps) => {
                   setFieldValue("image", file);
                   if (file) {
                     setFieldValue("imageUploading", true);
-                    fleekService
+                    ipfsService
                       .uploadData(file)
                       .then((url) => {
                         setFieldValue("imageUploading", false);

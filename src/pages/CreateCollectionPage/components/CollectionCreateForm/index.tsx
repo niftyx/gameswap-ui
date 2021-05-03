@@ -8,7 +8,7 @@ import {
 import { useConnectedWeb3Context } from "contexts";
 import { Form, Formik } from "formik";
 import React from "react";
-import { getFLEEKService } from "services/fleek";
+import { getIPFSService } from "services/ipfs";
 import { ICollection, ICollectionFormValues } from "utils/types";
 import * as Yup from "yup";
 
@@ -41,7 +41,7 @@ interface IProps {
 export const CollectionCreateForm = (props: IProps) => {
   const classes = useStyles();
   const { account, setWalletConnectModalOpened } = useConnectedWeb3Context();
-  const fleekService = getFLEEKService();
+  const ipfsService = getIPFSService();
   const isWalletConnected = !!account;
 
   const initialFormValues: ICollectionFormValues = {
@@ -99,7 +99,7 @@ export const CollectionCreateForm = (props: IProps) => {
                   setFieldValue("image", file);
                   if (file) {
                     setFieldValue("uploading", true);
-                    fleekService
+                    ipfsService
                       .uploadData(file)
                       .then((url) => {
                         setFieldValue("uploading", false);

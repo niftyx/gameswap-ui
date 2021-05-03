@@ -1,8 +1,6 @@
 import { getTokenFromAddress } from "config/networks";
 import { BigNumber } from "packages/ethers";
 import { getAddress } from "packages/ethers/utils";
-import { getFLEEKService } from "services/fleek";
-import { getIPFSService } from "services/ipfs";
 import { formatBigNumber } from "utils";
 
 import { xBigNumberToEthersBigNumber } from "./token";
@@ -108,9 +106,4 @@ export const capitalizeStr = (str: string) => {
   return str.replace(/(^|\s)([a-z])/g, function (m, p1, p2) {
     return p1 + p2.toUpperCase();
   });
-};
-
-export const getDataFromInfuraOrFleek = (url: string) => {
-  const ipfsService = getIPFSService();
-  const fleekService = getFLEEKService();
 };
