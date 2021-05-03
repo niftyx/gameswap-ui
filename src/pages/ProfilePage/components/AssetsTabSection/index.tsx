@@ -1,9 +1,8 @@
-import { isAddress } from "@ethersproject/address";
 import { makeStyles } from "@material-ui/core";
 import clsx from "clsx";
 import { transparentize } from "polished";
 import React, { useEffect } from "react";
-import { NavLink, matchPath, useHistory, useParams } from "react-router-dom";
+import { NavLink, matchPath, useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,40 +31,52 @@ const useStyles = makeStyles((theme) => ({
 
 interface IProps {
   className?: string;
+  userId: string;
+  customUrl?: string;
 }
 
 export const AssetsTabSection = (props: IProps) => {
   const classes = useStyles();
   const history = useHistory();
-  const params = useParams();
 
-  const userId = ((params || {}) as any).id;
+  const { customUrl, userId } = props;
 
   useEffect(() => {
-    if (!userId || !isAddress(userId)) {
-      history.push("/");
-    }
-  }, [userId]);
+    const isIncludeAny = Tabs.map(
+      (tab) =>
+        !!matchPath(history.location.pathname, {
+          exact: true,
+          path: tab.href,
+        })
+    ).reduce((e1, e2) => e1 || e2);
 
-  if (!userId || !isAddress(userId)) {
-    return null;
-  }
+    if (!isIncludeAny) {
+      history.push(Tabs[0].href);
+    }
+  }, []);
 
   const Tabs = [
-    { id: "assets", title: "Assets", href: `/users/${userId}/assets` },
-    { id: "on-sale", title: "OnSale", href: `/users/${userId}/on-sale` },
-    { id: "created", title: "Created", href: `/users/${userId}/created` },
-    { id: "liked", title: "Liked", href: `/users/${userId}/liked` },
+    {
+      id: "assets",
+      title: "Assets",
+      href: customUrl ? `/${customUrl}/assets` : `/users/${userId}/assets`,
+    },
+    {
+      id: "on-sale",
+      title: "OnSale",
+      href: customUrl ? `/${customUrl}/on-sale` : `/users/${userId}/on-sale`,
+    },
+    {
+      id: "created",
+      title: "Created",
+      href: customUrl ? `/${customUrl}/created` : `/users/${userId}/created`,
+    },
+    {
+      id: "liked",
+      title: "Liked",
+      href: customUrl ? `/${customUrl}/liked` : `/users/${userId}/liked`,
+    },
   ];
-
-  const isIncludeAny = Tabs.map(
-    (tab) =>
-      !!matchPath(history.location.pathname, { exact: true, path: tab.href })
-  ).reduce((e1, e2) => e1 || e2);
-
-  if (!isIncludeAny) {
-    history.push(Tabs[0].href);
-  }
 
   return (
     <div className={clsx(classes.root, props.className)}>

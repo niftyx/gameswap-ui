@@ -29,24 +29,14 @@ const useStyles = makeStyles((theme) => ({
 
 interface IProps {
   className?: string;
+  userId: string;
 }
 
-const OnSaleAssetsSection = (props: IProps) => {
+export const OnSaleAssetsSection = (props: IProps) => {
   const classes = useStyles();
-  const params = useParams();
+  const { userId } = props;
   const history = useHistory();
-  const userId = ((params || {}) as any).id;
   const { allLoaded, loadMore, loading, orders } = useMyOrders(userId);
-
-  useEffect(() => {
-    if (!userId || !isAddress(userId)) {
-      history.push("/");
-    }
-  }, [userId]);
-
-  if (!userId || !isAddress(userId)) {
-    return null;
-  }
 
   const assets: ITradeAssetItem[] = [];
 
@@ -91,5 +81,3 @@ const OnSaleAssetsSection = (props: IProps) => {
     </div>
   );
 };
-
-export default OnSaleAssetsSection;

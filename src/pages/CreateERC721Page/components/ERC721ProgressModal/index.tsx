@@ -8,7 +8,7 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { ERC721Service } from "services";
 import { getAPIService } from "services/api";
-import { getIPFSService } from "services/ipfs";
+import { getFLEEKService } from "services/fleek";
 import { waitSeconds } from "utils";
 import { getFileType } from "utils/asset";
 import { getLogger } from "utils/logger";
@@ -39,7 +39,6 @@ interface IState {
   initialApprovedAll: boolean;
   followStep: ECreateStep;
   error: string;
-  filesUploadPercent: string;
   filesUploaded: boolean;
   tokenMint: boolean;
   tokenURI: string;
@@ -57,7 +56,7 @@ export const ERC721ProgressModal = (props: IProps) => {
   const erc721ProxyAddress = get0xContractAddresses(
     networkId || DEFAULT_NETWORK_ID
   ).erc721proxy;
-  const ipfsService = getIPFSService();
+  const fleekService = getFLEEKService();
   const { formValues, onClose, visible } = props;
   const history = useHistory();
   const wavxToken = getToken(networkId || DEFAULT_NETWORK_ID, "wavax");
@@ -77,7 +76,6 @@ export const ERC721ProgressModal = (props: IProps) => {
     tokenMint: false,
     tokenURI: "",
     tokenId: BigNumber.from(0),
-    filesUploadPercent: "0",
     contentId: "",
     assetId: "",
   });
@@ -159,7 +157,6 @@ export const ERC721ProgressModal = (props: IProps) => {
         ...prevState,
         error: "",
         isLoading: true,
-        filesUploadPercent: "0",
       }));
 
       let encryptedContent: { lockedData: string; contentId: string } = {
@@ -177,34 +174,11 @@ export const ERC721ProgressModal = (props: IProps) => {
         }));
       }
 
-      const totalFileSize =
-        formValues.image.size + (formValues.rar ? formValues.rar.size : 0);
-
-      const imageURL = await ipfsService.uploadData(
-        formValues.image,
-        (progress) => {
-          const currentPercent = (progress * 100) / totalFileSize;
-          setState((prevState) => ({
-            ...prevState,
-            filesUploadPercent:
-              currentPercent < 99 ? currentPercent.toFixed(0) : "99",
-          }));
-        }
-      );
+      const imageURL = await fleekService.uploadData(formValues.image);
 
       let rarURL = "";
       if (formValues.rar) {
-        rarURL = await ipfsService.uploadData(formValues.rar, (progress) => {
-          const currentPercent =
-            (((formValues.image ? formValues.image.size : 0) + progress) *
-              100) /
-            totalFileSize;
-          setState((prevState) => ({
-            ...prevState,
-            filesUploadPercent:
-              currentPercent < 99 ? currentPercent.toFixed(0) : "99",
-          }));
-        });
+        rarURL = await fleekService.uploadData(formValues.rar);
       }
 
       const payload = {
@@ -220,10 +194,9 @@ export const ERC721ProgressModal = (props: IProps) => {
         ),
         lockedData: formValues.lockedContent ? encryptedContent.lockedData : "",
       };
-      const tokenURI = await ipfsService.uploadData(JSON.stringify(payload));
+      const tokenURI = await fleekService.uploadData(JSON.stringify(payload));
       setState((prevState) => ({
         ...prevState,
-        filesUploadPercent: "100",
       }));
       setState((prevState) => ({
         ...prevState,
@@ -381,7 +354,7 @@ export const ERC721ProgressModal = (props: IProps) => {
           state.followStep === ECreateStep.UploadFiles ? state.isLoading : false
         }
         onClick={uploadFiles}
-        title={`Upload files ... ${state.filesUploadPercent}%`}
+        title={`Uploading files ... `}
       />
       <ProgressButton
         approved={state.tokenMint}

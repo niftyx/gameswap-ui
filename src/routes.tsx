@@ -80,7 +80,7 @@ const routes = [
         guard: AuthGuard,
       },
       // eslint-disable-next-line react/display-name
-      { path: "*", component: () => <Redirect to="/" /> },
+      { path: "*", component: lazy(() => import("pages/CustomPage")) },
     ],
   },
 ];

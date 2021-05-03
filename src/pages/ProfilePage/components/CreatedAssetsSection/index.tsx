@@ -29,14 +29,13 @@ const useStyles = makeStyles((theme) => ({
 
 interface IProps {
   className?: string;
+  userId: string;
 }
 
-const CreatedAssetsSection = (props: IProps) => {
+export const CreatedAssetsSection = (props: IProps) => {
   const classes = useStyles();
-  const commonClasses = useCommonStyles();
-  const params = useParams();
   const history = useHistory();
-  const userId = ((params || {}) as any).id;
+  const { userId } = props;
 
   const {
     assets: inventoryAssets,
@@ -46,15 +45,6 @@ const CreatedAssetsSection = (props: IProps) => {
   } = useInventoryAssets({
     id: userId || "",
   });
-  useEffect(() => {
-    if (!userId || !isAddress(userId)) {
-      history.push("/");
-    }
-  }, [userId]);
-
-  if (!userId || !isAddress(userId)) {
-    return null;
-  }
 
   return (
     <div className={clsx(classes.root, props.className)}>
@@ -74,5 +64,3 @@ const CreatedAssetsSection = (props: IProps) => {
     </div>
   );
 };
-
-export default CreatedAssetsSection;

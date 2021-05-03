@@ -301,6 +301,7 @@ export const HeroSection = (props: IProps) => {
                       <CopyIcon />
                     </span>
                   </div>
+                  <br />
                   {userInfo && (
                     <div className={classes.row}>
                       {userInfo.twitterUsername && (

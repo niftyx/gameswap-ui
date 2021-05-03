@@ -19,7 +19,6 @@ import { Form, Formik } from "formik";
 import React from "react";
 import { getAPIService } from "services/api";
 import { getFLEEKService } from "services/fleek";
-import { getIPFSService } from "services/ipfs";
 import { EPlatform } from "utils/enums";
 import { IGame, IGameFormValues } from "utils/types";
 import * as Yup from "yup";
@@ -64,7 +63,6 @@ interface IProps {
 export const GameCreateForm = (props: IProps) => {
   const classes = useStyles();
   const { account, setWalletConnectModalOpened } = useConnectedWeb3Context();
-  const ipfsService = getIPFSService();
   const fleekService = getFLEEKService();
   const isWalletConnected = !!account;
   const apiService = getAPIService();
@@ -147,18 +145,12 @@ export const GameCreateForm = (props: IProps) => {
                     fleekService
                       .uploadData(file)
                       .then((url) => {
-                        console.log(url);
+                        setFieldValue("headerImageUploading", false);
+                        setFieldValue("headerImageUrl", url);
                       })
-                      .catch((err) => {});
-                    // ipfsService
-                    //   .uploadData(file)
-                    //   .then((url) => {
-                    //     setFieldValue("headerImageUploading", false);
-                    //     setFieldValue("headerImageUrl", url);
-                    //   })
-                    //   .catch(() => {
-                    //     setFieldValue("headerImageUploading", false);
-                    //   });
+                      .catch((err) => {
+                        setFieldValue("headerImageUploading", false);
+                      });
                   } else {
                     setFieldValue("headerImageUrl", "");
                   }
@@ -180,7 +172,7 @@ export const GameCreateForm = (props: IProps) => {
                   setFieldValue("image", file);
                   if (file) {
                     setFieldValue("imageUploading", true);
-                    ipfsService
+                    fleekService
                       .uploadData(file)
                       .then((url) => {
                         setFieldValue("imageUploading", false);

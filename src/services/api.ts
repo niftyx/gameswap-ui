@@ -311,6 +311,18 @@ export class APIService {
 
     return response.data as boolean;
   }
+  /**
+   * get id of customUrl
+   */
+  public async getCustomUrlData(url: string) {
+    await this._rateLimit();
+
+    const response = await axios.post(`${this.commonPath}custom-url-info`, {
+      url,
+    });
+
+    return response.data;
+  }
 }
 
 const apiService = new APIService();

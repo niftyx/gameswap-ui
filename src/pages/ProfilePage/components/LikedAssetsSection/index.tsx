@@ -5,10 +5,8 @@ import { AssetsContainer, InventoryAssetItem, SimpleLoader } from "components";
 import { useConnectedWeb3Context } from "contexts";
 import { useInventoryAssets } from "helpers";
 import { transparentize } from "polished";
-import React, { useEffect } from "react";
-import { useHistory, useParams } from "react-router-dom";
-import useCommonStyles from "styles/common";
-import { isAddress } from "utils/tools";
+import React from "react";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,14 +27,14 @@ const useStyles = makeStyles((theme) => ({
 
 interface IProps {
   className?: string;
+  userId: string;
 }
 
-const LikedAssetsSection = (props: IProps) => {
+export const LikedAssetsSection = (props: IProps) => {
   const classes = useStyles();
-  const commonClasses = useCommonStyles();
-  const params = useParams();
   const history = useHistory();
-  const userId = ((params || {}) as any).id;
+  const { userId } = props;
+
   const {
     assets: inventoryAssets,
     hasMore: hasMoreInventoryItems,
@@ -45,16 +43,6 @@ const LikedAssetsSection = (props: IProps) => {
   } = useInventoryAssets({
     id: userId || "",
   });
-
-  useEffect(() => {
-    if (!userId || !isAddress(userId)) {
-      history.push("/");
-    }
-  }, [userId]);
-
-  if (!userId || !isAddress(userId)) {
-    return null;
-  }
 
   return (
     <div className={clsx(classes.root, props.className)}>
@@ -74,5 +62,3 @@ const LikedAssetsSection = (props: IProps) => {
     </div>
   );
 };
-
-export default LikedAssetsSection;

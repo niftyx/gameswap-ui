@@ -1,7 +1,7 @@
 import { Typography, makeStyles } from "@material-ui/core";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import clsx from "clsx";
-import { useGlobal } from "contexts";
+import { useConnectedWeb3Context, useGlobal } from "contexts";
 import React from "react";
 import useCommonStyles from "styles/common";
 
@@ -42,6 +42,7 @@ interface IProps {
 export const FormCollectionChoose = (props: IProps) => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
+  const { account } = useConnectedWeb3Context();
   const { collectionId, comment, onChange, onNewCollection } = props;
   const {
     data: { collections },
@@ -60,26 +61,32 @@ export const FormCollectionChoose = (props: IProps) => {
           subTitle="Collection"
           title="Create"
         />
-        {collections.map((collection) => (
-          <FormCollectionChooseItem
-            active={collectionId === collection.id}
-            key={collection.id}
-            onClick={() => {
-              if (collectionId !== collection.id) {
-                onChange(collection.id);
-              }
-            }}
-            renderIcon={() => (
-              <img
-                alt="img"
-                className={classes.img}
-                src={collection.imageUrl}
-              />
-            )}
-            subTitle={" "}
-            title={collection.name || ""}
-          />
-        ))}
+        {collections
+          .filter(
+            (collection) =>
+              !collection.isPrivate ||
+              collection.owner?.toLowerCase() === account?.toLowerCase()
+          )
+          .map((collection) => (
+            <FormCollectionChooseItem
+              active={collectionId === collection.id}
+              key={collection.id}
+              onClick={() => {
+                if (collectionId !== collection.id) {
+                  onChange(collection.id);
+                }
+              }}
+              renderIcon={() => (
+                <img
+                  alt="img"
+                  className={classes.img}
+                  src={collection.imageUrl}
+                />
+              )}
+              subTitle={" "}
+              title={collection.name || ""}
+            />
+          ))}
       </div>
     </div>
   );

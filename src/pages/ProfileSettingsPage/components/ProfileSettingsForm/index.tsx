@@ -19,7 +19,7 @@ import { Form, Formik } from "formik";
 import { transparentize } from "polished";
 import React from "react";
 import { getAPIService } from "services/api";
-import { getIPFSService } from "services/ipfs";
+import { getFLEEKService } from "services/fleek";
 import useCommonStyles from "styles/common";
 import { IUserInfo } from "utils/types";
 import * as Yup from "yup";
@@ -86,7 +86,7 @@ export const ProfileSettingsForm = (props: IProps) => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
   const { onSubmit } = props;
-  const ipfsService = getIPFSService();
+  const fleekService = getFLEEKService();
   const apiService = getAPIService();
   const {
     data: { userInfo },
@@ -196,7 +196,7 @@ export const ProfileSettingsForm = (props: IProps) => {
                 setFieldValue("headerImage", file);
                 if (file) {
                   setFieldValue("headerImageUploading", true);
-                  ipfsService
+                  fleekService
                     .uploadData(file)
                     .then((url) => {
                       setFieldValue("headerImageUploading", false);
@@ -226,7 +226,7 @@ export const ProfileSettingsForm = (props: IProps) => {
                 setFieldValue("image", file);
                 if (file) {
                   setFieldValue("uploading", true);
-                  ipfsService
+                  fleekService
                     .uploadData(file)
                     .then((url) => {
                       setFieldValue("uploading", false);
