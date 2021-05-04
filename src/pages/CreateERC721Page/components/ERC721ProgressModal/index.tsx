@@ -234,10 +234,12 @@ export const ERC721ProgressModal = (props: IProps) => {
     } catch (error) {
       setState((prevState) => ({
         ...prevState,
-        error: error.message,
+        error:
+          error.message ||
+          "Sorry we couldn't process the request. Try again later.",
         isLoading: false,
       }));
-      logger.error(error);
+      logger.warn(error);
     }
   };
 
