@@ -9,7 +9,7 @@ import { getAPIService } from "services/api";
 import { waitSeconds } from "utils";
 import connectors from "utils/connectors";
 import { ConnectorNames } from "utils/enums";
-import { Maybe } from "utils/types";
+import { IUserInfo, Maybe } from "utils/types";
 export interface ConnectedWeb3Context {
   account: Maybe<string> | null;
   library: Web3Provider | undefined;
@@ -102,26 +102,30 @@ export const ConnectedWeb3: React.FC = (props) => {
   useEffect(() => {
     let isMounted = true;
 
-    const checkNextPath = () => {
+    const checkNextPath = (userInfo?: IUserInfo) => {
       if (nextPath) {
         const lNextPath = nextPath.toLowerCase();
-        if (lNextPath.includes("/next/")) {
-          const replacePath = lNextPath.replace("/next/", `/${account}/`);
+        const customUrl =
+          userInfo && userInfo.customUrl ? userInfo.customUrl : "";
+        if (lNextPath.includes("/users/next/")) {
+          const replacePath = customUrl
+            ? lNextPath.replace("/users/next", `/${customUrl}`)
+            : lNextPath.replace("/next/", `/${account}/`);
           history.push(replacePath);
         }
       }
     };
 
-    checkNextPath();
-
     const loadUserInfo = async () => {
       if (!account) {
         updateUserInfo();
+        checkNextPath();
         return;
       }
       const userInfo = await apiService.getAccountInfo(account);
       if (isMounted) {
         updateUserInfo(userInfo);
+        checkNextPath(userInfo);
       }
     };
     loadUserInfo();

@@ -11,7 +11,7 @@ import { ReactComponent as MetaMaskIcon } from "assets/svgs/metamask.svg";
 import clsx from "clsx";
 import { DEFAULT_NETWORK_ID } from "config/constants";
 import { getToken } from "config/networks";
-import { useConnectedWeb3Context } from "contexts";
+import { useConnectedWeb3Context, useGlobal } from "contexts";
 import { useBalances } from "helpers";
 import { transparentize } from "polished";
 import React from "react";
@@ -122,6 +122,9 @@ const AccountInfoBar = (props: IProps) => {
   const context = useConnectedWeb3Context();
   const { account, networkId, setWalletConnectModalOpened } = context;
   const {
+    data: { userInfo },
+  } = useGlobal();
+  const {
     balances: {
       erc20Balances: { gswap: gswapBalance },
     },
@@ -143,7 +146,11 @@ const AccountInfoBar = (props: IProps) => {
   };
 
   const toProfile = () => {
-    history.push(`/users/${account}`);
+    if (userInfo && userInfo.customUrl) {
+      history.push(`/${userInfo.customUrl}`);
+    } else {
+      history.push(`/users/${account}`);
+    }
   };
 
   const isConnected = !!account;

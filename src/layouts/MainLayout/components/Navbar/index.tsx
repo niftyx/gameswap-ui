@@ -11,7 +11,7 @@ import { ReactComponent as FlagIcon } from "assets/svgs/star-outline.svg";
 import { ReactComponent as FlashIcon } from "assets/svgs/trending-up.svg";
 import clsx from "clsx";
 import { SideMenuGroupHeader, SideMenuItem } from "components";
-import { useConnectedWeb3Context } from "contexts";
+import { useConnectedWeb3Context, useGlobal } from "contexts";
 import { useSettings } from "hooks";
 import React from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
@@ -72,6 +72,11 @@ const Navbar = (props: IProps & RouteComponentProps) => {
   const { saveSettings, settings } = useSettings();
   const { theme } = settings;
   const { account } = useConnectedWeb3Context();
+  const {
+    data: { userInfo },
+  } = useGlobal();
+
+  const customUrl = userInfo && userInfo.customUrl ? userInfo.customUrl : "";
 
   const menuItems: {
     group: ISideMenuGroupHeaderItem;
@@ -90,7 +95,9 @@ const Navbar = (props: IProps & RouteComponentProps) => {
         {
           title: "Favorites",
           href: account
-            ? `/users/${account}/liked`
+            ? customUrl
+              ? `/${customUrl}/liked`
+              : `/users/${account}/liked`
             : `/?next=${encodeURIComponent(`/users/next/liked`)}`,
           Icon: HeartIcon,
           auth: true,
@@ -98,7 +105,9 @@ const Navbar = (props: IProps & RouteComponentProps) => {
         {
           title: "My Items",
           href: account
-            ? `/users/${account}/assets`
+            ? customUrl
+              ? `/${customUrl}/assets`
+              : `/users/${account}/assets`
             : `/?next=${encodeURIComponent(`/users/next/assets`)}`,
           Icon: ShoppingBagIcon,
           auth: true,
