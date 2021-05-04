@@ -59,6 +59,7 @@ const useStyles = makeStyles((theme) => ({
   },
   image: {
     width: "100%",
+    maxHeight: 400,
   },
   audio: {
     width: "100%",
@@ -157,7 +158,7 @@ export const FormImageUpload = (props: IProps) => {
         )}
         {fileType === EFileType.Video && (
           // eslint-disable-next-line jsx-a11y/media-has-caption
-          <video className={classes.image} controls>
+          <video autoPlay className={classes.image} controls loop muted>
             <source src={value.fileURL} type={value.file.type}></source>
           </video>
         )}

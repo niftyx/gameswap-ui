@@ -173,6 +173,8 @@ export const ERC721Preview = (props: IProps) => {
                 autoPlay
                 controls={false}
                 id="preview-video"
+                loop
+                muted
                 onLoadedMetadata={() => {
                   const vid = document.getElementById("preview-video") as any;
                   setState(() => ({
