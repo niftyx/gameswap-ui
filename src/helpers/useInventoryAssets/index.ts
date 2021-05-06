@@ -1,4 +1,8 @@
-import { INVENTORY_PAGE_ASSET_COUNT } from "config/constants";
+import {
+  DEFAULT_NETWORK_ID,
+  INVENTORY_PAGE_ASSET_COUNT,
+} from "config/constants";
+import { useConnectedWeb3Context } from "contexts";
 import { useIsMountedRef } from "hooks";
 import { BigNumber } from "packages/ethers";
 import { useEffect, useState } from "react";
@@ -23,6 +27,7 @@ interface IState {
   assets: IGraphInventoryAsset[];
   loading: boolean;
   query: any;
+  networkId: any;
 }
 
 export const useInventoryAssets = (
@@ -35,15 +40,19 @@ export const useInventoryAssets = (
   loading: boolean;
   reload: () => Promise<void>;
 } => {
+  const { networkId } = useConnectedWeb3Context();
   const isRefMounted = useIsMountedRef();
   const [state, setState] = useState<IState>({
     hasMore: false,
     assets: [],
     loading: false,
-    query: {},
+    query: null,
+    networkId: null,
   });
 
   const apiService = getAPIService();
+
+  const finalNetworkId = networkId || DEFAULT_NETWORK_ID;
 
   const fetchData = async (
     variables: {
@@ -115,12 +124,16 @@ export const useInventoryAssets = (
   };
 
   useEffect(() => {
-    if (!isObjectEqual(query, state.query)) {
+    if (
+      !isObjectEqual(query, state.query) ||
+      finalNetworkId !== state.networkId
+    ) {
       setState((prevState) => ({
         ...prevState,
         hasMore: false,
         assets: [],
         query,
+        networkId: finalNetworkId,
       }));
       fetchData({
         perPage: INVENTORY_PAGE_ASSET_COUNT,
@@ -129,7 +142,7 @@ export const useInventoryAssets = (
     }
 
     // eslint-disable-next-line
-  }, [query]);
+  }, [query, finalNetworkId]);
 
   return {
     assets: state.assets,

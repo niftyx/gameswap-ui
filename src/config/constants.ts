@@ -66,7 +66,7 @@ export const TokenAvax = {
 
 export const INVENTORY_PAGE_ASSET_COUNT = 50;
 export const BROWSE_PAGE_ASSET_COUNT = 50;
-export const ORDERS_PAGE_COUNT = 5;
+export const ORDERS_PAGE_COUNT = 10;
 
 export const AssetProxyIds = {
   erc721: "0x02571792",

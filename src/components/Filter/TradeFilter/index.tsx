@@ -110,6 +110,8 @@ const TradeFilter = (props: IProps) => {
       saleCurrencyEnabled: false,
       platformEnabled: false,
       membership: EMembership.Basic,
+      platforms: [],
+      currencies: [],
     });
   };
 

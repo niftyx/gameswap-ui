@@ -9,6 +9,7 @@ import { useConnectedWeb3Context } from "contexts";
 import { useIsMountedRef } from "hooks";
 import { useEffect, useState } from "react";
 import { getZEROXService } from "services/zeroX";
+import { isObjectEqual } from "utils";
 import { getLogger } from "utils/logger";
 import { buildOrdersQuery, wrangeOrderResponse } from "utils/order";
 import { xBigNumberToEthersBigNumber } from "utils/token";
@@ -20,9 +21,13 @@ interface IState {
   allLoaded: boolean;
   orders: ISignedOrder[];
   loading: boolean;
+  query: any;
+  networkId: any;
 }
 
-export const useAllOrders = (): IState & { loadMore: () => Promise<void> } => {
+export const useAllOrders = (
+  query?: any
+): IState & { loadMore: () => Promise<void>; reload: () => Promise<void> } => {
   const { networkId } = useConnectedWeb3Context();
 
   const isRefMounted = useIsMountedRef();
@@ -30,17 +35,24 @@ export const useAllOrders = (): IState & { loadMore: () => Promise<void> } => {
     allLoaded: false,
     orders: [],
     loading: false,
+    query: null,
+    networkId: null,
   });
 
+  const finalNetworkId = networkId || DEFAULT_NETWORK_ID;
+  const finalQuery = query || {};
+
   const loadOrders = async (page = 1) => {
+    let orderQuery = { ...finalQuery, page, perPage: ORDERS_PAGE_COUNT };
+    if (!orderQuery.makerAssetData) {
+      orderQuery = { ...orderQuery, makerAssetProxyId: AssetProxyIds.erc721 };
+    }
+    if (!orderQuery.takerAssetData) {
+      orderQuery = { ...orderQuery, takerAssetProxyId: AssetProxyIds.erc20 };
+    }
     const endPoint = buildOrdersQuery(
       (networkId || DEFAULT_NETWORK_ID) as NetworkId,
-      {
-        page,
-        perPage: ORDERS_PAGE_COUNT,
-        makerAssetProxyId: AssetProxyIds.erc721,
-        takerAssetProxyId: AssetProxyIds.erc20,
-      }
+      orderQuery
     );
     setState((prevState) => ({ ...prevState, loading: true }));
 
@@ -87,17 +99,41 @@ export const useAllOrders = (): IState & { loadMore: () => Promise<void> } => {
     }
   };
 
-  useEffect(() => {
+  const reload = async () => {
     setState((prevState) => ({
       ...prevState,
       allLoaded: false,
       orders: [],
       loading: false,
+      networkId: finalNetworkId,
+      query: finalQuery,
     }));
+    try {
+      loadOrders();
+    } catch (error) {
+      logger.warn(error);
+    }
+  };
 
-    loadOrders();
+  useEffect(() => {
+    if (
+      finalNetworkId !== state.networkId ||
+      !isObjectEqual(finalQuery, state.query)
+    ) {
+      setState((prevState) => ({
+        ...prevState,
+        allLoaded: false,
+        orders: [],
+        loading: false,
+        networkId: finalNetworkId,
+        query: finalQuery,
+      }));
+
+      loadOrders();
+    }
+
     // eslint-disable-next-line
-  }, [networkId]);
+  }, [finalNetworkId, finalQuery]);
 
-  return { ...state, loadMore: loadMoreOrders };
+  return { ...state, loadMore: loadMoreOrders, reload };
 };

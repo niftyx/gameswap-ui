@@ -1,6 +1,9 @@
+import { assetDataUtils } from "@0x/order-utils";
 import { Hidden, makeStyles } from "@material-ui/core";
 import clsx from "clsx";
 import { PageContainer, TradeFilter } from "components";
+import { DEFAULT_NETWORK_ID } from "config/constants";
+import { getToken } from "config/networks";
 import { useConnectedWeb3Context } from "contexts";
 import { useInventoryAssets } from "helpers";
 import { useAllOrders } from "helpers/useAllOrders";
@@ -53,7 +56,7 @@ interface IState {
 const TradePage = () => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
-  const { account } = useConnectedWeb3Context();
+  const { account, networkId } = useConnectedWeb3Context();
   const [state, setState] = useState<IState>({
     selectedInventoryAssets: [],
     selectedTradeOrders: [],
@@ -80,12 +83,41 @@ const TradePage = () => {
     ownerId: account || "",
   });
 
+  let customQuery = {};
+  if (state.tradeSectionFilter.sortDir) {
+    customQuery = {
+      ...customQuery,
+      sortDir: state.tradeSectionFilter.sortDir,
+      sortBy: "takerAssetAmount",
+    };
+  }
+  if (state.tradeFilter.currencies && state.tradeFilter.currencies.length) {
+    customQuery = {
+      ...customQuery,
+      takerAssetData: state.tradeFilter.currencies
+        .map((tokenId) => {
+          try {
+            const tokenAddress = getToken(
+              networkId || DEFAULT_NETWORK_ID,
+              tokenId
+            ).address;
+            return assetDataUtils.encodeERC20AssetData(tokenAddress);
+          } catch (error) {
+            return null;
+          }
+        })
+        .filter((e) => Boolean(e))
+        .join(","),
+    };
+  }
+
   const {
     allLoaded: allOrdersLoaded,
     loadMore: loadMoreAllOrders,
     loading: allOrdersLoading,
     orders: allOrders,
-  } = useAllOrders();
+    reload: reloadOrders,
+  } = useAllOrders(customQuery);
 
   const setSelectedInventoryAssets = (
     selectedInventoryAssets: IGraphInventoryAsset[]
@@ -143,7 +175,7 @@ const TradePage = () => {
             filter={state.tradeSectionFilter}
             loading={allOrdersLoading}
             onChangeSelected={setSelectedTradeOrders}
-            onReload={reloadInventoryAssets}
+            onReload={reloadOrders}
             onScrollEnd={
               !allOrdersLoading && !allOrdersLoaded
                 ? loadMoreAllOrders

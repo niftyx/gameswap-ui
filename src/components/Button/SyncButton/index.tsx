@@ -30,7 +30,7 @@ export const SyncButton = (props: IProps) => {
   return (
     <div
       className={clsx(classes.root, props.className)}
-      onClick={(!isSyncing && onSync) as any}
+      onClick={(!isSyncing && onSync ? onSync : () => {}) as any}
     >
       <SyncIcon className={isSyncing ? classes.rotate : ""} />
     </div>
