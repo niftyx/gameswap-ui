@@ -17,7 +17,8 @@ import React from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { DarkModeSwitch } from "react-toggle-dark-mode";
 import useCommonStyles from "styles/common";
-import { ISideMenuGroupHeaderItem, ISideMenuItem, THEME } from "utils/types.d";
+import { THEME } from "utils/enums";
+import { ISideMenuGroupHeaderItem, ISideMenuItem } from "utils/types.d";
 
 const useStyles = makeStyles((theme) => ({
   root: {

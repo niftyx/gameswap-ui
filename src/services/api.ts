@@ -2,7 +2,7 @@ import { RateLimit } from "async-sema";
 import axios from "axios";
 import { API_BASE_URL } from "config/constants";
 import { BigNumber } from "packages/ethers";
-import { ICollection, IGame, IUserInfo } from "utils/types";
+import { IAssetItem, ICollection, IGame, IUserInfo } from "utils/types";
 
 axios.defaults.baseURL = API_BASE_URL;
 
@@ -154,6 +154,25 @@ export class APIService {
       signedContentStr: hashedStr,
     });
     return response.data as string;
+  }
+
+  /**
+   * Assets
+   * list assets with query
+   */
+  public async listAssets(query?: any, perPage?: number, page?: number) {
+    await this._rateLimit();
+    const finalQuery = { ...query, page: page || 1, perPage: perPage || 20 };
+    const queryString = Object.keys(finalQuery)
+      .filter((key) => finalQuery[key])
+      .map((key) => `${key}=${encodeURIComponent(finalQuery[key])}`)
+      .join("&");
+    const response = await axios.get(`${this.assetPath}all?${queryString}`);
+    return response.data as {
+      page: number;
+      perPage: number;
+      records: Record<string, unknown>[];
+    };
   }
 
   /**

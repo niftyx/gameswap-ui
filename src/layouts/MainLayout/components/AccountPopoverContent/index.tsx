@@ -5,7 +5,7 @@ import { useConnectedWeb3Context } from "contexts";
 import { useSettings } from "hooks";
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { THEME } from "utils/types.d";
+import { THEME } from "utils/enums";
 
 const useStyles = makeStyles((theme) => ({
   root: {

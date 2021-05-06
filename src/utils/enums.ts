@@ -1,3 +1,8 @@
+export enum THEME {
+  White = "WHITE",
+  Black = "BLACK",
+}
+
 export enum EFarmingTag {
   Simulation = "SIMULATION",
   Driving = "DRIVING",
@@ -110,4 +115,14 @@ export enum EAssetDetailTab {
   Price = "Price",
   TradeHistory = "Trade History",
   Bids = "Bids",
+}
+
+export enum ESortDirection {
+  asc = "asc",
+  dec = "dsc",
+}
+
+export enum EMembership {
+  Basic = "Basic",
+  Pro = "Pro",
 }

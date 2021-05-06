@@ -3,6 +3,7 @@ import clsx from "clsx";
 import { AuctionsButton, SyncButton } from "components/Button";
 import { VerticalDivider } from "components/Divider";
 import { GamesSelect, PriceSelect, SortSelect } from "components/Select";
+import { useGlobal } from "contexts";
 import React from "react";
 
 const useStyles = makeStyles((theme) => ({
@@ -30,14 +31,17 @@ interface IProps {
 
 const TrendingToolbar = (props: IProps) => {
   const classes = useStyles();
+  const {
+    data: { games },
+  } = useGlobal();
   return (
     <div className={clsx(classes.root, props.className)}>
       <SyncButton />
       <VerticalDivider />
-      <GamesSelect />
+      {/* <GamesSelect games={games} /> */}
       <Box flex="1" />
       {/* <AuctionsButton /> */}
-      <SortSelect />
+      {/* <SortSelect /> */}
       <PriceSelect />
     </div>
   );

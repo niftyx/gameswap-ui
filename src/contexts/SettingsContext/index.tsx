@@ -1,6 +1,7 @@
 import { STORAGE_KEY_SETTINGS } from "config/constants";
 import React, { createContext, useEffect, useState } from "react";
-import { ISettings, THEME } from "utils/types.d";
+import { THEME } from "utils/enums";
+import { ISettings } from "utils/types.d";
 
 const defaultSettings: ISettings = {
   theme: THEME.Black,

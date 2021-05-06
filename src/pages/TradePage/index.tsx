@@ -7,7 +7,13 @@ import { useAllOrders } from "helpers/useAllOrders";
 import React, { useState } from "react";
 import useCommonStyles from "styles/common";
 import { IGraphInventoryAsset } from "types";
-import { ISignedOrder } from "utils/types";
+import { EMembership } from "utils/enums";
+import {
+  IInventoryFilter,
+  ISignedOrder,
+  ITradeFilter,
+  ITradeSectionFilter,
+} from "utils/types";
 
 import { AssetItemsSection, InventorySection } from "./components";
 
@@ -39,19 +45,39 @@ const useStyles = makeStyles((theme) => ({
 interface IState {
   selectedInventoryAssets: IGraphInventoryAsset[];
   selectedTradeOrders: ISignedOrder[];
+  inventoryFilter: IInventoryFilter;
+  tradeSectionFilter: ITradeSectionFilter;
+  tradeFilter: ITradeFilter;
 }
 
 const TradePage = () => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
   const { account } = useConnectedWeb3Context();
+  const [state, setState] = useState<IState>({
+    selectedInventoryAssets: [],
+    selectedTradeOrders: [],
+    inventoryFilter: {},
+    tradeSectionFilter: {},
+    tradeFilter: {
+      priceEnabled: false,
+      statusEnabled: false,
+      collectionEnabled: false,
+      saleCurrencyEnabled: false,
+      platformEnabled: false,
+      membership: EMembership.Basic,
+    },
+  });
+
   const {
     assets: inventoryAssets,
     hasMore: hasMoreInventoryItems,
     loadMore: loadMoreInventoryItems,
     loading: inventoryLoading,
+    reload: reloadInventoryAssets,
   } = useInventoryAssets({
-    id: account || "",
+    ...state.inventoryFilter,
+    ownerId: account || "",
   });
 
   const {
@@ -60,11 +86,6 @@ const TradePage = () => {
     loading: allOrdersLoading,
     orders: allOrders,
   } = useAllOrders();
-
-  const [state, setState] = useState<IState>({
-    selectedInventoryAssets: [],
-    selectedTradeOrders: [],
-  });
 
   const setSelectedInventoryAssets = (
     selectedInventoryAssets: IGraphInventoryAsset[]
@@ -76,6 +97,23 @@ const TradePage = () => {
     setState((prev) => ({ ...prev, selectedTradeOrders }));
   };
 
+  const setInventoryFilter = (filter: IInventoryFilter) => {
+    setState((prev) => ({ ...prev, inventoryFilter: filter }));
+  };
+
+  const setTradeSectionFilter = (filter: ITradeSectionFilter) => {
+    setState((prev) => ({ ...prev, tradeSectionFilter: filter }));
+  };
+
+  const updateTradeFilter = (newValues: any) =>
+    setState((prevState) => ({
+      ...prevState,
+      tradeFilter: {
+        ...prevState.tradeFilter,
+        ...newValues,
+      },
+    }));
+
   return (
     <PageContainer>
       <Hidden smDown>
@@ -83,25 +121,35 @@ const TradePage = () => {
           <InventorySection
             assets={inventoryAssets}
             className={clsx(classes.inventory)}
+            filter={state.inventoryFilter}
             loading={inventoryLoading}
             onChangeSelected={setSelectedInventoryAssets}
+            onReload={reloadInventoryAssets}
             onScrollEnd={
               !inventoryLoading && hasMoreInventoryItems
                 ? loadMoreInventoryItems
                 : () => {}
             }
+            onUpdateFilter={setInventoryFilter}
             selectedAssets={state.selectedInventoryAssets}
           />
-          <TradeFilter className={classes.filter} />
+          <TradeFilter
+            className={classes.filter}
+            filter={state.tradeFilter}
+            updateFilter={updateTradeFilter}
+          />
           <AssetItemsSection
             className={clsx(classes.assets, commonClasses.scroll)}
+            filter={state.tradeSectionFilter}
             loading={allOrdersLoading}
             onChangeSelected={setSelectedTradeOrders}
+            onReload={reloadInventoryAssets}
             onScrollEnd={
               !allOrdersLoading && !allOrdersLoaded
                 ? loadMoreAllOrders
                 : () => {}
             }
+            onUpdateFilter={setTradeSectionFilter}
             orders={allOrders}
             selectedOrders={state.selectedTradeOrders}
           />

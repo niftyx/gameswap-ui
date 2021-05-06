@@ -5,7 +5,9 @@ import { NoteContainer } from "components/Container";
 import { VerticalDivider } from "components/Divider";
 import { SearchInput } from "components/Input";
 import { GamesSelect, SortSelect } from "components/Select";
+import { useGlobal } from "contexts";
 import React from "react";
+import { ITradeSectionFilter } from "utils/types";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,8 +41,12 @@ const useStyles = makeStyles((theme) => ({
 
 interface IProps {
   className?: string;
+  onReload: () => Promise<void>;
+  loading?: boolean;
   cartItemCount: number;
   totalPrice: number;
+  filter: ITradeSectionFilter;
+  onUpdateFilter: (_: ITradeSectionFilter) => void;
   renderCartContent: ({
     handleClose,
   }: {
@@ -51,7 +57,10 @@ interface IProps {
 const AssetsToolbar = (props: IProps) => {
   const classes = useStyles();
   // const { cartItemCount, totalPrice } = props;
-
+  const { filter, loading, onReload, onUpdateFilter } = props;
+  const {
+    data: { games },
+  } = useGlobal();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
@@ -105,10 +114,13 @@ const AssetsToolbar = (props: IProps) => {
       <Hidden lgDown>
         <SearchInput />
       </Hidden>
-      <GamesSelect />
-      <SortSelect />
+      {/* <GamesSelect games={games} /> */}
+      <SortSelect
+        onUpdate={(newDir) => onUpdateFilter({ ...filter, sortDir: newDir })}
+        sortDir={filter.sortDir}
+      />
       <VerticalDivider />
-      <SyncButton />
+      <SyncButton isSyncing={loading} onSync={onReload} />
     </div>
   );
 };

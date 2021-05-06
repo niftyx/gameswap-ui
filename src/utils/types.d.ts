@@ -3,12 +3,15 @@ import { Theme } from "@material-ui/core/styles/createMuiTheme";
 import { knownTokens } from "config/networks";
 import { BigNumber } from "packages/ethers";
 
+import { EMembership, THEME } from "./enums";
+
 import {
   EBrowseGameBidItemStatus,
   EFarmingTag,
   EFileType,
   EHistoryItemType,
   EPlatform,
+  ESortDirection,
   ETradeType,
 } from "./enums";
 declare module "@material-ui/core/styles/createMuiTheme" {
@@ -155,23 +158,18 @@ declare module "@material-ui/core/styles/createMuiTheme" {
   }
 }
 
-export enum THEME {
-  White = "WHITE",
-  Black = "BLACK",
-}
-
-export interface ISettings {
+interface ISettings {
   theme: THEME;
   responsiveFontSizes: boolean;
   autoplay: boolean;
 }
 
-export interface ITokenAmount {
+interface ITokenAmount {
   amount: BigNumber;
   token: IToken;
 }
 
-export interface IAssetItem {
+interface IAssetItem {
   id: string;
   collectionId: string;
   tokenId: BigNumber;
@@ -197,13 +195,13 @@ export interface IAssetItem {
   creator?: string;
 }
 
-export interface ISideMenuGroupHeaderItem {
+interface ISideMenuGroupHeaderItem {
   title: string;
   className?: string;
   moreItems?: IMoreItem[];
 }
 
-export interface ISideMenuItem {
+interface ISideMenuItem {
   title: string;
   className?: string;
   Icon: React.ElementType;
@@ -212,13 +210,13 @@ export interface ISideMenuItem {
   auth?: boolean;
 }
 
-export interface IGameItem {
+interface IGameItem {
   id: string;
   title: string;
   backgroundImage?: string;
 }
 
-export interface IFeaturedFarmItem {
+interface IFeaturedFarmItem {
   id: string;
   title: string;
   description: string;
@@ -227,7 +225,7 @@ export interface IFeaturedFarmItem {
   backgroundImage?: string;
 }
 
-export interface IUpcomingFarmItem {
+interface IUpcomingFarmItem {
   id: string;
   image?: string;
   title: string;
@@ -236,7 +234,7 @@ export interface IUpcomingFarmItem {
   tokenDescription: string;
 }
 
-export interface IBrowseGameBidItem {
+interface IBrowseGameBidItem {
   id: string;
   image?: string;
   name: string;
@@ -246,18 +244,18 @@ export interface IBrowseGameBidItem {
   status: EBrowseGameBidItemStatus;
 }
 
-export interface INavToolbarItem {
+interface INavToolbarItem {
   title: string;
   href?: string;
   onClick?: () => void;
 }
 
-export interface IPriceFilterItem {
+interface IPriceFilterItem {
   amount: number;
   price: number;
 }
 
-export interface IToken {
+interface IToken {
   address: string;
   decimals: number;
   symbol: string;
@@ -266,7 +264,7 @@ export interface IToken {
   coingeckoTokenId: string;
 }
 
-export interface IERC721Token {
+interface IERC721Token {
   address: string;
   symbol: string;
   name: string;
@@ -274,11 +272,11 @@ export interface IERC721Token {
   volume?: string;
 }
 
-export type Maybe<T> = T | null;
+type Maybe<T> = T | null;
 
-export type KnownToken = "gswap" | "shroom" | "wavax";
+type KnownToken = "gswap" | "shroom" | "wavax";
 
-export interface INetwork {
+interface INetwork {
   label: string;
   url: string;
   contracts: {
@@ -287,11 +285,11 @@ export interface INetwork {
   etherscanUri: string;
 }
 
-export type NetworkId = 43113 | 43114;
+type NetworkId = 43113 | 43114;
 
-export type KnownContracts = keyof INetwork["contracts"];
+type KnownContracts = keyof INetwork["contracts"];
 
-export interface IKnownTokenData {
+interface IKnownTokenData {
   symbol: string;
   decimals: number;
   addresses: {
@@ -300,7 +298,7 @@ export interface IKnownTokenData {
   coingeckoTokenId: string;
 }
 
-export interface I0xContractAddresses {
+interface I0xContractAddresses {
   exchange: string;
   erc20Proxy: string;
   erc721proxy: string;
@@ -314,19 +312,19 @@ declare global {
   }
 }
 
-export interface IFaqNavBarItem {
+interface IFaqNavBarItem {
   id: string;
   title: string;
   href?: string;
   children?: IFaqNavBarItem[];
 }
 
-export interface IGlobalPriceData {
+interface IGlobalPriceData {
   usd: number;
   price: BigNumber;
   decimals: number;
 }
-export interface IGlobalData {
+interface IGlobalData {
   itemCartIds: string[];
   inventoryCartIds: string[];
   price: { [key in KnownToken]: IGlobalPriceData };
@@ -335,36 +333,36 @@ export interface IGlobalData {
   userInfo?: IUserInfo;
 }
 
-export interface IIPFSConfig {
+interface IIPFSConfig {
   host: string;
   port: number;
   protocol: string;
 }
 
-export interface ITradeData {
+interface ITradeData {
   asset?: IAssetItem | null;
   mode: ETradeType;
   bid?: ISignedOrder | null;
 }
 
-export interface ISignedOrder extends SignedOrder {
+interface ISignedOrder extends SignedOrder {
   erc721Address: string;
   erc20Address: string;
   assetId: BigNumber;
 }
 
-export interface ITradeAssetItem {
+interface ITradeAssetItem {
   id: BigNumber;
   collectionId: string;
   orders: ISignedOrder[];
 }
 
-export interface IAssetAttribute {
+interface IAssetAttribute {
   key: string;
   value: string;
 }
 
-export interface IHistoryItem {
+interface IHistoryItem {
   id: string;
   timestamp: number;
   from: string;
@@ -374,7 +372,7 @@ export interface IHistoryItem {
   txHash?: string;
 }
 
-export interface IIpfsMainData {
+interface IIpfsMainData {
   attributes: IAssetAttribute[];
   description?: string;
   image: string;
@@ -384,12 +382,12 @@ export interface IIpfsMainData {
   royalties: number;
 }
 
-export interface IGameCategory {
+interface IGameCategory {
   value: string;
   name: string;
 }
 
-export interface IGame {
+interface IGame {
   id: string;
   name: string;
   version: string;
@@ -402,7 +400,7 @@ export interface IGame {
   owner?: string;
 }
 
-export interface ICollection {
+interface ICollection {
   id: string;
   name: string;
   description?: string;
@@ -414,14 +412,14 @@ export interface ICollection {
   totalMinted?: BigNumber;
   owner?: string;
 }
-export interface IBalances {
+interface IBalances {
   eth: BigNumber;
   erc20Balances: {
     [key in KnownToken]: BigNumber;
   };
 }
 
-export interface IUserInfo {
+interface IUserInfo {
   name: string;
   address: string;
   id: string;
@@ -439,8 +437,13 @@ export interface IUserInfo {
   headerImageUrl: string;
 }
 
+interface ICollectionFormValues extends ICollection {
+  image: File | null;
+  uploading: boolean;
+}
+
 // game create
-export interface IGameFormValues extends IGame {
+interface IGameFormValues extends IGame {
   image: File | null;
   imageUploading: boolean;
   headerImage: File | null;
@@ -449,8 +452,26 @@ export interface IGameFormValues extends IGame {
   customUrlVerifying: boolean;
 }
 
-// collection create
-interface ICollectionFormValues extends ICollection {
-  image: File | null;
-  uploading: boolean;
+interface IInventoryFilter {
+  gameId?: string;
+  collectionId?: string;
+}
+
+interface ITradeSectionFilter {
+  sortDir?: ESortDirection;
+}
+
+interface ITradeFilter {
+  priceEnabled: boolean;
+  priceMin?: number;
+  priceMax?: number;
+  statusEnabled: boolean;
+  statuses?: EOrderStatus[];
+  collectionEnabled: boolean;
+  collectionIds?: string[];
+  saleCurrencyEnabled: boolean;
+  currencies?: KnownToken[];
+  membership: EMembership;
+  platformEnabled: boolean;
+  platforms?: EPlatform[];
 }

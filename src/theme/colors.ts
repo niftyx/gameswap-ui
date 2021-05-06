@@ -1,5 +1,5 @@
 import { transparentize } from "polished";
-import { THEME } from "utils/types.d";
+import { THEME } from "utils/enums";
 
 const colors = [
   {

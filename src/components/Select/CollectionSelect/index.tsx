@@ -2,14 +2,14 @@ import { MenuItem, Select, makeStyles } from "@material-ui/core";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import clsx from "clsx";
 import React from "react";
-import { IGame } from "utils/types";
+import { ICollection, IGame } from "utils/types";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     height: theme.spacing(3),
     width: 1,
     backgroundColor: theme.colors.transparent,
-    minWidth: theme.spacing(18),
+    minWidth: theme.spacing(24),
   },
   input: {
     color: theme.colors.text.third,
@@ -18,14 +18,14 @@ const useStyles = makeStyles((theme) => ({
 
 interface IProps {
   className?: string;
-  games: IGame[];
-  selectedGameId?: string;
+  collections: ICollection[];
+  selectedCollectionId?: string;
   onUpdate: (_?: string) => void;
 }
 
-export const GamesSelect = (props: IProps) => {
+export const CollectionSelect = (props: IProps) => {
   const classes = useStyles();
-  const { games, onUpdate, selectedGameId } = props;
+  const { collections, onUpdate, selectedCollectionId } = props;
   return (
     <Select
       IconComponent={KeyboardArrowDownIcon}
@@ -39,12 +39,12 @@ export const GamesSelect = (props: IProps) => {
           onUpdate(String(event.target.value) || "");
         }
       }}
-      value={selectedGameId ? selectedGameId : "all"}
+      value={selectedCollectionId ? selectedCollectionId : "all"}
     >
-      <MenuItem value={"all"}>All Games</MenuItem>
-      {games.map((game) => (
-        <MenuItem key={game.id} value={game.id}>
-          {game.name}
+      <MenuItem value={"all"}>All Collections</MenuItem>
+      {collections.map((collection) => (
+        <MenuItem key={collection.id} value={collection.id}>
+          {collection.name}
         </MenuItem>
       ))}
     </Select>

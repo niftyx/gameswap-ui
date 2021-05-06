@@ -9,6 +9,7 @@ import {
   SyncButton,
   VerticalDivider,
 } from "components";
+import { useGlobal } from "contexts";
 import React from "react";
 import { numberWithCommas } from "utils";
 
@@ -42,19 +43,22 @@ interface IProps {
 
 const BrowseToolbar = (props: IProps) => {
   const classes = useStyles();
+  const {
+    data: { games },
+  } = useGlobal();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { isAuctionActive, onAuction } = props;
   return (
     <div className={clsx(classes.root, props.className)}>
       <SyncButton />
       <VerticalDivider />
-      <GamesSelect />
+      {/* <GamesSelect games={games} /> */}
       <Hidden mdDown>
         <SearchInput className={classes.search} />
       </Hidden>
       <Box flex={1} />
       {/* <AuctionsButton active={isAuctionActive} onClick={onAuction} /> */}
-      <SortSelect />
+      {/* <SortSelect /> */}
       <PriceSelect />
       <VerticalDivider />
       {/* <Typography align="right" className={classes.balance} component="div">

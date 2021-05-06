@@ -4,6 +4,7 @@ import { BigNumber } from "packages/ethers";
 import { useEffect, useState } from "react";
 import { getAPIService } from "services/api";
 import { IGraphInventoryAsset } from "types";
+import { isObjectEqual } from "utils";
 import { getLogger } from "utils/logger";
 
 const logger = getLogger("useInventoryAssets:");
@@ -16,44 +17,46 @@ const wrangleAsset = (e: any) => {
     owner: e.currentOwner.id,
   } as IGraphInventoryAsset;
 };
-interface IOptions {
-  id: string;
-}
 
 interface IState {
   hasMore: boolean;
   assets: IGraphInventoryAsset[];
   loading: boolean;
+  query: any;
 }
 
 export const useInventoryAssets = (
-  options: IOptions
+  query: any
 ): {
   hasMore: boolean;
   assets: IGraphInventoryAsset[];
   loadMore: () => Promise<void>;
   removeItem: (_: string) => void;
   loading: boolean;
+  reload: () => Promise<void>;
 } => {
   const isRefMounted = useIsMountedRef();
   const [state, setState] = useState<IState>({
     hasMore: false,
     assets: [],
     loading: false,
+    query: {},
   });
 
   const apiService = getAPIService();
 
-  const fetchData = async (variables: {
-    perPage: number;
-    page: number;
-    id: string;
-  }) => {
+  const fetchData = async (
+    variables: {
+      perPage: number;
+      page: number;
+    },
+    flush?: boolean
+  ) => {
     try {
       setState((prevState) => ({ ...prevState, loading: true }));
 
-      const info = await apiService.getAssetsOfUser(
-        variables.id.toLowerCase(),
+      const info = await apiService.listAssets(
+        query,
         variables.perPage,
         variables.page
       );
@@ -62,10 +65,12 @@ export const useInventoryAssets = (
         setState((prevState) => ({
           ...prevState,
           hasMore: info.records.length === info.perPage,
-          assets: [
-            ...prevState.assets,
-            ...info.records.map((e) => wrangleAsset(e as any)),
-          ],
+          assets: flush
+            ? info.records.map((e) => wrangleAsset(e as any))
+            : [
+                ...prevState.assets,
+                ...info.records.map((e) => wrangleAsset(e as any)),
+              ],
           loading: false,
         }));
       else setState((prevState) => ({ ...prevState, loading: false }));
@@ -79,7 +84,6 @@ export const useInventoryAssets = (
     await fetchData({
       perPage: INVENTORY_PAGE_ASSET_COUNT,
       page: Math.floor(state.assets.length / INVENTORY_PAGE_ASSET_COUNT) + 1,
-      id: options.id,
     });
   };
 
@@ -90,22 +94,42 @@ export const useInventoryAssets = (
     }));
   };
 
+  const reload = async () => {
+    try {
+      setState((prev) => ({
+        ...prev,
+        hasMore: false,
+        assets: [],
+        loading: false,
+      }));
+      await fetchData(
+        {
+          perPage: INVENTORY_PAGE_ASSET_COUNT,
+          page: 1,
+        },
+        true
+      );
+    } catch (error) {
+      logger.warn(error);
+    }
+  };
+
   useEffect(() => {
-    setState((prevState) => ({
-      ...prevState,
-      hasMore: false,
-      assets: [],
-    }));
-    if (options.id) {
+    if (!isObjectEqual(query, state.query)) {
+      setState((prevState) => ({
+        ...prevState,
+        hasMore: false,
+        assets: [],
+        query,
+      }));
       fetchData({
         perPage: INVENTORY_PAGE_ASSET_COUNT,
         page: 1,
-        id: options.id,
       });
     }
 
     // eslint-disable-next-line
-  }, [options.id]);
+  }, [query]);
 
   return {
     assets: state.assets,
@@ -113,5 +137,6 @@ export const useInventoryAssets = (
     loadMore,
     removeItem,
     loading: state.loading,
+    reload,
   };
 };

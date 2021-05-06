@@ -2,6 +2,7 @@ import { MenuItem, Select, makeStyles } from "@material-ui/core";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import clsx from "clsx";
 import React from "react";
+import { EPlatform } from "utils/enums";
 import { IGame } from "utils/types";
 
 const useStyles = makeStyles((theme) => ({
@@ -18,14 +19,13 @@ const useStyles = makeStyles((theme) => ({
 
 interface IProps {
   className?: string;
-  games: IGame[];
-  selectedGameId?: string;
+  selectedPlatform?: string;
   onUpdate: (_?: string) => void;
 }
 
-export const GamesSelect = (props: IProps) => {
+export const PlatformSelect = (props: IProps) => {
   const classes = useStyles();
-  const { games, onUpdate, selectedGameId } = props;
+  const { onUpdate, selectedPlatform } = props;
   return (
     <Select
       IconComponent={KeyboardArrowDownIcon}
@@ -39,12 +39,12 @@ export const GamesSelect = (props: IProps) => {
           onUpdate(String(event.target.value) || "");
         }
       }}
-      value={selectedGameId ? selectedGameId : "all"}
+      value={selectedPlatform ? selectedPlatform : "all"}
     >
-      <MenuItem value={"all"}>All Games</MenuItem>
-      {games.map((game) => (
-        <MenuItem key={game.id} value={game.id}>
-          {game.name}
+      <MenuItem value={"all"}>All</MenuItem>
+      {Object.keys(EPlatform).map((platform) => (
+        <MenuItem key={platform} value={(EPlatform as any)[platform]}>
+          {platform}
         </MenuItem>
       ))}
     </Select>

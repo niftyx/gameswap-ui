@@ -11,8 +11,8 @@ import { MOCK_PRICE_FILTER_ITEMS } from "config/constants";
 import { transparentize } from "polished";
 import React, { useState } from "react";
 import useCommonStyles from "styles/common";
-import { EOrderStatus, EPlatform } from "utils/enums";
-import { KnownToken } from "utils/types";
+import { EMembership, EOrderStatus, EPlatform } from "utils/enums";
+import { ITradeFilter, KnownToken } from "utils/types";
 
 import { CollectionFilter } from "../CollectionFilter";
 import FilterItemWrapper from "../FilterItemWrapper";
@@ -72,105 +72,50 @@ const useStyles = makeStyles((theme) => ({
 
 interface IProps {
   className?: string;
-}
-
-enum EMembership {
-  Basic = "Basic",
-  Pro = "Pro",
-}
-
-interface IState {
-  filter: {
-    priceEnabled: boolean;
-    priceMin?: number;
-    priceMax?: number;
-    statusEnabled: boolean;
-    statuses?: EOrderStatus[];
-    collectionEnabled: boolean;
-    collectionIds?: string[];
-    saleCurrencyEnabled: boolean;
-    currencies?: KnownToken[];
-    membership: EMembership;
-    platformEnabled: boolean;
-    platforms?: EPlatform[];
-  };
+  filter: ITradeFilter;
+  updateFilter: (_: any) => void;
 }
 
 const TradeFilter = (props: IProps) => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
 
-  const [state, setState] = useState<IState>({
-    filter: {
+  const { filter, updateFilter } = props;
+
+  const onChangePrice = ({ max, min }: { min?: number; max?: number }) => {
+    updateFilter({ priceMin: min, priceMax: max });
+  };
+
+  const onChangePlatform = (platforms: EPlatform[]) => {
+    updateFilter({ platforms });
+  };
+
+  const onChangeStatus = (statuses: EOrderStatus[]) => {
+    updateFilter({ statuses });
+  };
+
+  const onChangeCollection = (collectionIds: string[]) => {
+    updateFilter({ collectionIds });
+  };
+
+  const onChangeCurrencies = (currencies: KnownToken[]) => {
+    updateFilter({ currencies });
+  };
+
+  const onReset = () => {
+    updateFilter({
       priceEnabled: false,
       statusEnabled: false,
       collectionEnabled: false,
       saleCurrencyEnabled: false,
       platformEnabled: false,
       membership: EMembership.Basic,
-    },
-  });
-
-  const updateFilter = (newValues: any) =>
-    setState((prevState) => ({
-      ...prevState,
-      filter: {
-        ...prevState.filter,
-        ...newValues,
-      },
-    }));
-
-  const onChangePrice = ({ max, min }: { min?: number; max?: number }) => {
-    setState((prevState) => ({
-      ...prevState,
-      filter: { ...prevState.filter, priceMin: min, priceMax: max },
-    }));
+    });
   };
 
-  const onChangePlatform = (platforms: EPlatform[]) => {
-    setState((prevState) => ({
-      ...prevState,
-      filter: { ...prevState.filter, platforms },
-    }));
-  };
-
-  const onChangeStatus = (statuses: EOrderStatus[]) => {
-    setState((prev) => ({
-      ...prev,
-      filter: { ...prev.filter, statuses },
-    }));
-  };
-
-  const onChangeCollection = (collectionIds: string[]) => {
-    setState((prev) => ({
-      ...prev,
-      filter: { ...prev.filter, collectionIds },
-    }));
-  };
-
-  const onChangeCurrencies = (currencies: KnownToken[]) => {
-    setState((prev) => ({
-      ...prev,
-      filter: { ...prev.filter, currencies },
-    }));
-  };
-
-  const onReset = () => {
-    setState(() => ({
-      filter: {
-        priceEnabled: false,
-        statusEnabled: false,
-        collectionEnabled: false,
-        saleCurrencyEnabled: false,
-        platformEnabled: false,
-        membership: EMembership.Basic,
-      },
-    }));
-  };
-
-  const onToggleFilter = (key: keyof IState["filter"]) => () => {
+  const onToggleFilter = (key: keyof ITradeFilter) => () => {
     updateFilter({
-      [key]: !state.filter[key],
+      [key]: !filter[key],
     });
   };
 
@@ -206,7 +151,7 @@ const TradeFilter = (props: IProps) => {
         <Button
           className={clsx(
             classes.membershipButton,
-            state.filter.membership === EMembership.Basic ? "active" : ""
+            filter.membership === EMembership.Basic ? "active" : ""
           )}
           color="primary"
           onClick={() =>
@@ -220,7 +165,7 @@ const TradeFilter = (props: IProps) => {
         <Button
           className={clsx(
             classes.membershipButton,
-            state.filter.membership === EMembership.Pro ? "active" : ""
+            filter.membership === EMembership.Pro ? "active" : ""
           )}
           color="primary"
           onClick={() =>
@@ -232,7 +177,7 @@ const TradeFilter = (props: IProps) => {
           Pro
         </Button>
       </ButtonGroup>
-      <FilterItemWrapper
+      {/* <FilterItemWrapper
         enabled={state.filter.priceEnabled}
         onToggle={onToggleFilter("priceEnabled")}
         title="Price"
@@ -244,8 +189,8 @@ const TradeFilter = (props: IProps) => {
           onChange={onChangePrice}
         />
         <Divider className={classes.divider} />
-      </FilterItemWrapper>
-      <FilterItemWrapper
+      </FilterItemWrapper> */}
+      {/* <FilterItemWrapper
         enabled={state.filter.platformEnabled}
         onToggle={onToggleFilter("platformEnabled")}
         title="Platform"
@@ -255,8 +200,8 @@ const TradeFilter = (props: IProps) => {
           platforms={state.filter.platforms || []}
         />
         <Divider className={classes.divider} />
-      </FilterItemWrapper>
-      <FilterItemWrapper
+      </FilterItemWrapper> */}
+      {/* <FilterItemWrapper
         enabled={state.filter.statusEnabled}
         onToggle={onToggleFilter("statusEnabled")}
         title="Status"
@@ -265,8 +210,8 @@ const TradeFilter = (props: IProps) => {
           onChange={onChangeStatus}
           statuses={state.filter.statuses || []}
         />
-      </FilterItemWrapper>
-      <FilterItemWrapper
+      </FilterItemWrapper> */}
+      {/* <FilterItemWrapper
         enabled={state.filter.collectionEnabled}
         onToggle={onToggleFilter("collectionEnabled")}
         title="Collection"
@@ -275,14 +220,14 @@ const TradeFilter = (props: IProps) => {
           collectionIds={state.filter.collectionIds || []}
           onChange={onChangeCollection}
         />
-      </FilterItemWrapper>
+      </FilterItemWrapper> */}
       <FilterItemWrapper
-        enabled={state.filter.saleCurrencyEnabled}
+        enabled={filter.saleCurrencyEnabled}
         onToggle={onToggleFilter("saleCurrencyEnabled")}
         title="Sale Currency"
       >
         <SaleCurrencyFilter
-          currencies={state.filter.currencies || []}
+          currencies={filter.currencies || []}
           onChange={onChangeCurrencies}
         />
       </FilterItemWrapper>

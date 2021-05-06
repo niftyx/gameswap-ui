@@ -12,7 +12,7 @@ import { useConnectedWeb3Context, useTrade } from "contexts";
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { IGraphInventoryAsset } from "types";
-import { IAssetItem } from "utils/types";
+import { IAssetItem, IInventoryFilter } from "utils/types";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -37,6 +37,9 @@ interface IProps {
   assets: IGraphInventoryAsset[];
   selectedAssets: IGraphInventoryAsset[];
   onChangeSelected: (_: IGraphInventoryAsset[]) => void;
+  onReload: () => Promise<void>;
+  filter: IInventoryFilter;
+  onUpdateFilter: (_: IInventoryFilter) => void;
 }
 
 const InventorySection = (props: IProps) => {
@@ -47,6 +50,9 @@ const InventorySection = (props: IProps) => {
     onScrollEnd = () => {},
     assets,
     selectedAssets,
+    onReload,
+    onUpdateFilter,
+    filter,
   } = props;
   const { account } = useConnectedWeb3Context();
   const isConnected = !!account;
@@ -61,7 +67,12 @@ const InventorySection = (props: IProps) => {
     <div className={clsx(classes.root, props.className)}>
       {isConnected ? (
         <>
-          <InventoryToolbar />
+          <InventoryToolbar
+            filter={filter}
+            loading={loading}
+            onReload={onReload}
+            onUpdateFilter={onUpdateFilter}
+          />
           <ScrollContainer
             className={clsx(classes.assets)}
             onScrollEnd={onScrollEnd}

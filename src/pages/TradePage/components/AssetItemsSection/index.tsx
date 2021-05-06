@@ -11,7 +11,12 @@ import { CartContentWrapper, CartEmpty } from "components/Cart";
 import { useConnectedWeb3Context, useGlobal, useTrade } from "contexts";
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { IAssetItem, ISignedOrder, ITradeAssetItem } from "utils/types";
+import {
+  IAssetItem,
+  ISignedOrder,
+  ITradeAssetItem,
+  ITradeSectionFilter,
+} from "utils/types";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -30,6 +35,9 @@ interface IProps {
   orders: ISignedOrder[];
   selectedOrders: ISignedOrder[];
   onChangeSelected: (_: ISignedOrder[]) => void;
+  filter: ITradeSectionFilter;
+  onUpdateFilter: (_: ITradeSectionFilter) => void;
+  onReload: () => Promise<void>;
 }
 
 const AssetItemsSection = (props: IProps) => {
@@ -42,9 +50,12 @@ const AssetItemsSection = (props: IProps) => {
   const { account, setWalletConnectModalOpened } = useConnectedWeb3Context();
   const history = useHistory();
   const {
-    loading,
+    filter,
+    loading = false,
     onChangeSelected,
+    onReload,
     onScrollEnd,
+    onUpdateFilter,
     orders,
     selectedOrders,
   } = props;
@@ -120,6 +131,10 @@ const AssetItemsSection = (props: IProps) => {
     <div className={clsx(classes.root, props.className)}>
       <AssetsToolbar
         cartItemCount={itemCartIds.length}
+        filter={filter}
+        loading={loading}
+        onReload={onReload}
+        onUpdateFilter={onUpdateFilter}
         renderCartContent={renderCartContent}
         totalPrice={totalPrice}
       />

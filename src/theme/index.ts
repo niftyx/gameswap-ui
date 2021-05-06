@@ -1,5 +1,6 @@
 import { colors, createMuiTheme, responsiveFontSizes } from "@material-ui/core";
-import { ISettings, THEME } from "utils/types.d";
+import { THEME } from "utils/enums";
+import { ISettings } from "utils/types.d";
 
 import CustomColors from "./colors";
 import custom from "./custom";
