@@ -119,7 +119,7 @@ export enum EAssetDetailTab {
 
 export enum ESortDirection {
   asc = "asc",
-  dec = "dsc",
+  desc = "desc",
 }
 
 export enum EMembership {
