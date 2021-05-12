@@ -116,6 +116,7 @@ export const CollectionCreateModal = (props: IProps) => {
           name: Yup.string().required(),
           description: Yup.string(),
           symbol: Yup.string().required(),
+          gameIds: Yup.array().min(1),
         })}
       >
         {({

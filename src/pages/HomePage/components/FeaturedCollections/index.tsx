@@ -42,7 +42,7 @@ export const FeaturedCollections = (props: IProps) => {
     dots: false,
     infinite: true,
     speed: 500,
-    slidesToShow: 4,
+    slidesToShow: Math.min(4, collections.length),
     slidesToScroll: 1,
   };
 

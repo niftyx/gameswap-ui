@@ -70,6 +70,7 @@ export const CollectionCreateForm = (props: IProps) => {
       validationSchema={Yup.object().shape({
         id: Yup.string(),
         name: Yup.string().required(),
+        gameIds: Yup.array().min(1),
         description: Yup.string(),
         symbol: Yup.string().required(),
         imageUrl: Yup.string().required(),

@@ -54,10 +54,6 @@ export const DEFAULT_NETWORK_ID = 43113;
 
 export const RELAYER_RPS = Number(process.env.REACT_APP_RELAYER_RPS);
 
-export const FLEEK_API_KEY = process.env.REACT_APP_FLEEK_API_KEY || "";
-export const FLEEK_API_SECRET = process.env.REACT_APP_FLEEK_API_SECRET || "";
-export const FLEEK_IPFS_BASE_URL = "https://ipfs.fleek.co/ipfs/";
-
 export const TokenAvax = {
   decimals: 18,
   symbol: "AVAX",

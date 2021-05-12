@@ -189,6 +189,7 @@ export const ERC721CreateForm = (props: IProps) => {
       validationSchema={Yup.object().shape({
         name: Yup.string().required(),
         collectionId: Yup.string().required(),
+        gameId: Yup.string().required(),
         description: Yup.string(),
         royalties: Yup.number().required(),
         attributes: Yup.array(
@@ -441,6 +442,7 @@ export const ERC721CreateForm = (props: IProps) => {
                   onChange: handleChange,
                   placeholder: `Add a description about this item`,
                   value: values.description,
+                  multiline: true,
                 }}
                 helperText="With preserved line-breaks"
                 label="Description"
