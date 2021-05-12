@@ -1,9 +1,11 @@
 import { Typography, makeStyles } from "@material-ui/core";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import clsx from "clsx";
+import { CollectionSelectAutoComplete } from "components/Input/CollectionSelectAutoComplete";
 import { useConnectedWeb3Context, useGlobal } from "contexts";
-import React from "react";
+import React, { useState } from "react";
 import useCommonStyles from "styles/common";
+import { ICollection } from "utils/types";
 
 import { FormCollectionChooseItem } from "../FormCollectionChooseItem";
 
@@ -39,6 +41,10 @@ interface IProps {
   onNewCollection: () => void;
 }
 
+interface IState {
+  externalCollections: ICollection[];
+}
+
 export const FormCollectionChoose = (props: IProps) => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
@@ -47,12 +53,33 @@ export const FormCollectionChoose = (props: IProps) => {
   const {
     data: { collections },
   } = useGlobal();
+  const [state, setState] = useState<IState>({ externalCollections: [] });
+
+  const onSelectFromList = (collection?: ICollection) => {
+    if (!collection) {
+      onChange("");
+      setState(() => ({ externalCollections: [] }));
+    } else if (collection.id !== collectionId) {
+      onChange(collection.id);
+      const defaultCollectionIds = collections.map((g) => g.id);
+      setState((prev) => ({
+        ...prev,
+        externalGames: [collection].filter(
+          (g) => !defaultCollectionIds.includes(g.id)
+        ),
+      }));
+    }
+  };
 
   return (
     <div className={classes.root}>
       <Typography className={classes.label} component="div">
         {comment}
       </Typography>
+      <CollectionSelectAutoComplete
+        onSelect={onSelectFromList}
+        preselected={[collectionId]}
+      />
       <div className={clsx(classes.content, commonClasses.scrollHorizontal)}>
         <FormCollectionChooseItem
           active={false}
@@ -61,32 +88,26 @@ export const FormCollectionChoose = (props: IProps) => {
           subTitle="Collection"
           title="Create"
         />
-        {collections
-          .filter(
-            (collection) =>
-              !collection.isPrivate ||
-              collection.owner?.toLowerCase() === account?.toLowerCase()
-          )
-          .map((collection) => (
-            <FormCollectionChooseItem
-              active={collectionId === collection.id}
-              key={collection.id}
-              onClick={() => {
-                if (collectionId !== collection.id) {
-                  onChange(collection.id);
-                }
-              }}
-              renderIcon={() => (
-                <img
-                  alt="img"
-                  className={classes.img}
-                  src={collection.imageUrl}
-                />
-              )}
-              subTitle={" "}
-              title={collection.name || ""}
-            />
-          ))}
+        {[...collections, ...state.externalCollections].map((collection) => (
+          <FormCollectionChooseItem
+            active={collectionId === collection.id}
+            key={collection.id}
+            onClick={() => {
+              if (collectionId !== collection.id) {
+                onChange(collection.id);
+              }
+            }}
+            renderIcon={() => (
+              <img
+                alt="img"
+                className={classes.img}
+                src={collection.imageUrl}
+              />
+            )}
+            subTitle={" "}
+            title={collection.name || ""}
+          />
+        ))}
       </div>
     </div>
   );

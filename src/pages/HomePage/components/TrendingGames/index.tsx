@@ -37,12 +37,14 @@ export const TrendingGames = (props: IProps) => {
     data: { games: trendingGames },
   } = useGlobal();
 
+  const gameCount = trendingGames.length;
+
   const settings = {
     arrows: false,
     dots: false,
     infinite: true,
     speed: 500,
-    slidesToShow: 4,
+    slidesToShow: Math.min(gameCount, 4),
     slidesToScroll: 1,
   };
 

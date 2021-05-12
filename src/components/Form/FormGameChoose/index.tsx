@@ -1,9 +1,11 @@
 import { Typography, makeStyles } from "@material-ui/core";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import clsx from "clsx";
+import { GameSelectAutoComplete } from "components/Input";
 import { useGlobal } from "contexts";
-import React from "react";
+import React, { useState } from "react";
 import useCommonStyles from "styles/common";
+import { IGame } from "utils/types";
 
 import { FormGameChooseItem } from "../FormGameChooseItem";
 
@@ -34,39 +36,86 @@ const useStyles = makeStyles((theme) => ({
 
 interface IProps {
   comment: string;
-  gameId: string;
-  onChange: (_: string) => void;
-  onNewGame: () => void;
+  gameIds: string[];
+  onChange: (_: string[]) => void;
+  onNewGame?: () => void;
+  multiple?: boolean;
+}
+
+interface IState {
+  externalGames: IGame[];
 }
 
 export const FormGameChoose = (props: IProps) => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
-  const { comment, gameId, onChange, onNewGame } = props;
+  const { comment, gameIds, multiple = false, onChange, onNewGame } = props;
   const {
     data: { games },
   } = useGlobal();
+  const [state, setState] = useState<IState>({ externalGames: [] });
+
+  const onSelectFromList = (game?: IGame) => {
+    if (!game) {
+      onChange([]);
+      setState(() => ({ externalGames: [] }));
+    } else if (!gameIds.includes(game.id)) {
+      if (multiple) {
+        onChange([...gameIds, game.id]);
+        const defaultGameIds = games.map((g) => g.id);
+        setState((prev) => ({
+          ...prev,
+          externalGames: [...state.externalGames, game].filter(
+            (g) => !defaultGameIds.includes(g.id)
+          ),
+        }));
+      } else {
+        onChange([game.id]);
+        const defaultGameIds = games.map((g) => g.id);
+        setState((prev) => ({
+          ...prev,
+          externalGames: [game].filter((g) => !defaultGameIds.includes(g.id)),
+        }));
+      }
+    }
+  };
 
   return (
     <div className={classes.root}>
       <Typography className={classes.label} component="div">
         {comment}
       </Typography>
+      <GameSelectAutoComplete
+        onSelect={onSelectFromList}
+        preselected={gameIds}
+      />
       <div className={clsx(classes.content, commonClasses.scrollHorizontal)}>
-        <FormGameChooseItem
-          active={false}
-          onClick={onNewGame}
-          renderIcon={() => <AddCircleIcon className={classes.icon} />}
-          subTitle="Game"
-          title="Create"
-        />
-        {games.map((game) => (
+        {onNewGame && (
           <FormGameChooseItem
-            active={gameId === game.id}
+            active={false}
+            onClick={onNewGame}
+            renderIcon={() => <AddCircleIcon className={classes.icon} />}
+            subTitle="Game"
+            title="Create"
+          />
+        )}
+        {[...games, ...state.externalGames].map((game) => (
+          <FormGameChooseItem
+            active={gameIds.includes(game.id)}
             key={game.id}
             onClick={() => {
-              if (gameId !== game.id) {
-                onChange(game.id);
+              if (multiple) {
+                if (!gameIds.includes(game.id)) {
+                  onChange([...gameIds, game.id]);
+                } else {
+                  onChange(gameIds.filter((id) => id !== game.id));
+                }
+              } else {
+                if (!gameIds.includes(game.id)) {
+                  onChange([game.id]);
+                } else {
+                  onChange([]);
+                }
               }
             }}
             renderIcon={() => (

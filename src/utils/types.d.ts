@@ -398,6 +398,10 @@ interface IGame {
   platform: EPlatform;
   customUrl: string;
   owner?: string;
+  isFeatured?: boolean;
+  isVerified?: boolean;
+  isPremium?: boolean;
+  collections?: ICollection[];
 }
 
 interface ICollection {
@@ -411,6 +415,11 @@ interface ICollection {
   totalBurned?: BigNumber;
   totalMinted?: BigNumber;
   owner?: string;
+  isFeatured?: boolean;
+  isVerified?: boolean;
+  isPremium?: boolean;
+  gameIds: string[];
+  games?: IGame[];
 }
 interface IBalances {
   eth: BigNumber;

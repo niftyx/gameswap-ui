@@ -51,9 +51,6 @@ interface IState {
 export const ERC721ProgressModal = (props: IProps) => {
   const context = useConnectedWeb3Context();
   const { account, library: provider, networkId } = context;
-  const {
-    data: { games },
-  } = useGlobal();
   const erc721ProxyAddress = get0xContractAddresses(
     networkId || DEFAULT_NETWORK_ID
   ).erc721proxy;
@@ -218,6 +215,8 @@ export const ERC721ProgressModal = (props: IProps) => {
           formValues.attributes.length - 1
         ),
         lockedData: formValues.lockedContent ? encryptedContent.lockedData : "",
+        gameId: formValues.gameId,
+        contentId: state.contentId,
       };
       const tokenURI = await ipfsService.uploadData(JSON.stringify(payload));
       setState((prevState) => ({
@@ -248,21 +247,7 @@ export const ERC721ProgressModal = (props: IProps) => {
       logger.log("mintToken");
       setState((prevState) => ({ ...prevState, error: "", isLoading: true }));
 
-      const selectedGame = games.find((e) => e.id === formValues.gameId);
-      logger.log(
-        account || "",
-        state.tokenURI,
-        formValues.gameId,
-        selectedGame && selectedGame.categoryId,
-        state.contentId
-      );
-      const txReceipt = await erc721.mintItem(
-        account || "",
-        state.tokenURI,
-        formValues.gameId,
-        selectedGame ? selectedGame.categoryId : "",
-        state.contentId
-      );
+      const txReceipt = await erc721.mintItem(account || "", state.tokenURI);
 
       const tokenId = erc721.getCreatedAssetId(txReceipt);
 

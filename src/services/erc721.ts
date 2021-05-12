@@ -19,14 +19,13 @@ const erc721Abi = [
   "function tokenURI(uint256 tokenId) external view returns (string memory)",
   "function transferFrom(address from, address to, uint256 tokenId) external",
   "function safeTransferFrom(address from, address to, uint256 tokenId) public",
-  "function mintItem(address player, string memory tokenURI,string memory gameId, string memory categoryId, string memory contentId) public returns (uint256)",
+  "function mintItem(address player, string memory tokenURI) public returns (uint256)",
   "function burnItem(uint256 _itemId) public",
-  "event Transfer(address indexed from,address indexed to,uint256 indexed tokenId)",
-  "event SetTokenData(uint256,string,string,string,string)",
+  "event Transfer(address indexed,address indexed,uint256 indexed)",
 ];
 
-const SET_TOKEN_DATA_ID = id(
-  "SetTokenData(uint256,string,string,string,string)"
+const TRANSFER_DATA_ID = id(
+  "Transfer(address indexed,address indexed,uint256 indexed)"
 );
 
 class ERC721Service {
@@ -148,18 +147,9 @@ class ERC721Service {
 
   mintItem = async (
     player: string,
-    tokenURI: string,
-    gameId: string,
-    categoryId: string,
-    contentId: string
+    tokenURI: string
   ): Promise<TransactionReceipt> => {
-    const transactionObject = await this.contract.mintItem(
-      player,
-      tokenURI,
-      gameId,
-      categoryId,
-      contentId
-    );
+    const transactionObject = await this.contract.mintItem(player, tokenURI);
     logger.log(`mintItem hash: ${transactionObject.hash}`);
     return this.provider.waitForTransaction(transactionObject.hash);
   };
@@ -167,10 +157,10 @@ class ERC721Service {
   getCreatedAssetId = (txReceipt: TransactionReceipt): BigNumber => {
     const iface = new Interface(erc721Abi);
     const { logs } = txReceipt;
-    const log = logs.find((log) => log.topics.includes(SET_TOKEN_DATA_ID));
+    const log = logs.find((log) => log.topics.includes(TRANSFER_DATA_ID));
     if (log) {
       const parsedLog = iface.parseLog(log);
-      return parsedLog.args[0];
+      return parsedLog.args[2];
     }
     return ZERO_NUMBER;
   };

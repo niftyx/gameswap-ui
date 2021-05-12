@@ -33,10 +33,24 @@ export class APIService {
    * Games
    * get all games
    */
-  public async getGames() {
+  public async getGames(query?: string) {
     await this._rateLimit();
-    const response = await axios.get(`${this.gamePath}all`);
+    const response = await axios.get(
+      `${this.gamePath}all${query ? `?${query}` : ""}`
+    );
     return response.data;
+  }
+
+  /**
+   * Games
+   * search games
+   */
+  public async searchGames(keyword?: string) {
+    await this._rateLimit();
+    const response = await axios.get(
+      `${this.gamePath}search${keyword ? `?keyword=${keyword || ""}` : ""}`
+    );
+    return response.data as IGame[];
   }
 
   /**
@@ -113,11 +127,27 @@ export class APIService {
 
   /**
    * Collections
+   * search collections
+   */
+  public async searchCollections(keyword?: string) {
+    await this._rateLimit();
+    const response = await axios.get(
+      `${this.collectionPath}search${
+        keyword ? `?keyword=${keyword || ""}` : ""
+      }`
+    );
+    return response.data as ICollection[];
+  }
+
+  /**
+   * Collections
    * get all collections
    */
-  public async getCollections() {
+  public async getCollections(query?: string) {
     await this._rateLimit();
-    const response = await axios.get(`${this.collectionPath}all`);
+    const response = await axios.get(
+      `${this.collectionPath}all${query ? `?${query}` : ""}`
+    );
     return response.data;
   }
 

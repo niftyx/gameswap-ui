@@ -41,7 +41,7 @@ export const LikedAssetsSection = (props: IProps) => {
     loadMore: loadMoreInventoryItems,
     loading: inventoryLoading,
   } = useInventoryAssets({
-    id: userId || "",
+    ownerId: userId || "",
   });
 
   return (

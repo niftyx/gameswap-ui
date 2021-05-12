@@ -2,6 +2,7 @@ import { Button, makeStyles } from "@material-ui/core";
 import clsx from "clsx";
 import {
   FormCollectionImageUpload,
+  FormGameChoose,
   FormSwitchField,
   FormTextField,
 } from "components";
@@ -53,6 +54,7 @@ export const CollectionCreateForm = (props: IProps) => {
     uploading: false,
     symbol: "",
     isPrivate: true,
+    gameIds: [],
   };
 
   return (
@@ -165,6 +167,14 @@ export const CollectionCreateForm = (props: IProps) => {
                 multiline: true,
               }}
               label="Description"
+            />
+            <FormGameChoose
+              comment="Select games"
+              gameIds={values.gameIds}
+              multiple
+              onChange={(values: string[]) => {
+                setFieldValue("gameIds", values);
+              }}
             />
             <FormSwitchField
               FormControlProps={{ fullWidth: true }}

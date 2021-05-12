@@ -407,9 +407,9 @@ export const ERC721CreateForm = (props: IProps) => {
 
               <FormGameChoose
                 comment="Choose game"
-                gameId={values.gameId}
-                onChange={(value) => {
-                  setFieldValue("gameId", value);
+                gameIds={values.gameId ? [values.gameId] : []}
+                onChange={(values: string[]) => {
+                  setFieldValue("gameId", values.length > 0 ? values[0] : "");
                 }}
                 onNewGame={props.onNewGame}
               />

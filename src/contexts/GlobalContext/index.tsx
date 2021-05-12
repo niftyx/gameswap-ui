@@ -52,8 +52,8 @@ const GlobalContext = createContext({
   isInInventoryCart: (_: string) => {},
   clearItemCart: () => {},
   clearInventoryCart: () => {},
-  loadGames: () => {},
-  loadCollections: () => {},
+  loadGames: (_?: string) => {},
+  loadCollections: (_?: string) => {},
   updateUserInfo: (_?: IUserInfo) => {},
 });
 

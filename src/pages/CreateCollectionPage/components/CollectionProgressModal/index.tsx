@@ -5,6 +5,7 @@ import { useConnectedWeb3Context, useGlobal } from "contexts";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { ERC721FactoryService } from "services";
+import { getIPFSService } from "services/ipfs";
 import { waitSeconds } from "utils";
 import { getLogger } from "utils/logger";
 import { ICollection } from "utils/types";
@@ -34,6 +35,8 @@ export const CollectionProgressModal = (props: IProps) => {
     account,
     gswap721FactoryAddress
   );
+  const ipfsService = getIPFSService();
+
   const { loadCollections } = useGlobal();
   const { formValues, onClose, visible } = props;
   const [state, setState] = useState<IState>({
@@ -59,11 +62,17 @@ export const CollectionProgressModal = (props: IProps) => {
     }
     setState((prev) => ({ ...prev, loading: true, error: "" }));
     try {
+      const collectionUrl = await ipfsService.uploadData(
+        JSON.stringify({
+          imageUrl: formValues.imageUrl,
+          description: formValues.description,
+          gameIds: formValues.gameIds,
+        })
+      );
       const txResult = await factoryContract.createGswap721(
         formValues.name,
         formValues.symbol,
-        formValues.imageUrl,
-        formValues.description || "",
+        collectionUrl,
         formValues.isPrivate
       );
       const collectionId = factoryContract

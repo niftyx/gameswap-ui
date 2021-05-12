@@ -1,7 +1,11 @@
 import { Button, CircularProgress, makeStyles } from "@material-ui/core";
 import clsx from "clsx";
 import { FormTextField } from "components";
-import { FormCollectionImageUpload, FormSwitchField } from "components/Form";
+import {
+  FormCollectionImageUpload,
+  FormGameChoose,
+  FormSwitchField,
+} from "components/Form";
 import { DEFAULT_NETWORK_ID } from "config/constants";
 import { getContractAddress } from "config/networks";
 import { useConnectedWeb3Context, useGlobal } from "contexts";
@@ -69,6 +73,7 @@ export const CollectionCreateModal = (props: IProps) => {
     uploading: false,
     symbol: "",
     isPrivate: true,
+    gameIds: [""],
   };
 
   return (
@@ -83,11 +88,17 @@ export const CollectionCreateModal = (props: IProps) => {
           // create a new collection
           try {
             setSubmitting(true);
+            const collectionUrl = await ipfsService.uploadData(
+              JSON.stringify({
+                imageUrl: values.imageUrl,
+                description: values.description,
+                gameIds: values.gameIds,
+              })
+            );
             const txResult = await factoryContract.createGswap721(
               values.name,
               values.symbol,
-              values.imageUrl,
-              values.description || "",
+              collectionUrl,
               values.isPrivate
             );
             logger.log(txResult);
@@ -195,6 +206,14 @@ export const CollectionCreateModal = (props: IProps) => {
                 multiline: true,
               }}
               label="Description"
+            />
+            <FormGameChoose
+              comment="Select games"
+              gameIds={values.gameIds}
+              multiple
+              onChange={(values: string[]) => {
+                setFieldValue("gameIds", values);
+              }}
             />
             <FormSwitchField
               FormControlProps={{ fullWidth: true }}

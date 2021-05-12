@@ -42,7 +42,7 @@ export const AssetsSection = (props: IProps) => {
     loadMore: loadMoreInventoryItems,
     loading: inventoryLoading,
   } = useInventoryAssets({
-    id: userId || "",
+    ownerId: userId || "",
   });
 
   return (
