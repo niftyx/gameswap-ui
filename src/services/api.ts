@@ -22,7 +22,7 @@ export class APIService {
   private readonly gamePath = "/games/v1/";
   private readonly collectionPath = "/collections/v1/";
   private readonly assetPath = "/assets/v1/";
-  private readonly accountPath = "/accounts/v1/";
+  private readonly userPath = "/users/v1/";
   private readonly commonPath = "/common/v1/";
 
   constructor() {
@@ -326,7 +326,7 @@ export class APIService {
    */
   public async getAccountInfo(account: string) {
     await this._rateLimit();
-    const response = await axios.get(`${this.accountPath}${account}`);
+    const response = await axios.get(`${this.userPath}${account}`);
     return response.data as IUserInfo;
   }
 
@@ -340,7 +340,7 @@ export class APIService {
     signedMessage: string
   ) {
     await this._rateLimit();
-    const response = await axios.post(`${this.accountPath}${account}`, {
+    const response = await axios.post(`${this.userPath}${account}`, {
       ...payload,
       signedMessage,
     });

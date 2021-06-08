@@ -3,13 +3,16 @@ import { useWeb3React } from "@web3-react/core";
 import { ConnectWalletModal, LoadingScreen } from "components";
 import { STORAGE_KEY_CONNECTOR } from "config/constants";
 import { useGlobal } from "contexts/GlobalContext";
+import { useIsMountedRef } from "hooks";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { getAPIService } from "services/api";
+import { getAuthService } from "services/authApi";
 import { waitSeconds } from "utils";
+import { signMessage } from "utils/auth";
 import connectors from "utils/connectors";
 import { ConnectorNames } from "utils/enums";
-import { IUserInfo, Maybe } from "utils/types";
+import { IAuthToken, IUserInfo, Maybe } from "utils/types";
 export interface ConnectedWeb3Context {
   account: Maybe<string> | null;
   library: Web3Provider | undefined;
@@ -18,6 +21,7 @@ export interface ConnectedWeb3Context {
   initialized: boolean;
   walletConnectModalOpened: boolean;
   setWalletConnectModalOpened: (_: boolean) => void;
+  fetchAuthToken: () => Promise<void>;
 }
 
 const ConnectedWeb3Context = React.createContext<Maybe<ConnectedWeb3Context>>(
@@ -56,15 +60,19 @@ export const ConnectedWeb3: React.FC = (props) => {
   const [state, setState] = useState<{
     initialized: boolean;
     walletConnectModalOpened: boolean;
+    authToken?: IAuthToken;
   }>({
     initialized: false,
     walletConnectModalOpened: false,
   });
 
+  const isMountedRef = useIsMountedRef();
+
   const history = useHistory();
   const nextPath = new URLSearchParams(history.location.search).get("next");
 
   const apiService = getAPIService();
+  const authService = getAuthService(chainId);
 
   const setInitialized = (initialized: boolean) => {
     setState((prev) => ({ ...prev, initialized }));
@@ -73,7 +81,24 @@ export const ConnectedWeb3: React.FC = (props) => {
     setState((prev) => ({ ...prev, walletConnectModalOpened }));
 
   const updateInitialized = () => {
-    if (!state.initialized) setInitialized(true);
+    if (!state.initialized) {
+      setInitialized(true);
+    }
+  };
+
+  const getJwtToken = async (message?: string) => {
+    if (!library || !account) return;
+
+    const finalMessage = message || "I am going to edit";
+    const signedMessage = await signMessage(finalMessage, library);
+    const response = await authService.connect(finalMessage, signedMessage);
+    setState((prev) => ({ ...prev, authToken: response }));
+    await waitSeconds(0.1);
+  };
+
+  const clearJwtToken = async () => {
+    setState((prev) => ({ ...prev, authToken: undefined }));
+    await waitSeconds(0.1);
   };
 
   useEffect(() => {
@@ -100,8 +125,6 @@ export const ConnectedWeb3: React.FC = (props) => {
   }, [context, library, active, error]);
 
   useEffect(() => {
-    let isMounted = true;
-
     const checkNextPath = (userInfo?: IUserInfo) => {
       if (nextPath) {
         const lNextPath = nextPath.toLowerCase();
@@ -123,16 +146,27 @@ export const ConnectedWeb3: React.FC = (props) => {
         return;
       }
       const userInfo = await apiService.getAccountInfo(account);
-      if (isMounted) {
+      if (isMountedRef.current === true) {
         updateUserInfo(userInfo);
         checkNextPath(userInfo);
       }
     };
     loadUserInfo();
 
-    return () => {
-      isMounted = false;
+    const loadAuthToken = async () => {
+      try {
+        if (account) {
+          getJwtToken();
+        } else {
+          clearJwtToken();
+        }
+      } catch (error) {
+        console.warn(error);
+      }
     };
+
+    loadAuthToken();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account]);
 
@@ -144,6 +178,7 @@ export const ConnectedWeb3: React.FC = (props) => {
     initialized: state.initialized,
     walletConnectModalOpened: state.walletConnectModalOpened,
     setWalletConnectModalOpened,
+    fetchAuthToken: getJwtToken,
   };
 
   return (

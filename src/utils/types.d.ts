@@ -283,6 +283,11 @@ interface INetwork {
     erc721Factory: string;
   };
   etherscanUri: string;
+  authService: string;
+  graphQL: {
+    httpUri: string;
+    wsUri: string;
+  };
 }
 
 type NetworkId = 43113 | 43114;
@@ -483,4 +488,11 @@ interface ITradeFilter {
   membership: EMembership;
   platformEnabled: boolean;
   platforms?: EPlatform[];
+}
+
+interface IAuthToken {
+  jwt_token: string;
+  jwt_expires_in: number;
+  refresh_token: string;
+  expires_at: number;
 }

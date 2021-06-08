@@ -23,6 +23,11 @@ const networks: { [K in NetworkId]: INetwork } = {
       erc721Factory: process.env.REACT_APP_ERC721_FACTORY_TEST || "",
     },
     etherscanUri: "https://cchain.explorer.avax-test.network/",
+    authService: "http://localhost:3008/graphql",
+    graphQL: {
+      httpUri: "",
+      wsUri: "",
+    },
   },
   [networkIds.AVAXMAIN]: {
     label: "Avalanche",
@@ -31,6 +36,11 @@ const networks: { [K in NetworkId]: INetwork } = {
       erc721Factory: process.env.REACT_APP_ERC721_FACTORY_MAIN || "",
     },
     etherscanUri: "https://cchain.explorer.avax.network/",
+    authService: "http://localhost:3008/graphql",
+    graphQL: {
+      httpUri: "",
+      wsUri: "",
+    },
   },
 };
 
@@ -165,6 +175,24 @@ export const getEtherscanUri = (networkId: number): string => {
   }
 
   return networks[networkId].etherscanUri;
+};
+
+export const getAuthServiceUri = (networkId: number): string => {
+  if (!validNetworkId(networkId)) {
+    throw new Error(`Unsupported network id: '${networkId}'`);
+  }
+
+  return networks[networkId].authService;
+};
+
+export const getGraphQLInfo = (
+  networkId: number
+): { httpUri: string; wsUri: string } => {
+  if (!validNetworkId(networkId)) {
+    throw new Error(`Unsupported network id: '${networkId}'`);
+  }
+
+  return networks[networkId].graphQL;
 };
 
 const OxContractAddresses: { [key in NetworkId]: I0xContractAddresses } = {
