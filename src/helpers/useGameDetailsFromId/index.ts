@@ -1,46 +1,31 @@
-import { useIsMountedRef } from "hooks";
-import { useEffect, useState } from "react";
-import { getAPIService } from "services/api";
+import { useQuery } from "@apollo/client";
+import { queryGameById } from "utils/queries";
 import { IGame } from "utils/types";
 
-interface IState {
-  loading: boolean;
-  game?: IGame;
+interface GraphResponse {
+  games: any[];
 }
 
 export const useGameDetailsFromId = (
   id?: string
-): IState & {
+): {
+  game?: IGame;
   loadGameInfo: () => Promise<void>;
+  loading: boolean;
 } => {
-  const [state, setState] = useState<IState>({
-    loading: true,
-  });
-  const apiService = getAPIService();
-  const isMounted = useIsMountedRef();
-
-  const loadGameInfo = async (): Promise<void> => {
-    if (!id) return;
-    setState(() => ({ loading: true }));
-    try {
-      const game = await apiService.getGame(id);
-      if (isMounted.current === true)
-        setState(() => ({ game, loading: false }));
-      return;
-    } catch (error) {
-      setState(() => ({ loading: false }));
-      return;
+  const { data, error, loading, refetch } = useQuery<GraphResponse>(
+    queryGameById,
+    {
+      notifyOnNetworkStatusChange: true,
+      fetchPolicy: "cache-and-network",
+      skip: false,
+      variables: { id },
     }
+  );
+
+  const loadGameInfo = async () => {
+    await refetch();
   };
 
-  useEffect(() => {
-    if (id) {
-      loadGameInfo();
-    } else {
-      setState({ loading: false });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
-
-  return { ...state, loadGameInfo };
+  return { loading, loadGameInfo };
 };

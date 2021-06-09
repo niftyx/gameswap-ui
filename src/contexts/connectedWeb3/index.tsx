@@ -2,17 +2,13 @@ import { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
 import { ConnectWalletModal, LoadingScreen } from "components";
 import { STORAGE_KEY_CONNECTOR } from "config/constants";
-import { useGlobal } from "contexts/GlobalContext";
-import { useIsMountedRef } from "hooks";
 import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router";
-import { getAPIService } from "services/api";
 import { getAuthService } from "services/authApi";
 import { waitSeconds } from "utils";
 import { signMessage } from "utils/auth";
 import connectors from "utils/connectors";
 import { ConnectorNames } from "utils/enums";
-import { IAuthToken, IUserInfo, Maybe } from "utils/types";
+import { IAuthToken, Maybe } from "utils/types";
 export interface ConnectedWeb3Context {
   account: Maybe<string> | null;
   library: Web3Provider | undefined;
@@ -57,7 +53,6 @@ export const ConnectedWeb3: React.FC = (props) => {
     error,
     library,
   } = context;
-  const { updateUserInfo } = useGlobal();
   const [state, setState] = useState<{
     initialized: boolean;
     walletConnectModalOpened: boolean;
@@ -67,12 +62,6 @@ export const ConnectedWeb3: React.FC = (props) => {
     walletConnectModalOpened: false,
   });
 
-  const isMountedRef = useIsMountedRef();
-
-  const history = useHistory();
-  const nextPath = new URLSearchParams(history.location.search).get("next");
-
-  const apiService = getAPIService();
   const authService = getAuthService(chainId);
 
   const setInitialized = (initialized: boolean) => {
@@ -126,34 +115,6 @@ export const ConnectedWeb3: React.FC = (props) => {
   }, [context, library, active, error]);
 
   useEffect(() => {
-    const checkNextPath = (userInfo?: IUserInfo) => {
-      if (nextPath) {
-        const lNextPath = nextPath.toLowerCase();
-        const customUrl =
-          userInfo && userInfo.customUrl ? userInfo.customUrl : "";
-        if (lNextPath.includes("/users/next/")) {
-          const replacePath = customUrl
-            ? lNextPath.replace("/users/next", `/${customUrl}`)
-            : lNextPath.replace("/next/", `/${account}/`);
-          history.push(replacePath);
-        }
-      }
-    };
-
-    const loadUserInfo = async () => {
-      if (!account) {
-        updateUserInfo();
-        checkNextPath();
-        return;
-      }
-      const userInfo = await apiService.getAccountInfo(account);
-      if (isMountedRef.current === true) {
-        updateUserInfo(userInfo);
-        checkNextPath(userInfo);
-      }
-    };
-    loadUserInfo();
-
     const loadAuthToken = async () => {
       try {
         if (account) {

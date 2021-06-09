@@ -1,3 +1,111 @@
+import gql from "graphql-tag";
+
+const userFragment = gql`
+  fragment userFragment on users {
+    id
+    address
+    name
+    custom_url
+    image_url
+    header_image_url
+    bio
+    twitter_username
+    twitter_verified
+    twitch_username
+    facebook_username
+    youtube_username
+    instagram_username
+    tiktok_username
+    personal_site
+    create_time_stamp
+    update_time_stamp
+  }
+`;
+
+const collectionFragment = gql`
+  fragment collectionFragment on collections {
+    id
+    address
+    name
+    symbol
+    image_url
+    total_supply
+    total_minted
+    total_burned
+    block
+    is_private
+    is_verified
+    is_premium
+    is_featured
+    owner_id
+    description
+    create_time_stamp
+    update_time_stamp
+  }
+`;
+
+const assetHistoryFragment = gql`
+  fragment assetHistoryFragment on asset_histories {
+    id
+    tx_hash
+    asset_id
+    owner_id
+    erc20
+    erc20_amount
+    timestamp
+  }
+`;
+
+const collectionHistoryFragment = gql`
+  fragment collectionHistoryFragment on collection_histories {
+    id
+    tx_hash
+    collection_id
+    owner_id
+    timestamp
+  }
+`;
+
+const assetFragment = gql`
+  fragment assetFragment on assets {
+    id
+    name
+    version
+    image_url
+    custom_url
+    header_image_url
+    category_id
+    description
+    platform
+    is_verified
+    is_premium
+    is_featured
+    create_time_stamp
+    update_time_stamp
+    owner_id
+  }
+`;
+
+const gameFragment = gql`
+  fragment gameFragment on games {
+    id
+    name
+    version
+    image_url
+    custom_url
+    header_image_url
+    category_id
+    description
+    platform
+    is_verified
+    is_premium
+    is_featured
+    create_time_stamp
+    update_time_stamp
+    owner_id
+  }
+`;
+
 const gameFields = `
     id
     name
@@ -26,6 +134,8 @@ export const connectQuery = `
   }
 `;
 
+// games
+
 export const createGameMutation = `
   mutation ($payload: GameInput!) {
       createGame(payload: $payload) {
@@ -40,4 +150,13 @@ export const updateGameMutation = `
           ${gameFields}
       }
   }
+`;
+
+export const queryGameById = gql`
+  query($id: String!) {
+    games(where: { id: { _eq: $id } }) {
+      ...gameFragment
+    }
+  }
+  ${gameFragment}
 `;

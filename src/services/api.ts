@@ -2,10 +2,10 @@ import { RateLimit } from "async-sema";
 import axios from "axios";
 import { DEFAULT_NETWORK_ID } from "config/constants";
 import { getHasuraServerUrl, networkIds } from "config/networks";
-import _ from "lodash";
 import { BigNumber } from "packages/ethers";
 import { fetchQuery } from "utils/graphql";
 import { createGameMutation, updateGameMutation } from "utils/queries";
+import { toCamelCaseObj } from "utils/token";
 import {
   IAuthToken,
   ICollection,
@@ -127,11 +127,8 @@ export class APIService {
     ).data;
 
     if (response.data && response.data.createGame) {
-      const gameObj: any = {};
-      const createdGame = response.data.createGame;
-      Object.keys(createdGame).forEach((key) => {
-        gameObj[_.camelCase(key)] = createdGame[key];
-      });
+      const gameObj: any = toCamelCaseObj(response.data.createGame);
+
       return gameObj as IGame;
     }
     throw new Error("Something went wrong!");
@@ -159,11 +156,8 @@ export class APIService {
     ).data;
 
     if (response.data && response.data.updateGame) {
-      const gameObj: any = {};
-      const updatedGame = response.data.updateGame;
-      Object.keys(updatedGame).forEach((key) => {
-        gameObj[_.camelCase(key)] = updatedGame[key];
-      });
+      const gameObj: any = toCamelCaseObj(response.data.updateGame);
+
       return gameObj as IGame;
     }
     throw new Error("Something went wrong!");
@@ -420,10 +414,10 @@ export class APIService {
 
 const apiServices: { [key in NetworkId]: APIService } = {
   [networkIds.AVAXTEST]: new APIService(
-    getHasuraServerUrl(networkIds.AVAXTEST)
+    getHasuraServerUrl(networkIds.AVAXTEST).httpUri
   ),
   [networkIds.AVAXMAIN]: new APIService(
-    getHasuraServerUrl(networkIds.AVAXMAIN)
+    getHasuraServerUrl(networkIds.AVAXMAIN).httpUri
   ),
 };
 

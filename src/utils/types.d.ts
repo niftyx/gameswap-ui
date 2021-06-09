@@ -284,7 +284,10 @@ interface INetwork {
   };
   etherscanUri: string;
   authService: string;
-  hasuraService: string;
+  hasuraService: {
+    httpUri: string;
+    wsUri: string;
+  };
 }
 
 type NetworkId = 43113 | 43114;

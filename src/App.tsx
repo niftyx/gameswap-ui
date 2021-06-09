@@ -2,7 +2,12 @@ import { Web3Provider } from "@ethersproject/providers";
 import { ThemeProvider } from "@material-ui/styles";
 import { Web3ReactProvider } from "@web3-react/core";
 import { LoadingScreen } from "components";
-import { ConnectedWeb3, GlobalProvider, TradeProvider } from "contexts";
+import {
+  ApolloProviderWrapper,
+  ConnectedWeb3,
+  GlobalProvider,
+  TradeProvider,
+} from "contexts";
 import { useSettings } from "hooks";
 import { SnackbarProvider } from "notistack";
 import * as React from "react";
@@ -27,26 +32,28 @@ function App() {
 
   return (
     <React.Suspense fallback={<LoadingScreen />}>
-      <GlobalProvider>
-        <ThemeProvider theme={theme}>
-          <SnackbarProvider
-            anchorOrigin={{
-              vertical: "top",
-              horizontal: "right",
-            }}
-            autoHideDuration={3000}
-            maxSnack={3}
-          >
-            <Web3ReactProvider getLibrary={getLibrary}>
-              <BrowserRouter>
-                <ConnectedWeb3>
-                  <TradeProvider>{renderRoutes(routes)}</TradeProvider>
-                </ConnectedWeb3>
-              </BrowserRouter>
-            </Web3ReactProvider>
-          </SnackbarProvider>
-        </ThemeProvider>
-      </GlobalProvider>
+      <ThemeProvider theme={theme}>
+        <SnackbarProvider
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+          autoHideDuration={3000}
+          maxSnack={3}
+        >
+          <Web3ReactProvider getLibrary={getLibrary}>
+            <BrowserRouter>
+              <ConnectedWeb3>
+                <GlobalProvider>
+                  <ApolloProviderWrapper>
+                    <TradeProvider>{renderRoutes(routes)}</TradeProvider>
+                  </ApolloProviderWrapper>
+                </GlobalProvider>
+              </ConnectedWeb3>
+            </BrowserRouter>
+          </Web3ReactProvider>
+        </SnackbarProvider>
+      </ThemeProvider>
     </React.Suspense>
   );
 }

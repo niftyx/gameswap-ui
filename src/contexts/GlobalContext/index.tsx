@@ -2,10 +2,12 @@
 import axios from "axios";
 import { DEFAULT_PRICE, DEFAULT_USD, PRICE_DECIMALS } from "config/constants";
 import { knownTokens } from "config/networks";
+import { useConnectedWeb3Context } from "contexts/connectedWeb3";
 import { wrangleCollection } from "helpers";
 import { useIsMountedRef } from "hooks";
 import { parseEther } from "packages/ethers/utils";
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { useHistory } from "react-router";
 import { getAPIService } from "services/api";
 import { getLogger } from "utils/logger";
 import {
@@ -76,10 +78,43 @@ interface IProps {
 
 export const GlobalProvider = ({ children }: IProps) => {
   const [currentData, setCurrentData] = useState<IGlobalData>(defaultData);
+  const { account, networkId } = useConnectedWeb3Context();
+  const history = useHistory();
+  const nextPath = new URLSearchParams(history.location.search).get("next");
 
-  const isRefMounted = useIsMountedRef();
+  const isMountedRef = useIsMountedRef();
 
-  const apiService = getAPIService();
+  const apiService = getAPIService(networkId);
+
+  useEffect(() => {
+    const checkNextPath = (userInfo?: IUserInfo) => {
+      if (nextPath) {
+        const lNextPath = nextPath.toLowerCase();
+        const customUrl =
+          userInfo && userInfo.customUrl ? userInfo.customUrl : "";
+        if (lNextPath.includes("/users/next/")) {
+          const replacePath = customUrl
+            ? lNextPath.replace("/users/next", `/${customUrl}`)
+            : lNextPath.replace("/next/", `/${account}/`);
+          history.push(replacePath);
+        }
+      }
+    };
+
+    const loadUserInfo = async () => {
+      if (!account) {
+        updateUserInfo();
+        checkNextPath();
+        return;
+      }
+      const userInfo = await apiService.getAccountInfo(account);
+      if (isMountedRef.current === true) {
+        updateUserInfo(userInfo);
+        checkNextPath(userInfo);
+      }
+    };
+    loadUserInfo();
+  }, [account]);
 
   const fetchPrices = async (): Promise<void> => {
     try {
@@ -109,14 +144,14 @@ export const GlobalProvider = ({ children }: IProps) => {
           }
         });
       });
-      if (isRefMounted.current === true) {
+      if (isMountedRef.current === true) {
         setCurrentData((prevCurrentData) => ({
           ...prevCurrentData,
           price: tokenPrices,
         }));
       }
     } catch (error) {
-      if (isRefMounted.current === true) {
+      if (isMountedRef.current === true) {
         setCurrentData((prevCurrentData) => ({
           ...prevCurrentData,
           price: defaultTokenPrices,

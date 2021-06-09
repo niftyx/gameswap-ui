@@ -70,10 +70,10 @@ export const GameDetailsPageContent = (props: IProps) => {
       history.push("/");
       return;
     }
-    if (!gameLoading && !gameInfo) {
-      history.push("/");
-      return;
-    }
+    // if (!gameLoading && !gameInfo) {
+    //   history.push("/");
+    //   return;
+    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameId, gameInfo, gameLoading]);
 
