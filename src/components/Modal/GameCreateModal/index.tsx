@@ -69,6 +69,8 @@ export const GameCreateModal = (props: IProps) => {
   const ipfsService = getIPFSService();
   const {
     account,
+    authToken,
+    fetchAuthToken,
     library: provider,
     setWalletConnectModalOpened,
   } = useConnectedWeb3Context();
@@ -116,6 +118,9 @@ export const GameCreateModal = (props: IProps) => {
           // create a new game
           setSubmitting(true);
           try {
+            if (!authToken || authToken.expires_at < Date.now()) {
+              await fetchAuthToken();
+            }
             const payload = {
               name: values.name,
               version: values.version,
@@ -124,18 +129,13 @@ export const GameCreateModal = (props: IProps) => {
               imageUrl: values.imageUrl,
               headerImageUrl: values.headerImageUrl || "",
               platform: values.platform,
-              message: "",
               customUrl: values.customUrl,
             };
-            const signedMessage = await provider
-              .getSigner()
-              .signMessage(payload.name);
-            payload.message = signedMessage;
 
-            if (!game) {
-              await apiService.createGame(payload);
-            } else {
-              await apiService.updateGame(game.id, payload);
+            if (!game && authToken) {
+              await apiService.createGame(payload, authToken);
+            } else if (game && authToken) {
+              await apiService.updateGame(game.id, payload, authToken);
             }
 
             await loadGames();

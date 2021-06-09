@@ -24,10 +24,7 @@ const networks: { [K in NetworkId]: INetwork } = {
     },
     etherscanUri: "https://cchain.explorer.avax-test.network/",
     authService: "http://localhost:3008/graphql",
-    graphQL: {
-      httpUri: "",
-      wsUri: "",
-    },
+    hasuraService: "http://localhost:8080/v1/graphql",
   },
   [networkIds.AVAXMAIN]: {
     label: "Avalanche",
@@ -37,10 +34,7 @@ const networks: { [K in NetworkId]: INetwork } = {
     },
     etherscanUri: "https://cchain.explorer.avax.network/",
     authService: "http://localhost:3008/graphql",
-    graphQL: {
-      httpUri: "",
-      wsUri: "",
-    },
+    hasuraService: "http://localhost:8080/v1/graphql",
   },
 };
 
@@ -185,14 +179,12 @@ export const getAuthServiceUri = (networkId: number): string => {
   return networks[networkId].authService;
 };
 
-export const getGraphQLInfo = (
-  networkId: number
-): { httpUri: string; wsUri: string } => {
+export const getHasuraServerUrl = (networkId: number): string => {
   if (!validNetworkId(networkId)) {
     throw new Error(`Unsupported network id: '${networkId}'`);
   }
 
-  return networks[networkId].graphQL;
+  return networks[networkId].hasuraService;
 };
 
 const OxContractAddresses: { [key in NetworkId]: I0xContractAddresses } = {

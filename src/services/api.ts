@@ -1,11 +1,18 @@
 import { RateLimit } from "async-sema";
 import axios from "axios";
-import { API_BASE_URL } from "config/constants";
+import { DEFAULT_NETWORK_ID } from "config/constants";
+import { getHasuraServerUrl, networkIds } from "config/networks";
+import _ from "lodash";
 import { BigNumber } from "packages/ethers";
-import { IAssetItem, ICollection, IGame, IUserInfo } from "utils/types";
-
-axios.defaults.baseURL = API_BASE_URL;
-
+import { fetchQuery } from "utils/graphql";
+import { createGameMutation, updateGameMutation } from "utils/queries";
+import {
+  IAuthToken,
+  ICollection,
+  IGame,
+  IUserInfo,
+  NetworkId,
+} from "utils/types";
 interface IAssetHistoryResponseRecord {
   erc20: string;
   erc20Amount: any;
@@ -16,6 +23,7 @@ interface IAssetHistoryResponseRecord {
 }
 
 export class APIService {
+  private readonly serverEndPoint: string;
   private readonly _rateLimit: () => Promise<void>;
 
   private readonly cryptoContentPath = "/lock-content/v1/";
@@ -25,7 +33,8 @@ export class APIService {
   private readonly userPath = "/users/v1/";
   private readonly commonPath = "/common/v1/";
 
-  constructor() {
+  constructor(serverEndPoint: string) {
+    this.serverEndPoint = serverEndPoint;
     this._rateLimit = RateLimit(20);
   }
 
@@ -109,20 +118,55 @@ export class APIService {
    * Games
    * create Game
    */
-  public async createGame(payload: any): Promise<IGame> {
+  public async createGame(payload: any, authToken: IAuthToken): Promise<IGame> {
     await this._rateLimit();
-    const response = await axios.post(this.gamePath, payload);
-    return response.data;
+    const response = (
+      await fetchQuery(createGameMutation, { payload }, this.serverEndPoint, {
+        Authorization: `Bearer ${authToken.jwt_token}`,
+      })
+    ).data;
+
+    if (response.data && response.data.createGame) {
+      const gameObj: any = {};
+      const createdGame = response.data.createGame;
+      Object.keys(createdGame).forEach((key) => {
+        gameObj[_.camelCase(key)] = createdGame[key];
+      });
+      return gameObj as IGame;
+    }
+    throw new Error("Something went wrong!");
   }
 
   /**
    * Games
    * create Game
    */
-  public async updateGame(id: string, payload: any): Promise<IGame> {
+  public async updateGame(
+    id: string,
+    payload: any,
+    authToken: IAuthToken
+  ): Promise<IGame> {
     await this._rateLimit();
-    const response = await axios.post(`${this.gamePath}${id}`, payload);
-    return response.data;
+    const response = (
+      await fetchQuery(
+        updateGameMutation,
+        { id, payload },
+        this.serverEndPoint,
+        {
+          Authorization: `Bearer ${authToken.jwt_token}`,
+        }
+      )
+    ).data;
+
+    if (response.data && response.data.updateGame) {
+      const gameObj: any = {};
+      const updatedGame = response.data.updateGame;
+      Object.keys(updatedGame).forEach((key) => {
+        gameObj[_.camelCase(key)] = updatedGame[key];
+      });
+      return gameObj as IGame;
+    }
+    throw new Error("Something went wrong!");
   }
 
   /**
@@ -374,8 +418,15 @@ export class APIService {
   }
 }
 
-const apiService = new APIService();
+const apiServices: { [key in NetworkId]: APIService } = {
+  [networkIds.AVAXTEST]: new APIService(
+    getHasuraServerUrl(networkIds.AVAXTEST)
+  ),
+  [networkIds.AVAXMAIN]: new APIService(
+    getHasuraServerUrl(networkIds.AVAXMAIN)
+  ),
+};
 
-export const getAPIService = () => {
-  return apiService;
+export const getAPIService = (networkId?: number) => {
+  return apiServices[(networkId || DEFAULT_NETWORK_ID) as NetworkId];
 };

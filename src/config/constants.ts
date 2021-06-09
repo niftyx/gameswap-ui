@@ -48,8 +48,6 @@ export const RELAYER_WS_URL: { [key in NetworkId]: string } = {
   43114: process.env.REACT_APP_RELAYER_WS_URL_AVAXMAIN || "",
 };
 
-export const API_BASE_URL = process.env.REACT_APP_API || "";
-
 export const DEFAULT_NETWORK_ID = 43113;
 
 export const RELAYER_RPS = Number(process.env.REACT_APP_RELAYER_RPS);

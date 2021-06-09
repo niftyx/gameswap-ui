@@ -284,10 +284,7 @@ interface INetwork {
   };
   etherscanUri: string;
   authService: string;
-  graphQL: {
-    httpUri: string;
-    wsUri: string;
-  };
+  hasuraService: string;
 }
 
 type NetworkId = 43113 | 43114;
@@ -493,6 +490,5 @@ interface ITradeFilter {
 interface IAuthToken {
   jwt_token: string;
   jwt_expires_in: number;
-  refresh_token: string;
   expires_at: number;
 }

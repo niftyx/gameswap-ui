@@ -18,28 +18,35 @@ enum ECurrentStep {
 interface IState {
   loading: boolean;
   step: ECurrentStep;
-  message: string;
   error: string;
+  signingVisible: boolean;
 }
 
 export const GameProgressModal = (props: IProps) => {
   const context = useConnectedWeb3Context();
-  const { library: provider } = context;
+  const { authToken, fetchAuthToken, library: provider, networkId } = context;
   const { loadGames } = useGlobal();
 
   const { formValues, onClose, onSuccess, visible } = props;
   const [state, setState] = useState<IState>({
     loading: false,
     step: ECurrentStep.Signing,
-    message: "",
     error: "",
+    signingVisible: !authToken,
   });
-  const apiService = getAPIService();
+  const apiService = getAPIService(networkId);
 
   useEffect(() => {
-    if (state.step === ECurrentStep.Signing) {
+    if (state.signingVisible || Date.now() > (authToken?.expires_at || 0)) {
       signMessage();
     } else {
+      setState((prev) => ({ ...prev, step: ECurrentStep.Uploading }));
+    }
+    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    if (state.step === ECurrentStep.Uploading) {
       createGame();
     }
     // eslint-disable-next-line
@@ -52,11 +59,10 @@ export const GameProgressModal = (props: IProps) => {
     }
     setState((prev) => ({ ...prev, loading: true }));
     try {
-      const message = await provider.getSigner().signMessage(formValues.name);
+      await fetchAuthToken();
       setState((prev) => ({
         ...prev,
         loading: false,
-        message,
         step: ECurrentStep.Uploading,
         error: "",
       }));
@@ -66,15 +72,21 @@ export const GameProgressModal = (props: IProps) => {
   };
 
   const createGame = async () => {
+    if (!authToken) return;
     setState((prev) => ({ ...prev, loading: true }));
     try {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      if (authToken.expires_at < Date.now()) {
+        await fetchAuthToken();
+      }
       const { id, ...payload } = formValues;
-      const game = await apiService.createGame({
-        ...payload,
-        message: state.message,
-        headerImageUrl: formValues.headerImageUrl || "",
-      });
+      const game = await apiService.createGame(
+        {
+          ...payload,
+          headerImageUrl: formValues.headerImageUrl || "",
+        },
+        authToken
+      );
       await loadGames();
       setState((prev) => ({ ...prev, loading: false, error: "" }));
 
@@ -90,17 +102,21 @@ export const GameProgressModal = (props: IProps) => {
       onClose={onClose}
       visible={visible}
     >
-      <ProgressButton
-        approved={state.step === ECurrentStep.Uploading}
-        buttonDisabled={state.step !== ECurrentStep.Signing}
-        buttonLoadingText="Follow wallet instructions"
-        buttonTitle={state.step === ECurrentStep.Signing ? "Sign" : "Signed"}
-        description="Prepare files for minting"
-        errorText={state.step === ECurrentStep.Signing ? state.error : ""}
-        isLoading={state.step === ECurrentStep.Signing ? state.loading : false}
-        onClick={signMessage}
-        title={`Signing Message ...`}
-      />
+      {state.signingVisible && (
+        <ProgressButton
+          approved={state.step === ECurrentStep.Uploading}
+          buttonDisabled={state.step !== ECurrentStep.Signing}
+          buttonLoadingText="Follow wallet instructions"
+          buttonTitle={state.step === ECurrentStep.Signing ? "Sign" : "Signed"}
+          description="Prepare files for minting"
+          errorText={state.step === ECurrentStep.Signing ? state.error : ""}
+          isLoading={
+            state.step === ECurrentStep.Signing ? state.loading : false
+          }
+          onClick={signMessage}
+          title={`Signing Message ...`}
+        />
+      )}
       <ProgressButton
         approved={state.step === ECurrentStep.Uploading}
         buttonDisabled={state.step !== ECurrentStep.Uploading}

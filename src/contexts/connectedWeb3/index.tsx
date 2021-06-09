@@ -22,6 +22,7 @@ export interface ConnectedWeb3Context {
   walletConnectModalOpened: boolean;
   setWalletConnectModalOpened: (_: boolean) => void;
   fetchAuthToken: () => Promise<void>;
+  authToken?: IAuthToken;
 }
 
 const ConnectedWeb3Context = React.createContext<Maybe<ConnectedWeb3Context>>(
@@ -179,6 +180,7 @@ export const ConnectedWeb3: React.FC = (props) => {
     walletConnectModalOpened: state.walletConnectModalOpened,
     setWalletConnectModalOpened,
     fetchAuthToken: getJwtToken,
+    authToken: state.authToken,
   };
 
   return (

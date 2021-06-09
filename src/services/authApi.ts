@@ -2,17 +2,8 @@ import { RateLimit } from "async-sema";
 import { DEFAULT_NETWORK_ID } from "config/constants";
 import { getAuthServiceUri, networkIds } from "config/networks";
 import { fetchQuery } from "utils/graphql";
+import { connectQuery } from "utils/queries";
 import { IAuthToken, NetworkId } from "utils/types";
-
-const connectQuery = `
-  query($message: String!, $signedMessage: String!) {
-    signIn(message: $message, signedMessage: $signedMessage) {
-      jwt_token
-      jwt_expires_in
-      refresh_token
-    }
-  }
-`;
 
 class AuthApiService {
   private readonly _rateLimit: () => Promise<void>;
@@ -37,7 +28,7 @@ class AuthApiService {
     const token = response.data.data.signIn;
     return {
       ...token,
-      expires_at: Date.now() + token.jwt_expires_in,
+      expires_at: Date.now() + token.jwt_expires_in - 20 * 1000,
     } as IAuthToken;
   }
 }
