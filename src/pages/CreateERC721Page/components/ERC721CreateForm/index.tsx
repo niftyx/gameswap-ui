@@ -79,7 +79,6 @@ export interface IERC721FormValues {
   salePrice: number;
   saleToken: string;
   collectionId: string;
-  gameId: string;
 }
 
 interface IProps {
@@ -134,7 +133,6 @@ export const ERC721CreateForm = (props: IProps) => {
     salePrice: 3,
     saleToken: "",
     collectionId: "",
-    gameId: "",
   };
 
   return (
@@ -189,7 +187,6 @@ export const ERC721CreateForm = (props: IProps) => {
       validationSchema={Yup.object().shape({
         name: Yup.string().required(),
         collectionId: Yup.string().required(),
-        gameId: Yup.string().required(),
         description: Yup.string(),
         royalties: Yup.number().required(),
         attributes: Yup.array(
@@ -404,15 +401,6 @@ export const ERC721CreateForm = (props: IProps) => {
                   setFieldValue("collectionId", value);
                 }}
                 onNewCollection={props.onNewCollection}
-              />
-
-              <FormGameChoose
-                comment="Choose game"
-                gameIds={values.gameId ? [values.gameId] : []}
-                onChange={(values: string[]) => {
-                  setFieldValue("gameId", values.length > 0 ? values[0] : "");
-                }}
-                onNewGame={props.onNewGame}
               />
 
               <FormTextField

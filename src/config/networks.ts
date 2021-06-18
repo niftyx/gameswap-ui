@@ -20,7 +20,7 @@ const networks: { [K in NetworkId]: INetwork } = {
     label: "Avalanche Fuji Testnet",
     url: "https://api.avax-test.network/ext/bc/C/rpc",
     contracts: {
-      erc721Factory: process.env.REACT_APP_ERC721_FACTORY_TEST || "",
+      erc721Factory: "0x4c4FBB3098F008d7a74611B3B7B75A1046C7527E",
     },
     etherscanUri: "https://cchain.explorer.avax-test.network/",
     authService: "http://localhost:3008/graphql",
@@ -34,7 +34,7 @@ const networks: { [K in NetworkId]: INetwork } = {
     label: "Avalanche",
     url: "https://api.avax.network/ext/bc/C/rpc",
     contracts: {
-      erc721Factory: process.env.REACT_APP_ERC721_FACTORY_MAIN || "",
+      erc721Factory: "0x4c4FBB3098F008d7a74611B3B7B75A1046C7527E",
     },
     etherscanUri: "https://cchain.explorer.avax.network/",
     authService: "http://localhost:3008/graphql",

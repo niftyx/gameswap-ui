@@ -1,5 +1,6 @@
 import { useQuery } from "@apollo/client";
 import { queryGameById } from "utils/queries";
+import { toCamelCaseObj } from "utils/token";
 import { IGame } from "utils/types";
 
 interface GraphResponse {
@@ -27,5 +28,11 @@ export const useGameDetailsFromId = (
     await refetch();
   };
 
-  return { loading, loadGameInfo };
+  let game: any = undefined;
+
+  if (data && data.games.length > 0) {
+    game = toCamelCaseObj(data.games[0]);
+  }
+
+  return { loading, loadGameInfo, game };
 };

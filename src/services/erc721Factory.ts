@@ -7,8 +7,8 @@ const { Interface } = utils;
 const logger = getLogger("Services::Erc20");
 
 const factoryAbi = [
-  "function createGswap721(string memory name,string memory symbol,string memory url,bool isPrivate) public returns (address)",
-  "event CollectionCreated(address indexed tokenAddress,string name,string symbol,string url,bool isPrivate)",
+  "function createGswap721(string memory name,string memory symbol,string memory url,string memory gameId, bool isPrivate) public returns (address)",
+  "event CollectionCreated(address indexed tokenAddress,string name,string symbol,string url,string gameId,bool isPrivate)",
 ];
 
 class ERC721FactoryService {
@@ -45,12 +45,14 @@ class ERC721FactoryService {
     name: string,
     symbol: string,
     url: string,
+    gameId: string,
     isPrivate: boolean
   ): Promise<TransactionReceipt> => {
     const transactionObject = await this.contract.createGswap721(
       name,
       symbol,
       url,
+      gameId,
       isPrivate
     );
     logger.log(`CreateGswap721 transaction hash: ${transactionObject.hash}`);

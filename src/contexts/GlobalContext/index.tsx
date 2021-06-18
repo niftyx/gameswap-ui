@@ -3,7 +3,7 @@ import axios from "axios";
 import { DEFAULT_PRICE, DEFAULT_USD, PRICE_DECIMALS } from "config/constants";
 import { knownTokens } from "config/networks";
 import { useConnectedWeb3Context } from "contexts/connectedWeb3";
-import { wrangleCollection } from "helpers";
+import { useFeaturedCollections, useFeaturedGames } from "helpers";
 import { useIsMountedRef } from "hooks";
 import { parseEther } from "packages/ethers/utils";
 import React, { createContext, useContext, useEffect, useState } from "react";
@@ -76,11 +76,30 @@ interface IProps {
   children: React.ReactNode;
 }
 
+interface IGlobalStateData {
+  itemCartIds: string[];
+  inventoryCartIds: string[];
+  price: { [key in KnownToken]: IGlobalPriceData };
+  userInfo?: IUserInfo;
+}
+
 export const GlobalProvider = ({ children }: IProps) => {
-  const [currentData, setCurrentData] = useState<IGlobalData>(defaultData);
+  const [currentData, setCurrentData] = useState<IGlobalStateData>({
+    itemCartIds: [],
+    inventoryCartIds: [],
+    price: defaultTokenPrices,
+  });
   const { account, networkId } = useConnectedWeb3Context();
   const history = useHistory();
   const nextPath = new URLSearchParams(history.location.search).get("next");
+  const {
+    games: featuredGames,
+    reload: reloadFeaturedGames,
+  } = useFeaturedGames();
+  const {
+    collections: featuredCollections,
+    reload: reloadFeaturedCollections,
+  } = useFeaturedCollections();
 
   const isMountedRef = useIsMountedRef();
 
@@ -160,42 +179,10 @@ export const GlobalProvider = ({ children }: IProps) => {
     }
   };
 
-  const loadGames = async (): Promise<void> => {
-    try {
-      const gameResponse = await apiService.getGames();
-      setCurrentData((prev) => ({ ...prev, games: gameResponse.records }));
-    } catch (error) {
-      logger.error(error);
-    }
-  };
-
-  const loadCollections = async (): Promise<void> => {
-    try {
-      const collectionResponse = await apiService.getCollections();
-      setCurrentData((prev) => ({
-        ...prev,
-        collections: collectionResponse.records.map(wrangleCollection),
-      }));
-    } catch (error) {
-      logger.error(error);
-    }
-  };
-
-  const loadBasicData = async () => {
-    try {
-      await loadGames();
-      await loadCollections();
-    } catch (error) {
-      logger.error(error);
-    }
-  };
-
   useEffect(() => {
     fetchPrices();
-    loadBasicData();
     const interval = setInterval(() => {
       fetchPrices();
-      // loadBasicData();
     }, 30000);
 
     return () => {
@@ -270,7 +257,11 @@ export const GlobalProvider = ({ children }: IProps) => {
   return (
     <GlobalContext.Provider
       value={{
-        data: currentData,
+        data: {
+          ...currentData,
+          games: featuredGames,
+          collections: featuredCollections,
+        },
         updateData: handleUpdateData,
         toggleInventoryCart,
         toggleItemCart,
@@ -278,8 +269,8 @@ export const GlobalProvider = ({ children }: IProps) => {
         isInItemCart,
         clearInventoryCart,
         clearItemCart,
-        loadCollections,
-        loadGames,
+        loadCollections: reloadFeaturedCollections,
+        loadGames: reloadFeaturedGames,
         updateUserInfo,
       }}
     >

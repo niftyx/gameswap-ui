@@ -54,7 +54,7 @@ export const CollectionCreateForm = (props: IProps) => {
     uploading: false,
     symbol: "",
     isPrivate: true,
-    gameIds: [],
+    gameId: "",
   };
 
   return (
@@ -171,10 +171,9 @@ export const CollectionCreateForm = (props: IProps) => {
             />
             <FormGameChoose
               comment="Select games"
-              gameIds={values.gameIds}
-              multiple
+              gameIds={[values.gameId]}
               onChange={(values: string[]) => {
-                setFieldValue("gameIds", values);
+                setFieldValue("gameId", values[0]);
               }}
             />
             <FormSwitchField

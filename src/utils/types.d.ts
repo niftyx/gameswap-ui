@@ -414,6 +414,7 @@ interface ICollection {
   name: string;
   description?: string;
   imageUrl: string;
+  gameId: string;
   symbol: string;
   isPrivate: boolean;
   totalSupply?: BigNumber;
@@ -423,7 +424,6 @@ interface ICollection {
   isFeatured?: boolean;
   isVerified?: boolean;
   isPremium?: boolean;
-  gameIds: string[];
   games?: IGame[];
 }
 interface IBalances {
@@ -447,6 +447,7 @@ interface IUserInfo {
   instagramUsername: string;
   tiktokUsername: string;
   personalSite: string;
+
   imageUrl: string;
   headerImageUrl: string;
 }

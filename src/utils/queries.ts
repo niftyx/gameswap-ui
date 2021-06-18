@@ -38,10 +38,32 @@ const collectionFragment = gql`
     is_premium
     is_featured
     owner_id
+    game_id
     description
     create_time_stamp
     update_time_stamp
   }
+`;
+
+const collectionFields = `
+  id
+  address
+  name
+  symbol
+  image_url
+  total_supply
+  total_minted
+  total_burned
+  block
+  is_private
+  is_verified
+  is_premium
+  is_featured
+  owner_id
+  game_id
+  description
+  create_time_stamp
+  update_time_stamp
 `;
 
 const assetHistoryFragment = gql`
@@ -159,4 +181,21 @@ export const queryGameById = gql`
     }
   }
   ${gameFragment}
+`;
+
+export const queryFeaturedGames = `
+  query($offset: Int!, $limit: Int!) {
+    games(where: { is_featured: { _eq: true } }, offset: $offset, limit: $limit) {
+      ${gameFields}
+    }
+  }
+`;
+
+// collections
+export const queryFeaturedAndPublicCollections = `
+  query($offset: Int!, $limit: Int!) {
+    collections(where: {_or: {is_private: {_eq: false}, is_featured: {_eq: true}}}, offset: $offset, limit: $limit) {
+      ${collectionFields}
+    }
+  }
 `;

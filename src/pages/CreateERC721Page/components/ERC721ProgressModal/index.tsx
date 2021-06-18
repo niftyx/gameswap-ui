@@ -215,7 +215,6 @@ export const ERC721ProgressModal = (props: IProps) => {
           formValues.attributes.length - 1
         ),
         lockedData: formValues.lockedContent ? encryptedContent.lockedData : "",
-        gameId: formValues.gameId,
         contentId: state.contentId,
       };
       const tokenURI = await ipfsService.uploadData(JSON.stringify(payload));

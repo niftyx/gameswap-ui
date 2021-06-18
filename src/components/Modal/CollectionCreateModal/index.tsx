@@ -69,11 +69,11 @@ export const CollectionCreateModal = (props: IProps) => {
     image: null,
     imageUrl: "",
     name: "",
+    gameId: "",
     description: "",
     uploading: false,
     symbol: "",
     isPrivate: true,
-    gameIds: [""],
   };
 
   return (
@@ -92,13 +92,13 @@ export const CollectionCreateModal = (props: IProps) => {
               JSON.stringify({
                 imageUrl: values.imageUrl,
                 description: values.description,
-                gameIds: values.gameIds,
               })
             );
             const txResult = await factoryContract.createGswap721(
               values.name,
               values.symbol,
               collectionUrl,
+              values.gameId,
               values.isPrivate
             );
             logger.log(txResult);
@@ -210,10 +210,9 @@ export const CollectionCreateModal = (props: IProps) => {
             />
             <FormGameChoose
               comment="Select games"
-              gameIds={values.gameIds}
-              multiple
+              gameIds={[values.gameId]}
               onChange={(values: string[]) => {
-                setFieldValue("gameIds", values);
+                setFieldValue("gameId", values[0]);
               }}
             />
             <FormSwitchField

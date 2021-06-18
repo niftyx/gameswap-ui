@@ -66,13 +66,13 @@ export const CollectionProgressModal = (props: IProps) => {
         JSON.stringify({
           imageUrl: formValues.imageUrl,
           description: formValues.description,
-          gameIds: formValues.gameIds,
         })
       );
       const txResult = await factoryContract.createGswap721(
         formValues.name,
         formValues.symbol,
         collectionUrl,
+        formValues.gameId,
         formValues.isPrivate
       );
       const collectionId = factoryContract

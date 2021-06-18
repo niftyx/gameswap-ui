@@ -39,4 +39,5 @@ export const toCamelCaseObj = (obj: any) => {
       result[_.camelCase(key)] = toCamelCaseObj(obj[key]);
     }
   });
+  return result;
 };
