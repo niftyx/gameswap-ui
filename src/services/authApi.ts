@@ -17,19 +17,25 @@ class AuthApiService {
 
   async connect(message: string, signedMessage: string) {
     await this._rateLimit();
-    const response = await fetchQuery(
-      connectQuery,
-      {
-        message,
-        signedMessage,
-      },
-      this.authApiUri
-    );
-    const token = response.data.data.signIn;
-    return {
-      ...token,
-      expires_at: Date.now() + token.jwt_expires_in - 20 * 1000,
-    } as IAuthToken;
+    const response = (
+      await fetchQuery(
+        connectQuery,
+        {
+          message,
+          signedMessage,
+        },
+        this.authApiUri
+      )
+    ).data;
+    if (response && response.data && response.data.signIn) {
+      const token = response.data.signIn;
+      return {
+        ...token,
+        expires_at: Date.now() + token.jwt_expires_in - 20 * 1000,
+      } as IAuthToken;
+    } else {
+      throw new Error(response.data);
+    }
   }
 }
 

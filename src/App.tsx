@@ -17,6 +17,7 @@ import { createTheme } from "theme";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import "packages/slick-carousel/slick/slick.css";
 import "packages/slick-carousel/slick/slick-theme.css";
+import "@google/model-viewer/dist/model-viewer";
 
 import "./App.scss";
 

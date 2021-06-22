@@ -132,8 +132,10 @@ export const ERC721Preview = (props: IProps) => {
     data: {
       image,
       imageObjectURL,
+      include3DModel,
       instantSale,
       lockedContent,
+      modelObjectURL,
       name,
       putOnSale,
       salePrice,

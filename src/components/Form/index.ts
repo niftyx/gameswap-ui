@@ -12,3 +12,4 @@ export * from "./FormGameChooseItem";
 export * from "./FormSettingsAvatarUpload";
 export * from "./FormHeaderImageUpload";
 export * from "./FormGameImageUpload";
+export * from "./FormModelUpload";

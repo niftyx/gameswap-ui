@@ -174,7 +174,11 @@ export const ERC721ProgressModal = (props: IProps) => {
       }
 
       const totalFileSize =
-        formValues.image.size + (formValues.rar ? formValues.rar.size : 0);
+        formValues.image.size +
+        (formValues.rar ? formValues.rar.size : 0) +
+        (formValues.model ? formValues.model.size : 0);
+
+      let uploadedSize = 0;
 
       const imageURL = await ipfsService.uploadData(
         formValues.image,
@@ -188,19 +192,37 @@ export const ERC721ProgressModal = (props: IProps) => {
         }
       );
 
+      uploadedSize = uploadedSize + formValues.image.size;
+
       let rarURL = "";
       if (formValues.rar) {
         rarURL = await ipfsService.uploadData(formValues.rar, (progress) => {
           const currentPercent =
-            (((formValues.image ? formValues.image.size : 0) + progress) *
-              100) /
-            totalFileSize;
+            ((uploadedSize + progress) * 100) / totalFileSize;
           setState((prevState) => ({
             ...prevState,
             filesUploadPercent:
               currentPercent < 99 ? currentPercent.toFixed(0) : "99",
           }));
         });
+
+        uploadedSize = uploadedSize + formValues.rar.size;
+      }
+
+      let modelURL = "";
+      if (formValues.model) {
+        modelURL = await ipfsService.uploadData(
+          formValues.model,
+          (progress) => {
+            const currentPercent =
+              ((uploadedSize + progress) * 100) / totalFileSize;
+            setState((prevState) => ({
+              ...prevState,
+              filesUploadPercent:
+                currentPercent < 99 ? currentPercent.toFixed(0) : "99",
+            }));
+          }
+        );
       }
 
       const payload = {
@@ -216,6 +238,7 @@ export const ERC721ProgressModal = (props: IProps) => {
         ),
         lockedData: formValues.lockedContent ? encryptedContent.lockedData : "",
         contentId: state.contentId,
+        model: modelURL,
       };
       const tokenURI = await ipfsService.uploadData(JSON.stringify(payload));
       setState((prevState) => ({

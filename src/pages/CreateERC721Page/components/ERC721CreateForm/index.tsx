@@ -10,8 +10,8 @@ import clsx from "clsx";
 import {
   FormAttributesField,
   FormCollectionChoose,
-  FormGameChoose,
   FormImageUpload,
+  FormModelUpload,
   FormSwitchField,
   FormTextField,
 } from "components";
@@ -62,6 +62,19 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 6,
     marginTop: theme.spacing(5),
   },
+  modelWrapper: {
+    backgroundColor: theme.colors.background.preview,
+    marginTop: theme.spacing(1),
+    borderRadius: 16,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 24,
+    "& model-viewer": {
+      width: 400,
+      height: 200,
+    },
+  },
 }));
 
 export interface IERC721FormValues {
@@ -70,8 +83,8 @@ export interface IERC721FormValues {
   royalties: number;
   attributes: Array<IAssetAttribute>;
   image: File | null;
-  rar: File | null;
   imageObjectURL?: string;
+  rar: File | null;
   putOnSale: boolean;
   unlockOncePurchased: boolean;
   lockedContent: string;
@@ -79,6 +92,9 @@ export interface IERC721FormValues {
   salePrice: number;
   saleToken: string;
   collectionId: string;
+  include3DModel: boolean;
+  model: File | null;
+  modelObjectURL?: string;
 }
 
 interface IProps {
@@ -133,6 +149,9 @@ export const ERC721CreateForm = (props: IProps) => {
     salePrice: 3,
     saleToken: "",
     collectionId: "",
+    include3DModel: false,
+    model: null,
+    modelObjectURL: "",
   };
 
   return (
@@ -236,7 +255,7 @@ export const ERC721CreateForm = (props: IProps) => {
                     }
                   },
                   placeholder:
-                    "JPG, PNG, GIF, WEBP, MP4 or MP3. Max size 30mb.",
+                    "JPG, PNG, GIF, WEBP, MP4, or MP3. Max size 30mb.",
                   value: { file: values.image, fileURL: values.imageObjectURL },
                 }}
                 helperText={touched.image && errors.image}
@@ -467,6 +486,64 @@ export const ERC721CreateForm = (props: IProps) => {
                 }}
                 optional
               />
+              <FormSwitchField
+                FormControlProps={{ fullWidth: true }}
+                InputLabelProps={{
+                  htmlFor: "include3DModel",
+                  shrink: true,
+                }}
+                InputProps={{
+                  id: "include3DModel",
+                  name: "include3DModel",
+                  onBlur: handleBlur,
+                  onChange: handleChange,
+                  checked: values.include3DModel,
+                }}
+                label="Include 3D Model"
+                subLabel="You can upload glb file here"
+              />
+              {values.include3DModel && values.modelObjectURL && (
+                <div className={classes.modelWrapper}>
+                  {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+                  {/** @ts-ignore */}
+                  <model-viewer camera-controls src={values.modelObjectURL} />
+                </div>
+              )}
+              {values.include3DModel && (
+                <FormModelUpload
+                  FormControlProps={{ fullWidth: true }}
+                  FormHelperTextProps={{
+                    error: Boolean(touched.model && errors.model),
+                  }}
+                  InputLabelProps={{ shrink: true }}
+                  InputProps={{
+                    id: "model",
+                    name: "model",
+                    onBlur: handleBlur,
+                    onChange: (file: File | null) => {
+                      setFieldValue("model", file);
+                      if (values.modelObjectURL) {
+                        URL.revokeObjectURL(values.modelObjectURL);
+                      }
+                      if (file) {
+                        setFieldValue(
+                          "modelObjectURL",
+                          URL.createObjectURL(file)
+                        );
+                      } else {
+                        setFieldValue("modelObjectURL", "");
+                      }
+                    },
+                    placeholder: "*.glb model file",
+                    value: {
+                      file: values.model,
+                      fileURL: values.modelObjectURL,
+                    },
+                  }}
+                  helperText={touched.model && errors.model}
+                  label="Upload 3D Object file"
+                />
+              )}
               <Button
                 className={clsx(classes.button)}
                 color="primary"

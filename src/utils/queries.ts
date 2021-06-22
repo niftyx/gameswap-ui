@@ -194,7 +194,7 @@ export const queryFeaturedGames = `
 // collections
 export const queryFeaturedAndPublicCollections = `
   query($offset: Int!, $limit: Int!) {
-    collections(where: {_or: {is_private: {_eq: false}, is_featured: {_eq: true}}}, offset: $offset, limit: $limit) {
+    collections(where: {_or: [{is_private: {_eq: false}},{is_featured: {_eq: true}} ]}, offset: $offset, limit: $limit) {
       ${collectionFields}
     }
   }
