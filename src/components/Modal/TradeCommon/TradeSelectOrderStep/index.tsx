@@ -68,9 +68,9 @@ export const TradeSelectOrderStep = (props: IProps) => {
   if (!asset.prices) return null;
 
   const isMine =
-    asset.owner &&
+    asset.ownerId &&
     account &&
-    asset.owner.toLowerCase() === account.toLowerCase();
+    asset.ownerId.toLowerCase() === account.toLowerCase();
 
   return (
     <div className={clsx(classes.root, props.className)}>

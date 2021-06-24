@@ -1,19 +1,24 @@
-import { INVENTORY_PAGE_ASSET_COUNT } from "config/constants";
+import {
+  DEFAULT_NETWORK_ID,
+  INVENTORY_PAGE_ASSET_COUNT,
+} from "config/constants";
+import { getHasuraServerUrl } from "config/networks";
+import { useConnectedWeb3Context } from "contexts";
 import { useIsMountedRef } from "hooks";
 import { BigNumber } from "packages/ethers";
 import { useEffect, useState } from "react";
-import { getAPIService } from "services/api";
 import { IGraphInventoryAsset } from "types";
+import { fetchQuery } from "utils/graphql";
 import { getLogger } from "utils/logger";
+import { queryAssetsByCollectionId } from "utils/queries";
+import { toCamelCaseObj } from "utils/token";
 
 const logger = getLogger("useInventoryAssets:");
 
 const wrangleAsset = (e: any) => {
   return {
     ...e,
-    assetId: BigNumber.from(e.assetId.hex),
-    collectionId: e.collection.id,
-    owner: e.currentOwner.id,
+    assetId: BigNumber.from(e.assetId),
   } as IGraphInventoryAsset;
 };
 interface IState {
@@ -36,26 +41,38 @@ export const useAssetsFromCollectionId = (
     assets: [],
     loading: false,
   });
-
-  const apiService = getAPIService();
+  const { networkId } = useConnectedWeb3Context();
+  const hasura = getHasuraServerUrl(networkId || DEFAULT_NETWORK_ID);
 
   const fetchData = async (perPage: number, page: number, id: string) => {
     try {
       setState((prevState) => ({ ...prevState, loading: true }));
 
-      const info = await apiService.getAssetsOfCollection(id, perPage, page);
+      const response = (
+        await fetchQuery(
+          queryAssetsByCollectionId,
+          { offset: perPage * (page - 1), limit: perPage + 1, id },
+          hasura.httpUri
+        )
+      ).data;
+
       if (isRefMounted.current === false) return;
-      if (info)
+      if (response.data && response.data.assets) {
+        const hasMore = response.data.assets.length === perPage + 1;
+        const records = response.data.assets
+          .map((e: any) => toCamelCaseObj(e))
+          .slice(0, perPage);
+
         setState((prevState) => ({
           ...prevState,
-          hasMore: info.records.length === info.perPage,
+          hasMore,
           assets: [
             ...prevState.assets,
-            ...info.records.map((e) => wrangleAsset(e as any)),
+            ...records.map((e: any) => wrangleAsset(e as any)),
           ],
           loading: false,
         }));
-      else setState((prevState) => ({ ...prevState, loading: false }));
+      } else setState((prevState) => ({ ...prevState, loading: false }));
     } catch (error) {
       logger.error("fetchData:", error);
       setState((prevState) => ({ ...prevState, loading: false }));

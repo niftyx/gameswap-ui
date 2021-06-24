@@ -172,13 +172,14 @@ interface ITokenAmount {
 interface IAssetItem {
   id: string;
   collectionId: string;
-  tokenId: BigNumber;
-  tokenURL: string;
+  assetId: BigNumber;
+  assetUrl: string;
   name: string;
   description?: string;
   image: string;
   imageType: EFileType;
   rar?: string;
+  model?: string;
   createTimeStamp: number;
   royalties?: number;
   attributes?: IAssetAttribute[];
@@ -188,7 +189,7 @@ interface IAssetItem {
   maxOrder?: ISignedOrder;
   orders?: ISignedOrder[];
   bids?: ISignedOrder[];
-  owner: string;
+  ownerId: string;
   contentId?: string;
   gameId?: string;
   lockedData?: string;
@@ -384,6 +385,7 @@ interface IIpfsMainData {
   imageType: EFileType;
   name: string;
   rar?: string;
+  model?: string;
   royalties: number;
 }
 

@@ -82,7 +82,7 @@ export const InfoSectionTab = (props: IProps) => {
   const collection = collections.find((c) => c.id === data.collectionId);
 
   const showUnlock =
-    account?.toLowerCase() === data.owner.toLowerCase() && !!data.lockedData;
+    account?.toLowerCase() === data.ownerId.toLowerCase() && !!data.lockedData;
 
   return (
     <div className={classes.root}>
@@ -105,8 +105,8 @@ export const InfoSectionTab = (props: IProps) => {
         </SecondaryButton>
       )}
       <OwnerAvatarRowItem
-        address={data.owner}
-        href={`/users/${data.owner}`}
+        address={data.ownerId}
+        href={`/users/${data.ownerId}`}
         roleName="Owner"
       />
       {creator && (
@@ -189,11 +189,11 @@ export const InfoSectionTab = (props: IProps) => {
             className={classes.propertyValue}
             href={`${etherUri}tokens/${
               data.collectionId
-            }/instance/${data.tokenId.toString()}/token-transfers`}
+            }/instance/${data.assetId.toString()}/token-transfers`}
             rel="noreferrer"
             target="_blank"
           >
-            {data.tokenId.toString()}
+            {data.assetId.toString()}
           </a>
         </div>
         <div className={classes.propertyRow}>

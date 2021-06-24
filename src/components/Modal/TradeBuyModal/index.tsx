@@ -32,9 +32,9 @@ export const TradeBuyModal = (props: IProps) => {
   const { account } = useConnectedWeb3Context();
   const isMine =
     asset &&
-    asset.owner &&
+    asset.ownerId &&
     account &&
-    asset.owner.toLowerCase() === account.toLowerCase();
+    asset.ownerId.toLowerCase() === account.toLowerCase();
   const [state, setState] = useState<IState>({
     step: isMine ? ETradeStep.CancelOrder : ETradeStep.BuyGetApproveInfo,
     selectedOrder: asset && asset.orders ? asset.orders[0] : null,

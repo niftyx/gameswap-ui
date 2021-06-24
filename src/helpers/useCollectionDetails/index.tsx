@@ -1,8 +1,8 @@
+import { useQuery } from "@apollo/react-hooks";
 import { BigNumber } from "@ethersproject/bignumber";
-import { useIsMountedRef } from "hooks";
-import { useEffect, useState } from "react";
-import { getAPIService } from "services/api";
 import { getLogger } from "utils/logger";
+import { queryCollectionById } from "utils/queries";
+import { toCamelCaseObj } from "utils/token";
 import { ICollection } from "utils/types";
 
 const logger = getLogger("useCollectionDetails::");
@@ -10,10 +10,14 @@ const logger = getLogger("useCollectionDetails::");
 export const wrangleCollection = (res: any): ICollection =>
   ({
     ...res,
-    totalBurned: BigNumber.from(res.totalBurned.hex),
-    totalMinted: BigNumber.from(res.totalMinted.hex),
-    totalSupply: BigNumber.from(res.totalSupply.hex),
+    totalBurned: BigNumber.from(res.totalBurned),
+    totalMinted: BigNumber.from(res.totalMinted),
+    totalSupply: BigNumber.from(res.totalSupply),
   } as ICollection);
+
+interface GraphResponse {
+  collections: any[];
+}
 
 interface IState {
   loading: boolean;
@@ -25,35 +29,26 @@ export const useCollectionDetails = (
 ): IState & {
   load: () => Promise<void>;
 } => {
-  const [state, setState] = useState<IState>({
-    loading: true,
-  });
-
-  const isRefMounted = useIsMountedRef();
-  const apiService = getAPIService();
+  const { data, error, loading, refetch } = useQuery<GraphResponse>(
+    queryCollectionById,
+    {
+      notifyOnNetworkStatusChange: true,
+      fetchPolicy: "cache-and-network",
+      skip: false,
+      variables: { id },
+    }
+  );
 
   const loadCollectionDetails = async () => {
-    if (!id) {
-      setState(() => ({ loading: false }));
-      return;
-    }
-    setState((prev) => ({ ...prev, loading: true }));
-    try {
-      const collection = await apiService.getCollection(id);
-      if (isRefMounted.current === true)
-        setState(() => ({
-          loading: false,
-          collection: wrangleCollection(collection),
-        }));
-    } catch (error) {
-      if (isRefMounted.current === true) setState(() => ({ loading: false }));
-    }
+    if (refetch) await refetch();
   };
 
-  useEffect(() => {
-    loadCollectionDetails();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
-
-  return { ...state, load: loadCollectionDetails };
+  return {
+    loading,
+    load: loadCollectionDetails,
+    collection:
+      data && data.collections.length > 0
+        ? wrangleCollection(toCamelCaseObj(data.collections[0]))
+        : undefined,
+  };
 };

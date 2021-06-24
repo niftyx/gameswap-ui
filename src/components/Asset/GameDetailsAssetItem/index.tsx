@@ -208,7 +208,7 @@ export const GameDetailsAssetItem = (props: IProps) => {
           {/* <div className={classes.heart}>
             <HeartIcon />
           </div> */}
-          {account?.toLowerCase() !== data.owner && (
+          {account?.toLowerCase() !== data.ownerId && (
             <PlaceBidButton
               className="game-details-place-bid"
               onClick={onPlaceBid}

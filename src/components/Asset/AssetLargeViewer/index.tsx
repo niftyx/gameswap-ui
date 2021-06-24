@@ -38,6 +38,13 @@ const useStyles = makeStyles((theme) => ({
       height: "50%",
     },
   },
+  modelWrapper: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    height: "100%",
+    "& model-viewer": { width: "100%", height: "100%" },
+  },
 }));
 
 interface IProps {
@@ -46,11 +53,12 @@ interface IProps {
   className?: string;
   onLoad?: () => void;
   preview?: boolean;
+  model: string;
 }
 
-export const AssetLargePhoto = (props: IProps) => {
+export const AssetLargeViewer = (props: IProps) => {
   const classes = useStyles();
-  const { preview = false } = props;
+  const { model, preview = false } = props;
   const renderContent = () => {
     switch (props.type) {
       case EFileType.Image:
@@ -115,8 +123,18 @@ export const AssetLargePhoto = (props: IProps) => {
 
   return (
     <div className={clsx(props.className, classes.root)}>
-      {renderContent()}
-      {renderIcon()}
+      {model ? (
+        <div className={classes.modelWrapper}>
+          {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+          {/** @ts-ignore */}
+          <model-viewer camera-controls src={model} />
+        </div>
+      ) : (
+        <>
+          {renderContent()}
+          {renderIcon()}
+        </>
+      )}
     </div>
   );
 };

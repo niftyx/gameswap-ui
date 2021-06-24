@@ -45,7 +45,6 @@ export const useFeaturedCollections = () => {
             hasura.httpUri
           )
         ).data;
-        logger.log(response);
         if (response.data && response.data.collections) {
           collections.push(
             ...response.data.collections.map((e: any) =>

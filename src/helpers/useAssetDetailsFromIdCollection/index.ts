@@ -62,9 +62,9 @@ export const useAssetDetailsFromIdCollection = (
   useEffect(() => {
     let isMounted = true;
     const loadAssetDetails = async () => {
-      if (!state.asset || !state.asset.tokenURL) return;
+      if (!state.asset || !state.asset.assetUrl) return;
       try {
-        const details = (await getIPFSService().getData(state.asset.tokenURL))
+        const details = (await getIPFSService().getData(state.asset.assetUrl))
           .data;
         if (isMounted)
           setState((prevState) => ({
@@ -84,7 +84,7 @@ export const useAssetDetailsFromIdCollection = (
     };
     if (
       state.asset &&
-      state.asset.tokenId.eq(tokenId) &&
+      state.asset.assetId.eq(tokenId) &&
       state.asset.collectionId === collectionId &&
       !state.asset.name
     ) {

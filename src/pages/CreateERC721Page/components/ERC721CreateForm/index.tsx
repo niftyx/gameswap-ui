@@ -71,8 +71,16 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     padding: 24,
     "& model-viewer": {
-      width: 400,
-      height: 200,
+      width: 500,
+      height: 300,
+      [theme.breakpoints.down("sm")]: {
+        width: 400,
+        height: 200,
+      },
+      [theme.breakpoints.down("xs")]: {
+        width: 300,
+        height: 150,
+      },
     },
   },
 }));

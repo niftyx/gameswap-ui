@@ -59,7 +59,7 @@ export const TradeSellAssetStep = (props: IProps) => {
       !account ||
       !networkId ||
       !asset.price ||
-      !asset.tokenId ||
+      !asset.assetId ||
       !context.library
     )
       return;
@@ -69,10 +69,11 @@ export const TradeSellAssetStep = (props: IProps) => {
       loading: true,
     }));
     try {
+      logger.log(asset.assetId.toString(), asset.price.amount.toString());
       const signedOrder = await buildSellCollectibleOrder(
         {
           erc721: erc721.address,
-          tokenId: EthersBigNumberTo0xBigNumber(asset.tokenId),
+          tokenId: EthersBigNumberTo0xBigNumber(asset.assetId),
           account: context.account || "",
           amount: new BigNumber(1),
           exchangeAddress: get0xContractAddresses(networkId).exchange,
@@ -82,6 +83,7 @@ export const TradeSellAssetStep = (props: IProps) => {
         networkId as NetworkId,
         context.library.provider
       );
+      logger.log(signedOrder);
       await submitCollectibleOrder(signedOrder, networkId as NetworkId);
 
       logger.log("submitResult::Success");

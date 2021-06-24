@@ -129,7 +129,7 @@ export const InfoContainer = (props: IProps) => {
   const { data } = props;
   const { asks, bids, loading: ordersLoading } = useAssetOrders(
     data.collectionId,
-    EthersBigNumberTo0xBigNumber(data.tokenId)
+    EthersBigNumberTo0xBigNumber(data.assetId)
   );
   const [state, setState] = useState<IState>({
     unlocking: false,
@@ -182,7 +182,7 @@ export const InfoContainer = (props: IProps) => {
     : null;
 
   const isInSale = !!maxOrder || orders.length > 0;
-  const isMine = data.owner?.toLowerCase() === account?.toLowerCase();
+  const isMine = data.ownerId?.toLowerCase() === account?.toLowerCase();
 
   const highestAskUsd =
     highestAskToken && highestAsk

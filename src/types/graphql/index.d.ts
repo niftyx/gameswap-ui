@@ -5,14 +5,16 @@ export interface IGraphInventoryAsset {
   id: string;
   collectionId: string;
   assetId: BigNumber;
-  assetURL: string;
+  assetUrl: string;
   createTimeStamp: number;
   updateTimeStamp: number;
   isInSale?: boolean;
   maxOrder?: ISignedOrder;
   orders?: ISignedOrder[];
   bids?: ISignedOrder[];
-  owner: string;
+  ownerId: string;
+  contentId: string;
+  creatorId: string;
 }
 
 export interface IGraphAccount {

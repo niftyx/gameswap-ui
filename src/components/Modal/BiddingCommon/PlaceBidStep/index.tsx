@@ -67,7 +67,7 @@ export const PlaceBidStep = (props: IProps) => {
           account: context.account || "",
 
           erc721: asset.collectionId,
-          tokenId: EthersBigNumberTo0xBigNumber(asset.tokenId),
+          tokenId: EthersBigNumberTo0xBigNumber(asset.assetId),
           amount: new BigNumber(1),
 
           exchangeAddress: get0xContractAddresses(networkId).exchange,

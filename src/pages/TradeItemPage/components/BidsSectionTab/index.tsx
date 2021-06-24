@@ -48,7 +48,7 @@ export const BidsSectionTab = (props: IProps) => {
   const { data } = props;
   const { bids, hasMore, loadBids, loading: ordersLoading } = useAssetBids(
     data.collectionId,
-    EthersBigNumberTo0xBigNumber(data.tokenId)
+    EthersBigNumberTo0xBigNumber(data.assetId)
   );
 
   const onCancel = (order: ISignedOrder) => {

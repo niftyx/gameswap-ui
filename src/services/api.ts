@@ -294,28 +294,6 @@ export class APIService {
 
   /**
    * Assets
-   * get assets of user
-   */
-  public async getAssetsOfCollection(
-    collectionId: string,
-    perPage?: number,
-    page?: number
-  ) {
-    await this._rateLimit();
-    const response = await axios.get(
-      `${this.assetPath}collection/${collectionId}?perPage=${
-        perPage || 100
-      }&page=${page || 1}`
-    );
-    return response.data as {
-      page: number;
-      perPage: number;
-      records: Record<string, unknown>[];
-    };
-  }
-
-  /**
-   * Assets
    * get assets' creators
    */
   public async getAssetsOfCreatedUser(

@@ -1,19 +1,24 @@
-import { INVENTORY_PAGE_ASSET_COUNT } from "config/constants";
+import {
+  DEFAULT_NETWORK_ID,
+  INVENTORY_PAGE_ASSET_COUNT,
+} from "config/constants";
+import { getHasuraServerUrl } from "config/networks";
+import { useConnectedWeb3Context } from "contexts";
 import { useIsMountedRef } from "hooks";
 import { BigNumber } from "packages/ethers";
 import { useEffect, useState } from "react";
-import { getAPIService } from "services/api";
 import { IGraphInventoryAsset } from "types";
+import { fetchQuery } from "utils/graphql";
 import { getLogger } from "utils/logger";
+import { queryAssetsByGameId } from "utils/queries";
+import { toCamelCaseObj } from "utils/token";
 
 const logger = getLogger("useInventoryAssets:");
 
 const wrangleAsset = (e: any) => {
   return {
     ...e,
-    assetId: BigNumber.from(e.assetId.hex),
-    collectionId: e.collection.id,
-    owner: e.currentOwner.id,
+    assetId: BigNumber.from(e.assetId),
   } as IGraphInventoryAsset;
 };
 interface IState {
@@ -36,8 +41,8 @@ export const useAssetsFromGameId = (
     assets: [],
     loading: true,
   });
-
-  const apiService = getAPIService();
+  const { networkId } = useConnectedWeb3Context();
+  const hasura = getHasuraServerUrl(networkId || DEFAULT_NETWORK_ID);
 
   const fetchData = async (variables: {
     perPage: number;
@@ -45,25 +50,33 @@ export const useAssetsFromGameId = (
     id: string;
   }) => {
     try {
+      const { id, page, perPage } = variables;
       setState((prevState) => ({ ...prevState, loading: true }));
 
-      const info = await apiService.getAssetsRelatedToGame(
-        variables.id,
-        variables.perPage,
-        variables.page
-      );
+      const response: any = (
+        await fetchQuery(
+          queryAssetsByGameId,
+          { offset: (page - 1) * perPage, limit: perPage + 1, id },
+          hasura.httpUri
+        )
+      ).data;
+      logger.log("===hhh===", response);
       if (isRefMounted.current === false) return;
-      if (info)
+      if (response.data && response.data.assets) {
+        const hasMore = response.data.assets.length === perPage + 1;
+        const records = response.data.assets
+          .slice(0, perPage)
+          .map((e: any) => toCamelCaseObj(e))
+          .map((e: any) => wrangleAsset(e));
         setState((prevState) => ({
           ...prevState,
-          hasMore: info.records.length === info.perPage,
-          assets: [
-            ...prevState.assets,
-            ...info.records.map((e) => wrangleAsset(e as any)),
-          ],
+          hasMore,
+          assets: [...prevState.assets, ...records],
           loading: false,
         }));
-      else setState((prevState) => ({ ...prevState, loading: false }));
+      } else {
+        setState((prevState) => ({ ...prevState, loading: false }));
+      }
     } catch (error) {
       logger.error("fetchData:", error);
       setState((prevState) => ({ ...prevState, loading: false }));

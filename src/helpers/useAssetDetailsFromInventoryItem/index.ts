@@ -27,7 +27,7 @@ export const useAssetDetailsFromInventoryItem = (
     const loadAssetDetails = async () => {
       try {
         const details: IIpfsMainData = (
-          await getIPFSService().getData(data.assetURL)
+          await getIPFSService().getData(data.assetUrl)
         ).data;
 
         if (isMounted)
@@ -36,14 +36,14 @@ export const useAssetDetailsFromInventoryItem = (
             asset: {
               id: data.id,
               collectionId: data.collectionId,
-              tokenId: data.assetId,
-              tokenURL: data.assetURL,
+              assetId: data.assetId,
+              assetUrl: data.assetUrl,
               createTimeStamp: data.createTimeStamp,
               ...details,
               isInSale: data.isInSale,
               orders: data.orders,
               maxOrder: data.maxOrder,
-              owner: data.owner,
+              ownerId: data.ownerId,
             },
             loaded: true,
           }));

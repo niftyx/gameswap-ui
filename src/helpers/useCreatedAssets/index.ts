@@ -8,12 +8,10 @@ import { getLogger } from "utils/logger";
 
 const logger = getLogger("useInventoryAssets:");
 
-const wrangleAsset = (e: any) => {
+export const wrangleAsset = (e: any) => {
   return {
     ...e,
-    assetId: BigNumber.from(e.assetId.hex),
-    collectionId: e.collection.id,
-    owner: e.currentOwner.id,
+    assetId: BigNumber.from(e.assetId),
   } as IGraphInventoryAsset;
 };
 interface IOptions {

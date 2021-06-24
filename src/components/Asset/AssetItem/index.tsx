@@ -172,7 +172,7 @@ export const AssetItem = (props: IProps) => {
     !bidsLoading &&
     assetDetails &&
     !loading &&
-    assetDetails.tokenId.eq(data.id) &&
+    assetDetails.assetId.eq(data.id) &&
     assetDetails.collectionId === data.collectionId;
   const responsive = { xl: 2, lg: 2, md: 4, xs: 6 };
 

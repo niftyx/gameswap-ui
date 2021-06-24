@@ -91,21 +91,27 @@ const collectionHistoryFragment = gql`
 const assetFragment = gql`
   fragment assetFragment on assets {
     id
-    name
-    version
-    image_url
-    custom_url
-    header_image_url
-    category_id
-    description
-    platform
-    is_verified
-    is_premium
-    is_featured
+    asset_id
+    asset_url
+    collection_id
+    content_id
     create_time_stamp
     update_time_stamp
     owner_id
+    creator_id
   }
+`;
+
+const assetFields = `
+    id
+    asset_id
+    asset_url
+    collection_id
+    content_id
+    create_time_stamp
+    update_time_stamp
+    owner_id
+    creator_id
 `;
 
 const gameFragment = gql`
@@ -196,6 +202,57 @@ export const queryFeaturedAndPublicCollections = `
   query($offset: Int!, $limit: Int!) {
     collections(where: {_or: [{is_private: {_eq: false}},{is_featured: {_eq: true}} ]}, offset: $offset, limit: $limit) {
       ${collectionFields}
+    }
+  }
+`;
+
+export const queryCollectionsByGameId = gql`
+  query($id: String!, $offset: Int!, $limit: Int!) {
+    collections(
+      where: { game_id: { _eq: $id } }
+      offset: $offset
+      limit: $limit
+    ) {
+      ...collectionFragment
+    }
+  }
+  ${collectionFragment}
+`;
+
+export const queryCollectionById = gql`
+  query($id: String!) {
+    collections(where: { id: { _eq: $id } }) {
+      ...collectionFragment
+    }
+  }
+  ${collectionFragment}
+`;
+
+// assets
+export const queryAssetsByCollectionId = `
+  query($id: String!, $offset: Int!, $limit: Int!) {
+    assets(where: {collection_id: {_eq: $id}}, order_by: {update_time_stamp: desc}, limit: $limit, offset: $offset) {
+      ${assetFields}
+    }
+  }
+`;
+
+export const queryAssetById = gql`
+  query($id: String!) {
+    assets(where: {id: {_eq: $id}}) {
+      ${assetFields}
+    }
+  }
+`;
+
+export const queryAssetsByGameId = `
+  query($id: String!, $offset: Int!, $limit: Int!) {
+    assets(
+      where: { collection: { game_id: { _eq: $id } } }
+      offset: $offset
+      limit: $limit
+    ) {
+      ${assetFields}
     }
   }
 `;

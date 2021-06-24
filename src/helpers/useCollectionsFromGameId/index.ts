@@ -1,6 +1,7 @@
-import { useIsMountedRef } from "hooks";
-import { useEffect, useState } from "react";
-import { getAPIService } from "services/api";
+import { useQuery } from "@apollo/react-hooks";
+import { wrangleCollection } from "helpers/useCollectionDetails";
+import { queryCollectionsByGameId } from "utils/queries";
+import { toCamelCaseObj } from "utils/token";
 import { ICollection } from "utils/types";
 
 interface IState {
@@ -8,45 +9,37 @@ interface IState {
   collections: ICollection[];
 }
 
+interface GraphResponse {
+  collections: any[];
+}
+
 export const useCollectionsFromGameId = (
-  id?: string
+  id: string
 ): IState & {
-  loadCollectionsRelatedGame: () => Promise<ICollection[]>;
+  loadCollectionsRelatedGame: () => Promise<void>;
 } => {
-  const [state, setState] = useState<IState>({
-    loading: true,
-    collections: [],
-  });
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const apiService = getAPIService();
-  const isMounted = useIsMountedRef();
-
-  const loadCollectionsRelatedGame = async (): Promise<ICollection[]> => {
-    if (!id) return [];
-    setState(() => ({ loading: true, collections: [] }));
-    try {
-      const response = await apiService.getCollectionsRelatedToGame(id);
-      if (isMounted.current === true)
-        setState(() => ({
-          collections: response.records,
-          loading: false,
-        }));
-
-      return response.records;
-    } catch (error) {
-      setState(() => ({ loading: false, collections: [] }));
-      return [];
+  const { data, error, loading, refetch } = useQuery<GraphResponse>(
+    queryCollectionsByGameId,
+    {
+      notifyOnNetworkStatusChange: true,
+      fetchPolicy: "cache-and-network",
+      skip: false,
+      variables: { id, offset: 0, limit: 12 },
     }
+  );
+
+  const loadCollectionsRelatedGame = async () => {
+    if (refetch) await refetch();
   };
 
-  useEffect(() => {
-    if (id) {
-      loadCollectionsRelatedGame();
-    } else {
-      setState({ loading: false, collections: [] });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
-
-  return { ...state, loadCollectionsRelatedGame };
+  return {
+    loading,
+    collections:
+      data && data.collections
+        ? data.collections
+            .map((e: any) => toCamelCaseObj(e))
+            .map((e: any) => wrangleCollection(e))
+        : [],
+    loadCollectionsRelatedGame,
+  };
 };
