@@ -3,12 +3,11 @@ import axios from "axios";
 import { DEFAULT_PRICE, DEFAULT_USD, PRICE_DECIMALS } from "config/constants";
 import { knownTokens } from "config/networks";
 import { useConnectedWeb3Context } from "contexts/connectedWeb3";
-import { useFeaturedCollections, useFeaturedGames } from "helpers";
+import { useFeaturedCollections, useFeaturedGames, useUserInfo } from "helpers";
 import { useIsMountedRef } from "hooks";
 import { parseEther } from "packages/ethers/utils";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router";
-import { getAPIService } from "services/api";
 import { getLogger } from "utils/logger";
 import {
   IGlobalData,
@@ -100,10 +99,9 @@ export const GlobalProvider = ({ children }: IProps) => {
     collections: featuredCollections,
     reload: reloadFeaturedCollections,
   } = useFeaturedCollections();
+  const { userInfo } = useUserInfo(account || "");
 
   const isMountedRef = useIsMountedRef();
-
-  const apiService = getAPIService(networkId);
 
   useEffect(() => {
     const checkNextPath = (userInfo?: IUserInfo) => {
@@ -119,21 +117,18 @@ export const GlobalProvider = ({ children }: IProps) => {
         }
       }
     };
-
-    const loadUserInfo = async () => {
-      if (!account) {
-        updateUserInfo();
-        checkNextPath();
-        return;
-      }
-      const userInfo = await apiService.getAccountInfo(account);
-      if (isMountedRef.current === true) {
-        updateUserInfo(userInfo);
-        checkNextPath(userInfo);
-      }
-    };
-    loadUserInfo();
-  }, [account]);
+    if (!account) {
+      updateUserInfo();
+      checkNextPath();
+    } else if (
+      userInfo &&
+      userInfo.id === account.toLowerCase() &&
+      !currentData.userInfo
+    ) {
+      updateUserInfo(userInfo);
+      checkNextPath(userInfo);
+    }
+  }, [account, userInfo]);
 
   const fetchPrices = async (): Promise<void> => {
     try {

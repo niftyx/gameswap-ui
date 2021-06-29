@@ -315,38 +315,6 @@ export class APIService {
   }
 
   /**
-   * Assets
-   * get history of asset
-   */
-  public async getAssetHistory(
-    assetId: string,
-    perPage?: number,
-    page?: number
-  ) {
-    await this._rateLimit();
-    const response = await axios.get(
-      `${this.assetPath}${assetId}/history?perPage=${perPage || 100}&page=${
-        page || 1
-      }`
-    );
-    return response.data as {
-      page: number;
-      perPage: number;
-      records: IAssetHistoryResponseRecord[];
-    };
-  }
-
-  /**
-   * Accounts
-   * get account info
-   */
-  public async getAccountInfo(account: string) {
-    await this._rateLimit();
-    const response = await axios.get(`${this.userPath}${account}`);
-    return response.data as IUserInfo;
-  }
-
-  /**
    * Accounts
    * update account info
    */

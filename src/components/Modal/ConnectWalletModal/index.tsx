@@ -10,6 +10,7 @@ import { ReactComponent as MetaMaskIcon } from "assets/svgs/metamask-color.svg";
 import { ReactComponent as WalletConnectIcon } from "assets/svgs/wallet-connect.svg";
 import { ConnectWalletButton } from "components/Button";
 import { NETWORK_CONFIG, STORAGE_KEY_CONNECTOR } from "config/constants";
+import { supportedNetworkIds } from "config/networks";
 import { transparentize } from "polished";
 import React, { useCallback, useEffect } from "react";
 import { waitSeconds } from "utils";
@@ -103,8 +104,13 @@ export const ConnectWalletModal = (props: IProps) => {
 
       try {
         if (wallet === ConnectorNames.Injected) {
-          // window.ethereum.request({ method: "eth_requestAccounts" });
-          await window.ethereum.request(NETWORK_CONFIG);
+          const chainId = await window.ethereum.request({
+            method: "eth_chainId",
+          });
+          if (!supportedNetworkIds.includes(chainId)) {
+            await window.ethereum.request(NETWORK_CONFIG);
+          }
+
           await waitSeconds(1);
         }
         context.activate(currentConnector);

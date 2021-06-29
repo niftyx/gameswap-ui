@@ -10,6 +10,8 @@ import {
   NetworkId,
 } from "utils/types";
 
+import { DEFAULT_NETWORK_ID } from "./constants";
+
 export const networkIds = {
   AVAXTEST: 43113,
   AVAXMAIN: 43114,
@@ -187,11 +189,12 @@ export const getAuthServiceUri = (networkId: number): string => {
 };
 
 export const getHasuraServerUrl = (
-  networkId: number
+  chainId?: number
 ): {
   httpUri: string;
   wsUri: string;
 } => {
+  const networkId = chainId || DEFAULT_NETWORK_ID;
   if (!validNetworkId(networkId)) {
     throw new Error(`Unsupported network id: '${networkId}'`);
   }

@@ -1,3 +1,4 @@
+import { useQuery } from "@apollo/react-hooks";
 import { useIsMountedRef } from "hooks";
 import { BigNumber } from "packages/ethers";
 import { useEffect, useState } from "react";
@@ -5,6 +6,8 @@ import { getAPIService } from "services/api";
 import { getIPFSService } from "services/ipfs";
 import { EFileType } from "utils/enums";
 import { getLogger } from "utils/logger";
+import { queryAssetsByAssetIdAndCollectionId } from "utils/queries";
+import { toCamelCaseObj } from "utils/token";
 import { IAssetItem } from "utils/types";
 
 const logger = getLogger("useAssetDetailsFromIdCollection");
@@ -19,32 +22,37 @@ interface IState {
   loading: boolean;
 }
 
+interface GraphResponse {
+  assets: any[];
+}
+
 export const useAssetDetailsFromIdCollection = (
-  tokenId: BigNumber,
+  assetId: BigNumber,
   collectionId: string
 ): IResponse => {
-  const isRefMounted = useIsMountedRef();
-  const apiService = getAPIService();
+  const { data, error, loading } = useQuery<GraphResponse>(
+    queryAssetsByAssetIdAndCollectionId,
+    {
+      notifyOnNetworkStatusChange: true,
+      fetchPolicy: "cache-and-network",
+      skip: false,
+      variables: { assetId: assetId.toHexString(), collectionId },
+    }
+  );
 
   const [state, setState] = useState<IState>({
     asset: null,
     loading: false,
   });
 
-  const refetch = async () => {
-    const response = await apiService.getAssetDetailsWithAssetIdAndCollectionId(
-      tokenId,
-      collectionId
-    );
-    if (isRefMounted.current === true && response) {
+  useEffect(() => {
+    if (data && data.assets.length > 0) {
+      const response = toCamelCaseObj(data.assets[0]);
       setState((prev) => ({
         ...prev,
         asset: {
           ...(response as any),
-          collectionId: response.collection.id,
-          tokenId: BigNumber.from(response.assetId.hex),
-          tokenURL: response.assetURL,
-          owner: response.currentOwner.id,
+          assetId: BigNumber.from(response.assetId),
           name: "",
           description: "",
           image: "",
@@ -52,12 +60,8 @@ export const useAssetDetailsFromIdCollection = (
         },
       }));
     }
-  };
-
-  useEffect(() => {
-    refetch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tokenId, collectionId]);
+  }, [data]);
 
   useEffect(() => {
     let isMounted = true;
@@ -84,7 +88,7 @@ export const useAssetDetailsFromIdCollection = (
     };
     if (
       state.asset &&
-      state.asset.assetId.eq(tokenId) &&
+      state.asset.assetId.eq(assetId) &&
       state.asset.collectionId === collectionId &&
       !state.asset.name
     ) {
@@ -96,5 +100,5 @@ export const useAssetDetailsFromIdCollection = (
     // eslint-disable-next-line
   }, [state.asset]);
 
-  return { data: state.asset, loading: state.loading };
+  return { data: state.asset, loading: state.loading || loading };
 };

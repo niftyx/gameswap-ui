@@ -45,11 +45,11 @@ function App() {
           <Web3ReactProvider getLibrary={getLibrary}>
             <BrowserRouter>
               <ConnectedWeb3>
-                <GlobalProvider>
-                  <ApolloProviderWrapper>
+                <ApolloProviderWrapper>
+                  <GlobalProvider>
                     <TradeProvider>{renderRoutes(routes)}</TradeProvider>
-                  </ApolloProviderWrapper>
-                </GlobalProvider>
+                  </GlobalProvider>
+                </ApolloProviderWrapper>
               </ConnectedWeb3>
             </BrowserRouter>
           </Web3ReactProvider>

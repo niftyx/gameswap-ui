@@ -78,6 +78,16 @@ const assetHistoryFragment = gql`
   }
 `;
 
+const assetHistoryFields = `
+  id
+  tx_hash
+  asset_id
+  owner_id
+  erc20
+  erc20_amount
+  timestamp
+`;
+
 const collectionHistoryFragment = gql`
   fragment collectionHistoryFragment on collection_histories {
     id
@@ -239,10 +249,11 @@ export const queryAssetsByCollectionId = `
 
 export const queryAssetById = gql`
   query($id: String!) {
-    assets(where: {id: {_eq: $id}}) {
-      ${assetFields}
+    assets(where: { id: { _eq: $id } }) {
+      ...assetFragment
     }
   }
+  ${assetFragment}
 `;
 
 export const queryAssetsByGameId = `
@@ -253,6 +264,44 @@ export const queryAssetsByGameId = `
       limit: $limit
     ) {
       ${assetFields}
+    }
+  }
+`;
+
+export const queryAssetsByAssetIdAndCollectionId = gql`
+  query($assetId: String!, $collectionId: String!) {
+    assets(
+      where: {
+        asset_id: { _eq: $assetId }
+        collection_id: { _eq: $collectionId }
+      }
+    ) {
+      ...assetFragment
+    }
+  }
+  ${assetFragment}
+`;
+
+// users
+export const queryUserById = gql`
+  query($id: String!) {
+    users(where: { id: { _eq: $id } }) {
+      ...userFragment
+    }
+  }
+  ${userFragment}
+`;
+
+// assetHistory
+export const queryAssetHistoryByAssetId = `
+  query($id: String!, $offset: Int!, $limit: Int!) {
+    asset_histories(
+      where: {asset: {id: {_eq: $id}}}
+      order_by: {timestamp: desc}
+      offset: $offset
+      limit: $limit
+    ) {
+      ${assetHistoryFields}
     }
   }
 `;

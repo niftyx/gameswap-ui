@@ -1,46 +1,28 @@
-import { isAddress } from "@ethersproject/address";
-import { useEffect, useState } from "react";
-import { getAPIService } from "services/api";
+import { useQuery } from "@apollo/react-hooks";
 import { getLogger } from "utils/logger";
+import { queryUserById } from "utils/queries";
+import { toCamelCaseObj } from "utils/token";
 import { IUserInfo } from "utils/types";
 
 const logger = getLogger("useUserInfo::");
 
-interface IState {
-  loading: boolean;
-  userInfo?: IUserInfo;
+interface GraphResponse {
+  users: any[];
 }
 
 export const useUserInfo = (id: string) => {
-  const [state, setState] = useState<IState>({ loading: false });
-  const apiService = getAPIService();
+  const { data, error, loading } = useQuery<GraphResponse>(queryUserById, {
+    notifyOnNetworkStatusChange: true,
+    fetchPolicy: "cache-and-network",
+    skip: false,
+    variables: { id: id.toLowerCase() },
+  });
 
-  const userId = id.toLowerCase();
-
-  useEffect(() => {
-    let isMounted = true;
-    if (!isAddress(userId)) {
-      setState(() => ({ loading: false }));
-      return;
-    }
-
-    const loadUserInfo = async () => {
-      setState(() => ({ loading: true }));
-      try {
-        const userInfo = await apiService.getAccountInfo(userId);
-        setState((prev) => ({ ...prev, userInfo, loading: false }));
-      } catch (error) {
-        setState(() => ({ loading: false }));
-        logger.error(error);
-      }
-    };
-
-    loadUserInfo();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [userId]);
-
-  return state;
+  return {
+    loading,
+    userInfo:
+      data && data.users.length > 0
+        ? (toCamelCaseObj(data.users[0]) as IUserInfo)
+        : undefined,
+  };
 };

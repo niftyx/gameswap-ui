@@ -33,7 +33,9 @@ export const xBigNumberToEthersBigNumber = (
 export const toCamelCaseObj = (obj: any) => {
   const result: any = {};
   Object.keys(obj).forEach((key) => {
-    if (typeof obj[key] !== "object" || Array.isArray(obj[key])) {
+    if (obj[key] === undefined || obj[key] === null) {
+      result[_.camelCase(key)] = obj[key];
+    } else if (typeof obj[key] !== "object" || Array.isArray(obj[key])) {
       result[_.camelCase(key)] = obj[key];
     } else {
       result[_.camelCase(key)] = toCamelCaseObj(obj[key]);
