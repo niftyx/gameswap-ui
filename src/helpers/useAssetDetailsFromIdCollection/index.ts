@@ -1,8 +1,6 @@
 import { useQuery } from "@apollo/react-hooks";
-import { useIsMountedRef } from "hooks";
 import { BigNumber } from "packages/ethers";
 import { useEffect, useState } from "react";
-import { getAPIService } from "services/api";
 import { getIPFSService } from "services/ipfs";
 import { EFileType } from "utils/enums";
 import { getLogger } from "utils/logger";

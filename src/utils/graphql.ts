@@ -1,6 +1,6 @@
 import axios from "axios";
 
-type GraphVariables = { [key: string]: string | number };
+type GraphVariables = { [key: string]: string | number | undefined };
 
 export const fetchQuery = (
   query: string,

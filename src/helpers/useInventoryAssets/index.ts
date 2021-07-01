@@ -1,24 +1,22 @@
-import {
-  DEFAULT_NETWORK_ID,
-  INVENTORY_PAGE_ASSET_COUNT,
-} from "config/constants";
+import { INVENTORY_PAGE_ASSET_COUNT } from "config/constants";
+import { getHasuraServerUrl } from "config/networks";
 import { useConnectedWeb3Context } from "contexts";
 import { useIsMountedRef } from "hooks";
 import { BigNumber } from "packages/ethers";
 import { useEffect, useState } from "react";
-import { getAPIService } from "services/api";
 import { IGraphInventoryAsset } from "types";
 import { isObjectEqual } from "utils";
+import { fetchQuery } from "utils/graphql";
 import { getLogger } from "utils/logger";
+import { buildQueryInventoryAssets } from "utils/queries";
+import { toCamelCaseObj } from "utils/token";
 
 const logger = getLogger("useInventoryAssets:");
 
 const wrangleAsset = (e: any) => {
   return {
     ...e,
-    assetId: BigNumber.from(e.assetId.hex),
-    collectionId: e.collection.id,
-    owner: e.currentOwner.id,
+    assetId: BigNumber.from(e.assetId),
   } as IGraphInventoryAsset;
 };
 
@@ -27,12 +25,13 @@ interface IState {
   assets: IGraphInventoryAsset[];
   loading: boolean;
   query: any;
-  networkId: any;
 }
 
-export const useInventoryAssets = (
-  query: any
-): {
+export const useInventoryAssets = (query: {
+  gameId?: string;
+  ownerId: string;
+  collectionId?: string;
+}): {
   hasMore: boolean;
   assets: IGraphInventoryAsset[];
   loadMore: () => Promise<void>;
@@ -47,12 +46,9 @@ export const useInventoryAssets = (
     assets: [],
     loading: false,
     query: null,
-    networkId: null,
   });
 
-  const apiService = getAPIService();
-
-  const finalNetworkId = networkId || DEFAULT_NETWORK_ID;
+  const hasura = getHasuraServerUrl(networkId);
 
   const fetchData = async (
     variables: {
@@ -63,26 +59,41 @@ export const useInventoryAssets = (
   ) => {
     try {
       setState((prevState) => ({ ...prevState, loading: true }));
+      const { page, perPage } = variables;
 
-      const info = await apiService.listAssets(
-        query,
-        variables.perPage,
-        variables.page
-      );
+      const response = (
+        await fetchQuery(
+          buildQueryInventoryAssets(query),
+          {
+            offset: perPage * (page - 1),
+            limit: perPage + 1,
+            ...query,
+            ownerId: query.ownerId.toLowerCase(),
+          },
+          hasura.httpUri
+        )
+      ).data;
+
       if (isRefMounted.current === false) return;
-      if (info)
+
+      if (response.data && response.data.assets) {
+        const hasMore = response.data.assets.length === perPage + 1;
+        const records = response.data.assets
+          .map((e: any) => toCamelCaseObj(e))
+          .slice(0, perPage);
+
         setState((prevState) => ({
           ...prevState,
-          hasMore: info.records.length === info.perPage,
+          hasMore,
           assets: flush
-            ? info.records.map((e) => wrangleAsset(e as any))
+            ? records.map((e: any) => wrangleAsset(e as any))
             : [
                 ...prevState.assets,
-                ...info.records.map((e) => wrangleAsset(e as any)),
+                ...records.map((e: any) => wrangleAsset(e as any)),
               ],
           loading: false,
         }));
-      else setState((prevState) => ({ ...prevState, loading: false }));
+      } else setState((prevState) => ({ ...prevState, loading: false }));
     } catch (error) {
       logger.error("fetchData:", error);
       setState((prevState) => ({ ...prevState, loading: false }));
@@ -124,16 +135,12 @@ export const useInventoryAssets = (
   };
 
   useEffect(() => {
-    if (
-      !isObjectEqual(query, state.query) ||
-      finalNetworkId !== state.networkId
-    ) {
+    if (!isObjectEqual(query, state.query)) {
       setState((prevState) => ({
         ...prevState,
         hasMore: false,
         assets: [],
         query,
-        networkId: finalNetworkId,
       }));
       fetchData({
         perPage: INVENTORY_PAGE_ASSET_COUNT,
@@ -142,7 +149,7 @@ export const useInventoryAssets = (
     }
 
     // eslint-disable-next-line
-  }, [query, finalNetworkId]);
+  }, [networkId]);
 
   return {
     assets: state.assets,

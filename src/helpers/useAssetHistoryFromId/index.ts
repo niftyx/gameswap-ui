@@ -4,7 +4,6 @@ import { useConnectedWeb3Context } from "contexts";
 import { useIsMountedRef } from "hooks";
 import { BigNumber } from "packages/ethers";
 import { useEffect, useState } from "react";
-import { getAPIService } from "services/api";
 import { EHistoryItemType } from "utils/enums";
 import { fetchQuery } from "utils/graphql";
 import { getLogger } from "utils/logger";

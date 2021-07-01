@@ -247,6 +247,34 @@ export const queryAssetsByCollectionId = `
   }
 `;
 
+export const queryAssetsByCreatorId = `
+  query($id: String!, $offset: Int!, $limit: Int!) {
+    assets(where: {creator_id: {_eq: $id}}, order_by: {update_time_stamp: desc}, limit: $limit, offset: $offset) {
+      ${assetFields}
+    }
+  }
+`;
+
+export const buildQueryInventoryAssets = (params: {
+  gameId?: string;
+  ownerId: string;
+  collectionId?: string;
+}) => {
+  return `
+  query($ownerId: String!, ${
+    params.collectionId ? "$collectionId: String!," : ""
+  } ${params.gameId ? "$gameId: String!" : ""} $offset: Int!, $limit: Int!) {
+    assets(where: {owner_id: {_eq: $ownerId}${
+      params.collectionId ? `, collection_id: {_eq: $collectionId}` : ""
+    }} ${
+    params.gameId ? ", collection: {game_id: {_eq: $gameId}}" : ""
+  }, order_by: {update_time_stamp: desc}, limit: $limit, offset: $offset) {
+      ${assetFields}
+    }
+  }
+`;
+};
+
 export const queryAssetById = gql`
   query($id: String!) {
     assets(where: { id: { _eq: $id } }) {
