@@ -24,8 +24,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundImage: "url(/svgs/backgrounds/grid.svg)",
   },
   img: {
-    width: "80%",
-    height: "80%",
+    width: "100%",
+    height: "100%",
   },
 }));
 

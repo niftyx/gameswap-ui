@@ -127,7 +127,7 @@ export const AssetLargeViewer = (props: IProps) => {
         <div className={classes.modelWrapper}>
           {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
           {/** @ts-ignore */}
-          <model-viewer camera-controls src={model} />
+          <model-viewer auto-rotate camera-controls src={model} />
         </div>
       ) : (
         <>

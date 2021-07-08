@@ -514,7 +514,11 @@ export const ERC721CreateForm = (props: IProps) => {
                 <div className={classes.modelWrapper}>
                   {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
                   {/** @ts-ignore */}
-                  <model-viewer camera-controls src={values.modelObjectURL} />
+                  <model-viewer
+                    auto-rotate
+                    camera-controls
+                    src={values.modelObjectURL}
+                  />
                 </div>
               )}
               {values.include3DModel && (
