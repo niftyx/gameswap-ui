@@ -25,11 +25,10 @@ const networks: { [K in NetworkId]: INetwork } = {
       erc721Factory: "0x4c4FBB3098F008d7a74611B3B7B75A1046C7527E",
     },
     etherscanUri: "https://cchain.explorer.avax-test.network/",
-    authService: "http://localhost:3008/graphql",
-
+    authService: "https://auth-mvp-1.gameswap.org/graphql",
     hasuraService: {
-      httpUri: "http://localhost:8080/v1/graphql",
-      wsUri: "ws://localhost:8080/v1/graphql",
+      httpUri: "https://api-v1-dev.gameswap.org/v1/graphql",
+      wsUri: "wss://api-v1-dev.gameswap.org/v1/graphql",
     },
   },
   [networkIds.AVAXMAIN]: {
@@ -39,10 +38,10 @@ const networks: { [K in NetworkId]: INetwork } = {
       erc721Factory: "0x4c4FBB3098F008d7a74611B3B7B75A1046C7527E",
     },
     etherscanUri: "https://cchain.explorer.avax.network/",
-    authService: "http://localhost:3008/graphql",
+    authService: "https://auth-mvp-1.gameswap.org/graphql",
     hasuraService: {
-      httpUri: "http://localhost:8080/v1/graphql",
-      wsUri: "ws://localhost:8080/v1/graphql",
+      httpUri: "https://api-v1-dev.gameswap.org/v1/graphql",
+      wsUri: "wss://api-v1-dev.gameswap.org/v1/graphql",
     },
   },
 };
