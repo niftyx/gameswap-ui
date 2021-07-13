@@ -43,7 +43,10 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
     height: "100%",
-    "& model-viewer": { width: "100%", height: "100%" },
+    "& model-viewer": {
+      width: "100%",
+      height: "100%",
+    },
   },
 }));
 

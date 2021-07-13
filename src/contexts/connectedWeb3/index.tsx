@@ -86,11 +86,6 @@ export const ConnectedWeb3: React.FC = (props) => {
     await waitSeconds(0.1);
   };
 
-  const clearJwtToken = async () => {
-    setState((prev) => ({ ...prev, authToken: undefined }));
-    await waitSeconds(0.1);
-  };
-
   useEffect(() => {
     const connector = localStorage.getItem(STORAGE_KEY_CONNECTOR);
     if (error) {
@@ -113,24 +108,6 @@ export const ConnectedWeb3: React.FC = (props) => {
     }
     // eslint-disable-next-line
   }, [context, library, active, error]);
-
-  useEffect(() => {
-    const loadAuthToken = async () => {
-      try {
-        if (account) {
-          getJwtToken();
-        } else {
-          clearJwtToken();
-        }
-      } catch (error) {
-        console.warn(error);
-      }
-    };
-
-    loadAuthToken();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account]);
 
   const value = {
     account: account || null,
