@@ -1,7 +1,11 @@
 import { RateLimit } from "async-sema";
 import axios from "axios";
 import { DEFAULT_NETWORK_ID } from "config/constants";
-import { getHasuraServerUrl, networkIds } from "config/networks";
+import {
+  getBackendServiceUri,
+  getHasuraServerUrl,
+  networkIds,
+} from "config/networks";
 import { BigNumber } from "packages/ethers";
 import { fetchQuery } from "utils/graphql";
 import { createGameMutation, updateGameMutation } from "utils/queries";
@@ -24,6 +28,7 @@ interface IAssetHistoryResponseRecord {
 
 export class APIService {
   private readonly serverEndPoint: string;
+  private readonly backendUrl: string;
   private readonly _rateLimit: () => Promise<void>;
 
   private readonly cryptoContentPath = "/lock-content/v1/";
@@ -33,8 +38,9 @@ export class APIService {
   private readonly userPath = "/users/v1/";
   private readonly commonPath = "/common/v1/";
 
-  constructor(serverEndPoint: string) {
+  constructor(serverEndPoint: string, backendUrl: string) {
     this.serverEndPoint = serverEndPoint;
+    this.backendUrl = backendUrl;
     this._rateLimit = RateLimit(20);
   }
 
@@ -338,7 +344,7 @@ export class APIService {
     await this._rateLimit();
 
     const response = await axios.post(
-      `${this.commonPath}check-custom-url-usable`,
+      `${this.backendUrl}${this.commonPath}check-custom-url-usable`,
       { url }
     );
 
@@ -360,10 +366,12 @@ export class APIService {
 
 const apiServices: { [key in NetworkId]: APIService } = {
   [networkIds.AVAXTEST]: new APIService(
-    getHasuraServerUrl(networkIds.AVAXTEST).httpUri
+    getHasuraServerUrl(networkIds.AVAXTEST).httpUri,
+    getBackendServiceUri(networkIds.AVAXTEST)
   ),
   [networkIds.AVAXMAIN]: new APIService(
-    getHasuraServerUrl(networkIds.AVAXMAIN).httpUri
+    getHasuraServerUrl(networkIds.AVAXMAIN).httpUri,
+    getBackendServiceUri(networkIds.AVAXMAIN)
   ),
 };
 

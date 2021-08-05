@@ -285,6 +285,7 @@ interface INetwork {
   };
   etherscanUri: string;
   authService: string;
+  backendService: string;
   hasuraService: {
     httpUri: string;
     wsUri: string;

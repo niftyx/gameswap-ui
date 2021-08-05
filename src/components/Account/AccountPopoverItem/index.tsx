@@ -34,6 +34,15 @@ interface IProps {
   onClick: () => void;
 }
 
+/**
+ * Item on Popover content when users click "wallet info" button.
+ * @param title         item text
+ * @param showToggle    show/hide toggle on the right side of item
+ * @param toggleValue   indicates if toggle is on or off
+ * @param onClick       it's called once user click the item or toggle
+ * @returns React Component
+ */
+
 export const AccountPopoverItem = (props: IProps) => {
   const classes = useStyles();
   const { onClick, showToggle = false, title, toggleValue } = props;

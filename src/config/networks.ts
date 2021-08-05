@@ -26,6 +26,7 @@ const networks: { [K in NetworkId]: INetwork } = {
     },
     etherscanUri: "https://cchain.explorer.avax-test.network/",
     authService: "https://auth-mvp-1.gameswap.org/graphql",
+    backendService: "https://api-dev-1.gameswap.org",
     hasuraService: {
       httpUri: "https://api-v1-dev.gameswap.org/v1/graphql",
       wsUri: "wss://api-v1-dev.gameswap.org/v1/graphql",
@@ -39,6 +40,7 @@ const networks: { [K in NetworkId]: INetwork } = {
     },
     etherscanUri: "https://cchain.explorer.avax.network/",
     authService: "https://auth-mvp-1.gameswap.org/graphql",
+    backendService: "https://api-dev-1.gameswap.org",
     hasuraService: {
       httpUri: "https://api-v1-dev.gameswap.org/v1/graphql",
       wsUri: "wss://api-v1-dev.gameswap.org/v1/graphql",
@@ -185,6 +187,14 @@ export const getAuthServiceUri = (networkId: number): string => {
   }
 
   return networks[networkId].authService;
+};
+
+export const getBackendServiceUri = (networkId: number): string => {
+  if (!validNetworkId(networkId)) {
+    throw new Error(`Unsupported network id: '${networkId}'`);
+  }
+
+  return networks[networkId].backendService;
 };
 
 export const getHasuraServerUrl = (
