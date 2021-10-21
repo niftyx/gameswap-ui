@@ -23,6 +23,22 @@ export const useUserInfo = (id: string) => {
     userInfo:
       data && data.users.length > 0
         ? (toCamelCaseObj(data.users[0]) as IUserInfo)
-        : undefined,
+        : ({
+            name: "",
+            address: id,
+            id,
+            customUrl: "",
+            bio: "",
+            twitchUsername: "",
+            twitterUsername: "",
+            twitterVerified: false,
+            facebookUsername: "",
+            youtubeUsername: "",
+            instagramUsername: "",
+            tiktokUsername: "",
+            personalSite: "",
+            imageUrl: "",
+            headerImageUrl: "",
+          } as IUserInfo),
   };
 };
