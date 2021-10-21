@@ -25,8 +25,8 @@ export const useUserInfo = (id: string) => {
         ? (toCamelCaseObj(data.users[0]) as IUserInfo)
         : ({
             name: "",
-            address: id,
-            id,
+            address: id.toLowerCase(),
+            id: id.toLowerCase(),
             customUrl: "",
             bio: "",
             twitchUsername: "",
