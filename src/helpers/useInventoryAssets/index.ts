@@ -1,4 +1,5 @@
 import { INVENTORY_PAGE_ASSET_COUNT } from "config/constants";
+import { Mock_Graph_Inventory_Assets } from "config/mockData";
 import { getHasuraServerUrl } from "config/networks";
 import { useConnectedWeb3Context } from "contexts";
 import { useIsMountedRef } from "hooks";
@@ -82,21 +83,55 @@ export const useInventoryAssets = (query: {
           .map((e: any) => toCamelCaseObj(e))
           .slice(0, perPage);
 
+        if (records.length > 0) {
+          setState((prevState) => ({
+            ...prevState,
+            hasMore,
+            assets: flush
+              ? records.map((e: any) => wrangleAsset(e as any))
+              : [
+                  ...prevState.assets,
+                  ...records.map((e: any) => wrangleAsset(e as any)),
+                ],
+            loading: false,
+          }));
+        } else {
+          // mock
+          setState((prevState) => ({
+            ...prevState,
+            loading: false,
+            hasMore: false,
+            assets: flush
+              ? Mock_Graph_Inventory_Assets
+              : [...prevState.assets, ...Mock_Graph_Inventory_Assets],
+          }));
+        }
+      } else {
+        // setState((prevState) => ({ ...prevState, loading: false }));
+
+        // mock
         setState((prevState) => ({
           ...prevState,
-          hasMore,
-          assets: flush
-            ? records.map((e: any) => wrangleAsset(e as any))
-            : [
-                ...prevState.assets,
-                ...records.map((e: any) => wrangleAsset(e as any)),
-              ],
           loading: false,
+          hasMore: false,
+          assets: flush
+            ? Mock_Graph_Inventory_Assets
+            : [...prevState.assets, ...Mock_Graph_Inventory_Assets],
         }));
-      } else setState((prevState) => ({ ...prevState, loading: false }));
+      }
     } catch (error) {
       logger.error("fetchData:", error);
-      setState((prevState) => ({ ...prevState, loading: false }));
+      // setState((prevState) => ({ ...prevState, loading: false }));
+
+      // mock
+      setState((prevState) => ({
+        ...prevState,
+        loading: false,
+        hasMore: false,
+        assets: flush
+          ? Mock_Graph_Inventory_Assets
+          : [...prevState.assets, ...Mock_Graph_Inventory_Assets],
+      }));
     }
   };
 
