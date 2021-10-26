@@ -30,10 +30,10 @@ const useStyles = makeStyles((theme) => ({
     flex: 1,
   },
   role: {
-    color: theme.colors.text.sixth,
+    color: theme.colors.white,
   },
   name: {
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     display: "block",
     textDecoration: "none",
   },

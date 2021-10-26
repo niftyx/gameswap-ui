@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   notice: {
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     fontSize: theme.spacing(1.6125),
     "& + &": {
       marginTop: 0,

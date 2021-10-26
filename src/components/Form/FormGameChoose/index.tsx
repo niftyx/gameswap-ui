@@ -12,7 +12,7 @@ import { FormGameChooseItem } from "../FormGameChooseItem";
 const useStyles = makeStyles((theme) => ({
   root: {},
   label: {
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     fontSize: theme.spacing(1.75),
     marginTop: theme.spacing(1),
   },
@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
   icon: {
     fontSize: 40,
-    color: theme.colors.text.default,
+    color: theme.colors.white,
   },
   img: {
     width: 40,

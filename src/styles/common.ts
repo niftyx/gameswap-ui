@@ -5,42 +5,30 @@ const useCommonStyles = makeStyles((theme) => ({
   scroll: {
     "&::-webkit-scrollbar": {
       width: theme.spacing(0.5),
-      boxShadow: `inset 0 0 6px ${transparentize(
-        0.3,
-        theme.colors.background.fourth
-      )}`,
+      boxShadow: `inset 0 0 6px ${transparentize(0.3, theme.colors.primary60)}`,
       borderRadius: 2,
     },
     "&::-webkit-scrollbar-track": {},
     "&::-webkit-scrollbar-thumb": {
-      backgroundColor: theme.colors.background.fourth,
+      backgroundColor: theme.colors.primary60,
     },
   },
   scrollHorizontal: {
     "&::-webkit-scrollbar": {
       height: theme.spacing(0.75),
-      boxShadow: `inset 0 0 6px ${transparentize(
-        0.3,
-        theme.colors.background.fourth
-      )}`,
+      boxShadow: `inset 0 0 6px ${transparentize(0.3, theme.colors.primary60)}`,
     },
     "&::-webkit-scrollbar-track": {},
     "&::-webkit-scrollbar-thumb": {
-      backgroundColor: theme.colors.background.fourth,
+      backgroundColor: theme.colors.primary60,
     },
   },
   transparentButton: {
-    backgroundColor: `${transparentize(
-      0.9,
-      theme.colors.text.default
-    )} !important`,
+    backgroundColor: `${transparentize(0.9, theme.colors.white)} !important`,
     borderRadius: 6,
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     "&:hover": {
-      backgroundColor: `${transparentize(
-        0.5,
-        theme.colors.text.default
-      )} !important`,
+      backgroundColor: `${transparentize(0.5, theme.colors.white)} !important`,
     },
   },
   textRight: {

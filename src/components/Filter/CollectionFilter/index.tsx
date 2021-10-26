@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
   item: {
     userSelect: "none",
     marginTop: 8,
-    color: transparentize(0.3, theme.colors.text.default),
+    color: transparentize(0.3, theme.colors.white),
     display: "flex",
     alignItems: "center",
     cursor: "pointer",
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
       marginLeft: 8,
     },
     "& svg": {
-      color: theme.colors.background.fourth,
+      color: theme.colors.primary60,
     },
   },
   img: {
@@ -31,14 +31,14 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "50%",
   },
   search: {
-    backgroundColor: theme.colors.background.fifth,
+    backgroundColor: theme.colors.primary80,
     margin: "4px 0",
     "& .MuiOutlinedInput-input": {
       padding: "10px 12px",
       paddingLeft: 0,
     },
   },
-  icon: { color: transparentize(0.3, theme.colors.text.default) },
+  icon: { color: transparentize(0.3, theme.colors.white) },
   content: {
     maxHeight: 140,
     overflowY: "auto",

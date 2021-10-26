@@ -22,12 +22,12 @@ const useStyles = makeStyles((theme) => ({
   title: {
     left: theme.spacing(2),
     top: theme.spacing(4),
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     fontSize: theme.spacing(3.25),
   },
   gameType: {
     fontSize: theme.spacing(2.25),
-    color: theme.colors.text.sixth,
+    color: theme.colors.white,
   },
   priceRow: {
     "& > * + *": {
@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   },
   priceUsd: {
     fontSize: theme.spacing(2.5),
-    color: transparentize(0.3, theme.colors.text.default),
+    color: transparentize(0.3, theme.colors.white),
     maxWidth: 500,
     [theme.breakpoints.down("xs")]: {
       fontSize: theme.spacing(2),
@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
   },
   tokenPrice: {
     fontSize: theme.spacing(2.5),
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     [theme.breakpoints.down("xs")]: {
       fontSize: theme.spacing(2),
     },

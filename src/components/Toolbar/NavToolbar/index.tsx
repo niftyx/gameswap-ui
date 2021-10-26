@@ -17,13 +17,13 @@ const useStyles = makeStyles((theme) => ({
   item: {
     cursor: "pointer",
     fontSize: 14,
-    color: transparentize(0.6, theme.colors.text.default),
+    color: transparentize(0.6, theme.colors.white),
     textDecoration: "none",
     "&.active": {
-      color: theme.colors.text.default,
+      color: theme.colors.white,
     },
   },
-  icon: { fontSize: 20, color: transparentize(0.6, theme.colors.text.default) },
+  icon: { fontSize: 20, color: transparentize(0.6, theme.colors.white) },
 }));
 
 interface IProps {

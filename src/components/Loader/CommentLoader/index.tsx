@@ -9,12 +9,12 @@ const useStyles = makeStyles((theme) => ({
   },
   loadTitle: {
     fontSize: theme.spacing(3),
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     textAlign: "center",
   },
   loadDescription: {
     fontSize: theme.spacing(2.5),
-    color: transparentize(0.3, theme.colors.text.default),
+    color: transparentize(0.3, theme.colors.white),
     textAlign: "center",
   },
 }));

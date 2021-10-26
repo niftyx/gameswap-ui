@@ -7,12 +7,12 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     cursor: "pointer",
-    color: theme.colors.text.third,
+    color: theme.colors.white,
     "& > * + *": {
       marginLeft: theme.spacing(0.5),
     },
     "&.active": {
-      color: theme.colors.text.default,
+      color: theme.colors.white,
     },
   },
   label: {

@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
     padding: theme.spacing(1),
     "& > * + *": {
-      borderTop: `1px solid ${theme.colors.border.primary}`,
+      borderTop: `1px solid ${theme.colors.purple40}`,
     },
   },
   search: {

@@ -19,11 +19,11 @@ const useStyles = makeStyles((theme) => ({
   royalties: {
     borderRadius: 32,
     padding: "7px 24px",
-    color: transparentize(0.4, theme.colors.text.default),
-    backgroundColor: transparentize(0.9, theme.colors.text.default),
+    color: transparentize(0.4, theme.colors.white),
+    backgroundColor: transparentize(0.9, theme.colors.white),
     fontSize: 14,
     "& span": {
-      color: theme.colors.text.third,
+      color: theme.colors.white,
     },
   },
   section: {
@@ -31,13 +31,13 @@ const useStyles = makeStyles((theme) => ({
   },
   sectionTitle: {
     fontSize: 17,
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     marginBottom: 12,
   },
   description: {
     fontSize: 16,
     lineHeight: "23px",
-    color: theme.colors.text.sixth,
+    color: theme.colors.white,
   },
   propertyRow: {
     display: "flex",
@@ -48,13 +48,13 @@ const useStyles = makeStyles((theme) => ({
   propertyKey: {
     fontSize: 16,
     lineHeight: "23px",
-    color: theme.colors.text.sixth,
+    color: theme.colors.white,
     marginRight: 16,
   },
   propertyValue: {
     fontSize: 16,
     lineHeight: "23px",
-    color: theme.colors.text.sixth,
+    color: theme.colors.white,
     flex: 1,
   },
   unlock: {

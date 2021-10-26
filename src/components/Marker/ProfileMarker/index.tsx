@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
   },
   text: {
     fontSize: theme.spacing(1.6125),
-    color: theme.colors.text.default,
+    color: theme.colors.white,
   },
   icon: {
     paddingBottom: theme.spacing(0.5),

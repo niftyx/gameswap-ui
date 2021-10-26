@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1.5),
   },
   title: {
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     fontSize: theme.spacing(2),
   },
   content: {

@@ -20,9 +20,9 @@ const useStyles = makeStyles((theme) => ({
     display: "none",
   },
   content: {
-    backgroundColor: theme.colors.background.primary,
+    backgroundColor: theme.colors.primary100,
     borderRadius: theme.spacing(0.5),
-    border: `1px dashed ${theme.colors.border.third}`,
+    border: `1px dashed ${theme.colors.white}`,
     padding: theme.spacing(2),
     marginTop: theme.spacing(2.5),
     backgroundSize: "cover",
@@ -48,13 +48,13 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: "50%",
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     cursor: "pointer",
     userSelect: "none",
     border: `1px dashed ${theme.colors.transparent}`,
     transition: "all 0.5s",
     "&:hover": {
-      borderColor: theme.colors.text.default,
+      borderColor: theme.colors.white,
     },
   },
   progressWrapper: {

@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     width: 400,
     backgroundColor: theme.palette.background.paper,
-    border: `2px solid ${theme.colors.border.primary}`,
+    border: `2px solid ${theme.colors.purple40}`,
     boxShadow: theme.shadows[5],
     borderRadius: theme.spacing(2),
     padding: theme.spacing(2),
@@ -26,12 +26,12 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     fontSize: theme.spacing(3),
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     flex: 1,
   },
   closeButton: {
-    border: `1px solid ${theme.colors.text.default}`,
-    color: theme.colors.text.default,
+    border: `1px solid ${theme.colors.white}`,
+    color: theme.colors.white,
     padding: theme.spacing(0.5),
   },
   content: {

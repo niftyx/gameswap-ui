@@ -31,13 +31,13 @@ const useStyles = makeStyles((theme) => ({
   create: {
     padding: `0 10px 0 6px`,
     borderRadius: theme.spacing(0.75),
-    backgroundColor: theme.colors.background.fourth,
+    backgroundColor: theme.colors.primary60,
     height: theme.custom.appHeaderItemHeight,
     display: "flex",
     justifyContent: "center",
     textDecoration: "none",
     alignItems: "center",
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     [theme.breakpoints.down(1350)]: {
       display: "none",
     },
@@ -45,12 +45,12 @@ const useStyles = makeStyles((theme) => ({
   label: {
     fontSize: theme.spacing(1.25),
     lineHeight: `${theme.spacing(1.75)}px`,
-    color: transparentize(0.3, theme.colors.text.default),
+    color: transparentize(0.3, theme.colors.white),
   },
   eth: {
     padding: 3,
     borderRadius: theme.spacing(0.75),
-    backgroundColor: theme.colors.background.primary,
+    backgroundColor: theme.colors.primary100,
     height: theme.custom.appHeaderItemHeight,
     display: "flex",
     alignItems: "center",
@@ -61,12 +61,12 @@ const useStyles = makeStyles((theme) => ({
   ethValue: {
     fontSize: theme.spacing(2),
     lineHeight: `${theme.spacing(3)}px`,
-    color: transparentize(0.18, theme.colors.text.default),
+    color: transparentize(0.18, theme.colors.white),
   },
   ethAddress: {
     borderRadius: theme.spacing(0.75),
-    backgroundColor: theme.colors.background.secondary,
-    color: theme.colors.text.default,
+    backgroundColor: theme.colors.primary70,
+    color: theme.colors.white,
     height: "100%",
     padding: `0 ${theme.spacing(1.5)}px`,
     display: "flex",
@@ -81,13 +81,13 @@ const useStyles = makeStyles((theme) => ({
   },
   moreButton: {
     borderRadius: 6,
-    backgroundColor: theme.colors.background.primary,
+    backgroundColor: theme.colors.primary100,
     height: theme.custom.appHeaderItemHeight,
     width: theme.custom.appHeaderItemHeight,
     "& svg": {
       height: Number(theme.custom.appHeaderItemHeight) / 2,
       width: Number(theme.custom.appHeaderItemHeight) / 2,
-      color: theme.colors.text.default,
+      color: theme.colors.white,
     },
   },
   connectButton: {
@@ -107,7 +107,7 @@ const useStyles = makeStyles((theme) => ({
   },
   popoverContent: {
     borderRadius: 8,
-    border: `1px solid ${transparentize(0.8, theme.colors.text.default)}`,
+    border: `1px solid ${transparentize(0.8, theme.colors.white)}`,
   },
 }));
 

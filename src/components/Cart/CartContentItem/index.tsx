@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     },
     "&:hover": {
       "& .cart_content__item__content": {
-        backgroundColor: transparentize(0.9, theme.colors.text.default),
+        backgroundColor: transparentize(0.9, theme.colors.white),
       },
       "& .cart_content__item__btn--remove": {
         opacity: 1,
@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    borderTop: `1px solid ${transparentize(0.9, theme.colors.text.default)}`,
+    borderTop: `1px solid ${transparentize(0.9, theme.colors.white)}`,
   },
   btn: {
     position: "absolute",
@@ -53,13 +53,13 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "center",
     opacity: 0,
-    backgroundColor: transparentize(0.6, theme.colors.text.default),
+    backgroundColor: transparentize(0.6, theme.colors.white),
     borderTopRightRadius: theme.spacing(0.5),
     borderBottomRightRadius: theme.spacing(0.5),
-    color: transparentize(0.3, theme.colors.text.default),
+    color: transparentize(0.3, theme.colors.white),
     "&:hover": {
-      backgroundColor: transparentize(0.4, theme.colors.text.default),
-      color: theme.colors.text.default,
+      backgroundColor: transparentize(0.4, theme.colors.white),
+      color: theme.colors.white,
     },
   },
   img: {
@@ -70,17 +70,17 @@ const useStyles = makeStyles((theme) => ({
   title: {
     textAlign: "center",
     fontSize: theme.spacing(2),
-    color: theme.colors.text.default,
+    color: theme.colors.white,
   },
   comment: {
     textAlign: "center",
     fontSize: theme.spacing(2),
-    color: transparentize(0.4, theme.colors.text.default),
+    color: transparentize(0.4, theme.colors.white),
   },
   price: {
     textAlign: "right",
     fontSize: theme.spacing(2.5),
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     flex: 1,
   },
 }));

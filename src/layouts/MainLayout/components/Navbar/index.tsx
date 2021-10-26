@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     left: 0,
     top: theme.custom.appHeaderHeight,
     bottom: 0,
-    borderRight: `1px solid ${theme.colors.border.secondary}`,
+    borderRight: `1px solid ${theme.colors.white}`,
     paddingBottom: theme.spacing(8),
   },
   content: {
@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     padding: "0 16px",
     width: Number(theme.custom.appNavbarWidth),
     height: theme.spacing(8),
-    borderTop: `1px solid ${theme.colors.border.secondary}`,
+    borderTop: `1px solid ${theme.colors.white}`,
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",

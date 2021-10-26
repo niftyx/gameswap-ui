@@ -16,7 +16,7 @@ import { Header, Navbar } from "./components";
 const useStyles = makeStyles((theme) => ({
   container: {
     height: `calc(100vh - ${theme.custom.appHeaderHeight}px)`,
-    backgroundColor: theme.colors.background.secondary,
+    backgroundColor: theme.colors.primary70,
     marginTop: theme.custom.appHeaderHeight,
     overflowY: "auto",
   },

@@ -24,10 +24,10 @@ const useStyles = makeStyles((theme) => ({
     cursor: "pointer",
     display: "flex",
     alignItems: "center",
-    color: theme.colors.text.third,
+    color: theme.colors.white,
     transition: "all 0.3s",
     "&:hover": {
-      color: theme.colors.text.default,
+      color: theme.colors.white,
     },
   },
   cartPopover: {

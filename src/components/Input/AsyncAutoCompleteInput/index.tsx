@@ -15,7 +15,7 @@ import React, { useEffect, useState } from "react";
 const useStyles = makeStyles((theme) => ({
   root: {},
   input: {
-    backgroundColor: theme.colors.background.third,
+    backgroundColor: theme.colors.primary80,
     padding: 8,
     borderRadius: 4,
   },

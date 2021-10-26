@@ -14,7 +14,7 @@ import { IPriceFilterItem } from "utils/types";
 
 const AirbnbSlider = withStyles((theme) => ({
   root: {
-    color: theme.colors.background.eighth,
+    color: theme.colors.primary60,
     height: 3,
     padding: "13px 0",
   },
@@ -36,7 +36,7 @@ const AirbnbSlider = withStyles((theme) => ({
     height: 3,
   },
   rail: {
-    color: theme.colors.text.default,
+    color: theme.colors.white,
 
     opacity: 1,
     height: 3,
@@ -64,14 +64,14 @@ const useStyles = makeStyles((theme) => ({
     minWidth: "auto",
     flex: 1,
     borderRadius: 6,
-    backgroundColor: theme.colors.background.fifth,
+    backgroundColor: theme.colors.primary80,
     "& input": {
       padding: theme.spacing(1),
       paddingLeft: 0,
     },
   },
   icon: {
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     marginLeft: theme.spacing(0.5),
     marginRight: theme.spacing(0.5),
   },
@@ -97,9 +97,9 @@ const useStyles = makeStyles((theme) => ({
   chartItem: {
     margin: "0 1px",
     userSelect: "none",
-    backgroundColor: theme.colors.text.default,
+    backgroundColor: theme.colors.white,
     "&.active": {
-      backgroundColor: theme.colors.background.eighth,
+      backgroundColor: theme.colors.primary60,
     },
   },
 }));

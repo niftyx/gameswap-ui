@@ -31,58 +31,23 @@ declare module "@material-ui/core/styles/createMuiTheme" {
     };
     colors: {
       transparent: string;
-      border: {
-        primary: string;
-        secondary: string;
-        third: string;
-        fourth: string;
-        fifth: string;
-        sixth: string;
-      };
-      icon: {
-        active: string;
-        disabled: string;
-      };
-      link: {
-        default: string;
-      };
-      background: {
-        primary: string;
-        secondary: string;
-        third: string;
-        fourth: string;
-        fifth: string;
-        sixth: string;
-        seventh: string;
-        eighth: string;
-        ninth: string;
-        tenth: string;
-        eleventh: string;
-        twelfth: string;
-        thirteenth: string;
-        preview: string;
-        gradient1: string;
-        gradient2: string;
-        gradient3: string;
-        gradient4: string;
-      };
-      text: {
-        default: string;
-        secondary: string;
-        third: string;
-        fourth: string;
-        sixth: string;
-        seventh: string;
-        positive: string;
-        negative: string;
-        arrowUp: string;
-        arrowDown: string;
-        error: string;
-        heart: string;
-      };
-      shadow: {
-        modal: string;
-      };
+      primary100: string;
+      primary90: string;
+      primary80: string;
+      primary70: string;
+      primary60: string;
+      primary40: string;
+      white: string;
+      purple60: string;
+      purple40: string;
+      green: string;
+      lime: string;
+      blue: string;
+      red60: string;
+      red40: string;
+      lightBg: string;
+      redBlue: string;
+      greenBlue: string;
     };
   }
   // allow configuration using `createMuiTheme`
@@ -102,58 +67,24 @@ declare module "@material-ui/core/styles/createMuiTheme" {
     };
     colors: {
       transparent: string;
-      border: {
-        primary: string;
-        secondary: string;
-        third: string;
-        fourth: string;
-        fifth: string;
-        sixth: string;
-      };
-      icon: {
-        active: string;
-        disabled: string;
-      };
-      link: {
-        default: string;
-      };
-      background: {
-        primary: string;
-        secondary: string;
-        third: string;
-        fourth: string;
-        fifth: string;
-        sixth: string;
-        seventh: string;
-        eighth: string;
-        ninth: string;
-        tenth: string;
-        eleventh: string;
-        twelfth: string;
-        thirteenth: string;
-        preview: string;
-        gradient1: string;
-        gradient2: string;
-        gradient3: string;
-        gradient4: string;
-      };
-      text: {
-        default: string;
-        secondary: string;
-        third: string;
-        fourth: string;
-        sixth: string;
-        seventh: string;
-        positive: string;
-        negative: string;
-        arrowUp: string;
-        arrowDown: string;
-        error: string;
-        heart: string;
-      };
-      shadow: {
-        modal: string;
-      };
+      transparent: string;
+      primary100: string;
+      primary90: string;
+      primary80: string;
+      primary70: string;
+      primary60: string;
+      primary40: string;
+      white: string;
+      purple60: string;
+      purple40: string;
+      green: string;
+      lime: string;
+      blue: string;
+      red60: string;
+      red40: string;
+      lightBg: string;
+      redBlue: string;
+      greenBlue: string;
     };
   }
 }

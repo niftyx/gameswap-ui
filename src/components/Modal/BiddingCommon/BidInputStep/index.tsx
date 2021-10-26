@@ -15,17 +15,17 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
   },
   description: {
-    color: theme.colors.text.third,
+    color: theme.colors.white,
     fontSize: 14,
     lineHeight: "24px",
     marginBottom: 48,
     "& span": {
-      color: theme.colors.text.default,
+      color: theme.colors.white,
       fontSize: 16,
     },
   },
   balance: {
-    color: theme.colors.background.tenth,
+    color: theme.colors.primary40,
     fontSize: 14,
     marginTop: 16,
   },
@@ -36,9 +36,9 @@ const useStyles = makeStyles((theme) => ({
   cancel: {
     height: theme.spacing(5),
     marginTop: theme.spacing(2),
-    backgroundColor: theme.colors.border.secondary,
+    backgroundColor: theme.colors.white,
     "&:hover": {
-      backgroundColor: transparentize(0.6, theme.colors.border.secondary),
+      backgroundColor: transparentize(0.6, theme.colors.white),
     },
   },
 }));

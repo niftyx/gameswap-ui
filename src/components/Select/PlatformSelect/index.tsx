@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
     minWidth: theme.spacing(18),
   },
   input: {
-    color: theme.colors.text.third,
+    color: theme.colors.white,
   },
 }));
 

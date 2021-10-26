@@ -10,12 +10,12 @@ const useStyles = makeStyles((theme) => ({
     cursor: "pointer",
     alignItems: "center",
     justifyContent: "center",
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     borderRadius: 4,
-    backgroundColor: theme.colors.background.fourth,
+    backgroundColor: theme.colors.primary60,
     transition: "all 0.4s",
     "&:hover": {
-      backgroundColor: transparentize(0.6, theme.colors.background.fourth),
+      backgroundColor: transparentize(0.6, theme.colors.primary60),
     },
   },
 }));

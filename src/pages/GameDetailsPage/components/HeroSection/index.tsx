@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     height: 100,
   },
   imgItem: {
-    backgroundColor: transparentize(0.5, theme.colors.background.primary),
+    backgroundColor: transparentize(0.5, theme.colors.primary100),
     height: "40vh",
     backgroundPosition: "center",
     backgroundSize: "cover",
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
     "&:before": {
       content: `" "`,
-      backgroundImage: theme.colors.background.gradient3,
+      backgroundImage: theme.colors.primary100,
       position: "absolute",
       left: 0,
       right: 0,
@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   title: {
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     fontSize: 13,
     fontWeight: 500,
   },
@@ -66,13 +66,13 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     right: theme.spacing(3),
     top: theme.spacing(3),
-    color: theme.colors.text.default,
-    backgroundColor: transparentize(0.7, theme.colors.text.default),
+    color: theme.colors.white,
+    backgroundColor: transparentize(0.7, theme.colors.white),
   },
   name: {
     fontSize: 90,
     letterSpacing: "-5px",
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     fontWeight: "bold",
     margin: "16px 0 12px 0",
   },
@@ -101,13 +101,13 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
   },
   detailItemLabel: {
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     fontSize: 13,
     fontWeight: 500,
   },
   detailItemContent: {
     marginTop: 12,
-    color: theme.colors.text.third,
+    color: theme.colors.white,
     fontSize: 16,
   },
   loadWrapper: {

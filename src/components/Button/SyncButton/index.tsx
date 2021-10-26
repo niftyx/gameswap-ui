@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
     width: theme.spacing(3),
     display: "flex",
     cursor: "pointer",
-    color: theme.colors.text.third,
+    color: theme.colors.white,
   },
   rotate: {
     animation: "spin 4s linear infinite",

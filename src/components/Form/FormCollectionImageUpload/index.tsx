@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     height: 100,
     marginRight: 16,
     borderRadius: 4,
-    backgroundColor: theme.colors.border.fourth,
+    backgroundColor: theme.colors.white,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -42,14 +42,14 @@ const useStyles = makeStyles((theme) => ({
   },
   label: {
     fontSize: theme.spacing(1.875),
-    color: theme.colors.text.seventh,
+    color: theme.colors.white,
   },
   button: {
     height: theme.spacing(5),
     borderRadius: 6,
     marginTop: theme.spacing(2),
-    backgroundColor: theme.colors.background.fourth,
-    color: theme.colors.text.default,
+    backgroundColor: theme.colors.primary60,
+    color: theme.colors.white,
     transition: "all 0.3s",
     cursor: "pointer",
     "&:hover": {
@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: 160,
   },
   circle: {
-    color: theme.colors.text.default,
+    color: theme.colors.white,
   },
 }));
 

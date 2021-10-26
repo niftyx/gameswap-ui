@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   itemPrice: {
-    color: theme.colors.text.default,
+    color: theme.colors.white,
   },
   itemBuy: {
     height: theme.spacing(5),

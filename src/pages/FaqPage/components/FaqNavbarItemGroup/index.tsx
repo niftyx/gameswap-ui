@@ -22,10 +22,10 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   title: {
-    color: theme.colors.text.seventh,
+    color: theme.colors.white,
   },
   icon: {
-    color: theme.colors.text.seventh,
+    color: theme.colors.white,
     transition: "all 0.3s",
     transform: "rotate(180deg)",
     "&.expanded": {
@@ -37,19 +37,19 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1.5),
     display: "block",
     textDecoration: "none",
-    color: theme.colors.text.seventh,
+    color: theme.colors.white,
     backgroundColor: theme.colors.transparent,
     transition: "all 0.3s",
     "&.active": {
-      color: theme.colors.text.default,
-      backgroundColor: transparentize(0.8, theme.colors.text.default),
+      color: theme.colors.white,
+      backgroundColor: transparentize(0.8, theme.colors.white),
     },
   },
   overEffect: {
     paddingLeft: theme.spacing(3),
     "&:hover": {
-      color: theme.colors.text.default,
-      backgroundColor: transparentize(0.6, theme.colors.text.default),
+      color: theme.colors.white,
+      backgroundColor: transparentize(0.6, theme.colors.white),
     },
   },
 }));

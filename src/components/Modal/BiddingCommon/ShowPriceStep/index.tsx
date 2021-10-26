@@ -13,12 +13,12 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
   },
   description: {
-    color: theme.colors.text.third,
+    color: theme.colors.white,
     fontSize: 14,
     lineHeight: "24px",
     marginBottom: 48,
     "& span": {
-      color: theme.colors.text.default,
+      color: theme.colors.white,
       fontSize: 16,
     },
   },
@@ -30,9 +30,9 @@ const useStyles = makeStyles((theme) => ({
   cancel: {
     height: theme.spacing(5),
     marginTop: theme.spacing(2),
-    backgroundColor: theme.colors.border.secondary,
+    backgroundColor: theme.colors.white,
     "&:hover": {
-      backgroundColor: transparentize(0.6, theme.colors.border.secondary),
+      backgroundColor: transparentize(0.6, theme.colors.white),
     },
   },
   priceWrapper: {
@@ -40,13 +40,13 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    borderBottom: `1px solid ${theme.colors.border.secondary}`,
+    borderBottom: `1px solid ${theme.colors.white}`,
   },
   priceToken: {
     fontSize: 20,
-    color: theme.colors.text.default,
+    color: theme.colors.white,
   },
-  priceUsd: { fontSize: 20, color: theme.colors.background.tenth },
+  priceUsd: { fontSize: 20, color: theme.colors.primary40 },
 }));
 
 interface IProps {

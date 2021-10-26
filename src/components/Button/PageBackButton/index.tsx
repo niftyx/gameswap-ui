@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     fontSize: theme.spacing(2.5),
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     cursor: "pointer",
     userSelect: "none",
     transition: "all 0.4s",
@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
       marginLeft: theme.spacing(1.25),
     },
     "&:hover": {
-      color: transparentize(0.2, theme.colors.text.default),
+      color: transparentize(0.2, theme.colors.white),
     },
   },
 }));

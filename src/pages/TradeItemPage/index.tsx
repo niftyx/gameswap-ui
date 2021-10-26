@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
   },
   leftContent: {
-    borderRight: `1px solid ${theme.colors.border.secondary}`,
+    borderRight: `1px solid ${theme.colors.white}`,
     flex: 1,
     height: "100%",
     padding: 16,

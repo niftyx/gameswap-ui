@@ -8,12 +8,12 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     textAlign: "center",
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     fontSize: theme.spacing(2.5),
   },
   redirect: {
     textAlign: "center",
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     fontSize: theme.spacing(3),
   },
   content: {

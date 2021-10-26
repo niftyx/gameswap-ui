@@ -7,9 +7,9 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     flex: 1,
-    backgroundColor: theme.colors.text.fourth,
+    backgroundColor: theme.colors.white,
     "&:hover": {
-      backgroundColor: transparentize(0.6, theme.colors.text.fourth),
+      backgroundColor: transparentize(0.6, theme.colors.white),
     },
     "& svg": {
       height: theme.spacing(6),
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     flexDirection: "column",
-    color: transparentize(0.2, theme.colors.text.default),
+    color: transparentize(0.2, theme.colors.white),
     fontSize: 12,
   },
 }));

@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
   },
   title: {
-    color: theme.colors.text.seventh,
+    color: theme.colors.white,
     fontSize: theme.spacing(3),
   },
   content: {
@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: "none",
     display: "flex",
     alignItems: "center",
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     "& > * + *": {
       marginLeft: theme.spacing(1),
     },

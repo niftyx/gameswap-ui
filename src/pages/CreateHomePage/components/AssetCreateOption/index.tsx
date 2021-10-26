@@ -7,9 +7,9 @@ const useStyles = makeStyles((theme) => ({
   root: {
     textDecoration: "none",
     transition: "all 0.5s",
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     "&:hover": {
-      color: transparentize(0.4, theme.colors.text.default),
+      color: transparentize(0.4, theme.colors.white),
     },
     "& + &": {
       marginLeft: theme.spacing(1.5),
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: transparentize(0.3, theme.colors.background.third),
+    backgroundColor: transparentize(0.3, theme.colors.primary80),
   },
   text: {
     fontSize: theme.spacing(2.25),

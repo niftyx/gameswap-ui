@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     borderRadius: theme.spacing(2),
-    border: `1px dashed ${theme.colors.border.third}`,
+    border: `1px dashed ${theme.colors.white}`,
     padding: theme.spacing(2),
     marginTop: theme.spacing(2.5),
   },
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   },
   selectorComment: {
     fontSize: theme.spacing(2),
-    color: theme.colors.text.seventh,
+    color: theme.colors.white,
     textAlign: "center",
   },
   selectorButton: {
@@ -43,9 +43,9 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: transparentize(0.6, theme.colors.background.fourth),
+    backgroundColor: transparentize(0.6, theme.colors.primary60),
     borderRadius: 6,
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     cursor: "pointer",
     userSelect: "none",
     margin: "auto",
@@ -55,14 +55,14 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
   },
   fileInfo: {
-    color: theme.colors.text.default,
+    color: theme.colors.white,
   },
   removeButton: {
     position: "absolute",
     right: theme.spacing(2),
     top: theme.spacing(2),
-    border: `1px solid ${theme.colors.text.default}`,
-    color: theme.colors.text.default,
+    border: `1px solid ${theme.colors.white}`,
+    color: theme.colors.white,
   },
 }));
 

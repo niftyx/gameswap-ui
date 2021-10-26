@@ -31,23 +31,23 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   description: {
-    color: transparentize(0.4, theme.colors.text.default),
+    color: transparentize(0.4, theme.colors.white),
   },
   inputLabel: {
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     fontSize: 20,
     fontWeight: 500,
   },
   verify: {
     cursor: "pointer",
     transition: "all 0.5s",
-    color: theme.colors.background.fourth,
+    color: theme.colors.primary60,
     "&:hover": {
       opacity: 0.7,
     },
   },
   at: {
-    color: transparentize(0.3, theme.colors.text.seventh),
+    color: transparentize(0.3, theme.colors.white),
   },
   button: {
     width: theme.spacing(30),

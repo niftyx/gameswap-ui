@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    color: theme.colors.text.default,
+    color: theme.colors.white,
   },
   icon: {
     width: theme.spacing(3),
@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     "& svg": {
       height: theme.spacing(3),
       width: theme.spacing(3),
-      color: theme.colors.text.default,
+      color: theme.colors.white,
     },
   },
 }));

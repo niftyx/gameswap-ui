@@ -5,14 +5,14 @@ import React from "react";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundColor: transparentize(0.8, theme.colors.text.default),
-    color: transparentize(0.55, theme.colors.text.default),
+    backgroundColor: transparentize(0.8, theme.colors.white),
+    color: transparentize(0.55, theme.colors.white),
     padding: "6px 13px 5px",
     display: "inline-block",
     borderRadius: theme.spacing(1.5),
     "&.active": {
-      backgroundColor: theme.colors.background.fourth,
-      color: theme.colors.text.default,
+      backgroundColor: theme.colors.primary60,
+      color: theme.colors.white,
     },
   },
 }));

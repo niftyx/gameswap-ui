@@ -11,20 +11,20 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 4,
-    color: theme.colors.text.default,
-    backgroundColor: theme.colors.border.secondary,
+    color: theme.colors.white,
+    backgroundColor: theme.colors.white,
     transition: "all 0.4s",
     border: `1px solid ${theme.colors.transparent}`,
     "&:hover": {
-      backgroundColor: transparentize(0.6, theme.colors.border.secondary),
+      backgroundColor: transparentize(0.6, theme.colors.white),
     },
     "&.accept-bid": {
-      borderColor: theme.colors.text.positive,
-      color: theme.colors.text.positive,
+      borderColor: theme.colors.white,
+      color: theme.colors.white,
     },
     "&.unlock-content": {
-      borderColor: theme.colors.background.fourth,
-      color: theme.colors.background.fourth,
+      borderColor: theme.colors.primary60,
+      color: theme.colors.primary60,
     },
   },
 }));

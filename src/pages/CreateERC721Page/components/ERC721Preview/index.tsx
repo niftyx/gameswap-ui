@@ -16,20 +16,20 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     marginTop: theme.spacing(1),
-    backgroundColor: theme.colors.background.preview,
+    backgroundColor: theme.colors.primary100,
     padding: theme.spacing(2),
     borderRadius: theme.spacing(2),
     minHeight: theme.spacing(40),
   },
   title: {
     fontSize: theme.spacing(3),
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     fontWeight: "bold",
   },
   assetWrapper: {
     position: "relative",
     paddingTop: "100%",
-    backgroundColor: theme.colors.background.secondary,
+    backgroundColor: theme.colors.primary70,
   },
   img: {
     position: "absolute",
@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
     top: 0,
     bottom: 0,
     borderRadius: theme.spacing(0.5),
-    backgroundColor: transparentize(0.6, theme.colors.background.tenth),
+    backgroundColor: transparentize(0.6, theme.colors.primary40),
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -75,15 +75,15 @@ const useStyles = makeStyles((theme) => ({
     top: 16,
     zIndex: 1,
     fontSize: theme.spacing(5),
-    color: theme.colors.text.default,
+    color: theme.colors.white,
   },
   icon: {
     fontSize: theme.spacing(15),
-    color: theme.colors.text.default,
+    color: theme.colors.white,
   },
   name: {
     fontSize: theme.spacing(2),
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     fontWeight: 500,
     marginTop: 8,
   },
@@ -94,25 +94,25 @@ const useStyles = makeStyles((theme) => ({
   },
   price: {
     fontSize: theme.spacing(2),
-    color: transparentize(0.2, theme.colors.text.default),
+    color: transparentize(0.2, theme.colors.white),
   },
   count: {
     fontSize: 14,
-    color: transparentize(0.2, theme.colors.text.secondary),
+    color: transparentize(0.2, theme.colors.white),
   },
   unlockWrapper: {
     marginTop: theme.spacing(1),
-    border: `1px solid ${theme.colors.border.sixth}`,
+    border: `1px solid ${theme.colors.white}`,
     padding: theme.spacing(2),
     borderRadius: theme.spacing(2),
   },
   unlockPlaceholder: {
     fontSize: theme.spacing(2),
-    color: transparentize(0.5, theme.colors.text.default),
+    color: transparentize(0.5, theme.colors.white),
   },
   unlockData: {
     fontSize: theme.spacing(2),
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     whiteSpace: "pre-line",
   },
 }));

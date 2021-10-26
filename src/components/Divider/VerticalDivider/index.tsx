@@ -6,7 +6,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     height: theme.spacing(3),
     width: 1,
-    backgroundColor: theme.colors.border.third,
+    backgroundColor: theme.colors.white,
   },
 }));
 

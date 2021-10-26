@@ -17,10 +17,10 @@ const useStyles = makeStyles((theme) => ({
     minWidth: theme.spacing(12),
   },
   input: {
-    color: theme.colors.text.third,
+    color: theme.colors.white,
   },
   sortIcon: {
-    color: theme.colors.text.third,
+    color: theme.colors.white,
     transform: "scaleX(-1)",
     filter: "FlipH",
   },

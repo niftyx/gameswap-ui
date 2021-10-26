@@ -7,25 +7,25 @@ import React, { ChangeEvent, useState } from "react";
 const useStyles = makeStyles((theme) => ({
   root: {
     minWidth: theme.spacing(30),
-    backgroundColor: theme.colors.background.fifth,
+    backgroundColor: theme.colors.primary80,
     borderRadius: theme.spacing(0.6125),
     padding: `${theme.spacing(1.5)}px ${theme.spacing(1.75)}px`,
-    color: transparentize(0.76, theme.colors.text.default),
+    color: transparentize(0.76, theme.colors.white),
     fontSize: theme.spacing(2),
     height: theme.spacing(6),
   },
   input: {
     "&::-webkit-input-placeholder": {
-      color: transparentize(0.76, theme.colors.text.default),
+      color: transparentize(0.76, theme.colors.white),
     },
     "&::-moz-placeholder": {
-      color: transparentize(0.76, theme.colors.text.default),
+      color: transparentize(0.76, theme.colors.white),
     },
     "&:-ms-input-placeholder": {
-      color: transparentize(0.76, theme.colors.text.default),
+      color: transparentize(0.76, theme.colors.white),
     },
     "&:-moz-placeholder": {
-      color: transparentize(0.76, theme.colors.text.default),
+      color: transparentize(0.76, theme.colors.white),
     },
   },
 }));

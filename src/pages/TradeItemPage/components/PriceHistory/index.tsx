@@ -18,23 +18,23 @@ const useStyles = makeStyles((theme) => ({
       "& .highcharts-range-selector-buttons": {
         "& .highcharts-button.highcharts-button-normal": {
           "& text": {
-            color: `${theme.colors.text.seventh} !important`,
-            fill: `${theme.colors.text.seventh} !important`,
+            color: `${theme.colors.white} !important`,
+            fill: `${theme.colors.white} !important`,
           },
         },
       },
       "& .highcharts-input-group": {
         "& .highcharts-label.highcharts-range-input": {
           "& text": {
-            color: `${theme.colors.text.seventh} !important`,
-            fill: `${theme.colors.text.seventh} !important`,
+            color: `${theme.colors.white} !important`,
+            fill: `${theme.colors.white} !important`,
           },
         },
       },
     },
   },
   empty: {
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     fontSize: 20,
   },
 }));

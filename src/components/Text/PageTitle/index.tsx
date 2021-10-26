@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
     lineHeight: "1.3",
     fontWeight: 600,
     letterSpacing: "-1px",
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     margin: `${theme.spacing(1.5)}px 0`,
   },
 }));

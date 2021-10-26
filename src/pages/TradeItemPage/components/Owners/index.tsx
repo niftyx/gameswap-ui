@@ -16,13 +16,13 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     textDecoration: "none",
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     "& > * + *": {
       marginLeft: 8,
     },
   },
   ownerItem: {
-    borderBottom: `1px solid ${theme.colors.border.secondary}`,
+    borderBottom: `1px solid ${theme.colors.white}`,
   },
 }));
 

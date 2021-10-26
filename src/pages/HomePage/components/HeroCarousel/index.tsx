@@ -82,7 +82,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     "&:before": {
       content: `" "`,
-      background: theme.colors.background.gradient4,
+      background: theme.colors.primary100,
       position: "absolute",
       left: 0,
       right: 0,
@@ -95,7 +95,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 80,
     fontFamily: "Nudista",
     lineHeight: "85px",
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     fontWeight: 500,
     [theme.breakpoints.down(1200)]: {
       fontSize: 50,
@@ -144,7 +144,7 @@ const useStyles = makeStyles((theme) => ({
         width: 24,
         height: 24,
         zIndex: 1,
-        color: theme.colors.text.default,
+        color: theme.colors.white,
         backgroundColor: "#3F8CFF",
         borderRadius: "50%",
         "&::before": {
@@ -180,16 +180,13 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       "-webkit-box-shadow": `0 0 6px 1px ${transparentize(
         0.2,
-        theme.colors.background.fourth
+        theme.colors.primary60
       )}`,
-      boxShadow: `0 0 6px 1px ${transparentize(
-        0.2,
-        theme.colors.background.fourth
-      )}`,
+      boxShadow: `0 0 6px 1px ${transparentize(0.2, theme.colors.primary60)}`,
     },
     "&.selected": {
-      "-webkit-box-shadow": `0 0 6px 2px ${theme.colors.background.fourth}`,
-      boxShadow: `0 0 6px 2px ${theme.colors.background.fourth}`,
+      "-webkit-box-shadow": `0 0 6px 2px ${theme.colors.primary60}`,
+      boxShadow: `0 0 6px 2px ${theme.colors.primary60}`,
     },
   },
   empty: { flex: 1 },

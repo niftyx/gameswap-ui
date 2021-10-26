@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
   title: {
     fontWeight: 500,
     fontSize: 24,
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     userSelect: "none",
   },
   link: {

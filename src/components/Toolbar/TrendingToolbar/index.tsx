@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   },
   balance: {
     flex: 1,
-    color: theme.colors.text.third,
+    color: theme.colors.white,
   },
   cart: {
     cursor: "pointer",

@@ -19,11 +19,11 @@ const useStyles = makeStyles((theme) => ({
   comment: {
     fontSize: theme.spacing(1.6125),
     marginTop: theme.spacing(2),
-    color: transparentize(0.4, theme.colors.text.default),
+    color: transparentize(0.4, theme.colors.white),
   },
   value: {
     fontSize: theme.spacing(6),
-    color: theme.colors.text.default,
+    color: theme.colors.white,
   },
 }));
 

@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
     transition: "all 0.5s",
     backgroundColor: theme.colors.transparent,
     "&:hover": {
-      backgroundColor: transparentize(0.9, theme.colors.text.default),
+      backgroundColor: transparentize(0.9, theme.colors.white),
     },
     "& + &": {
       marginTop: 16,
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flex: 1,
-    color: theme.colors.text.default,
+    color: theme.colors.white,
   },
   toggle: {},
 }));

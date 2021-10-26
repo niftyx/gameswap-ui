@@ -12,12 +12,12 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "column",
-    border: `2px solid ${theme.colors.border.fourth}`,
+    border: `2px solid ${theme.colors.white}`,
     cursor: "pointer",
     userSelect: "none",
     transition: "all 0.3s",
     "&.active": {
-      borderColor: theme.colors.background.fourth,
+      borderColor: theme.colors.primary60,
     },
 
     marginRight: 16,
@@ -31,12 +31,12 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   title: {
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     fontSize: theme.spacing(1.75),
     marginTop: 8,
   },
   subTitle: {
-    color: transparentize(0.25, theme.colors.text.default),
+    color: transparentize(0.25, theme.colors.white),
     fontSize: theme.spacing(1.5),
   },
 }));

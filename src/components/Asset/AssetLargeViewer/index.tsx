@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     top: 8,
     right: 8,
     zIndex: 1,
-    fill: theme.colors.text.default,
+    fill: theme.colors.white,
     width: 24,
     height: 24,
     "&.audio": {

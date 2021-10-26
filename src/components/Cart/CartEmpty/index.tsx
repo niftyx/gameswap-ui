@@ -15,12 +15,12 @@ const useStyles = makeStyles((theme) => ({
   title: {
     textAlign: "center",
     fontSize: theme.spacing(2.5),
-    color: theme.colors.text.default,
+    color: theme.colors.white,
   },
   comment: {
     textAlign: "center",
     fontSize: theme.spacing(2),
-    color: transparentize(0.4, theme.colors.text.default),
+    color: transparentize(0.4, theme.colors.white),
   },
 }));
 

@@ -21,10 +21,10 @@ const useStyles = makeStyles((theme) => ({
   },
   buy: {
     borderRadius: 6,
-    backgroundColor: theme.colors.background.fourth,
+    backgroundColor: theme.colors.primary60,
     height: theme.spacing(5),
     fontSize: theme.spacing(2),
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
   },
   divider: {
     height: 3,
-    backgroundColor: theme.colors.border.fifth,
+    backgroundColor: theme.colors.white,
     marginTop: theme.spacing(2),
   },
   reset: {
@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
     height: theme.spacing(4.5),
     minWidth: "auto",
     fontSize: 14,
-    color: transparentize(0.3, theme.colors.text.default),
+    color: transparentize(0.3, theme.colors.white),
   },
 }));
 

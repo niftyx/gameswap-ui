@@ -13,18 +13,18 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: "none",
     userSelect: "none",
     margin: "4px 12px",
-    color: transparentize(0.4, theme.colors.text.default),
+    color: transparentize(0.4, theme.colors.white),
     padding: "2px 0",
     cursor: "pointer",
     transition: "all 0.5s",
     borderBottom: `3px solid ${theme.colors.transparent}`,
     "&:hover": {
-      color: transparentize(0.2, theme.colors.text.default),
-      borderBottomColor: transparentize(0.2, theme.colors.text.default),
+      color: transparentize(0.2, theme.colors.white),
+      borderBottomColor: transparentize(0.2, theme.colors.white),
     },
     "&.active": {
-      color: theme.colors.text.default,
-      borderBottomColor: theme.colors.text.default,
+      color: theme.colors.white,
+      borderBottomColor: theme.colors.white,
     },
   },
 }));

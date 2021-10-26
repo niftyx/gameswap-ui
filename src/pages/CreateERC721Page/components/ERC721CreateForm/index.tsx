@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   notice: {
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     fontSize: theme.spacing(1.6125),
     "& + &": {
       marginTop: 0,
@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(5),
   },
   modelWrapper: {
-    backgroundColor: theme.colors.background.preview,
+    backgroundColor: theme.colors.primary100,
     marginTop: theme.spacing(1),
     borderRadius: 16,
     display: "flex",

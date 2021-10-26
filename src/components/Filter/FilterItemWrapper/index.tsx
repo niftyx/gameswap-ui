@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     cursor: "pointer",
   },
   title: {
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     fontSize: theme.spacing(2.25),
     userSelect: "none",
   },
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   button: {
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     padding: theme.spacing(1),
     display: "flex",
     justifyContent: "center",

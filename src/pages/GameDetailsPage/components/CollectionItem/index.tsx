@@ -7,7 +7,7 @@ import { ICollection } from "utils/types";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    border: `1px solid ${transparentize(0.9, theme.colors.text.default)}`,
+    border: `1px solid ${transparentize(0.9, theme.colors.white)}`,
     borderRadius: 6,
     overflow: "hidden",
     width: 300,
@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundRepeat: "no-repeat",
     "&:before": {
       content: `" "`,
-      backgroundImage: theme.colors.background.gradient2,
+      backgroundImage: theme.colors.primary100,
       position: "absolute",
       left: 0,
       right: 0,
@@ -72,12 +72,12 @@ const useStyles = makeStyles((theme) => ({
     visibility: "hidden",
   },
   name: {
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     fontSize: 16,
     fontWeight: 500,
   },
   description: {
-    color: theme.colors.text.third,
+    color: theme.colors.white,
     fontSize: 14,
     fontWeight: 500,
   },

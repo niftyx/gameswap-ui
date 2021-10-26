@@ -21,7 +21,7 @@ import SearchBar from "../SearchBar";
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.default,
-    borderBottomColor: theme.colors.border.secondary,
+    borderBottomColor: theme.colors.white,
     borderBottomWidth: 1,
     borderBottomStyle: "solid",
   },
@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   link: {
-    color: theme.colors.link.default,
+    color: theme.colors.white,
     fontSize: theme.custom.header.navItem.fontSize,
     lineHeight: theme.custom.header.navItem.lineHeight,
     fontWeight: theme.custom.header.navItem.fontWeight,
@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
       marginLeft: theme.spacing(2),
     },
     "&.active": {
-      color: theme.colors.background.fourth,
+      color: theme.colors.primary60,
     },
   },
   divider: {

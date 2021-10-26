@@ -7,13 +7,13 @@ import useCommonStyles from "styles/common";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
-    backgroundColor: transparentize(0.2, theme.colors.background.fifth),
+    backgroundColor: transparentize(0.2, theme.colors.primary80),
   },
   root: {
     position: "absolute",
     width: 580,
-    backgroundColor: theme.colors.background.secondary,
-    boxShadow: theme.colors.shadow.modal,
+    backgroundColor: theme.colors.primary70,
+    boxShadow: theme.colors.white,
     borderRadius: theme.spacing(1),
     padding: theme.spacing(6),
     paddingRight: theme.spacing(5),
@@ -35,14 +35,14 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     fontSize: theme.spacing(3.5),
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     flex: 1,
   },
   closeButton: {
     position: "absolute",
     right: -16,
     top: -16,
-    color: theme.colors.background.tenth,
+    color: theme.colors.primary40,
     padding: theme.spacing(0.5),
   },
   content: {

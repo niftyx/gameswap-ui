@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
   },
   divider: {
-    backgroundColor: transparentize(0.94, theme.colors.text.default),
+    backgroundColor: transparentize(0.94, theme.colors.white),
   },
 }));
 

@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     cursor: "pointer",
   },
   title: {
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     fontSize: theme.spacing(2),
     marginTop: theme.spacing(1.125),
   },
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     border: `8px solid ${theme.colors.transparent}`,
     transition: "all 0.3s",
     "&.active": {
-      borderColor: theme.colors.background.fourth,
+      borderColor: theme.colors.primary60,
     },
     height: 200,
     [theme.breakpoints.down("md")]: {

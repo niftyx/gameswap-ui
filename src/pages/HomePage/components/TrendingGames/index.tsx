@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
   },
   title: {
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     fontSize: 15,
   },
   slick: {

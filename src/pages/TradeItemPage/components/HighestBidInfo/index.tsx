@@ -21,9 +21,9 @@ const useStyles = makeStyles((theme) => ({
   root: {},
   main: {
     padding: "12px 32px",
-    backgroundColor: transparentize(0.9, theme.colors.text.default),
+    backgroundColor: transparentize(0.9, theme.colors.white),
     borderRadius: 4,
-    border: `1px solid ${theme.colors.border.secondary}`,
+    border: `1px solid ${theme.colors.white}`,
     display: "flex",
     alignItems: "center",
   },
@@ -34,33 +34,33 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
   },
   bidder: {
-    color: theme.colors.text.sixth,
+    color: theme.colors.white,
     fontSize: 14,
     margin: "0 24px",
     flex: 1,
 
     "& span": {
-      color: theme.colors.text.default,
+      color: theme.colors.white,
     },
   },
   priceWrapper: {},
   priceUsd: {
     fontSize: 20,
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     lineHeight: "23px",
   },
   priceToken: {
     fontSize: 14,
-    color: theme.colors.text.sixth,
+    color: theme.colors.white,
     lineHeight: "23px",
   },
   fee: {
     marginTop: 16,
-    color: theme.colors.text.sixth,
+    color: theme.colors.white,
     fontSize: 14,
     marginBottom: 16,
     "& span": {
-      color: theme.colors.background.tenth,
+      color: theme.colors.primary40,
     },
   },
 }));

@@ -22,10 +22,10 @@ const useStyles = makeStyles((theme) => ({
     flex: 1,
   },
   label: {
-    color: theme.colors.text.default,
+    color: theme.colors.white,
   },
   subLabel: {
-    color: transparentize(0.4, theme.colors.text.default),
+    color: transparentize(0.4, theme.colors.white),
     fontSize: theme.spacing(1.6125),
     marginTop: theme.spacing(2.5),
   },

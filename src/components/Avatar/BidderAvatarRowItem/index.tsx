@@ -27,15 +27,15 @@ const useStyles = makeStyles((theme) => ({
     flex: 1,
   },
   role: {
-    color: transparentize(0.4, theme.colors.text.default),
+    color: transparentize(0.4, theme.colors.white),
     "& span": {
-      color: theme.colors.text.default,
+      color: theme.colors.white,
     },
   },
   name: {
-    color: transparentize(0.4, theme.colors.text.default),
+    color: transparentize(0.4, theme.colors.white),
     "& span": {
-      color: theme.colors.text.default,
+      color: theme.colors.white,
     },
   },
 }));

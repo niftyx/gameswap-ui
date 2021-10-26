@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
   },
   cancel: {
     border: "none !important",
-    backgroundColor: theme.colors.background.tenth,
+    backgroundColor: theme.colors.primary40,
   },
 }));
 

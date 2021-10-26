@@ -4,8 +4,8 @@ import React from "react";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundColor: theme.colors.background.eighth,
-    color: theme.colors.text.default,
+    backgroundColor: theme.colors.primary60,
+    color: theme.colors.white,
     padding: "6px 15px 5px",
     fontSize: 10,
     display: "inline-block",

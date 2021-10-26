@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   info: {
-    color: theme.colors.text.default,
+    color: theme.colors.white,
   },
   btn: {
     height: theme.spacing(5),

@@ -11,10 +11,10 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
     padding: "0 18px",
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     fontSize: 12,
     borderRadius: 16,
-    backgroundColor: theme.colors.background.thirteenth,
+    backgroundColor: theme.colors.primary100,
   },
 }));
 

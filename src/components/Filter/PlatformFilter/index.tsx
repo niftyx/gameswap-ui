@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
   },
   label: {
-    color: transparentize(0.4, theme.colors.text.default),
+    color: transparentize(0.4, theme.colors.white),
   },
   iconButton: {
     padding: 0,

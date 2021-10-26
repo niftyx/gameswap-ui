@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 16,
     fontWeight: 700,
     textTransform: "uppercase",
-    color: transparentize(0.4, theme.colors.text.default),
+    color: transparentize(0.4, theme.colors.white),
     transition: "all 0.5s",
     textDecoration: "none",
     paddingBottom: 15,
@@ -38,19 +38,19 @@ const useStyles = makeStyles((theme) => ({
       transition: "all 0.5s",
     },
     "&:hover": {
-      color: theme.colors.text.default,
+      color: theme.colors.white,
       "&::before": {
         left: 0,
         right: 0,
-        backgroundColor: theme.colors.background.fourth,
+        backgroundColor: theme.colors.primary60,
       },
     },
     "&.active": {
-      color: theme.colors.text.default,
+      color: theme.colors.white,
       "&::before": {
         left: 0,
         right: 0,
-        backgroundColor: theme.colors.background.fourth,
+        backgroundColor: theme.colors.primary60,
       },
     },
   },

@@ -24,11 +24,11 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   balance: {
-    color: theme.colors.text.third,
+    color: theme.colors.white,
   },
   cart: {
     cursor: "pointer",
-    color: theme.colors.text.third,
+    color: theme.colors.white,
   },
   search: {
     flex: 3,

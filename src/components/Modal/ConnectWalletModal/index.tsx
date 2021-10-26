@@ -28,20 +28,20 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     outline: "none",
-    backgroundColor: transparentize(0.1, theme.colors.text.fourth),
+    backgroundColor: transparentize(0.1, theme.colors.white),
     minWidth: 480,
     borderRadius: theme.spacing(1),
     padding: `${theme.spacing(2)}px 0`,
     userSelect: `none`,
   },
   title: {
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     padding: `0 ${theme.spacing(2)}px`,
     fontSize: theme.spacing(2.5),
     marginBottom: 32,
   },
   comment: {
-    color: transparentize(0.2, theme.colors.text.default),
+    color: transparentize(0.2, theme.colors.white),
   },
   bottom: {
     padding: `0 ${theme.spacing(2)}px`,

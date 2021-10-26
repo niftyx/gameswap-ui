@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    color: theme.colors.text.fourth,
+    color: theme.colors.white,
     "& > * + *": {
       marginLeft: theme.spacing(0.5),
     },
@@ -23,19 +23,19 @@ const useStyles = makeStyles((theme) => ({
   error: {
     width: theme.spacing(5),
     height: theme.spacing(5),
-    color: theme.colors.text.fourth,
+    color: theme.colors.white,
   },
   comment: {
     fontSize: theme.spacing(3),
     lineHeight: `${theme.spacing(4)}px`,
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     marginTop: theme.spacing(3.5),
     marginBottom: theme.spacing(2),
   },
   detailComment: {
     fontSize: theme.spacing(3),
     lineHeight: `${theme.spacing(4)}px`,
-    color: theme.colors.text.fourth,
+    color: theme.colors.white,
   },
 }));
 

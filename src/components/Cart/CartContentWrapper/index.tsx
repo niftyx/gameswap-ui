@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   bottomNotice: {
     padding: `${theme.spacing(1.5)}px ${theme.spacing(1)}px`,
     borderRadius: 6,
-    backgroundColor: transparentize(0.9, theme.colors.text.default),
+    backgroundColor: transparentize(0.9, theme.colors.white),
     "& > * + *": {
       marginTop: theme.spacing(1),
     },
@@ -32,15 +32,15 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
   },
   itemsText: {
-    color: transparentize(0.5, theme.colors.text.default),
+    color: transparentize(0.5, theme.colors.white),
     fontSize: theme.spacing(1.75),
   },
   totalComment: {
-    color: transparentize(0.3, theme.colors.text.default),
+    color: transparentize(0.3, theme.colors.white),
     fontSize: theme.spacing(2),
   },
   totalPrice: {
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     fontSize: theme.spacing(2.5),
   },
   tradeButton: {

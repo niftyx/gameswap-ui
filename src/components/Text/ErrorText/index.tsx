@@ -4,7 +4,7 @@ import React from "react";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    color: theme.colors.text.error,
+    color: theme.colors.red40,
     fontSize: theme.spacing(2),
     wordBreak: "break-all",
   },

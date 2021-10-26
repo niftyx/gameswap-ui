@@ -10,13 +10,13 @@ const useStyles = makeStyles((theme) => ({
   comment: {
     fontSize: 16,
     lineHeight: 1.5,
-    color: transparentize(0.5, theme.colors.text.default),
+    color: transparentize(0.5, theme.colors.white),
     marginBottom: 4,
   },
   title: {
     fontSize: 18,
     lineHeight: 1.5,
-    color: transparentize(0.1, theme.colors.text.default),
+    color: transparentize(0.1, theme.colors.white),
   },
 }));
 

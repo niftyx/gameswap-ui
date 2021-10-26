@@ -18,22 +18,22 @@ const useStyles = makeStyles((theme) => ({
   icon: {
     fontSize: theme.spacing(6),
     marginRight: theme.spacing(2),
-    color: transparentize(0.7, theme.colors.text.default),
+    color: transparentize(0.7, theme.colors.white),
     transition: "all 0.5s",
     "&.approved": {
-      color: theme.colors.text.default,
+      color: theme.colors.white,
     },
   },
   progressWrapper: {
     marginRight: theme.spacing(2),
   },
   title: {
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     fontSize: theme.spacing(2.5),
     fontWeight: "bold",
   },
   description: {
-    color: transparentize(0.3, theme.colors.text.default),
+    color: transparentize(0.3, theme.colors.white),
     fontSize: theme.spacing(2),
   },
   button: {

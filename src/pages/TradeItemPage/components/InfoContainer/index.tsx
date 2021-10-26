@@ -52,16 +52,16 @@ const useStyles = makeStyles((theme) => ({
   },
   top: {
     padding: "0 24px",
-    borderBottom: `1px solid ${theme.colors.border.secondary}`,
+    borderBottom: `1px solid ${theme.colors.white}`,
   },
   highestAskUsd: {
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     fontSize: 50,
     fontWeight: 700,
   },
   highestAskToken: {
     fontSize: 20,
-    color: theme.colors.text.sixth,
+    color: theme.colors.white,
     fontWeight: 700,
     marginBottom: 20,
   },
@@ -75,14 +75,14 @@ const useStyles = makeStyles((theme) => ({
   },
   unlockData: {
     fontSize: theme.spacing(2),
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     whiteSpace: "pre-line",
     userSelect: "text",
   },
   headerSticky: {
     position: "sticky",
     top: 0,
-    backgroundColor: transparentize(0.9, theme.colors.text.secondary),
+    backgroundColor: transparentize(0.9, theme.colors.white),
     transition: "opacity 0.18s ease-in-out 0s",
     "&.visible": { backdropFilter: "blur(20px)" },
   },

@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   title: {
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     fontSize: theme.spacing(2),
   },
   toolbar: {

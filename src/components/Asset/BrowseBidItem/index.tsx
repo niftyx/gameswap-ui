@@ -22,10 +22,10 @@ const useStyles = makeStyles((theme) => ({
   root: {
     padding: "1px 12px",
     borderRadius: theme.spacing(1),
-    border: `1px solid ${transparentize(0.92, theme.colors.text.default)}`,
+    border: `1px solid ${transparentize(0.92, theme.colors.white)}`,
   },
   title: {
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     fontSize: theme.spacing(1.6125),
     textTransform: "uppercase",
   },
@@ -40,14 +40,14 @@ const useStyles = makeStyles((theme) => ({
     minWidth: "auto",
   },
   comment: {
-    color: transparentize(0.4, theme.colors.text.default),
+    color: transparentize(0.4, theme.colors.white),
     fontSize: theme.spacing(1.6125),
     textTransform: "uppercase",
     lineHeight: 1,
     display: "flex",
     alignItems: "center",
     "& span": {
-      color: theme.colors.text.default,
+      color: theme.colors.white,
       fontSize: theme.spacing(1.6125),
       lineHeight: 1,
     },
@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
     "& svg": {
       height: theme.spacing(3),
       width: theme.spacing(3),
-      color: theme.colors.text.default,
+      color: theme.colors.white,
     },
   },
 }));

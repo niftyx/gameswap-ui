@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
   },
   imgItem: {
     height: "40vh",
-    backgroundColor: theme.colors.background.eleventh,
+    backgroundColor: theme.colors.primary100,
     backgroundPositionY: "center",
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",
@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
     "&:before": {
       content: `" "`,
-      backgroundImage: theme.colors.background.gradient1,
+      backgroundImage: theme.colors.primary100,
       position: "absolute",
       left: 0,
       right: 0,
@@ -84,7 +84,7 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     left: theme.spacing(2),
     top: theme.spacing(4),
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     fontSize: 13,
   },
   comments: {
@@ -98,14 +98,14 @@ const useStyles = makeStyles((theme) => ({
   },
   name: {
     fontSize: 32,
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     fontWeight: "bold",
     marginRight: theme.spacing(3.5),
   },
   description: {
     fontSize: theme.spacing(2),
     lineHeight: 1.5,
-    color: transparentize(0.4, theme.colors.text.default),
+    color: transparentize(0.4, theme.colors.white),
     maxWidth: 500,
   },
   row: {
@@ -119,7 +119,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(3),
     borderRadius: "50%",
     overflow: "hidden",
-    border: `1px solid ${transparentize(0.8, theme.colors.text.default)}`,
+    border: `1px solid ${transparentize(0.8, theme.colors.white)}`,
   },
   editProfileNav: {
     display: "inline-flex",
@@ -133,30 +133,30 @@ const useStyles = makeStyles((theme) => ({
   },
   balanceLabel: {
     fontSize: theme.spacing(2),
-    color: theme.colors.text.sixth,
+    color: theme.colors.white,
     maxWidth: 500,
   },
   balanceUSD: {
     fontSize: theme.spacing(4.5),
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     maxWidth: 500,
   },
   balanceGSWAP: {
     fontSize: theme.spacing(3),
-    color: theme.colors.text.sixth,
+    color: theme.colors.white,
     maxWidth: 500,
   },
   arrowUp: {
     width: theme.spacing(3.5),
-    color: theme.colors.text.arrowUp,
+    color: theme.colors.white,
   },
   copyButton: {
     marginLeft: 8,
     cursor: "pointer",
-    color: transparentize(0.4, theme.colors.text.default),
+    color: transparentize(0.4, theme.colors.white),
     transition: "all 0.4s",
     "&:hover": {
-      color: theme.colors.text.default,
+      color: theme.colors.white,
     },
   },
   loadWrapper: {
@@ -170,7 +170,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
   },
   socialLink: {
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     textDecoration: "none",
     transition: "all 0.4s",
     "&:hover": {

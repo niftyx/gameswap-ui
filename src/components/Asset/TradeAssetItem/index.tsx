@@ -26,13 +26,13 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
     userSelect: "none",
     padding: 8,
-    backgroundColor: theme.colors.background.eleventh,
+    backgroundColor: theme.colors.primary100,
     borderRadius: 4,
     overflow: "hidden",
     transition: "all 0.4s",
     border: `2px solid ${theme.colors.transparent}`,
     "&.selected": {
-      borderColor: theme.colors.background.fourth,
+      borderColor: theme.colors.primary60,
     },
     "& .game-details-place-bid": {
       position: "absolute",
@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
       zIndex: -1,
     },
     "&:hover": {
-      backgroundColor: theme.colors.background.twelfth,
+      backgroundColor: theme.colors.primary90,
       "& .game-details-place-bid": {
         width: "auto",
         opacity: 1,
@@ -64,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
     width: "100%",
     paddingTop: "100%",
-    backgroundColor: theme.colors.background.sixth,
+    backgroundColor: theme.colors.primary80,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -86,11 +86,11 @@ const useStyles = makeStyles((theme) => ({
     right: 16,
     width: 26,
     height: 26,
-    backgroundColor: theme.colors.background.secondary,
+    backgroundColor: theme.colors.primary70,
     borderRadius: "50%",
     zIndex: 3,
     "& svg": {
-      color: theme.colors.text.heart,
+      color: theme.colors.white,
       width: 16,
       height: 16,
     },
@@ -102,15 +102,15 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
   },
   title: {
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     marginTop: 8,
     whiteSpace: "nowrap",
     overflow: "hidden",
     textOverflow: "ellipsis",
   },
-  topBid: { color: theme.colors.text.secondary, fontSize: 13 },
-  price: { color: theme.colors.text.default },
-  count: { color: theme.colors.text.secondary },
+  topBid: { color: theme.colors.white, fontSize: 13 },
+  price: { color: theme.colors.white },
+  count: { color: theme.colors.white },
 }));
 
 interface IProps {

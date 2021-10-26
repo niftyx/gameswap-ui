@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     "& svg": {
       height: Number(theme.custom.appHeaderItemHeight) / 2,
       width: Number(theme.custom.appHeaderItemHeight) / 2,
-      color: theme.colors.text.default,
+      color: theme.colors.white,
     },
   },
 }));

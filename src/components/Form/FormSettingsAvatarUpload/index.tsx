@@ -27,8 +27,8 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
     backgroundSize: "cover",
     backgroundPosition: "center",
-    border: `2px solid ${theme.colors.text.default}`,
-    backgroundColor: theme.colors.background.primary,
+    border: `2px solid ${theme.colors.white}`,
+    backgroundColor: theme.colors.primary100,
   },
   selectorButton: {
     width: theme.spacing(5),
@@ -37,13 +37,13 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: "50%",
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     cursor: "pointer",
     userSelect: "none",
     border: `1px dashed ${theme.colors.transparent}`,
     transition: "all 0.5s",
     "&:hover": {
-      borderColor: theme.colors.text.default,
+      borderColor: theme.colors.white,
     },
   },
 }));

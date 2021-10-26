@@ -28,11 +28,11 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1),
   },
   title: {
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     fontSize: theme.spacing(2),
   },
   description: {
-    color: theme.colors.background.tenth,
+    color: theme.colors.primary40,
     fontSize: theme.spacing(1.5),
     marginBottom: 12,
     display: "flex",
@@ -40,11 +40,11 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
   },
   content: {
-    backgroundColor: theme.colors.background.eleventh,
+    backgroundColor: theme.colors.primary100,
     borderRadius: 4,
     padding: theme.spacing(1),
     "&:hover": {
-      backgroundColor: theme.colors.background.twelfth,
+      backgroundColor: theme.colors.primary90,
     },
   },
   top: {
@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
     right: 0,
     top: 0,
     bottom: 0,
-    backgroundColor: transparentize(0.5, theme.colors.background.fourth),
+    backgroundColor: transparentize(0.5, theme.colors.primary60),
     backgroundSize: "cover",
     backgroundPosition: "center",
   },
@@ -98,7 +98,7 @@ const useStyles = makeStyles((theme) => ({
     width: 3,
     height: 3,
     borderRadius: "50%",
-    backgroundColor: theme.colors.background.tenth,
+    backgroundColor: theme.colors.primary40,
   },
   fakeImg: {
     display: "none !important",

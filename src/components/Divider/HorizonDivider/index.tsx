@@ -4,7 +4,7 @@ import React from "react";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundColor: theme.colors.border.secondary,
+    backgroundColor: theme.colors.white,
   },
 }));
 

@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
     overflow: "hidden",
     paddingTop: "51%",
-    backgroundColor: theme.colors.background.sixth,
+    backgroundColor: theme.colors.primary80,
   },
   content: {
     position: "absolute",

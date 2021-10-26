@@ -16,13 +16,13 @@ const useStyles = makeStyles((theme) => ({
     "& > * + *": {
       marginLeft: theme.spacing(3),
     },
-    color: transparentize(0.6, theme.colors.text.default),
+    color: transparentize(0.6, theme.colors.white),
     transition: "all 0.25s",
     "&:hover": {
-      color: transparentize(0.25, theme.colors.text.default),
+      color: transparentize(0.25, theme.colors.white),
     },
     "&.active": {
-      color: theme.colors.text.default,
+      color: theme.colors.white,
     },
   },
   icon: {

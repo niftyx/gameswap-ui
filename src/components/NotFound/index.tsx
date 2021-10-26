@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     minHeight: "50vh",
   },
-  text: { color: theme.colors.text.default },
+  text: { color: theme.colors.white },
 }));
 
 export const NotFound = () => {

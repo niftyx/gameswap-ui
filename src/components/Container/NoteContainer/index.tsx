@@ -7,14 +7,14 @@ const useStyles = makeStyles((theme) => ({
   root: {
     padding: `${theme.spacing(2)}px ${theme.spacing(2)}px`,
     borderRadius: theme.spacing(0.5),
-    backgroundColor: theme.colors.background.tenth,
+    backgroundColor: theme.colors.primary40,
     userSelect: "none",
   },
   header: {
     position: "relative",
   },
   title: {
-    color: theme.colors.text.default,
+    color: theme.colors.white,
     fontSize: theme.spacing(3),
   },
   closeIcon: {
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     right: 0,
     top: 0,
     cursor: "pointer",
-    color: transparentize(0.2, theme.colors.text.default),
+    color: transparentize(0.2, theme.colors.white),
   },
   content: {
     marginTop: theme.spacing(2),
