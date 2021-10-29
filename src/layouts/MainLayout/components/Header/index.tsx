@@ -20,8 +20,8 @@ import SearchBar from "../SearchBar";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundColor: theme.palette.background.default,
-    borderBottomColor: theme.colors.white,
+    backgroundColor: theme.colors.primary100,
+    borderBottomColor: theme.colors.primary85,
     borderBottomWidth: 1,
     borderBottomStyle: "solid",
   },
@@ -105,23 +105,24 @@ const Header = ({ className, ...rest }: AppBarProps) => {
           <LogoSvg className={classes.logo} />
         </NavLink>
         <div className={classes.toolbarRight}>
-          <Hidden mdDown>
+          {/* <Hidden mdDown>
             <BackNextGroup onBack={onBack} onNext={onNext} />
-          </Hidden>
+          </Hidden> */}
 
           <SearchBar className={classes.searchBar} />
+          <Box flexGrow={1}></Box>
 
-          <Box className={classes.menuItems} flexGrow={1}>
+          <Box className={classes.menuItems}>
             <div className={classes.menuItemsContent}>
               <Link
                 className={classes.link}
                 color="textSecondary"
                 component={NavLink}
-                to="/trade"
+                to="/swap"
                 underline="none"
                 variant="body2"
               >
-                TRADE
+                SWAP
               </Link>
               <Link
                 className={classes.link}
@@ -133,26 +134,16 @@ const Header = ({ className, ...rest }: AppBarProps) => {
               >
                 BROWSE
               </Link>
-              <Link
-                className={classes.link}
-                color="textSecondary"
-                component={NavLink}
-                to="/faq"
-                underline="none"
-                variant="body2"
-              >
-                HOW IT WORKS
-              </Link>
             </div>
           </Box>
+
+          <AccountInfoBar />
           <Hidden mdDown>
             <div className={classes.notiLaunchWrapper}>
               <Notifications className={classes.notifications} />
-              <LaunchPad className={classes.launchPad} />
+              {/* <LaunchPad className={classes.launchPad} /> */}
             </div>
           </Hidden>
-
-          <AccountInfoBar />
         </div>
       </Toolbar>
     </AppBar>

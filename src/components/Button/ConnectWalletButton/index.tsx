@@ -7,9 +7,9 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     flex: 1,
-    backgroundColor: theme.colors.white,
+    backgroundColor: theme.colors.primary80,
     "&:hover": {
-      backgroundColor: transparentize(0.6, theme.colors.white),
+      backgroundColor: transparentize(0.6, theme.colors.primary80),
     },
     "& svg": {
       height: theme.spacing(6),

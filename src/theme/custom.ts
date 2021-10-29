@@ -1,6 +1,6 @@
 const custom = {
-  appHeaderHeight: 70,
-  appHeaderItemHeight: 44,
+  appHeaderHeight: 64,
+  appHeaderItemHeight: 40,
   pageToolbarHeight: 50,
   appNavbarWidth: 240,
   header: {

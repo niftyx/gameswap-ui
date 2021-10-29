@@ -20,6 +20,11 @@ const routes = [
       },
       {
         exact: true,
+        path: "/swap",
+        component: lazy(() => import("pages/SwapPage")),
+      },
+      {
+        exact: true,
         path: "/assets/:id",
         component: lazy(() => import("pages/TradeItemPage")),
       },

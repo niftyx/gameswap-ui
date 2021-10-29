@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    color: theme.colors.white,
+    color: theme.colors.primary70,
   },
   icon: {
     width: theme.spacing(3),

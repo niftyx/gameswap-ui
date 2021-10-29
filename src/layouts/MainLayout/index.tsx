@@ -16,7 +16,7 @@ import { Header, Navbar } from "./components";
 const useStyles = makeStyles((theme) => ({
   container: {
     height: `calc(100vh - ${theme.custom.appHeaderHeight}px)`,
-    backgroundColor: theme.colors.primary70,
+    backgroundColor: theme.colors.primary100,
     marginTop: theme.custom.appHeaderHeight,
     overflowY: "auto",
   },
@@ -35,7 +35,7 @@ const MainLayout = (props: IProps & RouteComponentProps) => {
   const history = useHistory();
   const { initialized } = useConnectedWeb3Context();
 
-  const hideNavbarRoutes = ["/trade", "/browse", "/faq", "/assets/"];
+  const hideNavbarRoutes = ["/trade", "/browse", "/faq", "/assets/", "/swap"];
 
   const hideNavbar = hideNavbarRoutes
     .map(

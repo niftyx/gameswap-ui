@@ -22,3 +22,4 @@ export * from "./Progress";
 export * from "./Switch";
 export * from "./Account";
 export * from "./NotFound";
+export * from "./Common";

@@ -25,3 +25,14 @@ body * {
 model-viewer {
   --poster-color: transparent;
 }
+
+@keyframes move-up-down {
+  0%,
+  100% {
+    top: 0;
+  }
+
+  40% {
+    top: 3px;
+  }
+}

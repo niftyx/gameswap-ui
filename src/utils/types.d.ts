@@ -17,10 +17,10 @@ import {
 declare module "@material-ui/core/styles/createMuiTheme" {
   interface Theme {
     custom: {
-      appHeaderHeight: React.CSSProperties["height"];
-      appHeaderItemHeight: React.CSSProperties["height"];
-      pageToolbarHeight: React.CSSProperties["height"];
-      appNavbarWidth: React.CSSProperties["width"];
+      appHeaderHeight: number;
+      appHeaderItemHeight: number;
+      pageToolbarHeight: number;
+      appNavbarWidth: number;
       header: {
         navItem: {
           fontSize: React.CSSProperties["fontSize"];
@@ -33,6 +33,7 @@ declare module "@material-ui/core/styles/createMuiTheme" {
       transparent: string;
       primary100: string;
       primary90: string;
+      primary85: string;
       primary80: string;
       primary70: string;
       primary60: string;
@@ -53,10 +54,10 @@ declare module "@material-ui/core/styles/createMuiTheme" {
   // allow configuration using `createMuiTheme`
   interface ThemeOptions {
     custom: {
-      appHeaderHeight: React.CSSProperties["height"];
-      appHeaderItemHeight: React.CSSProperties["height"];
-      pageToolbarHeight: React.CSSProperties["height"];
-      appNavbarWidth: React.CSSProperties["width"];
+      appHeaderHeight: number;
+      appHeaderItemHeight: number;
+      pageToolbarHeight: number;
+      appNavbarWidth: number;
       header: {
         navItem: {
           fontSize: React.CSSProperties["fontSize"];
@@ -70,6 +71,7 @@ declare module "@material-ui/core/styles/createMuiTheme" {
       transparent: string;
       primary100: string;
       primary90: string;
+      primary85: string;
       primary80: string;
       primary70: string;
       primary60: string;

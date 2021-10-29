@@ -12,12 +12,13 @@ import clsx from "clsx";
 import React from "react";
 
 const useStyles = makeStyles((theme) => ({
-  root: {},
+  root: { marginLeft: 8 },
   moreButton: {
     borderRadius: 6,
     height: theme.custom.appHeaderItemHeight,
     width: theme.custom.appHeaderItemHeight,
     minWidth: theme.custom.appHeaderItemHeight,
+    backgroundColor: theme.colors.primary85,
     border: "none !important",
     padding: 5,
     "& svg": {

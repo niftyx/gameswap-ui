@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     outline: "none",
-    backgroundColor: transparentize(0.1, theme.colors.white),
+    backgroundColor: transparentize(0.1, theme.colors.primary70),
     minWidth: 480,
     borderRadius: theme.spacing(1),
     padding: `${theme.spacing(2)}px 0`,

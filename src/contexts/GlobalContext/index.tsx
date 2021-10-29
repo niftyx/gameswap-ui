@@ -8,6 +8,7 @@ import { useIsMountedRef } from "hooks";
 import { parseEther } from "packages/ethers/utils";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router";
+import { isObjectEqual } from "utils";
 import { getLogger } from "utils/logger";
 import {
   IGlobalData,
@@ -117,10 +118,14 @@ export const GlobalProvider = ({ children }: IProps) => {
         }
       }
     };
+
     if (!account) {
-      updateUserInfo();
+      updateUserInfo(userInfo);
       checkNextPath();
+
+      console.log("======", account, userInfo, currentData.userInfo);
     } else if (
+      account &&
       userInfo &&
       userInfo.id === account.toLowerCase() &&
       !currentData.userInfo

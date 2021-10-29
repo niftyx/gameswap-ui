@@ -30,8 +30,8 @@ const useStyles = makeStyles((theme) => ({
   },
   create: {
     padding: `0 10px 0 6px`,
-    borderRadius: theme.spacing(0.75),
-    backgroundColor: theme.colors.primary60,
+    borderRadius: 4,
+    backgroundColor: theme.colors.purple60,
     height: theme.custom.appHeaderItemHeight,
     display: "flex",
     justifyContent: "center",
@@ -42,36 +42,30 @@ const useStyles = makeStyles((theme) => ({
       display: "none",
     },
   },
-  label: {
-    fontSize: theme.spacing(1.25),
-    lineHeight: `${theme.spacing(1.75)}px`,
-    color: transparentize(0.3, theme.colors.white),
-  },
-  eth: {
-    padding: 3,
-    borderRadius: theme.spacing(0.75),
-    backgroundColor: theme.colors.primary100,
+  infoWrapper: {
+    backgroundColor: theme.colors.primary85,
     height: theme.custom.appHeaderItemHeight,
     display: "flex",
     alignItems: "center",
+    padding: 2,
+    borderRadius: 4,
+    paddingLeft: 12,
   },
-  ethBalance: {
-    padding: "4px 10px",
+  label: {
+    fontSize: 10,
+    color: theme.colors.primary60,
   },
+  eth: {
+    padding: 8,
+    display: "flex",
+    alignItems: "center",
+  },
+  ethBalance: { marginRight: 12 },
   ethValue: {
-    fontSize: theme.spacing(2),
-    lineHeight: `${theme.spacing(3)}px`,
-    color: transparentize(0.18, theme.colors.white),
+    color: theme.colors.white,
   },
   ethAddress: {
-    borderRadius: theme.spacing(0.75),
-    backgroundColor: theme.colors.primary70,
-    color: theme.colors.white,
-    height: "100%",
-    padding: `0 ${theme.spacing(1.5)}px`,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+    color: theme.colors.primary40,
     cursor: "pointer",
     userSelect: "none",
     transition: "all 0.3s",
@@ -80,10 +74,11 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   moreButton: {
-    borderRadius: 6,
-    backgroundColor: theme.colors.primary100,
-    height: theme.custom.appHeaderItemHeight,
-    width: theme.custom.appHeaderItemHeight,
+    borderRadius: 4,
+    backgroundColor: theme.colors.primary90,
+    width: theme.custom.appHeaderItemHeight - 4,
+    height: theme.custom.appHeaderItemHeight - 4,
+    marginLeft: 8,
     "& svg": {
       height: Number(theme.custom.appHeaderItemHeight) / 2,
       width: Number(theme.custom.appHeaderItemHeight) / 2,
@@ -171,44 +166,46 @@ const AccountInfoBar = (props: IProps) => {
             &nbsp;CREATE
           </NavLink>
 
-          <div className={classes.eth}>
-            <div className={classes.ethBalance}>
-              <Typography className={classes.label} component="div">
-                {gSwapToken.symbol}
-              </Typography>
-              <Typography className={classes.ethValue} component="div">
-                {formattedGswapBalance}
-              </Typography>
+          <div className={classes.infoWrapper}>
+            <div className={classes.eth}>
+              <div className={classes.ethBalance}>
+                <Typography className={classes.label} component="div">
+                  {gSwapToken.symbol}
+                </Typography>
+                <Typography className={classes.ethValue} component="div">
+                  {formattedGswapBalance}
+                </Typography>
+              </div>
+              <div className={classes.ethAddress} onClick={toProfile}>
+                <Typography component="div">
+                  {shortenAddress(account || "")}
+                </Typography>
+              </div>
             </div>
-            <div className={classes.ethAddress} onClick={toProfile}>
-              <Typography component="div">
-                {shortenAddress(account || "")}
-              </Typography>
-            </div>
+            <IconButton className={classes.moreButton} onClick={handleClick}>
+              <MoreHorizIcon />
+            </IconButton>
+            <Popover
+              anchorEl={anchorEl}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "right",
+              }}
+              className={classes.popover}
+              classes={{
+                paper: classes.popoverContent,
+              }}
+              id={id}
+              onClose={handleClose}
+              open={open}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+            >
+              <AccountPopoverContent onClose={handleClose} />
+            </Popover>
           </div>
-          <IconButton className={classes.moreButton} onClick={handleClick}>
-            <MoreHorizIcon />
-          </IconButton>
-          <Popover
-            anchorEl={anchorEl}
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "right",
-            }}
-            className={classes.popover}
-            classes={{
-              paper: classes.popoverContent,
-            }}
-            id={id}
-            onClose={handleClose}
-            open={open}
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "right",
-            }}
-          >
-            <AccountPopoverContent onClose={handleClose} />
-          </Popover>
         </>
       ) : (
         <Button
