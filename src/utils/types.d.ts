@@ -49,6 +49,7 @@ declare module "@material-ui/core/styles/createMuiTheme" {
       lightBg: string;
       redBlue: string;
       greenBlue: string;
+      gradient1: string;
     };
   }
   // allow configuration using `createMuiTheme`
@@ -87,6 +88,7 @@ declare module "@material-ui/core/styles/createMuiTheme" {
       lightBg: string;
       redBlue: string;
       greenBlue: string;
+      gradient1: string;
     };
   }
 }

@@ -113,7 +113,7 @@ export enum EAssetDetailTab {
   Info = "Info",
   Owners = "Owners",
   Price = "Price",
-  TradeHistory = "Trade History",
+  History = "History",
   Bids = "Bids",
 }
 

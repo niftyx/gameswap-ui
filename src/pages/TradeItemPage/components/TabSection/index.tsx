@@ -17,13 +17,13 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   item: {
-    fontSize: 16,
-    fontWeight: 700,
-    textTransform: "uppercase",
-    color: transparentize(0.4, theme.colors.white),
+    fontSize: 14,
+    fontWeight: 400,
+    lineHeight: "24px",
+    color: theme.colors.primary60,
     transition: "all 0.5s",
     textDecoration: "none",
-    paddingBottom: 15,
+    paddingBottom: 12,
     position: "relative",
     whiteSpace: "nowrap",
     "&::before": {
@@ -31,9 +31,9 @@ const useStyles = makeStyles((theme) => ({
       position: "absolute",
       left: "50%",
       bottom: 0,
-      height: 3,
+      height: 2,
       right: "50%",
-      borderRadius: 17,
+      borderRadius: 1,
       backgroundColor: theme.colors.transparent,
       transition: "all 0.5s",
     },
@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
       "&::before": {
         left: 0,
         right: 0,
-        backgroundColor: theme.colors.primary60,
+        backgroundColor: theme.colors.lime,
       },
     },
     "&.active": {
@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
       "&::before": {
         left: 0,
         right: 0,
-        backgroundColor: theme.colors.primary60,
+        backgroundColor: theme.colors.lime,
       },
     },
   },

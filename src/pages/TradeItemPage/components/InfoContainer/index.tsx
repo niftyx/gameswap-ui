@@ -26,13 +26,18 @@ import {
 import { capitalizeStr } from "utils/tools";
 import { IAssetItem } from "utils/types";
 
+import {
+  MockAssetInfoSection,
+  MockHeaderSection,
+  MockPriceBidSection,
+  TabSection,
+} from "..";
 import { BidsSectionTab } from "../BidsSectionTab";
 import { HeaderSection } from "../HeaderSection";
 import { HighestBidInfo } from "../HighestBidInfo";
 import { InfoSectionTab } from "../InfoSectionTab";
 import { Owners } from "../Owners";
 import { PriceHistory } from "../PriceHistory";
-import { TabSection } from "../TabSection";
 import { TradeHistory } from "../TradeHistory";
 
 const useStyles = makeStyles((theme) => ({
@@ -317,14 +322,16 @@ export const InfoContainer = (props: IProps) => {
           ></div>
         </BasicModal>
       )}
-      <HeaderSection
+      <MockHeaderSection />
+      {/* <HeaderSection
         className={clsx(
           classes.headerSticky,
           state.scroll > 20 ? "visible" : ""
         )}
         data={data}
-      />
-      <div className={classes.top}>
+      /> */}
+      <MockPriceBidSection />
+      {/* <div className={classes.top}>
         {highestAskUsd && highAskTokenStr ? (
           <div>
             <Typography className={classes.highestAskUsd} component="div">
@@ -366,11 +373,11 @@ export const InfoContainer = (props: IProps) => {
             token={highestBidToken}
           />
         )}
-      </div>
+      </div> */}
       <div className={clsx(classes.mainContent)}>
         <TabSection />
-
-        {(!tabName || tabName === EAssetDetailTab.Info) && (
+        <MockAssetInfoSection />
+        {/* {(!tabName || tabName === EAssetDetailTab.Info) && (
           <InfoSectionTab
             creator={data.creator || ""}
             data={data}
@@ -384,10 +391,10 @@ export const InfoContainer = (props: IProps) => {
         {tabName === EAssetDetailTab.Price && (
           <PriceHistory tradeHistoryData={historyData} />
         )}
-        {tabName === EAssetDetailTab.TradeHistory && (
+        {tabName === EAssetDetailTab.History && (
           <TradeHistory tradeHistoryData={historyData} />
         )}
-        {tabName === EAssetDetailTab.Bids && <BidsSectionTab data={data} />}
+        {tabName === EAssetDetailTab.Bids && <BidsSectionTab data={data} />} */}
       </div>
     </div>
   );

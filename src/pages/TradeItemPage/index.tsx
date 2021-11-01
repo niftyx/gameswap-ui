@@ -4,7 +4,7 @@ import { useAssetDetailsWithOrderFromId } from "helpers";
 import React from "react";
 import { Redirect, useParams } from "react-router-dom";
 
-import { InfoContainer, ItemViewSection } from "./components";
+import { HistoryNavBar, InfoContainer, ItemViewSection } from "./components";
 
 const useStyles = makeStyles((theme) => ({
   root: { padding: 0 },
@@ -14,12 +14,10 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
   },
   leftContent: {
-    borderRight: `1px solid ${theme.colors.white}`,
-    flex: 1,
+    borderRight: `1px solid ${theme.colors.primary85}`,
+    width: "100%",
     height: "100%",
     padding: 16,
-    display: "flex",
-    alignItems: "center",
   },
   rightContent: {
     maxWidth: 500,
@@ -52,6 +50,7 @@ const TradeItemPage = () => {
         {assetData && assetData.image && (
           <>
             <div className={classes.leftContent}>
+              <HistoryNavBar />
               <ItemViewSection data={assetData} />
             </div>
             <div className={classes.rightContent}>

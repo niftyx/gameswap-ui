@@ -8,8 +8,8 @@ import { shortenAddress } from "utils";
 
 const IdenticonComponent = Identicon as any;
 
-const AVATAR_SIZE = 50;
-const tickerWidth = 24;
+const AVATAR_SIZE = 32;
+const tickerWidth = 20;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,7 +30,8 @@ const useStyles = makeStyles((theme) => ({
     flex: 1,
   },
   role: {
-    color: theme.colors.white,
+    color: theme.colors.primary60,
+    fontSize: 14,
   },
   name: {
     color: theme.colors.white,
@@ -44,6 +45,7 @@ const useStyles = makeStyles((theme) => ({
     left: AVATAR_SIZE - tickerWidth / 2,
     width: tickerWidth,
     height: tickerWidth,
+    color: theme.colors.lime,
   },
 }));
 

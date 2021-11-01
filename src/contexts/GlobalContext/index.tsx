@@ -119,11 +119,9 @@ export const GlobalProvider = ({ children }: IProps) => {
       }
     };
 
-    if (!account) {
+    if (!account && !isObjectEqual(userInfo, currentData.userInfo || {})) {
       updateUserInfo(userInfo);
       checkNextPath();
-
-      console.log("======", account, userInfo, currentData.userInfo);
     } else if (
       account &&
       userInfo &&

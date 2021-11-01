@@ -5,3 +5,7 @@ export * from "./InfoSectionTab";
 export * from "./HeaderSection";
 export * from "./BidsSectionTab";
 export * from "./HighestBidInfo";
+export * from "./HistoryNavBar";
+export * from "./MockHeaderSection";
+export * from "./MockAssetInfoSection";
+export * from "./MockPriceBidSection";
