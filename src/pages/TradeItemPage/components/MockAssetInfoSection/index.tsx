@@ -103,7 +103,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 6,
     marginBottom: 6,
   },
-  sliderRail: { height: 8, background: theme.colors.gradient1 },
+  sliderRail: { height: 8, background: theme.colors.gradient1, opacity: 1 },
   sliderTrack: {
     height: 8,
     background: theme.colors.transparent,

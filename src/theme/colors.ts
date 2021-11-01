@@ -27,7 +27,8 @@ const colors = [
         "radial-gradient(90.23% 137.16% at 92.97% 86.25%, #FF00F5 0%, #00D1FF 100%)",
       greenBlue:
         "radial-gradient(100% 154.04% at 0% 0%, #00F48D 0%, #447AF5 100%)",
-      gradient1: "linear-gradient(90deg, #FF5FB3 4.3%, #E00076 100%)",
+      gradient1:
+        "linear-gradient(90deg, #447AF5 0%, #A1F930 18.75%, #FFEB37 37.5%, #FF8933 58.33%, #FF5FB3 79.17%, #E10378 100%)",
     },
   },
   {
@@ -55,7 +56,8 @@ const colors = [
         "radial-gradient(90.23% 137.16% at 92.97% 86.25%, #FF00F5 0%, #00D1FF 100%)",
       greenBlue:
         "radial-gradient(100% 154.04% at 0% 0%, #00F48D 0%, #447AF5 100%)",
-      gradient1: "linear-gradient(90deg, #FF5FB3 4.3%, #E00076 100%)",
+      gradient1:
+        "linear-gradient(90deg, #447AF5 0%, #A1F930 18.75%, #FFEB37 37.5%, #FF8933 58.33%, #FF5FB3 79.17%, #E10378 100%)",
     },
   },
 ];
