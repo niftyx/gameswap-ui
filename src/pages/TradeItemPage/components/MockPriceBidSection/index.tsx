@@ -80,7 +80,7 @@ export const MockPriceBidSection = (props: IProps) => {
         </Typography>
         <Typography className={classes.feeWrapper}>
           Service fee: 5% &nbsp;
-          <img alt="gswpa" src="/images/icons/info.svg" />
+          <img alt="gswpa" src="/svgs/icons/info.svg" />
         </Typography>
       </div>
       <div className={classes.buttons}>
