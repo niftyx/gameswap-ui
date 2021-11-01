@@ -74,6 +74,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 14,
     "& span": {
       color: theme.colors.white,
+      marginLeft: 16,
     },
     marginBottom: 8,
   },
@@ -86,6 +87,7 @@ const useStyles = makeStyles((theme) => ({
     "& a": {
       color: theme.colors.blue,
       textDecoration: "none",
+      marginLeft: 16,
     },
   },
   royalty: {
