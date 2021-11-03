@@ -6,6 +6,7 @@ const colors = [
     name: THEME.Black,
     colors: {
       transparent: "#0000",
+      bg: "#1b1b21",
       primary100: "#09090B",
       primary90: "#131216",
       primary85: "#1D1C22",
@@ -35,6 +36,7 @@ const colors = [
     name: THEME.White,
     colors: {
       transparent: "#0000",
+      bg: "#1b1b21",
       primary100: "#01D27A",
       primary90: "#7DDA06",
       primary85: "#1D1C22",

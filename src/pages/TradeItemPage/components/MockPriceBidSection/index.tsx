@@ -1,9 +1,7 @@
 import { Button, Typography, makeStyles } from "@material-ui/core";
-import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import clsx from "clsx";
 import React from "react";
 import Identicon from "react-identicons";
-import { shortenAddress } from "utils";
 const IdenticonComponent = Identicon as any;
 
 const useStyles = makeStyles((theme) => ({

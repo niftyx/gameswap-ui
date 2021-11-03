@@ -3,8 +3,13 @@ import { PageContainer, SwapControlBar } from "components";
 import { useConnectedWeb3Context } from "contexts";
 import React from "react";
 
-import { OfferSection } from "./components";
-import { YourSwapSection } from "./components/YourSwapSection";
+import {
+  EmptyInventorySection,
+  NoWalletSection,
+  OfferSection,
+  TradeSection,
+  YourSwapSection,
+} from "./components";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,11 +31,13 @@ const SwapPage = () => {
       <div className={classes.left}>
         <OfferSection />
         <SwapControlBar />
+        {isConnected ? <EmptyInventorySection /> : <NoWalletSection />}
       </div>
       <div className={classes.filter}></div>
       <div className={classes.right}>
         <YourSwapSection />
         <SwapControlBar />
+        <TradeSection />
       </div>
     </PageContainer>
   );

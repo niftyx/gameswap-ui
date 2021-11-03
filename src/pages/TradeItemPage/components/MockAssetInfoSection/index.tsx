@@ -1,11 +1,7 @@
 import { Grid, Slider, Typography, makeStyles } from "@material-ui/core";
-import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import clsx from "clsx";
 import { OwnerAvatarRowItem } from "components";
 import React from "react";
-import Identicon from "react-identicons";
-import { shortenAddress } from "utils";
-const IdenticonComponent = Identicon as any;
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -198,13 +194,13 @@ export const MockAssetInfoSection = (props: IProps) => {
       </div>
       <div className={classes.catWrapper}>
         <Grid container spacing={2}>
-          <Grid xs={6}>
+          <Grid item xs={6}>
             <div className={classes.catItem}>
               <img alt="game" src="/images/mock/inner.png" />
               Inner circle Thing Collection
             </div>
           </Grid>
-          <Grid xs={6}>
+          <Grid item xs={6}>
             <div className={classes.catItem}>
               <img alt="game" src="/images/mock/operation.png" />
               Operation Riptied

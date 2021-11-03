@@ -31,6 +31,7 @@ declare module "@material-ui/core/styles/createMuiTheme" {
     };
     colors: {
       transparent: string;
+      bg: string;
       primary100: string;
       primary90: string;
       primary85: string;
@@ -69,7 +70,7 @@ declare module "@material-ui/core/styles/createMuiTheme" {
     };
     colors: {
       transparent: string;
-      transparent: string;
+      bg: string;
       primary100: string;
       primary90: string;
       primary85: string;
@@ -433,4 +434,17 @@ interface IAuthToken {
   jwt_token: string;
   jwt_expires_in: number;
   expires_at: number;
+}
+
+// mock
+interface ISwapAssetItem {
+  id: string;
+  img: string;
+  change: number;
+  name: string;
+  verified: boolean;
+  price: number;
+  dollar: number;
+  totalBids: number;
+  topBidNumber: number;
 }
