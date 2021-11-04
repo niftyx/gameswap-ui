@@ -1,5 +1,8 @@
 import { Button, makeStyles } from "@material-ui/core";
 import CropFreeIcon from "@material-ui/icons/CropFree";
+import { ReactComponent as CubeOutlineIcon } from "assets/svgs/cube-outline.svg";
+import { ReactComponent as GalleryIcon } from "assets/svgs/gallery.svg";
+import { ReactComponent as PictureIcon } from "assets/svgs/picture-in-picture-exit-fill.svg";
 import clsx from "clsx";
 import { AssetLargeViewer } from "components";
 import React from "react";
@@ -11,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
     overflow: "hidden",
     borderRadius: 8,
-    paddingTop: "48%",
+    paddingTop: "51%",
     backgroundColor: theme.colors.primary85,
   },
   content: {
@@ -83,21 +86,24 @@ export const ItemViewSection = (props: IProps) => {
             color="primary"
             variant="contained"
           >
-            3D View
+            <CubeOutlineIcon />
+            &nbsp; 3D View
           </Button>
           <Button
             className={classes.button}
             color="primary"
             variant="contained"
           >
-            Inspect In-Game
+            <PictureIcon />
+            &nbsp; Inspect In-Game
           </Button>
           <Button
             className={classes.button}
             color="primary"
             variant="contained"
           >
-            Screenshots
+            <GalleryIcon />
+            &nbsp; Screenshots
           </Button>
           <CropFreeIcon className={classes.fullScreenIcon} />
         </div>

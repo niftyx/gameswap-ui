@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
     borderRight: `1px solid ${theme.colors.primary85}`,
     width: "100%",
     height: "100%",
-    padding: 16,
+    padding: 32,
   },
   rightContent: {
     maxWidth: 500,
