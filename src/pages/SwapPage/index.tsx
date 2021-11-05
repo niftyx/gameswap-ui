@@ -1,7 +1,9 @@
 import { makeStyles } from "@material-ui/core";
-import { PageContainer, SwapControlBar } from "components";
+import { PageContainer, SwapControlBar, SwapFilter } from "components";
 import { useConnectedWeb3Context } from "contexts";
-import React from "react";
+import React, { useState } from "react";
+import { EMembership } from "utils/enums";
+import { ITradeFilter } from "utils/types";
 
 import {
   EmptyInventorySection,
@@ -20,9 +22,32 @@ const useStyles = makeStyles((theme) => ({
   filter: { width: 256, margin: "0 24px" },
 }));
 
+interface IState {
+  tradeFilter: ITradeFilter;
+}
+
 const SwapPage = () => {
   const classes = useStyles();
   const { account } = useConnectedWeb3Context();
+  const [state, setState] = useState<IState>({
+    tradeFilter: {
+      priceEnabled: false,
+      statusEnabled: false,
+      collectionEnabled: false,
+      saleCurrencyEnabled: false,
+      platformEnabled: false,
+      membership: EMembership.Basic,
+    },
+  });
+
+  const updateTradeFilter = (newValues: any) =>
+    setState((prevState) => ({
+      ...prevState,
+      tradeFilter: {
+        ...prevState.tradeFilter,
+        ...newValues,
+      },
+    }));
 
   const isConnected = !!account;
 
@@ -33,7 +58,12 @@ const SwapPage = () => {
         <SwapControlBar />
         {isConnected ? <EmptyInventorySection /> : <NoWalletSection />}
       </div>
-      <div className={classes.filter}></div>
+      <div className={classes.filter}>
+        <SwapFilter
+          filter={state.tradeFilter}
+          updateFilter={updateTradeFilter}
+        />
+      </div>
       <div className={classes.right}>
         <YourSwapSection />
         <SwapControlBar />

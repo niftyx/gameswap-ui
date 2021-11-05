@@ -2,7 +2,7 @@ import { Typography, makeStyles } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import clsx from "clsx";
 import { MoreDownArrow } from "components";
-import React from "react";
+import React, { useState } from "react";
 import useCommonStyles from "styles/common";
 
 const useStyles = makeStyles((theme) => ({
@@ -14,7 +14,10 @@ const useStyles = makeStyles((theme) => ({
   header: {
     display: "flex",
     alignItems: "center",
-    marginBottom: 16,
+
+    cursor: "pointer",
+    transition: "all 0.4s",
+    "&:hover": { opacity: 0.7 },
   },
   headerIcon: { color: theme.colors.primary60 },
   headerTitle: {
@@ -42,18 +45,35 @@ interface IProps {
   className?: string;
 }
 
+interface IState {
+  expanded: boolean;
+}
+
 export const OfferSection = (props: IProps) => {
   const classes = useStyles();
   const commonClasses = useCommonStyles();
+  const [state, setState] = useState<IState>({ expanded: false });
+
+  const setExpanded = (expanded: boolean) =>
+    setState((prev) => ({ ...prev, expanded }));
 
   return (
     <div className={clsx(classes.root, props.className)}>
-      <div className={classes.header}>
+      <div
+        className={classes.header}
+        onClick={() => setExpanded(!state.expanded)}
+      >
         <ExpandMoreIcon className={classes.headerIcon} />
         <Typography className={classes.headerTitle}>You offer</Typography>
         <Typography className={classes.headerPrice}>0 items - $0</Typography>
       </div>
-      <div className={classes.content}>
+      <div
+        className={clsx(
+          commonClasses.maxHeightTransition,
+          classes.content,
+          state.expanded && "visible"
+        )}
+      >
         <div className={classes.commentWrapper}>
           <Typography align="center" className={classes.commentText}>
             Start adding your <span>items you want to trade</span> from your
