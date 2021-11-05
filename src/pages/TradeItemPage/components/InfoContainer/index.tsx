@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
   },
   top: {
-    padding: "0 24px",
+    padding: "0 32px",
     borderBottom: `1px solid ${theme.colors.white}`,
   },
   highestAskUsd: {

@@ -4,7 +4,7 @@ import clsx from "clsx";
 import React from "react";
 
 const useStyles = makeStyles((theme) => ({
-  root: { padding: 16 },
+  root: { padding: "32px 24px" },
   top: {
     display: "flex",
     alignItems: "center",

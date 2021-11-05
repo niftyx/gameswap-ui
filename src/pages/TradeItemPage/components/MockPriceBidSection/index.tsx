@@ -5,7 +5,7 @@ import Identicon from "react-identicons";
 const IdenticonComponent = Identicon as any;
 
 const useStyles = makeStyles((theme) => ({
-  root: { padding: 16 },
+  root: { padding: 24 },
   dollar: { fontSize: 36, color: theme.colors.white, fontWeight: 600 },
   tokenRow: {
     margin: "6px 0",
@@ -47,7 +47,13 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: `1px solid ${theme.colors.primary85}`,
     paddingBottom: 24,
   },
-  bidderAvatar: { borderRadius: "50%", overflow: "hidden" },
+  bidderAvatar: {
+    borderRadius: "50%",
+    overflow: "hidden",
+    minWidth: 32,
+    width: 32,
+    height: 32,
+  },
   bidderText: {
     flex: 1,
     marginLeft: 24,
@@ -106,7 +112,7 @@ export const MockPriceBidSection = (props: IProps) => {
       </div>
       <div className={classes.bidder}>
         <div className={classes.bidderAvatar}>
-          <IdenticonComponent bg="#02D290" size={32} string="bidder" />
+          <IdenticonComponent bg="#fff" size={32} string="bidder" />
         </div>
 
         <Typography className={classes.bidderText}>
