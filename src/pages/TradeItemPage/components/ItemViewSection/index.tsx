@@ -44,15 +44,7 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
   },
   button: {
-    height: 40,
-    backgroundColor: theme.colors.transparent,
     border: `1px solid ${theme.colors.primary85}`,
-    "& span": { color: theme.colors.primary60 },
-    "&.active": {
-      backgroundColor: theme.colors.primary40,
-      borderColor: theme.colors.primary40,
-      "& span": { color: theme.colors.white },
-    },
     "&+&": { marginLeft: 16 },
   },
   fullScreenIcon: {
@@ -82,8 +74,8 @@ export const ItemViewSection = (props: IProps) => {
         />
         <div className={classes.controlBar}>
           <Button
-            className={clsx(classes.button, "active")}
-            color="primary"
+            className={classes.button}
+            color="secondary"
             variant="contained"
           >
             <CubeOutlineIcon />
@@ -91,7 +83,7 @@ export const ItemViewSection = (props: IProps) => {
           </Button>
           <Button
             className={classes.button}
-            color="primary"
+            color="secondary"
             variant="contained"
           >
             <PictureIcon />
@@ -99,7 +91,7 @@ export const ItemViewSection = (props: IProps) => {
           </Button>
           <Button
             className={classes.button}
-            color="primary"
+            color="secondary"
             variant="contained"
           >
             <GalleryIcon />

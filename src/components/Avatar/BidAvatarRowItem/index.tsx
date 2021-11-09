@@ -1,4 +1,5 @@
 import { Avatar, Typography, makeStyles } from "@material-ui/core";
+import clsx from "clsx";
 import { transparentize } from "polished";
 import React from "react";
 import Identicon from "react-identicons";
@@ -7,7 +8,7 @@ import { shortenAddress } from "utils";
 
 const IdenticonComponent = Identicon as any;
 
-const AVATAR_SIZE = 50;
+const AVATAR_SIZE = 32;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,12 +29,14 @@ const useStyles = makeStyles((theme) => ({
     flex: 1,
   },
   role: {
+    fontSize: 14,
     color: transparentize(0.4, theme.colors.white),
     "& span": {
       color: theme.colors.white,
     },
   },
   name: {
+    fontSize: 14,
     color: transparentize(0.4, theme.colors.white),
     "& span": {
       color: theme.colors.white,
@@ -52,6 +55,7 @@ interface IProps {
   address?: string;
   name?: string;
   href?: string;
+  className?: string;
 }
 
 export const BidAvatarRowItem = (props: IProps) => {
@@ -59,7 +63,7 @@ export const BidAvatarRowItem = (props: IProps) => {
   const { address = "", comment1, href, image, name, tokenPrice } = props;
 
   return (
-    <div className={classes.root}>
+    <div className={clsx(classes.root, props.className)}>
       <div className={classes.left}>
         {image && (
           <Avatar alt="avatar" className={classes.avatar} src={image} />

@@ -27,7 +27,19 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   ownerItem: {
-    borderBottom: `1px solid ${theme.colors.white}`,
+    // borderBottom: `1px solid ${theme.colors.white}`,
+  },
+  royalty: {
+    width: 40,
+    height: 40,
+    borderRadius: "50%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: 12,
+    "& span": { fontSize: 8 },
+    color: theme.colors.lime,
+    backgroundColor: theme.colors.primary85,
   },
 }));
 
@@ -81,13 +93,27 @@ export const TradeHistory = (props: IProps) => {
               break;
           }
           return (
-            <OwnerAvatarRowItem
-              address={item.to}
-              className={classes.ownerItem}
-              href={item.to ? `/users/${item.to}` : undefined}
-              key={item.timestamp}
-              roleName={roleStr}
-            />
+            <>
+              <OwnerAvatarRowItem
+                address={item.to}
+                className={classes.ownerItem}
+                href={item.to ? `/users/${item.to}` : undefined}
+                key={item.timestamp}
+                roleName={roleStr}
+              />
+              <OwnerAvatarRowItem
+                address={item.to}
+                className={classes.ownerItem}
+                href={item.to ? `/users/${item.to}` : undefined}
+                key={item.timestamp}
+                right={() => (
+                  <span className={classes.royalty}>
+                    10<span>%</span>
+                  </span>
+                )}
+                roleName={roleStr}
+              />
+            </>
           );
         })
       )}

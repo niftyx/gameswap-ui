@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   ownerItem: {
-    borderBottom: `1px solid ${theme.colors.white}`,
+    // borderBottom: `1px solid ${theme.colors.white}`,
   },
 }));
 

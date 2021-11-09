@@ -68,14 +68,14 @@ export const PriceHistory = (props: IProps) => {
     }));
 
   const renderChart = () => {
-    if (saleHistoryItems.length === 0) {
-      return (
-        <Typography align="center" className={classes.empty}>
-          No Price History
-        </Typography>
-      );
-    }
-    const chartData = saleHistoryItems.map((item) => {
+    // if (saleHistoryItems.length === 0) {
+    //   return (
+    //     <Typography align="center" className={classes.empty}>
+    //       No Price History
+    //     </Typography>
+    //   );
+    // }
+    let chartData = saleHistoryItems.map((item) => {
       const token = getTokenFromAddress(
         networkId || DEFAULT_NETWORK_ID,
         item.price.tokenAddress
@@ -90,6 +90,16 @@ export const PriceHistory = (props: IProps) => {
         1,
       ];
     });
+
+    if (chartData.length === 0) {
+      chartData = [
+        [1604869032000, 100, 1],
+        [1609869032000, 300, 1],
+        [1616869032000, 200, 1],
+        [1619869032000, 600, 1],
+        [1628869032000, 700, 1],
+      ];
+    }
 
     const ohlc = [],
       volume = [],

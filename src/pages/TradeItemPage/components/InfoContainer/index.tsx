@@ -376,14 +376,15 @@ export const InfoContainer = (props: IProps) => {
       </div> */}
       <div className={clsx(classes.mainContent)}>
         <TabSection />
-        <MockAssetInfoSection />
-        {/* {(!tabName || tabName === EAssetDetailTab.Info) && (
-          <InfoSectionTab
-            creator={data.creator || ""}
-            data={data}
-            onUnlockData={onUnlockData}
-            unlocking={state.unlocking}
-          />
+        {/* <MockAssetInfoSection /> */}
+        {(!tabName || tabName === EAssetDetailTab.Info) && (
+          <MockAssetInfoSection />
+          // <InfoSectionTab
+          //   creator={data.creator || ""}
+          //   data={data}
+          //   onUnlockData={onUnlockData}
+          //   unlocking={state.unlocking}
+          // />
         )}
         {tabName === EAssetDetailTab.Owners && (
           <Owners tradeHistoryData={historyData} />
@@ -394,7 +395,7 @@ export const InfoContainer = (props: IProps) => {
         {tabName === EAssetDetailTab.History && (
           <TradeHistory tradeHistoryData={historyData} />
         )}
-        {tabName === EAssetDetailTab.Bids && <BidsSectionTab data={data} />} */}
+        {tabName === EAssetDetailTab.Bids && <BidsSectionTab data={data} />}
       </div>
     </div>
   );

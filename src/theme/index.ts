@@ -1,4 +1,5 @@
 import { colors, createMuiTheme, responsiveFontSizes } from "@material-ui/core";
+import { transparentize } from "polished";
 import { THEME } from "utils/enums";
 import { ISettings } from "utils/types.d";
 
@@ -50,13 +51,46 @@ const themesOptions = [
       },
       MuiButton: {
         root: {
-          padding: "14px 16px",
-          borderRadius: "6px",
+          padding: "12px 32px",
+          borderRadius: "4px",
           textTransform: "none",
           fontWeight: 400,
+          height: 40,
+          "& span": { fontSize: 14 },
+          "& > *+*": { marginLeft: 6 },
+          "&.small": {
+            height: 32,
+            "& span": { fontSize: 13 },
+          },
+          "&.large": {
+            height: 48,
+            "& span": { fontSize: 16 },
+            "& > *+*": { marginLeft: 10 },
+          },
         },
-        label: {
-          color: "#FFF",
+        containedPrimary: {
+          backgroundColor: "#5A40DB",
+          color: "#fff",
+          "& span": { color: "#fff" },
+          "&:hover": {
+            backgroundColor: "#7378D8",
+          },
+          "&:disabled": {
+            backgroundColor: transparentize(0.6, "#5A40DB"),
+            "& span": { color: "#7378D8" },
+          },
+        },
+        containedSecondary: {
+          backgroundColor: "#1D1C22",
+          color: "#fff",
+          "& span": { color: "#fff" },
+          "&:hover": {
+            backgroundColor: "#323136",
+          },
+          "&:disabled": {
+            backgroundColor: transparentize(0.6, "#131216"),
+            "& span": { color: "#4D4D59" },
+          },
         },
       },
     },
@@ -111,13 +145,46 @@ const themesOptions = [
       },
       MuiButton: {
         root: {
-          padding: "14px 16px",
-          borderRadius: "6px",
+          padding: "12px 32px",
+          borderRadius: "4px",
           textTransform: "none",
           fontWeight: 400,
+          height: 40,
+          "& > *+*": { marginLeft: 6 },
+          "& span": { fontSize: 14 },
+          "&.small": {
+            height: 32,
+            "& span": { fontSize: 13 },
+          },
+          "&.large": {
+            height: 48,
+            "& span": { fontSize: 16 },
+            "& > *+*": { marginLeft: 10 },
+          },
         },
-        label: {
-          color: "#FFF",
+        containedPrimary: {
+          backgroundColor: "#5A40DB",
+          color: "#fff",
+          "& span": { color: "#fff" },
+          "&:hover": {
+            backgroundColor: "#7378D8",
+          },
+          "&:disabled": {
+            backgroundColor: transparentize(0.6, "#5A40DB"),
+            "& span": { color: "#7378D8" },
+          },
+        },
+        containedSecondary: {
+          backgroundColor: "#1D1C22",
+          color: "#fff",
+          "& span": { color: "#fff" },
+          "&:hover": {
+            backgroundColor: "#323136",
+          },
+          "&:disabled": {
+            backgroundColor: transparentize(0.6, "#131216"),
+            "& span": { color: "#4D4D59" },
+          },
         },
       },
     },

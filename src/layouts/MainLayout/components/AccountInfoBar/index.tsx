@@ -29,10 +29,10 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   create: {
-    padding: `0 10px 0 6px`,
+    width: 44,
+    height: 36,
     borderRadius: 4,
     backgroundColor: theme.colors.purple60,
-    height: theme.custom.appHeaderItemHeight,
     display: "flex",
     justifyContent: "center",
     textDecoration: "none",
@@ -163,7 +163,6 @@ const AccountInfoBar = (props: IProps) => {
         <>
           <NavLink className={classes.create} to="/create">
             <AddIcon />
-            &nbsp;CREATE
           </NavLink>
 
           <div className={classes.infoWrapper}>

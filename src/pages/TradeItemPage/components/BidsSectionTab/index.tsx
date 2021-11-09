@@ -32,6 +32,12 @@ const useStyles = makeStyles((theme) => ({
     border: "none !important",
     backgroundColor: theme.colors.primary40,
   },
+  item: {
+    padding: 0,
+    "&+&": {
+      marginTop: 24,
+    },
+  },
 }));
 
 interface IProps {
@@ -57,6 +63,20 @@ export const BidsSectionTab = (props: IProps) => {
 
   return (
     <div className={clsx(classes.root, props.className)}>
+      <BidAvatarRowItem
+        address={"0x2e84741f27e2993D637f3a537191101ccBF67050"}
+        className={classes.item}
+        comment1="by"
+        href={`/users/0x2e84741f27e2993D637f3a537191101ccBF67050`}
+        tokenPrice={`3000 GSWAP`}
+      />
+      <BidAvatarRowItem
+        address={"0x2e84741f27e2993D637f3a537191101ccBF67050"}
+        className={classes.item}
+        comment1="by"
+        href={`/users/0x2e84741f27e2993D637f3a537191101ccBF67050`}
+        tokenPrice={`3000 GSWAP`}
+      />
       {bids.map((order, index) => {
         const token = getTokenFromAddress(
           networkId || DEFAULT_NETWORK_ID,

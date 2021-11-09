@@ -35,9 +35,6 @@ const useStyles = makeStyles((theme) => ({
   buttons: { display: "flex", alignItems: "center", marginTop: 32 },
   button: {
     flex: 1,
-    height: 48,
-    backgroundColor: theme.colors.primary85,
-    "&.active": { backgroundColor: theme.colors.purple60 },
     "&+&": { marginLeft: 16 },
   },
   bidder: {
@@ -89,21 +86,21 @@ export const MockPriceBidSection = (props: IProps) => {
       </div>
       <div className={classes.buttons}>
         <Button
-          className={clsx(classes.button, "active")}
+          className={clsx(classes.button, "large")}
           color="primary"
           variant="contained"
         >
           Buy Now
         </Button>
         <Button
-          className={classes.button}
+          className={clsx(classes.button, "large")}
           color="secondary"
           variant="contained"
         >
           Bid
         </Button>
         <Button
-          className={classes.button}
+          className={clsx(classes.button, "large")}
           color="secondary"
           variant="contained"
         >
