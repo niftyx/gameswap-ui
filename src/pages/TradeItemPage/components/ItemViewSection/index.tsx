@@ -74,7 +74,7 @@ export const ItemViewSection = (props: IProps) => {
         />
         <div className={classes.controlBar}>
           <Button
-            className={classes.button}
+            className={clsx(classes.button, "normal")}
             color="secondary"
             variant="contained"
           >
@@ -82,7 +82,7 @@ export const ItemViewSection = (props: IProps) => {
             &nbsp; 3D View
           </Button>
           <Button
-            className={classes.button}
+            className={clsx(classes.button, "normal")}
             color="secondary"
             variant="contained"
           >
@@ -90,7 +90,7 @@ export const ItemViewSection = (props: IProps) => {
             &nbsp; Inspect In-Game
           </Button>
           <Button
-            className={classes.button}
+            className={clsx(classes.button, "normal")}
             color="secondary"
             variant="contained"
           >

@@ -55,12 +55,14 @@ const themesOptions = [
           borderRadius: "4px",
           textTransform: "none",
           fontWeight: 400,
-          height: 40,
-          "& span": { fontSize: 14 },
           "& > *+*": { marginLeft: 6 },
           "&.small": {
             height: 32,
             "& span": { fontSize: 13 },
+          },
+          "&.normal": {
+            height: 40,
+            "& span": { fontSize: 14 },
           },
           "&.large": {
             height: 48,
@@ -149,12 +151,14 @@ const themesOptions = [
           borderRadius: "4px",
           textTransform: "none",
           fontWeight: 400,
-          height: 40,
           "& > *+*": { marginLeft: 6 },
-          "& span": { fontSize: 14 },
           "&.small": {
             height: 32,
             "& span": { fontSize: 13 },
+          },
+          "&.normal": {
+            height: 40,
+            "& span": { fontSize: 14 },
           },
           "&.large": {
             height: 48,

@@ -218,8 +218,8 @@ export const MOCK_PRICE_FILTER_ITEMS: IPriceFilterItem[] = [
   },
 ];
 
-export const ASSET_IMAGE_FILE_SIZE_LIMIT = 30 * 1024 * 1024; // 30MB
-export const ASSET_ZIP_FILE_SIZE_LIMIT = 200 * 1024 * 1024; // 30MB
+export const ASSET_IMAGE_FILE_SIZE_LIMIT = 100 * 1024 * 1024; // 100MB
+export const ASSET_ZIP_FILE_SIZE_LIMIT = 200 * 1024 * 1024; // 200MB
 
 // To Do: add MMORGP below
 
