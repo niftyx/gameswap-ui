@@ -24,7 +24,7 @@ const networks: { [K in NetworkId]: INetwork } = {
     contracts: {
       erc721Factory: "0x4c4FBB3098F008d7a74611B3B7B75A1046C7527E",
     },
-    etherscanUri: "https://cchain.explorer.avax-test.network/",
+    etherscanUri: "https://testnet.snowtrace.io/",
     authService: "https://auth-mvp-1.gameswap.org/graphql",
     backendService: "https://api-dev-1.gameswap.org",
     hasuraService: {
@@ -38,7 +38,7 @@ const networks: { [K in NetworkId]: INetwork } = {
     contracts: {
       erc721Factory: "0x4c4FBB3098F008d7a74611B3B7B75A1046C7527E",
     },
-    etherscanUri: "https://cchain.explorer.avax.network/",
+    etherscanUri: "https://snowtrace.io/",
     authService: "https://auth-mvp-1.gameswap.org/graphql",
     backendService: "https://api-dev-1.gameswap.org",
     hasuraService: {
