@@ -7,6 +7,7 @@ import { ITradeFilter } from "utils/types";
 
 import {
   EmptyInventorySection,
+  InventorySection,
   NoWalletSection,
   OfferSection,
   TradeSection,
@@ -56,7 +57,8 @@ const SwapPage = () => {
       <div className={classes.left}>
         <OfferSection />
         <SwapControlBar />
-        {isConnected ? <EmptyInventorySection /> : <NoWalletSection />}
+        {/* {isConnected ? <EmptyInventorySection /> : <NoWalletSection />} */}
+        <InventorySection />
       </div>
       <div className={classes.filter}>
         <SwapFilter
