@@ -10,6 +10,7 @@ import {
   InventorySection,
   NoWalletSection,
   OfferSection,
+  TokenSection,
   TradeSection,
   YourSwapSection,
 } from "./components";
@@ -55,10 +56,11 @@ const SwapPage = () => {
   return (
     <PageContainer className={classes.root}>
       <div className={classes.left}>
-        <OfferSection />
-        <SwapControlBar />
+        {/* <OfferSection />
+        <SwapControlBar /> */}
         {/* {isConnected ? <EmptyInventorySection /> : <NoWalletSection />} */}
-        <InventorySection />
+        {/* <InventorySection /> */}
+        <TokenSection />
       </div>
       <div className={classes.filter}>
         <SwapFilter

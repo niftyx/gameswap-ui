@@ -4,3 +4,4 @@ export * from "./EmptyInventorySection";
 export * from "./YourSwapSection";
 export * from "./TradeSection";
 export * from "./InventorySection";
+export * from "./TokenSection";

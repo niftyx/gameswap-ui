@@ -1,5 +1,6 @@
-import { Button, Typography, makeStyles } from "@material-ui/core";
+import { Button, IconButton, Typography, makeStyles } from "@material-ui/core";
 import { ReactComponent as TickIcon } from "assets/svgs/blue-tick.svg";
+import { ReactComponent as CloseIcon } from "assets/svgs/close-in-circle.svg";
 import clsx from "clsx";
 import { transparentize } from "polished";
 import React from "react";
@@ -12,6 +13,11 @@ const useStyles = makeStyles((theme) => ({
     padding: 12,
     backgroundColor: theme.colors.primary90,
     borderRadius: 4,
+    border: `3px solid ${theme.colors.transparent}`,
+    position: "relative",
+    "&.selected": {
+      borderColor: theme.colors.lime,
+    },
   },
   change: {
     color: theme.colors.transparent,
@@ -54,6 +60,13 @@ const useStyles = makeStyles((theme) => ({
     "& img": { width: 14, height: 14, marginRight: 8 },
   },
   bidInfo: { color: theme.colors.primary70, fontSize: 11 },
+  close: {
+    position: "absolute",
+    padding: 0,
+    top: 16,
+    right: 16,
+    zIndex: 2,
+  },
 }));
 
 interface IProps {
@@ -67,7 +80,14 @@ export const InventoryAssetItem = (props: IProps) => {
   const { data, selected } = props;
 
   return (
-    <div className={clsx(classes.root, props.className)}>
+    <div
+      className={clsx(classes.root, props.className, selected && "selected")}
+    >
+      {selected && (
+        <IconButton className={classes.close}>
+          <CloseIcon />
+        </IconButton>
+      )}
       <Typography
         className={clsx(
           classes.change,

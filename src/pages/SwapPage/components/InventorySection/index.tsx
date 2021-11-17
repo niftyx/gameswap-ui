@@ -20,9 +20,9 @@ export const InventorySection = (props: IProps) => {
   return (
     <div className={clsx(classes.root, props.className)}>
       <Grid container spacing={3}>
-        {Swap_Mock_Assets.map((item) => (
+        {Swap_Mock_Assets.map((item, index) => (
           <Grid item key={item.id} md={4} sm={6} xs={12}>
-            <InventoryAssetItem data={item} selected={false} />
+            <InventoryAssetItem data={item} selected={index === 3} />
           </Grid>
         ))}
       </Grid>
