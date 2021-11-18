@@ -33,7 +33,7 @@ export const TokenSection = () => {
   const [state, setState] = useState<IState>({
     tokenAmount: {
       amount: ZERO_NUMBER,
-      token: getToken(networkId || DEFAULT_NETWORK_ID, "gswap"),
+      token: getToken("gswap", networkId),
     },
   });
 

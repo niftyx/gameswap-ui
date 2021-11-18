@@ -70,7 +70,7 @@ export const getAssetObjectWithPrices = (
   let minTokenAmountString = "";
 
   const prices: ITokenAmount[] = orders.map((order, orderIndex) => {
-    const token = getTokenFromAddress(networkId, order.erc20Address);
+    const token = getTokenFromAddress(order.erc20Address, networkId);
     const loadedUSDPrice = price[token.symbol.toLowerCase() as KnownToken];
     const USDPrice = xBigNumberToEthersBigNumber(order.takerAssetAmount).mul(
       loadedUSDPrice.price

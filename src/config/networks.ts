@@ -97,17 +97,20 @@ const validNetworkId = (networkId: number): networkId is NetworkId => {
 };
 
 export const getContractAddress = (
-  networkId: number,
-  contract: KnownContracts
+  contract: KnownContracts,
+  networkId?: number
 ): string => {
-  if (!validNetworkId(networkId)) {
+  const fNetworkId = networkId || DEFAULT_NETWORK_ID;
+
+  if (!validNetworkId(fNetworkId)) {
     throw new Error(`Unsupported network id: '${networkId}'`);
   }
-  return networks[networkId].contracts[contract];
+  return networks[fNetworkId].contracts[contract];
 };
 
-export const getToken = (networkId: number, tokenId: KnownToken): IToken => {
-  if (!validNetworkId(networkId)) {
+export const getToken = (tokenId: KnownToken, networkId?: number): IToken => {
+  const fNetworkId = networkId || DEFAULT_NETWORK_ID;
+  if (!validNetworkId(fNetworkId)) {
     throw new Error(`Unsupported network id: '${networkId}'`);
   }
 
@@ -116,7 +119,7 @@ export const getToken = (networkId: number, tokenId: KnownToken): IToken => {
     throw new Error(`Unsupported token id: '${tokenId}'`);
   }
 
-  const address = token.addresses[networkId];
+  const address = token.addresses[fNetworkId];
 
   if (!address) {
     throw new Error(`Unsupported network id: '${networkId}'`);
@@ -132,15 +135,16 @@ export const getToken = (networkId: number, tokenId: KnownToken): IToken => {
 };
 
 export const getTokenFromAddress = (
-  networkId: number,
-  address: string
+  address: string,
+  networkId?: number
 ): IToken => {
-  if (!validNetworkId(networkId)) {
+  const fNetworkId = networkId || DEFAULT_NETWORK_ID;
+  if (!validNetworkId(fNetworkId)) {
     throw new Error(`Unsupported network id: '${networkId}'`);
   }
 
   for (const token of Object.values(knownTokens)) {
-    const tokenAddress = token.addresses[networkId];
+    const tokenAddress = token.addresses[fNetworkId];
 
     // token might not be supported in the current network
     if (!tokenAddress) {
@@ -162,9 +166,11 @@ export const getTokenFromAddress = (
   );
 };
 
-export const getContractAddressName = (networkId: number) => {
+export const getContractAddressName = (networkId?: number) => {
+  const fNetworkId = networkId || DEFAULT_NETWORK_ID;
+
   const networkName = Object.keys(networkIds).find(
-    (key) => (networkIds as any)[key] === networkId
+    (key) => (networkIds as any)[key] === fNetworkId
   );
   const networkNameCase =
     networkName &&
@@ -173,28 +179,33 @@ export const getContractAddressName = (networkId: number) => {
   return networkNameCase;
 };
 
-export const getEtherscanUri = (networkId: number): string => {
-  if (!validNetworkId(networkId)) {
+export const getEtherscanUri = (networkId?: number): string => {
+  const fNetworkId = networkId || DEFAULT_NETWORK_ID;
+
+  if (!validNetworkId(fNetworkId)) {
     throw new Error(`Unsupported network id: '${networkId}'`);
   }
 
-  return networks[networkId].etherscanUri;
+  return networks[fNetworkId].etherscanUri;
 };
 
-export const getAuthServiceUri = (networkId: number): string => {
-  if (!validNetworkId(networkId)) {
+export const getAuthServiceUri = (networkId?: number): string => {
+  const fNetworkId = networkId || DEFAULT_NETWORK_ID;
+  if (!validNetworkId(fNetworkId)) {
     throw new Error(`Unsupported network id: '${networkId}'`);
   }
 
-  return networks[networkId].authService;
+  return networks[fNetworkId].authService;
 };
 
-export const getBackendServiceUri = (networkId: number): string => {
-  if (!validNetworkId(networkId)) {
+export const getBackendServiceUri = (networkId?: number): string => {
+  const fNetworkId = networkId || DEFAULT_NETWORK_ID;
+
+  if (!validNetworkId(fNetworkId)) {
     throw new Error(`Unsupported network id: '${networkId}'`);
   }
 
-  return networks[networkId].backendService;
+  return networks[fNetworkId].backendService;
 };
 
 export const getHasuraServerUrl = (
@@ -229,17 +240,21 @@ const OxContractAddresses: { [key in NetworkId]: I0xContractAddresses } = {
 };
 
 export const get0xContractAddresses = (
-  networkId: number
+  networkId?: number
 ): I0xContractAddresses => {
-  if (!validNetworkId(networkId)) {
+  const fNetworkId = networkId || DEFAULT_NETWORK_ID;
+
+  if (!validNetworkId(fNetworkId)) {
     throw new Error(`Unsupported network id: '${networkId}'`);
   }
-  return OxContractAddresses[networkId];
+  return OxContractAddresses[fNetworkId];
 };
 
-export const getNetworkName = (networkId: number): string => {
-  if (!validNetworkId(networkId)) {
+export const getNetworkName = (networkId?: number): string => {
+  const fNetworkId = networkId || DEFAULT_NETWORK_ID;
+
+  if (!validNetworkId(fNetworkId)) {
     throw new Error(`Unsupported network id: '${networkId}'`);
   }
-  return networks[networkId].label;
+  return networks[fNetworkId].label;
 };

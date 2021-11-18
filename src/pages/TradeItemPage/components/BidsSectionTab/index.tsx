@@ -78,10 +78,7 @@ export const BidsSectionTab = (props: IProps) => {
         tokenPrice={`3000 GSWAP`}
       />
       {bids.map((order, index) => {
-        const token = getTokenFromAddress(
-          networkId || DEFAULT_NETWORK_ID,
-          order.erc20Address
-        );
+        const token = getTokenFromAddress(order.erc20Address, networkId);
 
         const m = moment(Number(order.salt.toString()));
         const isMine =

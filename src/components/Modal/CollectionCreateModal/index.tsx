@@ -53,10 +53,7 @@ export const CollectionCreateModal = (props: IProps) => {
     networkId,
     setWalletConnectModalOpened,
   } = useConnectedWeb3Context();
-  const gswap721FactoryAddress = getContractAddress(
-    networkId || DEFAULT_NETWORK_ID,
-    "erc721Factory"
-  );
+  const gswap721FactoryAddress = getContractAddress("erc721Factory", networkId);
   const factoryContract = new ERC721FactoryService(
     provider,
     account,

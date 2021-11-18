@@ -42,10 +42,7 @@ export const AcceptBidModal = (props: IProps) => {
   if (!asset || !bid) return null;
 
   const price = {
-    token: getTokenFromAddress(
-      networkId || DEFAULT_NETWORK_ID,
-      bid.erc20Address
-    ),
+    token: getTokenFromAddress(bid.erc20Address, networkId),
     amount: xBigNumberToEthersBigNumber(bid.makerAssetAmount),
   };
 

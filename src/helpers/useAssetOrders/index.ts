@@ -96,7 +96,7 @@ export const useAssetOrders = (
       }>[] = [];
 
       erc20TokenIds.forEach((tokenId) => {
-        const token = getToken(networkId || DEFAULT_NETWORK_ID, tokenId);
+        const token = getToken(tokenId, networkId);
         promises.push(loadOrderbook(token.address));
       });
 

@@ -206,7 +206,7 @@ export const HeroSection = (props: IProps) => {
   const setImageLoaded = (imageLoaded: boolean) =>
     setState((prev) => ({ ...prev, imageLoaded }));
 
-  const gSwapToken = getToken(networkId || DEFAULT_NETWORK_ID, "gswap");
+  const gSwapToken = getToken("gswap", networkId);
   const {
     balances: {
       erc20Balances: { gswap: gswapBalance },

@@ -1,3 +1,4 @@
+import { DEFAULT_NETWORK_ID } from "config/constants";
 import { getTokenFromAddress } from "config/networks";
 import { formatBigNumber } from "utils";
 
@@ -12,7 +13,7 @@ export const getHighestBid = (
   if (bids.length === 0) return null;
 
   const data = bids.map((bid) => {
-    const token = getTokenFromAddress(networkId, bid.erc20Address);
+    const token = getTokenFromAddress(bid.erc20Address, networkId);
     const calcPrice = xBigNumberToEthersBigNumber(bid.makerAssetAmount).mul(
       (price as any)[token.symbol.toLowerCase()].price
     );
@@ -36,11 +37,12 @@ export const getHighestBid = (
 export const getLowestAsk = (
   asks: ISignedOrder[],
   price: { [key in KnownToken]: IGlobalPriceData },
-  networkId: number
+  chainId?: number
 ): ISignedOrder | null => {
+  const networkId = chainId || DEFAULT_NETWORK_ID;
   if (asks.length === 0) return null;
   const data = asks.map((asks) => {
-    const token = getTokenFromAddress(networkId, asks.erc20Address);
+    const token = getTokenFromAddress(asks.erc20Address, networkId);
     const calcPrice = xBigNumberToEthersBigNumber(asks.takerAssetAmount).mul(
       (price as any)[token.symbol.toLowerCase()].price
     );

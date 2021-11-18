@@ -39,10 +39,7 @@ export const TradeCancelOrderRow = (props: IProps) => {
   const takerInfo = assetDataUtils.decodeAssetDataOrThrow(takerAssetData);
   const { networkId } = useConnectedWeb3Context();
 
-  const token = getTokenFromAddress(
-    networkId || DEFAULT_NETWORK_ID,
-    (takerInfo as any).tokenAddress
-  );
+  const token = getTokenFromAddress((takerInfo as any).tokenAddress, networkId);
 
   return (
     <div className={classes.root}>

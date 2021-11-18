@@ -26,10 +26,7 @@ interface IState {
 
 export const CollectionProgressModal = (props: IProps) => {
   const { account, library: provider, networkId } = useConnectedWeb3Context();
-  const gswap721FactoryAddress = getContractAddress(
-    networkId || DEFAULT_NETWORK_ID,
-    "erc721Factory"
-  );
+  const gswap721FactoryAddress = getContractAddress("erc721Factory", networkId);
   const factoryContract = new ERC721FactoryService(
     provider,
     account,

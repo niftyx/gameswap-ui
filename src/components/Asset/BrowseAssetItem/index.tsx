@@ -150,10 +150,7 @@ export const BrowseAssetItem = (props: IProps) => {
     networkId || DEFAULT_NETWORK_ID
   );
   const highestBidToken = highestBid
-    ? getTokenFromAddress(
-        networkId || DEFAULT_NETWORK_ID,
-        highestBid.erc20Address
-      )
+    ? getTokenFromAddress(highestBid.erc20Address, networkId)
     : null;
   const highestAsk = getLowestAsk(
     orders,
@@ -161,10 +158,7 @@ export const BrowseAssetItem = (props: IProps) => {
     networkId || DEFAULT_NETWORK_ID
   );
   const highestAskToken = highestAsk
-    ? getTokenFromAddress(
-        networkId || DEFAULT_NETWORK_ID,
-        highestAsk.erc20Address
-      )
+    ? getTokenFromAddress(highestAsk.erc20Address, networkId)
     : null;
 
   const isInSale = !!maxOrder || orders.length > 0;

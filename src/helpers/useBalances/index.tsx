@@ -29,7 +29,7 @@ export const useBalances = (
     try {
       const chainId = (provider?._network || {}).chainId;
       if (account && networkId && networkId === chainId) {
-        const token = getToken(networkId, tokenId);
+        const token = getToken(tokenId, networkId);
         const erc20Service = new ERC20Service(provider, account, token.address);
         const tokenBalance = await erc20Service.getBalanceOf(account);
         return tokenBalance;

@@ -124,7 +124,7 @@ const AccountInfoBar = (props: IProps) => {
       erc20Balances: { gswap: gswapBalance },
     },
   } = useBalances(context);
-  const gSwapToken = getToken(networkId || DEFAULT_NETWORK_ID, "gswap");
+  const gSwapToken = getToken("gswap", networkId);
 
   const formattedGswapBalance = formatToShortNumber(
     formatBigNumber(gswapBalance, gSwapToken.decimals)

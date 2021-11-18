@@ -97,10 +97,7 @@ const TradePage = () => {
       takerAssetData: state.tradeFilter.currencies
         .map((tokenId) => {
           try {
-            const tokenAddress = getToken(
-              networkId || DEFAULT_NETWORK_ID,
-              tokenId
-            ).address;
+            const tokenAddress = getToken(tokenId, networkId).address;
             return assetDataUtils.encodeERC20AssetData(tokenAddress);
           } catch (error) {
             return null;

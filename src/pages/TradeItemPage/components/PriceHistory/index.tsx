@@ -76,10 +76,7 @@ export const PriceHistory = (props: IProps) => {
     //   );
     // }
     let chartData = saleHistoryItems.map((item) => {
-      const token = getTokenFromAddress(
-        networkId || DEFAULT_NETWORK_ID,
-        item.price.tokenAddress
-      );
+      const token = getTokenFromAddress(item.price.tokenAddress, networkId);
 
       const dollar = item.price.amount.mul(
         (price as any)[token.symbol.toLowerCase()].price

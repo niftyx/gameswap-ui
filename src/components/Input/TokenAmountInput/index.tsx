@@ -52,7 +52,7 @@ export const TokenAmountInput = (props: IProps) => {
   }, [value.amount, value.token.decimals, currentValue]);
 
   const SALE_TOKENS: IToken[] = Object.keys(knownTokens).map((key) =>
-    getToken(context.networkId || DEFAULT_NETWORK_ID, key as KnownToken)
+    getToken(key as KnownToken, context.networkId)
   );
 
   const onChangeAmount = (

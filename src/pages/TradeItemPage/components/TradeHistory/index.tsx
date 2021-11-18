@@ -77,11 +77,8 @@ export const TradeHistory = (props: IProps) => {
               break;
             case EHistoryItemType.Sale:
               token = item.price
-                ? getTokenFromAddress(
-                    networkId || DEFAULT_NETWORK_ID,
-                    item.price.tokenAddress
-                  )
-                : getToken(networkId || DEFAULT_NETWORK_ID, "wavax");
+                ? getTokenFromAddress(item.price.tokenAddress, networkId)
+                : getToken("wavax", networkId);
               roleStr = `Bought for ${formatToShortNumber(
                 formatBigNumber(
                   item.price?.amount || ZERO_NUMBER,

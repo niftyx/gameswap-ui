@@ -132,7 +132,7 @@ export const ERC721CreateForm = (props: IProps) => {
   };
 
   const SALE_TOKENS: IToken[] = Object.keys(knownTokens).map((key) =>
-    getToken(context.networkId || DEFAULT_NETWORK_ID, key as KnownToken)
+    getToken(key as KnownToken, context.networkId)
   );
 
   const isWalletConnected = !!context.account;

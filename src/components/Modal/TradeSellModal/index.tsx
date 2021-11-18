@@ -71,7 +71,7 @@ export const TradeSellModal = (props: IProps) => {
             onPutSale={async () => {
               updateAssetPrice({
                 amount: MAX_NUMBER,
-                token: getToken(networkId || DEFAULT_NETWORK_ID, "wavax"),
+                token: getToken("wavax", networkId),
               });
               setState((prevState) => ({
                 ...prevState,

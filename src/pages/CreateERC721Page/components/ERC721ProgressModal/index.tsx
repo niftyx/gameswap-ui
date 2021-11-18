@@ -57,7 +57,7 @@ export const ERC721ProgressModal = (props: IProps) => {
   const ipfsService = getIPFSService();
   const { formValues, onClose, visible } = props;
   const history = useHistory();
-  const wavxToken = getToken(networkId || DEFAULT_NETWORK_ID, "wavax");
+  const wavxToken = getToken("wavax", networkId);
   const erc721 = new ERC721Service(
     provider,
     account || "",

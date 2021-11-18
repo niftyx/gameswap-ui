@@ -101,8 +101,8 @@ export const TradeSelectOrderStep = (props: IProps) => {
                       return onCancel(orders[priceIndex]);
                     }
                     const erc20Token = getTokenFromAddress(
-                      context.networkId || DEFAULT_NETWORK_ID,
-                      orders[priceIndex].erc20Address
+                      orders[priceIndex].erc20Address,
+                      context.networkId
                     );
                     if (
                       xBigNumberToEthersBigNumber(
