@@ -6,18 +6,22 @@ import {
 } from "@material-ui/core";
 import clsx from "clsx";
 import { FormTextField } from "components";
-import { DEFAULT_NETWORK_ID } from "config/constants";
 import { getToken, knownTokens } from "config/networks";
 import { useConnectedWeb3Context } from "contexts";
 import { BigNumber, ethers } from "packages/ethers";
 import React, { useEffect, useState } from "react";
 import { IToken, ITokenAmount, KnownToken } from "utils/types";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   root: {},
   select: {
-    minWidth: 110,
+    minWidth: 100,
   },
+  input: {
+    backgroundColor: theme.colors.primary90,
+    padding: "8px 12px",
+  },
+  icon: { width: 20, height: 20 },
 }));
 
 interface IProps {
@@ -88,19 +92,25 @@ export const TokenAmountInput = (props: IProps) => {
 
   return (
     <FormTextField
-      FormControlProps={{ fullWidth: true }}
+      FormControlProps={{ fullWidth: true, variant: "filled" }}
       InputLabelProps={{ htmlFor: "salePrice", shrink: true }}
       InputProps={{
         endAdornment: (
           <InputAdornment position="end">
             <Select
               className={classes.select}
+              disableUnderline
               name="saleToken"
               onChange={onChangeToken}
               value={value.token.address}
             >
               {SALE_TOKENS.map((e) => (
                 <MenuItem key={e.address} value={e.address}>
+                  {/* <img
+                    alt="logo"
+                    className={classes.icon}
+                    src={e.image || ""}
+                  /> */}
                   {e.symbol}
                 </MenuItem>
               ))}
@@ -113,6 +123,8 @@ export const TokenAmountInput = (props: IProps) => {
         placeholder: "Enter price",
         value: currentValue,
         type: "number",
+        disableUnderline: true,
+        className: classes.input,
       }}
       className={clsx(classes.root, props.className)}
     />

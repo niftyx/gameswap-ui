@@ -41,6 +41,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     paddingRight: theme.spacing(1.75),
     paddingLeft: theme.spacing(5),
+    height: "100%",
   },
   searchBar: {
     marginLeft: theme.spacing(5),
@@ -49,16 +50,33 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   link: {
-    color: theme.colors.white,
+    color: theme.colors.primary60,
     fontSize: theme.custom.header.navItem.fontSize,
     lineHeight: theme.custom.header.navItem.lineHeight,
     fontWeight: theme.custom.header.navItem.fontWeight,
     transition: "all 0.5s",
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    position: "relative",
+    height: "100%",
+    "&::after": {
+      position: "absolute",
+      content: `""`,
+      bottom: 0,
+      left: 0,
+      right: 0,
+      height: 3,
+      backgroundColor: theme.colors.transparent,
+    },
     "& + &": {
       marginLeft: theme.spacing(2),
     },
     "&.active": {
-      color: theme.colors.primary60,
+      color: theme.colors.white,
+      "&::after": {
+        backgroundColor: theme.colors.lime,
+      },
     },
   },
   divider: {
@@ -78,8 +96,10 @@ const useStyles = makeStyles((theme) => ({
   launchPad: { marginRight: theme.spacing(1) },
   menuItems: {
     margin: `0 ${theme.spacing(2)}px`,
+    height: "100%",
   },
   menuItemsContent: {
+    height: "100%",
     maxWidth: 400,
     margin: "auto",
     display: "flex",
@@ -105,9 +125,9 @@ const Header = ({ className, ...rest }: AppBarProps) => {
           <LogoSvg className={classes.logo} />
         </NavLink>
         <div className={classes.toolbarRight}>
-          {/* <Hidden mdDown>
+          <Hidden mdDown>
             <BackNextGroup onBack={onBack} onNext={onNext} />
-          </Hidden> */}
+          </Hidden>
 
           <SearchBar className={classes.searchBar} />
           <Box flexGrow={1}></Box>

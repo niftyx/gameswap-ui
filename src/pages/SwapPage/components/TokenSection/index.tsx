@@ -1,6 +1,5 @@
 import { Typography, makeStyles } from "@material-ui/core";
 import { TokenAmountInput } from "components";
-import { DEFAULT_NETWORK_ID } from "config/constants";
 import { getToken } from "config/networks";
 import { useConnectedWeb3Context } from "contexts";
 import React, { useState } from "react";
@@ -20,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
   title: {
     fontSize: 14,
     color: theme.colors.white,
+    marginBottom: 16,
   },
 }));
 

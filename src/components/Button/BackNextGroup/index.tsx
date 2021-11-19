@@ -11,18 +11,17 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   button: {
-    borderColor: theme.colors.purple40,
-    borderStyle: "solid",
-    borderWidth: 1,
+    backgroundColor: theme.colors.primary90,
     width: theme.spacing(5.5),
     height: theme.spacing(5.5),
-    borderRadius: 6,
+    borderRadius: "50%",
     "& svg": {
-      color: theme.colors.purple40,
+      color: theme.colors.white,
     },
     "&:disabled": {
+      backgroundColor: theme.colors.primary100,
       "& svg": {
-        color: theme.colors.purple60,
+        color: theme.colors.primary70,
       },
     },
   },

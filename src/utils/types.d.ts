@@ -239,6 +239,7 @@ interface IKnownTokenData {
     [K in NetworkId]?: string;
   };
   coingeckoTokenId: string;
+  image?: string;
 }
 
 interface I0xContractAddresses {
