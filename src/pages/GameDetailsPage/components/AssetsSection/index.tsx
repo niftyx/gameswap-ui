@@ -84,10 +84,7 @@ export const AssetsSection = (props: IProps) => {
           <Typography className={classes.noDescription}>
             Looks like there are no assets for this game
           </Typography>
-          <NavLink
-            className={clsx(classes.create, commonClasses.transparentButton)}
-            to="/create/erc721"
-          >
+          <NavLink className={clsx(classes.create)} to="/create/erc721">
             <AddIcon />
             &nbsp; Create Asset
           </NavLink>
