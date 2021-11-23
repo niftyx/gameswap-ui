@@ -12,6 +12,8 @@ const useStyles = makeStyles((theme) => ({
     margin: "auto",
     maxWidth: 320,
     marginTop: 40,
+  },
+  box: {
     backgroundColor: theme.colors.primary85,
     borderRadius: 8,
     padding: 16,
@@ -20,6 +22,25 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 14,
     color: theme.colors.white,
     marginBottom: 16,
+  },
+  balance: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: 4,
+  },
+  balanceLabel: {
+    color: theme.colors.primary60,
+    fontSize: 12,
+    "& span": {
+      color: theme.colors.primary70,
+    },
+  },
+  fee: {
+    fontSize: 11,
+    color: theme.colors.primary60,
+    marginTop: 12,
+    "& span": { color: theme.colors.primary70 },
   },
 }));
 
@@ -39,13 +60,24 @@ export const TokenSection = () => {
 
   return (
     <div className={classes.root}>
-      <Typography className={classes.title}>Swap with:</Typography>
-      <TokenAmountInput
-        onChange={(amount) => {
-          setState((prev) => ({ ...prev, tokenAmount: amount }));
-        }}
-        value={state.tokenAmount}
-      />
+      <div className={classes.box}>
+        <Typography className={classes.title}>Swap with:</Typography>
+        <TokenAmountInput
+          onChange={(amount) => {
+            setState((prev) => ({ ...prev, tokenAmount: amount }));
+          }}
+          value={state.tokenAmount}
+        />
+        <div className={classes.balance}>
+          <Typography className={classes.balanceLabel}>~$ 350</Typography>
+          <Typography className={classes.balanceLabel}>
+            <span>Your balance:</span> 175,550.90
+          </Typography>
+        </div>
+      </div>
+      <Typography align="center" className={classes.fee}>
+        <span>Service fee</span> 5% - 16 GSWAP ($17.5)
+      </Typography>
     </div>
   );
 };

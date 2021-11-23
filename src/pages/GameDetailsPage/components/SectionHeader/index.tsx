@@ -25,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
     padding: 4,
+    borderRadius: "50%",
     "& svg": {
       width: 20,
       height: 20,

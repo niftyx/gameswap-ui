@@ -15,6 +15,7 @@ import { NavLink, useHistory } from "react-router-dom";
 
 import AccountInfoBar from "../AccountInfoBar";
 import LaunchPad from "../LaunchPad";
+import { NetworkSwitch } from "../NetworkSwitch";
 import Notifications from "../Notifications";
 import SearchBar from "../SearchBar";
 
@@ -156,7 +157,7 @@ const Header = ({ className, ...rest }: AppBarProps) => {
               </Link>
             </div>
           </Box>
-
+          <NetworkSwitch />
           <AccountInfoBar />
           <Hidden mdDown>
             <div className={classes.notiLaunchWrapper}>
