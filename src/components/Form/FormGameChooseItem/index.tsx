@@ -5,19 +5,20 @@ import React from "react";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: 120,
-    height: 120,
-    borderRadius: 6,
+    backgroundColor: theme.colors.primary90,
+    width: 180,
+    height: 160,
+    borderRadius: 4,
     display: "flex",
-    justifyContent: "center",
     alignItems: "center",
     flexDirection: "column",
-    border: `2px solid ${theme.colors.white}`,
+    border: `2px solid ${theme.colors.transparent}`,
     cursor: "pointer",
     userSelect: "none",
     transition: "all 0.3s",
+    overflow: "hidden",
     "&.active": {
-      borderColor: theme.colors.primary60,
+      borderColor: theme.colors.lime,
     },
     marginRight: 16,
     marginBottom: 16,
@@ -36,6 +37,11 @@ const useStyles = makeStyles((theme) => ({
   subTitle: {
     color: transparentize(0.25, theme.colors.white),
     fontSize: theme.spacing(1.5),
+  },
+  bottom: {
+    flex: 1,
+    display: "flex",
+    alignItems: "center",
   },
 }));
 
@@ -57,12 +63,14 @@ export const FormGameChooseItem = (props: IProps) => {
       onClick={onClick}
     >
       {renderIcon()}
-      <Typography align="center" className={classes.title}>
-        {title}
-      </Typography>
-      <Typography align="center" className={classes.subTitle}>
-        {subTitle}
-      </Typography>
+      <div className={classes.bottom}>
+        <Typography align="center" className={classes.title}>
+          {title}
+        </Typography>
+        <Typography align="center" className={classes.subTitle}>
+          {subTitle}
+        </Typography>
+      </div>
     </div>
   );
 };

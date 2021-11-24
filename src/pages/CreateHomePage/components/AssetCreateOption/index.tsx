@@ -7,40 +7,65 @@ const useStyles = makeStyles((theme) => ({
   root: {
     textDecoration: "none",
     transition: "all 0.5s",
-    color: theme.colors.white,
     "&:hover": {
-      color: transparentize(0.4, theme.colors.white),
+      "& div": {
+        "& div": {
+          borderColor: theme.colors.purple60,
+          backgroundColor: theme.colors.primary85,
+          color: theme.colors.white,
+        },
+        "& p": {
+          color: theme.colors.white,
+        },
+      },
     },
     "& + &": {
-      marginLeft: theme.spacing(1.5),
+      marginLeft: 24,
     },
   },
   content: {
-    width: theme.spacing(20),
-    height: theme.spacing(8),
-    borderRadius: theme.spacing(1),
+    width: 240,
+    height: 180,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+  },
+  imgWrapper: {
+    borderRadius: 4,
+    backgroundColor: theme.colors.primary90,
+    border: `2px solid ${theme.colors.primary85}`,
+    flex: 1,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: transparentize(0.3, theme.colors.primary80),
+    transition: "all 0.4s",
+    color: theme.colors.primary40,
   },
   text: {
-    fontSize: theme.spacing(2.25),
-    fontWeight: 500,
+    marginTop: 16,
+    fontSize: 16,
+    fontWeight: 200,
+    color: theme.colors.primary40,
+    transition: "all 0.4s",
   },
 }));
 
 interface IProps {
   link: string;
   title: string;
+  image: React.ElementType;
 }
 
 export const AssetCreateOption = (props: IProps) => {
   const classes = useStyles();
+  const AssetIcon = props.image;
   return (
     <NavLink className={classes.root} to={props.link}>
       <div className={classes.content}>
-        <Typography align="center" className={classes.text} component="span">
+        <div className={classes.imgWrapper}>
+          <AssetIcon />
+        </div>
+        <Typography align="center" className={classes.text}>
           {props.title}
         </Typography>
       </div>

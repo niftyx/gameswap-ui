@@ -28,9 +28,11 @@ const useStyles = makeStyles((theme) => ({
     color: theme.colors.white,
   },
   img: {
-    width: 40,
-    height: 40,
-    borderRadius: "50%",
+    width: "100%",
+    paddingTop: "62%",
+    backgroundSize: "cover",
+    borderRadius: 4,
+    overflow: "hidden",
   },
 }));
 
@@ -119,7 +121,10 @@ export const FormGameChoose = (props: IProps) => {
               }
             }}
             renderIcon={() => (
-              <img alt="img" className={classes.img} src={game.imageUrl} />
+              <div
+                className={classes.img}
+                style={{ backgroundImage: `url(${game.imageUrl})` }}
+              />
             )}
             subTitle={" "}
             title={game.name}
