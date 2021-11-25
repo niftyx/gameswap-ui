@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     marginTop: theme.spacing(1),
-    backgroundColor: theme.colors.primary100,
+    backgroundColor: theme.colors.primary90,
     padding: theme.spacing(2),
     borderRadius: theme.spacing(2),
     minHeight: theme.spacing(40),
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
   assetWrapper: {
     position: "relative",
     paddingTop: "100%",
-    backgroundColor: theme.colors.primary70,
+    backgroundColor: theme.colors.primary85,
   },
   img: {
     position: "absolute",
@@ -102,9 +102,9 @@ const useStyles = makeStyles((theme) => ({
   },
   unlockWrapper: {
     marginTop: theme.spacing(1),
-    border: `1px solid ${theme.colors.white}`,
     padding: theme.spacing(2),
     borderRadius: theme.spacing(2),
+    backgroundColor: theme.colors.primary85,
   },
   unlockPlaceholder: {
     fontSize: theme.spacing(2),

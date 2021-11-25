@@ -62,7 +62,6 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
     "&:before": {
       content: `" "`,
-      backgroundImage: theme.colors.primary100,
       position: "absolute",
       left: 0,
       right: 0,

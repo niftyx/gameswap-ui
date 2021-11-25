@@ -23,14 +23,22 @@ const useStyles = makeStyles((theme) => ({
     overflowY: "hidden",
     flexWrap: "wrap",
   },
-  icon: {
-    fontSize: 40,
-    color: theme.colors.white,
+  iconWrapper: {
+    width: 64,
+    height: 64,
+    borderRadius: 8,
+    backgroundColor: theme.colors.primary80,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 3,
   },
+  icon: { width: 27, height: 27, color: theme.colors.white },
   img: {
-    width: 40,
-    height: 40,
-    borderRadius: "50%",
+    width: 64,
+    height: 64,
+    borderRadius: 8,
+    zIndex: 3,
   },
 }));
 
@@ -84,7 +92,11 @@ export const FormCollectionChoose = (props: IProps) => {
         <FormCollectionChooseItem
           active={false}
           onClick={onNewCollection}
-          renderIcon={() => <AddCircleIcon className={classes.icon} />}
+          renderIcon={() => (
+            <div className={classes.iconWrapper}>
+              <AddCircleIcon className={classes.icon} />
+            </div>
+          )}
           subTitle="Collection"
           title="Create"
         />

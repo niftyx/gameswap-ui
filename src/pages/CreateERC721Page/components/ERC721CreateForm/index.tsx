@@ -15,11 +15,7 @@ import {
   FormSwitchField,
   FormTextField,
 } from "components";
-import {
-  DEFAULT_NETWORK_ID,
-  SERVICE_FEE,
-  SERVICE_FEE_IN_PERCENT,
-} from "config/constants";
+import { SERVICE_FEE, SERVICE_FEE_IN_PERCENT } from "config/constants";
 import { getToken, knownTokens } from "config/networks";
 import { useConnectedWeb3Context, useGlobal } from "contexts";
 import { Form, Formik } from "formik";

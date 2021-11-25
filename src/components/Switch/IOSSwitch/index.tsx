@@ -26,11 +26,15 @@ export const IOSSwitch = withStyles((theme) =>
     },
     switchBase: {
       padding: 2,
+      "& + $track": {
+        backgroundColor: theme.colors.primary60,
+      },
+      color: theme.colors.white,
       "&$checked": {
         transform: "translateX(16px)",
-        color: theme.palette.common.white,
+        color: theme.colors.white,
         "& + $track": {
-          backgroundColor: theme.colors.primary60,
+          backgroundColor: theme.colors.green,
           opacity: 1,
           border: "none",
         },

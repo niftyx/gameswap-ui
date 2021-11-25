@@ -79,6 +79,11 @@ const routes = [
         component: lazy(() => import("pages/ProfilePage")),
       },
       {
+        exact: false,
+        path: "/following",
+        component: lazy(() => import("pages/FollowingPage")),
+      },
+      {
         exact: true,
         path: "/settings",
         component: lazy(() => import("pages/ProfileSettingsPage")),

@@ -26,8 +26,8 @@ const useStyles = makeStyles((theme) => ({
     display: "none",
   },
   content: {
-    borderRadius: theme.spacing(2),
-    border: `1px dashed ${theme.colors.white}`,
+    borderRadius: 4,
+    backgroundColor: theme.colors.primary85,
     padding: theme.spacing(2),
     marginTop: theme.spacing(2.5),
   },
@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   },
   selectorComment: {
     fontSize: theme.spacing(2),
-    color: theme.colors.white,
+    color: theme.colors.primary60,
     textAlign: "center",
   },
   selectorButton: {
@@ -45,13 +45,17 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: theme.colors.primary60,
+    backgroundColor: theme.colors.purple60,
     borderRadius: 6,
     color: theme.colors.white,
     cursor: "pointer",
     userSelect: "none",
     margin: "auto",
     marginTop: theme.spacing(2.5),
+    transition: "all 0.4s",
+    "&:hover": {
+      backgroundColor: theme.colors.purple40,
+    },
   },
   result: {
     position: "relative",

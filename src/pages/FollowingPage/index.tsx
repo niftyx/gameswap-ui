@@ -1,27 +1,22 @@
 import { makeStyles } from "@material-ui/core";
 import { PageContainer } from "components";
 import React from "react";
-import { useParams } from "react-router-dom";
 
-import { ProfilePageContent } from "./ProfilePageContent";
+import { FollowingPageContent } from "./FollowingPageContent";
 
 const useStyles = makeStyles(() => ({
   root: {
     height: "auto",
   },
 }));
-
-const ProfilePage = () => {
+const FollowingPage = () => {
   const classes = useStyles();
-
-  const params = useParams();
-  const userId = ((params || {}) as any).id;
 
   return (
     <PageContainer className={classes.root}>
-      <ProfilePageContent userId={userId} />
+      <FollowingPageContent />
     </PageContainer>
   );
 };
 
-export default ProfilePage;
+export default FollowingPage;

@@ -8,7 +8,6 @@ import { AsyncAutoCompleteInput } from "../AsyncAutoCompleteInput";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: 300,
     marginTop: 16,
   },
 }));
