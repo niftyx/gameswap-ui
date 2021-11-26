@@ -9,6 +9,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     marginTop: 16,
+    marginBottom: 16,
   },
   item: {
     fontSize: 14,
@@ -39,19 +40,19 @@ export const TabSection = (props: IProps) => {
   const classes = useStyles();
   const history = useHistory();
 
-  // useEffect(() => {
-  //   const isIncludeAny = Tabs.map(
-  //     (tab) =>
-  //       !!matchPath(history.location.pathname, {
-  //         exact: true,
-  //         path: tab.href,
-  //       })
-  //   ).reduce((e1, e2) => e1 || e2);
+  useEffect(() => {
+    const isIncludeAny = Tabs.map(
+      (tab) =>
+        !!matchPath(history.location.pathname, {
+          exact: true,
+          path: tab.href,
+        })
+    ).reduce((e1, e2) => e1 || e2);
 
-  //   if (!isIncludeAny) {
-  //     history.push(Tabs[0].href);
-  //   }
-  // }, []);
+    if (!isIncludeAny) {
+      history.push(Tabs[0].href);
+    }
+  }, []);
 
   const Tabs = [
     {
