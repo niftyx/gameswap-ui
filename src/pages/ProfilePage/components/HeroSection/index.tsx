@@ -15,7 +15,7 @@ import { ReactComponent as TiktokIcon } from "assets/svgs/profile/youtube-gaming
 import { ReactComponent as YoutubeIcon } from "assets/svgs/profile/youtube.svg";
 import clsx from "clsx";
 import { ProfileMarker } from "components/Marker";
-import { DEFAULT_NETWORK_ID, PRICE_DECIMALS } from "config/constants";
+import { PRICE_DECIMALS } from "config/constants";
 import { getToken } from "config/networks";
 import { useConnectedWeb3Context, useGlobal } from "contexts";
 import copy from "copy-to-clipboard";

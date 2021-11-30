@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
     cursor: "pointer",
     padding: theme.spacing(1),
+    maxWidth: 400,
   },
   title: {
     color: theme.colors.white,

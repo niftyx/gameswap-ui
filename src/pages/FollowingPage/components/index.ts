@@ -6,3 +6,6 @@ export * from "./UsersSection";
 export * from "./CollectionsSection";
 export * from "./ItemsSection";
 export * from "./GameItem";
+export * from "./CategorySubSection";
+export * from "./CategoryItem";
+export * from "./UserItem";

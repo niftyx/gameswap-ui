@@ -14,6 +14,7 @@ const useStyles = makeStyles((theme) => ({
     display: "block",
     textDecoration: "none",
     width: "100%",
+    maxWidth: 400,
     position: "relative",
     overflow: "hidden",
     cursor: "pointer",
