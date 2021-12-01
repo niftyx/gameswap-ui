@@ -1,12 +1,12 @@
 import { makeStyles } from "@material-ui/core";
 import clsx from "clsx";
-import { CollectionsSection } from "pages/GameDetailsPage/components";
 import React from "react";
 import { Route, Switch } from "react-router";
 import useCommonStyles from "styles/common";
 
 import {
   CategoriesSection,
+  CollectionsSection,
   GamesSection,
   HeroSection,
   ItemsSection,
