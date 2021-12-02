@@ -35,7 +35,14 @@ const MainLayout = (props: IProps & RouteComponentProps) => {
   const history = useHistory();
   const { initialized } = useConnectedWeb3Context();
 
-  const hideNavbarRoutes = ["/trade", "/browse", "/faq", "/assets/", "/swap"];
+  const hideNavbarRoutes = [
+    "/trade",
+    "/browse",
+    "/faq",
+    "/assets/",
+    "/swap",
+    "/sell",
+  ];
 
   const hideNavbar = hideNavbarRoutes
     .map(

@@ -155,6 +155,16 @@ const Header = ({ className, ...rest }: AppBarProps) => {
               >
                 BROWSE
               </Link>
+              <Link
+                className={classes.link}
+                color="textSecondary"
+                component={NavLink}
+                to="/sell"
+                underline="none"
+                variant="body2"
+              >
+                SELL
+              </Link>
             </div>
           </Box>
           <NetworkSwitch />
