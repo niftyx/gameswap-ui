@@ -1,72 +1,61 @@
 import { makeStyles } from "@material-ui/core";
-import clsx from "clsx";
-import { BrowseFilter, PageContainer } from "components";
-import { useAllOrders } from "helpers/useAllOrders";
-import React from "react";
+import { BuyFilter, PageContainer, SwapControlBar } from "components";
+import { useConnectedWeb3Context } from "contexts";
+import React, { useState } from "react";
+import { EMembership } from "utils/enums";
+import { ITradeFilter } from "utils/types";
 
-import { AssetItemsSection, FeaturedItemsSection } from "./components";
+import { TradeSection, YourSwapSection } from "./components";
 
 const useStyles = makeStyles((theme) => ({
-  root: {},
-  content: {
+  root: {
     display: "flex",
-    flexDirection: "column",
-    height: "100%",
   },
-  mainContent: {
-    display: "flex",
-    flex: 1,
-    overflow: "hidden",
-  },
-  assets: {
-    flex: 1,
-    height: "100%",
-    display: "flex",
-    flexDirection: "column",
-  },
-  inventory: {
-    flex: 1,
-    height: "100%",
-    overflowY: "auto",
-    overflowX: "hidden",
-  },
-  filter: {
-    width: theme.spacing(25),
-    minWidth: theme.spacing(25),
-    margin: `0 ${theme.spacing(2.5)}px`,
-  },
-  featuredItems: {
-    marginBottom: theme.spacing(2),
-  },
+  right: { flex: 1 },
+  filter: { width: 256, marginRight: 24 },
 }));
+
+interface IState {
+  tradeFilter: ITradeFilter;
+}
 
 const BrowsePage = () => {
   const classes = useStyles();
-  const {
-    allLoaded: allOrdersLoaded,
-    loadMore: loadMoreAllOrders,
-    loading: allOrdersLoading,
-    orders: allOrders,
-  } = useAllOrders();
+  const { account } = useConnectedWeb3Context();
+  const [state, setState] = useState<IState>({
+    tradeFilter: {
+      priceEnabled: false,
+      statusEnabled: false,
+      collectionEnabled: false,
+      saleCurrencyEnabled: false,
+      platformEnabled: false,
+      membership: EMembership.Basic,
+    },
+  });
+
+  const updateTradeFilter = (newValues: any) =>
+    setState((prevState) => ({
+      ...prevState,
+      tradeFilter: {
+        ...prevState.tradeFilter,
+        ...newValues,
+      },
+    }));
+
+  const isConnected = !!account;
 
   return (
-    <PageContainer>
-      <div className={classes.content}>
-        <FeaturedItemsSection className={classes.featuredItems} />
-
-        <div className={classes.mainContent}>
-          <BrowseFilter className={classes.filter} />
-          <AssetItemsSection
-            className={clsx(classes.assets)}
-            loading={allOrdersLoading}
-            onScrollEnd={
-              !allOrdersLoading && !allOrdersLoaded
-                ? loadMoreAllOrders
-                : () => {}
-            }
-            orders={allOrders}
-          />
-        </div>
+    <PageContainer className={classes.root}>
+      <div className={classes.filter}>
+        <BuyFilter
+          filter={state.tradeFilter}
+          updateFilter={updateTradeFilter}
+        />
+      </div>
+      <div className={classes.right}>
+        <YourSwapSection />
+        <SwapControlBar />
+        <TradeSection />
       </div>
     </PageContainer>
   );

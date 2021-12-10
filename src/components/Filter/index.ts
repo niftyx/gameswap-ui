@@ -4,3 +4,4 @@ export { default as FilterItemWrapper } from "./FilterItemWrapper";
 export { default as PriceFilter } from "./PriceFilter";
 export * from "./SwapFilter";
 export * from "./SellFilter";
+export * from "./BuyFilter";
